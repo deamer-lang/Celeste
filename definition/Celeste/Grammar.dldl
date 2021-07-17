@@ -43,7 +43,7 @@ enum_declaration
 	ENUM VARNAME enum_block
 
 enum_block
-	LEFT_BRACKET enum_stmt* RIGHT_BRACKET
+	LEFT_BRACKET (enum_stmt|COMMA)* RIGHT_BRACKET
 
 function_declaration
 	FUNCTION function_name LEFT_PARANTHESIS function_argument -> COMMA function_argument RIGHT_PARANTHESIS return_type SEMICOLON
@@ -72,7 +72,7 @@ Group: class_stmt
 	function_implementation
 
 Group: enum_stmt
-	[COMMA] VARNAME [COMMA]
+	VARNAME
 
 Group: function_stmt
 	logical_stmt

@@ -56,7 +56,7 @@ namespace Celeste { namespace ast {
 		deamerreserved_star__class_stmt__,
 		enum_declaration,
 		enum_block,
-		deamerreserved_star__enum_stmt__,
+		deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____,
 		function_declaration,
 		deamerreserved_arrow__function_argument__,
 		function_implementation,

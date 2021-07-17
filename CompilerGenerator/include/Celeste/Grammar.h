@@ -31,7 +31,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__class_stmt__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> enum_declaration;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> enum_block;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__enum_stmt__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> function_declaration;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_arrow__function_argument__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> function_implementation;
@@ -90,9 +90,10 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__class_stmt___EMPTY;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_block_LEFT_BRACKET_deamerreserved_star__class_stmt___RIGHT_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_declaration_ENUM_VARNAME_enum_block;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__enum_stmt___enum_stmt_deamerreserved_star__enum_stmt__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__enum_stmt___EMPTY;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_block_LEFT_BRACKET_deamerreserved_star__enum_stmt___RIGHT_BRACKET;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____enum_stmt_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____COMMA_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____EMPTY;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_block_LEFT_BRACKET_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____RIGHT_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__function_argument___function_argument_deamerreserved_star__COMMA__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__function_argument___function_argument_RIGHT_PARANTHESIS_return_type_SEMICOLON;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__function_argument___function_argument_RIGHT_PARANTHESIS_return_type_function_block;
@@ -106,9 +107,6 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_block_LEFT_BRACKET_deamerreserved_star__function_stmt___RIGHT_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_function_declaration;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_function_implementation;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_stmt_COMMA_VARNAME_COMMA;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_stmt_COMMA_VARNAME;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_stmt_VARNAME_COMMA;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_stmt_VARNAME;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_stmt_logical_stmt;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> logical_stmt_variable_declaration;

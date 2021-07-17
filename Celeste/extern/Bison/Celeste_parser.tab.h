@@ -138,7 +138,7 @@ union YYSTYPE
 	::Celeste::ast::node::deamerreserved_star__class_stmt__* Celeste_deamerreserved_star__class_stmt__;
 	::Celeste::ast::node::enum_declaration* Celeste_enum_declaration;
 	::Celeste::ast::node::enum_block* Celeste_enum_block;
-	::Celeste::ast::node::deamerreserved_star__enum_stmt__* Celeste_deamerreserved_star__enum_stmt__;
+	::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____* Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 	::Celeste::ast::node::function_declaration* Celeste_function_declaration;
 	::Celeste::ast::node::deamerreserved_arrow__function_argument__* Celeste_deamerreserved_arrow__function_argument__;
 	::Celeste::ast::node::function_implementation* Celeste_function_implementation;

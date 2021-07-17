@@ -19,7 +19,7 @@
 #include "Celeste/Ast/Node/deamerreserved_star__class_stmt__.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/enum_block.h"
-#include "Celeste/Ast/Node/deamerreserved_star__enum_stmt__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
@@ -193,10 +193,10 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__enum_stmt__>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____>
 	{
-		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__enum_stmt__;
-		using type = ::Celeste::ast::node::deamerreserved_star__enum_stmt__;
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
+		using type = ::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 	};
 
 	template<>

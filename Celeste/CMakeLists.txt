@@ -9,3 +9,5 @@ include(deamer.cmake)
 add_subdirectory(extern)
 add_subdirectory(lib)
 
+add_executable(Celeste "${Celeste_SOURCE_DIR}/main.cpp")
+target_link_libraries(Celeste Celeste_static_library)

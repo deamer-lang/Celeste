@@ -21,7 +21,7 @@ class class_block;
 class deamerreserved_star__class_stmt__;
 class enum_declaration;
 class enum_block;
-class deamerreserved_star__enum_stmt__;
+class deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 class function_declaration;
 class deamerreserved_arrow__function_argument__;
 class function_implementation;
@@ -196,10 +196,10 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeTypeToEnum<::Celeste::ast::node::deamerreserved_star__enum_stmt__>
+	struct NodeTypeToEnum<::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____>
 	{
-		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__enum_stmt__;
-		using type = ::Celeste::ast::node::deamerreserved_star__enum_stmt__;
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
+		using type = ::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 	};
 
 	template<>

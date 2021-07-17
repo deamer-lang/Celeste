@@ -50,7 +50,7 @@
 #include "Celeste/Ast/Node/deamerreserved_star__class_stmt__.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/enum_block.h"
-#include "Celeste/Ast/Node/deamerreserved_star__enum_stmt__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
@@ -327,9 +327,9 @@ namespace Celeste { namespace ast { namespace listener {
 				DefaultAction(node);
 				break;
 			}
-			case Celeste::ast::Type::deamerreserved_star__enum_stmt__:
+			case Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____:
 			{
-				Listen(static_cast<const Celeste::ast::node::deamerreserved_star__enum_stmt__*>(node));
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____*>(node));
 				DefaultAction(node);
 				break;
 			}
@@ -585,7 +585,7 @@ namespace Celeste { namespace ast { namespace listener {
 		virtual void Listen(const Celeste::ast::node::enum_block* node)
 		{
 		}
-		virtual void Listen(const Celeste::ast::node::deamerreserved_star__enum_stmt__* node)
+		virtual void Listen(const Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____* node)
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::function_declaration* node)

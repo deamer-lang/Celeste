@@ -56,7 +56,7 @@
 #include "Celeste/Ast/Node/deamerreserved_star__class_stmt__.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/enum_block.h"
-#include "Celeste/Ast/Node/deamerreserved_star__enum_stmt__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
@@ -135,7 +135,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 %nterm<Celeste_deamerreserved_star__class_stmt__> deamerreserved_star__class_stmt__
 %nterm<Celeste_enum_declaration> enum_declaration
 %nterm<Celeste_enum_block> enum_block
-%nterm<Celeste_deamerreserved_star__enum_stmt__> deamerreserved_star__enum_stmt__
+%nterm<Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____
 %nterm<Celeste_function_declaration> function_declaration
 %nterm<Celeste_deamerreserved_arrow__function_argument__> deamerreserved_arrow__function_argument__
 %nterm<Celeste_function_implementation> function_implementation
@@ -205,7 +205,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 	::Celeste::ast::node::deamerreserved_star__class_stmt__* Celeste_deamerreserved_star__class_stmt__;
 	::Celeste::ast::node::enum_declaration* Celeste_enum_declaration;
 	::Celeste::ast::node::enum_block* Celeste_enum_block;
-	::Celeste::ast::node::deamerreserved_star__enum_stmt__* Celeste_deamerreserved_star__enum_stmt__;
+	::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____* Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 	::Celeste::ast::node::function_declaration* Celeste_function_declaration;
 	::Celeste::ast::node::deamerreserved_arrow__function_argument__* Celeste_deamerreserved_arrow__function_argument__;
 	::Celeste::ast::node::function_implementation* Celeste_function_implementation;
@@ -420,19 +420,23 @@ enum_declaration:
 ;
 
 enum_block:
-	LEFT_BRACKET deamerreserved_star__enum_stmt__ RIGHT_BRACKET {
+	LEFT_BRACKET deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ RIGHT_BRACKET {
 		auto* const newNode = new Celeste::ast::node::enum_block({::Celeste::ast::Type::enum_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { $2 });
 		$$ = newNode;
 	}
 ;
 
-deamerreserved_star__enum_stmt__:
-	enum_stmt deamerreserved_star__enum_stmt__ {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__enum_stmt__({::Celeste::ast::Type::deamerreserved_star__enum_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { $1, $2 });
+deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____:
+	enum_stmt deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { $1, $2 });
+		$$ = newNode;
+	}
+	| COMMA deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { $2 });
 		$$ = newNode;
 	}
 	| {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__enum_stmt__({::Celeste::ast::Type::deamerreserved_star__enum_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
 		$$ = newNode;
 	}
 ;
@@ -520,20 +524,8 @@ class_stmt:
 ;
 
 enum_stmt:
-	COMMA VARNAME COMMA {
-		auto* const newNode = new Celeste::ast::node::enum_stmt({::Celeste::ast::Type::enum_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $2}) });
-		$$ = newNode;
-	}
-	| COMMA VARNAME {
-		auto* const newNode = new Celeste::ast::node::enum_stmt({::Celeste::ast::Type::enum_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $2}) });
-		$$ = newNode;
-	}
-	| VARNAME COMMA {
-		auto* const newNode = new Celeste::ast::node::enum_stmt({::Celeste::ast::Type::enum_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $1}) });
-		$$ = newNode;
-	}
-	| VARNAME {
-		auto* const newNode = new Celeste::ast::node::enum_stmt({::Celeste::ast::Type::enum_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {3, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $1}) });
+	VARNAME {
+		auto* const newNode = new Celeste::ast::node::enum_stmt({::Celeste::ast::Type::enum_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $1}) });
 		$$ = newNode;
 	}
 ;

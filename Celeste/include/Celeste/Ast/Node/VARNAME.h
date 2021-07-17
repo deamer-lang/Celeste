@@ -6,14 +6,11 @@
 #include "Celeste/Ast/Node/function_name.h"
 #include "Celeste/Ast/Node/return_type.h"
 #include "Celeste/Ast/Node/enum_stmt.h"
-#include "Celeste/Ast/Node/enum_stmt.h"
-#include "Celeste/Ast/Node/enum_stmt.h"
-#include "Celeste/Ast/Node/enum_stmt.h"
 #include <Deamer/External/Cpp/Ast/Node.h>
 
 namespace Celeste { namespace ast { namespace node {
 
-	class VARNAME : public Celeste<VARNAME>, public ::Celeste::ast::common::node::type, public ::Celeste::ast::common::node::function_name, public ::Celeste::ast::common::node::return_type, public ::Celeste::ast::common::node::enum_stmt, public ::Celeste::ast::common::node::enum_stmt, public ::Celeste::ast::common::node::enum_stmt, public ::Celeste::ast::common::node::enum_stmt
+	class VARNAME : public Celeste<VARNAME>, public ::Celeste::ast::common::node::type, public ::Celeste::ast::common::node::function_name, public ::Celeste::ast::common::node::return_type, public ::Celeste::ast::common::node::enum_stmt
 	{
 	private:
 	public:

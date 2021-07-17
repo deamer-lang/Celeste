@@ -3,13 +3,11 @@
 
 #include "Celeste/Ast/Node/Celeste.h"
 #include "Celeste/Ast/Node/condtional_declaration.h"
-#include "Celeste/Ast/Node/condtional_declaration.h"
-#include "Celeste/Ast/Node/condtional_declaration.h"
 #include <Deamer/External/Cpp/Ast/Node.h>
 
 namespace Celeste { namespace ast { namespace node {
 
-	class RIGHT_PARANTHESIS : public Celeste<RIGHT_PARANTHESIS>, public ::Celeste::ast::common::node::condtional_declaration, public ::Celeste::ast::common::node::condtional_declaration, public ::Celeste::ast::common::node::condtional_declaration
+	class RIGHT_PARANTHESIS : public Celeste<RIGHT_PARANTHESIS>, public ::Celeste::ast::common::node::condtional_declaration
 	{
 	private:
 	public:
