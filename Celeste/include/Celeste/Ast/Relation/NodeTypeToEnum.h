@@ -23,7 +23,8 @@ class enum_declaration;
 class enum_block;
 class deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 class function_declaration;
-class deamerreserved_arrow__function_argument__;
+class deamerreserved_arrow__deamerreserved_optional__function_argument____;
+class deamerreserved_star__COMMA__function_argument__;
 class function_implementation;
 class function_argument;
 class type;
@@ -210,10 +211,17 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeTypeToEnum<::Celeste::ast::node::deamerreserved_arrow__function_argument__>
+	struct NodeTypeToEnum<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>
 	{
-		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_arrow__function_argument__;
-		using type = ::Celeste::ast::node::deamerreserved_arrow__function_argument__;
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____;
+		using type = ::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__;
+		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__;
 	};
 
 	template<>

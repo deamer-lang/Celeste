@@ -1,3 +1,4 @@
+#include "Celeste/Ast/Visualisation/Graph.h"
 #include "Celeste/Bison/Parser.h"
 #include <fstream>
 #include <iostream>
@@ -25,7 +26,7 @@ int main(int argc, const char* argv[])
 		filenames.push_back(argv[1]);
 	}
 
-	for (auto filename : filenames)
+	for (const auto& filename : filenames)
 	{
 		std::string text = ReadInFile(filename);
 
@@ -34,7 +35,7 @@ int main(int argc, const char* argv[])
 		std::cout << "\n";
 
 		auto parser = Celeste::parser::Parser();
-		auto* ast = parser.Parse(ReadInFile(text));
+		auto* ast = parser.Parse(text);
 		if (ast == nullptr)
 		{
 			std::cout << "Compilation failed!\n";
@@ -47,6 +48,12 @@ int main(int argc, const char* argv[])
 			return -1;
 		}
 
+		if (false)
+		{
+			auto graph = Celeste::ast::listener::deamer::visualisation::Graph();
+			graph.Dispatch(ast->GetStartNode());
+			std::cout << graph.GetGraph() << std::endl;
+		}
 		delete ast;
 	}
 

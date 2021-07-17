@@ -58,7 +58,8 @@
 #include "Celeste/Ast/Node/enum_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
-#include "Celeste/Ast/Node/deamerreserved_arrow__function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__deamerreserved_optional__function_argument____.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
 #include "Celeste/Ast/Node/function_argument.h"
 #include "Celeste/Ast/Node/type.h"
@@ -137,7 +138,8 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 %nterm<Celeste_enum_block> enum_block
 %nterm<Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____
 %nterm<Celeste_function_declaration> function_declaration
-%nterm<Celeste_deamerreserved_arrow__function_argument__> deamerreserved_arrow__function_argument__
+%nterm<Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____> deamerreserved_arrow__deamerreserved_optional__function_argument____
+%nterm<Celeste_deamerreserved_star__COMMA__function_argument__> deamerreserved_star__COMMA__function_argument__
 %nterm<Celeste_function_implementation> function_implementation
 %nterm<Celeste_function_argument> function_argument
 %nterm<Celeste_type> type
@@ -207,7 +209,8 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 	::Celeste::ast::node::enum_block* Celeste_enum_block;
 	::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____* Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 	::Celeste::ast::node::function_declaration* Celeste_function_declaration;
-	::Celeste::ast::node::deamerreserved_arrow__function_argument__* Celeste_deamerreserved_arrow__function_argument__;
+	::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____* Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____;
+	::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__* Celeste_deamerreserved_star__COMMA__function_argument__;
 	::Celeste::ast::node::function_implementation* Celeste_function_implementation;
 	::Celeste::ast::node::function_argument* Celeste_function_argument;
 	::Celeste::ast::node::type* Celeste_type;
@@ -442,22 +445,45 @@ deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____:
 ;
 
 function_declaration:
-	FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__function_argument__ function_argument RIGHT_PARANTHESIS return_type SEMICOLON {
-		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1}), $2, $4, $5, $7 });
+	FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type SEMICOLON {
+		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1}), $2, $4, $6 });
+		$$ = newNode;
+	}
+	| FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS SEMICOLON {
+		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1}), $2, $4 });
 		$$ = newNode;
 	}
 ;
 
-deamerreserved_arrow__function_argument__:
-	function_argument deamerreserved_star__COMMA__ {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__function_argument__({::Celeste::ast::Type::deamerreserved_arrow__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { $1, $2 });
+deamerreserved_arrow__deamerreserved_optional__function_argument____:
+	function_argument deamerreserved_star__COMMA__function_argument__ {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____({::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { $1, $2 });
+		$$ = newNode;
+	}
+	| {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____({::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
+		$$ = newNode;
+	}
+;
+
+deamerreserved_star__COMMA__function_argument__:
+	COMMA function_argument deamerreserved_star__COMMA__function_argument__ {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { $2, $3 });
+		$$ = newNode;
+	}
+	| {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
 		$$ = newNode;
 	}
 ;
 
 function_implementation:
-	FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__function_argument__ function_argument RIGHT_PARANTHESIS return_type function_block {
-		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1}), $2, $4, $5, $7, $8 });
+	FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type function_block {
+		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1}), $2, $4, $6, $7 });
+		$$ = newNode;
+	}
+	| FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS function_block {
+		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1}), $2, $4, $6 });
 		$$ = newNode;
 	}
 ;

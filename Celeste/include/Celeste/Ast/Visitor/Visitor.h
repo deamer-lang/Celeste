@@ -52,7 +52,8 @@
 #include "Celeste/Ast/Node/enum_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
-#include "Celeste/Ast/Node/deamerreserved_arrow__function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__deamerreserved_optional__function_argument____.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
 #include "Celeste/Ast/Node/function_argument.h"
 #include "Celeste/Ast/Node/type.h"
@@ -321,9 +322,14 @@ namespace Celeste { namespace ast { namespace Visitor {
 				Visit(static_cast<const Celeste::ast::node::function_declaration*>(node));
 				break;
 			}
-			case Celeste::ast::Type::deamerreserved_arrow__function_argument__:
+			case Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____:
 			{
-				Visit(static_cast<const Celeste::ast::node::deamerreserved_arrow__function_argument__*>(node));
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__function_argument__*>(node));
 				break;
 			}
 			case Celeste::ast::Type::function_implementation:
@@ -555,7 +561,10 @@ namespace Celeste { namespace ast { namespace Visitor {
 		virtual void Visit(const Celeste::ast::node::function_declaration* node)
 		{
 		}
-		virtual void Visit(const Celeste::ast::node::deamerreserved_arrow__function_argument__* node)
+		virtual void Visit(const Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_star__COMMA__function_argument__* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::function_implementation* node)

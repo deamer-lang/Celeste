@@ -54,7 +54,8 @@
 #include "Celeste/Ast/Node/enum_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
-#include "Celeste/Ast/Node/deamerreserved_arrow__function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__deamerreserved_optional__function_argument____.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
 #include "Celeste/Ast/Node/function_argument.h"
 #include "Celeste/Ast/Node/type.h"
@@ -632,18 +633,35 @@ namespace Celeste { namespace ast { namespace listener {
 				break;
 			}
 
-			case Celeste::ast::Type::deamerreserved_arrow__function_argument__:
+			case Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____:
 			{
 				// Enter nonterminal
 				EnterAnything(node);
 				EnterNonTerminal(node);
-				ListenEntry(static_cast<const Celeste::ast::node::deamerreserved_arrow__function_argument__*>(node));
+				ListenEntry(static_cast<const Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____*>(node));
 				
 				// Go through its children
 				DefaultAction(node);
 
 				// Exit nonterminal
-				ListenExit(static_cast<const Celeste::ast::node::deamerreserved_arrow__function_argument__*>(node));
+				ListenExit(static_cast<const Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
+			case Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__function_argument__*>(node));
+				
+				// Go through its children
+				DefaultAction(node);
+
+				// Exit nonterminal
+				ListenExit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__function_argument__*>(node));
 				ExitNonTerminal(node);
 				ExitAnything(node);
 				break;
@@ -1133,7 +1151,11 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
-		virtual void ListenEntry(const Celeste::ast::node::deamerreserved_arrow__function_argument__* node) 
+		virtual void ListenEntry(const Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____* node) 
+		{
+		}
+
+		virtual void ListenEntry(const Celeste::ast::node::deamerreserved_star__COMMA__function_argument__* node) 
 		{
 		}
 
@@ -1278,7 +1300,11 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
-		virtual void ListenExit(const Celeste::ast::node::deamerreserved_arrow__function_argument__* node) 
+		virtual void ListenExit(const Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::deamerreserved_star__COMMA__function_argument__* node) 
 		{
 		}
 

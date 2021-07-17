@@ -90,7 +90,7 @@ extern int Celestedebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 161 "./Celeste_parser.y"
+#line 163 "./Celeste_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::Celeste::ast::node::CLASS* Celeste_CLASS;
@@ -140,7 +140,8 @@ union YYSTYPE
 	::Celeste::ast::node::enum_block* Celeste_enum_block;
 	::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____* Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 	::Celeste::ast::node::function_declaration* Celeste_function_declaration;
-	::Celeste::ast::node::deamerreserved_arrow__function_argument__* Celeste_deamerreserved_arrow__function_argument__;
+	::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____* Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____;
+	::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__* Celeste_deamerreserved_star__COMMA__function_argument__;
 	::Celeste::ast::node::function_implementation* Celeste_function_implementation;
 	::Celeste::ast::node::function_argument* Celeste_function_argument;
 	::Celeste::ast::node::type* Celeste_type;
@@ -159,7 +160,7 @@ union YYSTYPE
 	::Celeste::ast::node::variable_declaration* Celeste_variable_declaration;
 	::Celeste::ast::node::variable_initialization* Celeste_variable_initialization;
 
-#line 163 "Celeste_parser.tab.h"
+#line 164 "Celeste_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

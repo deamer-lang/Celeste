@@ -33,7 +33,8 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> enum_block;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> function_declaration;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_arrow__function_argument__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_arrow__deamerreserved_optional__function_argument____;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__COMMA__function_argument__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> function_implementation;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> function_argument;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> type;
@@ -94,9 +95,14 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____COMMA_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____EMPTY;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_block_LEFT_BRACKET_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____RIGHT_BRACKET;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__function_argument___function_argument_deamerreserved_star__COMMA__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__function_argument___function_argument_RIGHT_PARANTHESIS_return_type_SEMICOLON;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__function_argument___function_argument_RIGHT_PARANTHESIS_return_type_function_block;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__deamerreserved_optional__function_argument_____function_argument_deamerreserved_star__COMMA__function_argument__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__deamerreserved_optional__function_argument_____EMPTY;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__function_argument___COMMA_function_argument_deamerreserved_star__COMMA__function_argument__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__function_argument___EMPTY;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_return_type_SEMICOLON;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_SEMICOLON;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_return_type_function_block;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_function_block;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_argument_type_VARNAME_EQ_expression;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> function_argument_type_VARNAME;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> type_VARNAME;

@@ -98,7 +98,12 @@ namespace Celeste { namespace ast { namespace relation {
 			return true;
 		}
 
-		if (t == ::Celeste::ast::Type::deamerreserved_arrow__function_argument__)
+		if (t == ::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__)
 		{
 			return true;
 		}

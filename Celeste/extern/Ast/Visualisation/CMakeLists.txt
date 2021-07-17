@@ -5,13 +5,5 @@
 # If you want to contribute to Deamer.
 # Please visit: https://github.com/Deruago/theDeamerProject 
 #
-# This file is part of the directory: Ast
+# This file is part of the directory: Visualisation
 
-add_subdirectory(Node)
-add_subdirectory(Common)
-add_subdirectory(Enum)
-add_subdirectory(Visitor)
-add_subdirectory(Listener)
-add_subdirectory(Relation)
-add_subdirectory(Reference)
-add_subdirectory(Visualisation)

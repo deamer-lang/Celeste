@@ -24,7 +24,8 @@
 #include "Celeste/Ast/Node/enum_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
-#include "Celeste/Ast/Node/deamerreserved_arrow__function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__deamerreserved_optional__function_argument____.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
 #include "Celeste/Ast/Node/function_argument.h"
 #include "Celeste/Ast/Node/type.h"
@@ -162,7 +163,9 @@ namespace Celeste { namespace ast { namespace relation {
 	template<>
 	struct Access<::Celeste::ast::node::function_declaration>;
 	template<>
-	struct Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>;
+	struct Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>;
+	template<>
+	struct Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>;
 	template<>
 	struct Access<::Celeste::ast::node::function_implementation>;
 	template<>
@@ -1859,8 +1862,8 @@ Access<::Celeste::ast::node::COMMA> COMMA();
 		}
 
 	public:
-		Access<::Celeste::ast::node::deamerreserved_star__COMMA__> deamerreserved_star__COMMA__();
-Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__> deamerreserved_arrow__function_argument__();
+		Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____> deamerreserved_arrow__deamerreserved_optional__function_argument____();
+Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> deamerreserved_star__COMMA__function_argument__();
 Access<::Celeste::ast::node::function_argument> function_argument();
 Access<::Celeste::ast::node::function_name> function_name();
 Access<::Celeste::ast::node::return_type> return_type();
@@ -1884,28 +1887,28 @@ Access<::Celeste::ast::node::COMMA> COMMA();
 	};
 
 	template<>
-	struct Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__> : public AccessBase
+	struct Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____> : public AccessBase
 	{
 	protected:
-		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__function_argument__*> ts;
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____*> ts;
 
 	public:
-		Access(std::vector<const ::Celeste::ast::node::deamerreserved_arrow__function_argument__*> ts_) : ts(std::move(ts_))
+		Access(std::vector<const ::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____*> ts_) : ts(std::move(ts_))
 		{
 		}
 
-		Access(const ::Celeste::ast::node::deamerreserved_arrow__function_argument__& t) : ts({&t})
+		Access(const ::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____& t) : ts({&t})
 		{
 		}
 
-		Access(const ::Celeste::ast::node::deamerreserved_arrow__function_argument__* t) : ts({t})
+		Access(const ::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____* t) : ts({t})
 		{
 		}
 
 		Access() = default;
 
 	public:
-		Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>& operator[](::std::size_t index)
+		Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>& operator[](::std::size_t index)
 		{
 			if (index >= ts.size())
 			{
@@ -1921,7 +1924,7 @@ Access<::Celeste::ast::node::COMMA> COMMA();
 			return *this;
 		}
 
-		Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
 		{
 			// swap if the other is larger
 			if (indexBegin > indexEnd)
@@ -1937,7 +1940,7 @@ Access<::Celeste::ast::node::COMMA> COMMA();
 			}
 			else
 			{
-				std::vector<const ::Celeste::ast::node::deamerreserved_arrow__function_argument__*> temporaries;
+				std::vector<const ::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____*> temporaries;
 				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
 				{
 					temporaries.push_back(ts[i]);
@@ -1949,19 +1952,108 @@ Access<::Celeste::ast::node::COMMA> COMMA();
 			return *this;
 		}
 
-		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__function_argument__*> GetContent()
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____*> GetContent()
 		{
 			return ts;
 		}
 
 	public:
-		Access<::Celeste::ast::node::deamerreserved_star__COMMA__> deamerreserved_star__COMMA__();
+		Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> deamerreserved_star__COMMA__function_argument__();
 Access<::Celeste::ast::node::function_argument> function_argument();
 Access<::Celeste::ast::node::COMMA> COMMA();
 
 
 		template<typename FunctionType>
-		Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>& for_all(FunctionType function)
+		Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+	};
+
+	template<>
+	struct Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__*> ts;
+
+	public:
+		Access(std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		Access(const ::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__& t) : ts({&t})
+		{
+		}
+
+		Access(const ::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__* t) : ts({t})
+		{
+		}
+
+		Access() = default;
+
+	public:
+		Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> deamerreserved_star__COMMA__function_argument__();
+Access<::Celeste::ast::node::function_argument> function_argument();
+Access<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -2044,8 +2136,8 @@ Access<::Celeste::ast::node::COMMA> COMMA();
 		}
 
 	public:
-		Access<::Celeste::ast::node::deamerreserved_star__COMMA__> deamerreserved_star__COMMA__();
-Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__> deamerreserved_arrow__function_argument__();
+		Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____> deamerreserved_arrow__deamerreserved_optional__function_argument____();
+Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> deamerreserved_star__COMMA__function_argument__();
 Access<::Celeste::ast::node::function_argument> function_argument();
 Access<::Celeste::ast::node::function_name> function_name();
 Access<::Celeste::ast::node::return_type> return_type();
@@ -6517,20 +6609,20 @@ Access<::Celeste::ast::node::VARNAME> VARNAME();
 			return Access<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
 		}
 
-		inline Access<::Celeste::ast::node::deamerreserved_star__COMMA__> Access<::Celeste::ast::node::function_declaration>::deamerreserved_star__COMMA__()
+		inline Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____> Access<::Celeste::ast::node::function_declaration>::deamerreserved_arrow__deamerreserved_optional__function_argument____()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return Access<::Celeste::ast::node::deamerreserved_star__COMMA__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__>(ts));
+			return Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>(Get<::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____>(ts));
 		}
 
-		inline Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__> Access<::Celeste::ast::node::function_declaration>::deamerreserved_arrow__function_argument__()
+		inline Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> Access<::Celeste::ast::node::function_declaration>::deamerreserved_star__COMMA__function_argument__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>(Get<::Celeste::ast::Type::deamerreserved_arrow__function_argument__>(ts));
+			return Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__>(ts));
 		}
 
 		inline Access<::Celeste::ast::node::function_argument> Access<::Celeste::ast::node::function_declaration>::function_argument()
@@ -6597,15 +6689,15 @@ Access<::Celeste::ast::node::VARNAME> VARNAME();
 			return Access<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
 		}
 
-		inline Access<::Celeste::ast::node::deamerreserved_star__COMMA__> Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>::deamerreserved_star__COMMA__()
+		inline Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>::deamerreserved_star__COMMA__function_argument__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return Access<::Celeste::ast::node::deamerreserved_star__COMMA__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__>(ts));
+			return Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__>(ts));
 		}
 
-		inline Access<::Celeste::ast::node::function_argument> Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>::function_argument()
+		inline Access<::Celeste::ast::node::function_argument> Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>::function_argument()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
@@ -6613,7 +6705,7 @@ Access<::Celeste::ast::node::VARNAME> VARNAME();
 			return Access<::Celeste::ast::node::function_argument>(Get<::Celeste::ast::Type::function_argument>(ts));
 		}
 
-		inline Access<::Celeste::ast::node::COMMA> Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>::COMMA()
+		inline Access<::Celeste::ast::node::COMMA> Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>::COMMA()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
@@ -6621,20 +6713,44 @@ Access<::Celeste::ast::node::VARNAME> VARNAME();
 			return Access<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
 		}
 
-		inline Access<::Celeste::ast::node::deamerreserved_star__COMMA__> Access<::Celeste::ast::node::function_implementation>::deamerreserved_star__COMMA__()
+		inline Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>::deamerreserved_star__COMMA__function_argument__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return Access<::Celeste::ast::node::deamerreserved_star__COMMA__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__>(ts));
+			return Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__>(ts));
 		}
 
-		inline Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__> Access<::Celeste::ast::node::function_implementation>::deamerreserved_arrow__function_argument__()
+		inline Access<::Celeste::ast::node::function_argument> Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>::function_argument()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return Access<::Celeste::ast::node::deamerreserved_arrow__function_argument__>(Get<::Celeste::ast::Type::deamerreserved_arrow__function_argument__>(ts));
+			return Access<::Celeste::ast::node::function_argument>(Get<::Celeste::ast::Type::function_argument>(ts));
+		}
+
+		inline Access<::Celeste::ast::node::COMMA> Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return Access<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____> Access<::Celeste::ast::node::function_implementation>::deamerreserved_arrow__deamerreserved_optional__function_argument____()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return Access<::Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____>(Get<::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____>(ts));
+		}
+
+		inline Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__> Access<::Celeste::ast::node::function_implementation>::deamerreserved_star__COMMA__function_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return Access<::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__>(ts));
 		}
 
 		inline Access<::Celeste::ast::node::function_argument> Access<::Celeste::ast::node::function_implementation>::function_argument()

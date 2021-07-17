@@ -46,10 +46,10 @@ enum_block
 	LEFT_BRACKET (enum_stmt|COMMA)* RIGHT_BRACKET
 
 function_declaration
-	FUNCTION function_name LEFT_PARANTHESIS function_argument -> COMMA function_argument RIGHT_PARANTHESIS return_type SEMICOLON
+	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS [return_type] SEMICOLON
 	
 function_implementation
-	FUNCTION function_name LEFT_PARANTHESIS function_argument -> COMMA function_argument RIGHT_PARANTHESIS return_type function_block
+	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS [return_type] function_block
 
 function_argument
 	type VARNAME EQ expression
