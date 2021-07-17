@@ -1,0 +1,102 @@
+/ Grammar of Celeste
+/ Made by: Thimo Böhmer
+/ 2021
+
+program
+	stmt*
+	
+Group: stmt
+	class_declaration
+	enum_declaration
+	function_declaration
+	function_implementation
+	meta_declaration
+
+meta_declaration
+	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET -> meta_declaration
+	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET class_declaration
+	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET enum_declaration
+	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET function_declaration
+
+expression
+	expression PLUS expression
+	expression MINUS expression
+	expression DIVIDE expression
+	expression MULTIPLY expression
+	expression USERDEFINED_OPERATOR expression
+	VARNAME
+	NUMBER
+	DECIMAL
+	TEXT
+
+class_declaration
+	CLASS VARNAME COLON base_type -> COMMA base_type class_block
+	CLASS VARNAME class_block
+
+base_type
+	VARNAME
+
+class_block
+	LEFT_BRACKET class_stmt* RIGHT_BRACKET
+	
+enum_declaration
+	ENUM VARNAME enum_block
+
+enum_block
+	LEFT_BRACKET enum_stmt* RIGHT_BRACKET
+
+function_declaration
+	FUNCTION function_name LEFT_PARANTHESIS function_argument -> COMMA function_argument RIGHT_PARANTHESIS return_type SEMICOLON
+	
+function_implementation
+	FUNCTION function_name LEFT_PARANTHESIS function_argument -> COMMA function_argument RIGHT_PARANTHESIS return_type function_block
+
+function_argument
+	type VARNAME EQ expression
+	type VARNAME
+
+Group: type
+	VARNAME
+
+Group: function_name
+	VARNAME
+
+Group: return_type
+	VARNAME
+
+function_block
+	LEFT_BRACKET function_stmt* RIGHT_BRACKET
+
+Group: class_stmt
+	function_declaration
+	function_implementation
+
+Group: enum_stmt
+	[COMMA] VARNAME [COMMA]
+
+Group: function_stmt
+	logical_stmt
+	
+Group: logical_stmt
+	variable_declaration
+	variable_initialization
+	condtional_declaration
+
+Group: condtional_declaration
+	IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block
+	ELSE IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block
+	ELSE LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block
+
+conditional_block
+	LEFT_BRACKET condtional_stmt* RIGHT_BRACKET
+
+Group: condtional_stmt
+	logical_stmt
+	
+variable_declaration
+	type VARNAME SEMICOLON
+
+variable_initialization
+	type VARNAME EQ expression SEMICOLON
+
+/
