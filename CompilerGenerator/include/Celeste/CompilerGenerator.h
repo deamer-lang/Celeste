@@ -6,9 +6,10 @@
 #include "Celeste/Language.h"
 
 
-#include "Deamer/Ast/Generation/CPP/CPP.h"
 #include "Deamer/Lexer/Generator/Flex/Flex.h"
 #include "Deamer/Parser/Generator/Bison/Bison.h"
+#include "Deamer/Ast/Generation/CPP/CPP.h"
+#include "Deamer/Tool/Type/DeamerDocumentation/DeamerDocumentation.h"
 
 
 namespace Celeste
@@ -43,15 +44,17 @@ namespace Celeste
 			
 
 			// Initialize language outputs
-			::deamer::ast::generation::cpp::CPP CPP(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
-::deamer::lexer::generator::flex::Flex Flex(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
+			::deamer::lexer::generator::flex::Flex Flex(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
 ::deamer::parser::generator::bison::Bison Bison(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
+::deamer::ast::generation::cpp::CPP CPP(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
+::deamer::tool::type::deamerdocumentation::DeamerDocumentation DeamerDocumentation(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
 
 
 			// The language generation targets
-			output.AddLanguageToolOutput(CPP.Generate());
-output.AddLanguageToolOutput(Flex.Generate());
+			output.AddLanguageToolOutput(Flex.Generate());
 output.AddLanguageToolOutput(Bison.Generate());
+output.AddLanguageToolOutput(CPP.Generate());
+output.AddLanguageToolOutput(DeamerDocumentation.Generate());
 
 
 			return output;

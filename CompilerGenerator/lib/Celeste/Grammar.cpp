@@ -124,6 +124,9 @@ variable_declaration_type_VARNAME_SEMICOLON.Set(::deamer::language::type::defini
 variable_initialization_type_VARNAME_EQ_expression_SEMICOLON.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->type.Pointer(),Language->VARNAME.Pointer(),Language->EQ.Pointer(),Language->expression.Pointer(),Language->SEMICOLON.Pointer() }));
 
 
+	// Unknown references
+	
+
 	// Add object calls
 	// AddObject(...)
 	AddObject(program);
@@ -237,6 +240,9 @@ AddObject(conditional_block_LEFT_BRACKET_deamerreserved_star__condtional_stmt___
 AddObject(condtional_stmt_logical_stmt);
 AddObject(variable_declaration_type_VARNAME_SEMICOLON);
 AddObject(variable_initialization_type_VARNAME_EQ_expression_SEMICOLON);
+
+
+	
 
 
 	// Place higher level operations here.

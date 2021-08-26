@@ -5,7 +5,5 @@
 # If you want to contribute to Deamer.
 # Please visit: https://github.com/Deruago/theDeamerProject 
 #
-# This file is part of the directory: extern
+# This file is part of the directory: Antlr_Parser
 
-add_subdirectory(Flex)
-add_subdirectory(Bison)

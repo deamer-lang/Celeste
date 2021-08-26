@@ -25,6 +25,3 @@ set_target_properties(Celeste_shared_library PROPERTIES LINKER_LANGUAGE CXX)
 
 target_link_libraries(Celeste_shared_library PUBLIC Celeste_external_libraries)
 
-add_subdirectory(Ast)
-add_subdirectory(Flex)
-add_subdirectory(Bison)

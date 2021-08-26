@@ -1,9 +1,13 @@
 #ifndef CELESTE_GRAMMAR_H
 #define CELESTE_GRAMMAR_H
+
 #include "Deamer/Language/Generator/Definition/Property/User/Main/Grammar.h"
+#include "Deamer/Language/Type/Definition/Object/Special/Uninitialized.h"
+
 namespace Celeste
 {
 	class Language;
+
 	/*!	\class Grammar
 	 *
 	 *	\brief This contains the grammar LPD of the language Celeste
@@ -129,9 +133,15 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> variable_initialization_type_VARNAME_EQ_expression_SEMICOLON;
 
 	
+	private:
+		// Unknown reference declarations
+		
+	
 	public:
 		Grammar(Celeste::Language* language);
+
 		void GenerateObjects() override;
 	};
 }
+
 #endif // CELESTE_GRAMMAR_H

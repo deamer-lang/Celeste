@@ -77,7 +77,7 @@
 #include <vector>
 #include <utility>
 
-namespace Celeste { namespace ast { namespace relation { 
+namespace Celeste { namespace ast { namespace reference { 
 
 	struct AccessBase
 	{	

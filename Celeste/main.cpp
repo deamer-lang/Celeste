@@ -48,7 +48,7 @@ int main(int argc, const char* argv[])
 			return -1;
 		}
 
-		if (false)
+		if (true)
 		{
 			auto graph = Celeste::ast::listener::deamer::visualisation::Graph();
 			graph.Dispatch(ast->GetStartNode());
