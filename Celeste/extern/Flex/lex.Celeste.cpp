@@ -824,10 +824,12 @@ char *yytext;
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__class_stmt__.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
+#include "Celeste/Ast/Node/enum_name.h"
 #include "Celeste/Ast/Node/enum_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
@@ -835,6 +837,8 @@ char *yytext;
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
 #include "Celeste/Ast/Node/function_argument.h"
+#include "Celeste/Ast/Node/function_arg_type.h"
+#include "Celeste/Ast/Node/function_arg_name.h"
 #include "Celeste/Ast/Node/type.h"
 #include "Celeste/Ast/Node/function_name.h"
 #include "Celeste/Ast/Node/return_type.h"
@@ -862,8 +866,8 @@ static std::vector<const deamer::external::cpp::lexer::TerminalObject*> local_ob
 #ifndef yyval
 #define yyval yytext
 #endif //yyval
-#line 866 "lex.Celeste.c"
-#line 867 "lex.Celeste.c"
+#line 870 "lex.Celeste.c"
+#line 871 "lex.Celeste.c"
 
 #define INITIAL 0
 
@@ -1080,10 +1084,10 @@ YY_DECL
 		}
 
 	{
-#line 126 "./Celeste_lexer.l"
+#line 130 "./Celeste_lexer.l"
 
 
-#line 1087 "lex.Celeste.c"
+#line 1091 "lex.Celeste.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1148,157 +1152,157 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 128 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (CLASS);;}
+#line 132 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(1)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(1));;handleColumn(yyval);if (!local_store) return (CLASS);;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 129 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (ENUM);;}
+#line 133 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(2)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(2));;handleColumn(yyval);if (!local_store) return (ENUM);;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 130 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (FUNCTION);;}
+#line 134 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(3)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(3));;handleColumn(yyval);if (!local_store) return (FUNCTION);;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 131 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (IF);;}
+#line 135 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(4)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(4));;handleColumn(yyval);if (!local_store) return (IF);;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 132 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (ELSE);;}
+#line 136 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(5)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(5));;handleColumn(yyval);if (!local_store) return (ELSE);;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 133 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (LEFT_BRACKET);;}
+#line 137 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(6)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(6));;handleColumn(yyval);if (!local_store) return (LEFT_BRACKET);;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 134 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (RIGHT_BRACKET);;}
+#line 138 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(7)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(7));;handleColumn(yyval);if (!local_store) return (RIGHT_BRACKET);;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 135 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (LEFT_SQUARE_BRACKET);;}
+#line 139 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(8)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(8));;handleColumn(yyval);if (!local_store) return (LEFT_SQUARE_BRACKET);;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 136 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (RIGHT_SQUARE_BRACKET);;}
+#line 140 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(9)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(9));;handleColumn(yyval);if (!local_store) return (RIGHT_SQUARE_BRACKET);;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 137 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (LEFT_PARANTHESIS);;}
+#line 141 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(10)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(10));;handleColumn(yyval);if (!local_store) return (LEFT_PARANTHESIS);;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 138 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (RIGHT_PARANTHESIS);;}
+#line 142 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(11)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(11));;handleColumn(yyval);if (!local_store) return (RIGHT_PARANTHESIS);;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 139 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (COLON);;}
+#line 143 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(12)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(12));;handleColumn(yyval);if (!local_store) return (COLON);;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 140 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (SEMICOLON);;}
+#line 144 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(13)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(13));;handleColumn(yyval);if (!local_store) return (SEMICOLON);;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 141 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (COMMA);;}
+#line 145 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(14)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(14));;handleColumn(yyval);if (!local_store) return (COMMA);;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 142 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (DOT);;}
+#line 146 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(15)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(15));;handleColumn(yyval);if (!local_store) return (DOT);;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 143 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (EQEQ);;}
+#line 147 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(16)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(16));;handleColumn(yyval);if (!local_store) return (EQEQ);;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 144 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (EQ);;}
+#line 148 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(17)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(17));;handleColumn(yyval);if (!local_store) return (EQ);;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 145 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (NOTEQ);;}
+#line 149 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(18)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(18));;handleColumn(yyval);if (!local_store) return (NOTEQ);;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 146 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (NOT);;}
+#line 150 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(19)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(19));;handleColumn(yyval);if (!local_store) return (NOT);;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 147 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (PLUS);;}
+#line 151 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(20)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(20));;handleColumn(yyval);if (!local_store) return (PLUS);;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 148 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (MINUS);;}
+#line 152 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(21)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(21));;handleColumn(yyval);if (!local_store) return (MINUS);;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 149 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (DIVIDE);;}
+#line 153 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(22)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(22));;handleColumn(yyval);if (!local_store) return (DIVIDE);;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 150 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column);;handleColumn(yyval);if (!local_store) return (MULTIPLY);;}
+#line 154 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(23)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, column, std::size_t(23));;handleColumn(yyval);if (!local_store) return (MULTIPLY);;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 151 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column);;handleColumn(yyval);if (!local_store) return (USERDEFINED_OPERATOR);;}
+#line 155 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(24)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(24));;handleColumn(yyval);if (!local_store) return (USERDEFINED_OPERATOR);;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 152 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column);;handleColumn(yyval);if (!local_store) return (VARNAME);;}
+#line 156 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(25)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(25));;handleColumn(yyval);if (!local_store) return (VARNAME);;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 153 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column);;handleColumn(yyval);if (!local_store) return (NUMBER);;}
+#line 157 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(26)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(26));;handleColumn(yyval);if (!local_store) return (NUMBER);;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 154 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column);;handleColumn(yyval);if (!local_store) return (DECIMAL);;}
+#line 158 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(27)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(27));;handleColumn(yyval);if (!local_store) return (DECIMAL);;}
 	YY_BREAK
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 155 "./Celeste_lexer.l"
-{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column);;handleColumn(yyval);if (!local_store) return (TEXT);;}
+#line 159 "./Celeste_lexer.l"
+{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(28)));else Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(28));;handleColumn(yyval);if (!local_store) return (TEXT);;}
 	YY_BREAK
 case 29:
 /* rule 29 can match eol */
 YY_RULE_SETUP
-#line 156 "./Celeste_lexer.l"
+#line 160 "./Celeste_lexer.l"
 {handleColumn(yyval);if (!local_store) ;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 158 "./Celeste_lexer.l"
+#line 162 "./Celeste_lexer.l"
 ECHO;
 	YY_BREAK
-#line 1302 "lex.Celeste.c"
+#line 1306 "lex.Celeste.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2316,7 +2320,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 158 "./Celeste_lexer.l"
+#line 162 "./Celeste_lexer.l"
 
 static void store(const deamer::external::cpp::lexer::TerminalObject* const newObject)
 {

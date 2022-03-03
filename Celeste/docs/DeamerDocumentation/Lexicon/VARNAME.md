@@ -34,12 +34,11 @@ Overview of the terminal: **[VARNAME](./VARNAME.md)**.
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [class_declaration](./../Grammar/class_declaration.md)
+#### [class_name](./../Grammar/class_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [CLASS](./CLASS.md) [VARNAME](./VARNAME.md) [COLON](./COLON.md) [deamerreserved_arrow__base_type__](./../Grammar/deamerreserved_arrow__base_type__.md) [base_type](./../Grammar/base_type.md) [class_block](./../Grammar/class_block.md)  |
-| [CLASS](./CLASS.md) [VARNAME](./VARNAME.md) [class_block](./../Grammar/class_block.md)  |
+| [VARNAME](./VARNAME.md)  |
 
 
 #### [base_type](./../Grammar/base_type.md)
@@ -49,19 +48,25 @@ Overview of the terminal: **[VARNAME](./VARNAME.md)**.
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [enum_declaration](./../Grammar/enum_declaration.md)
+#### [enum_name](./../Grammar/enum_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [ENUM](./ENUM.md) [VARNAME](./VARNAME.md) [enum_block](./../Grammar/enum_block.md)  |
+| [VARNAME](./VARNAME.md)  |
 
 
-#### [function_argument](./../Grammar/function_argument.md)
+#### [function_arg_type](./../Grammar/function_arg_type.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [type](./../Grammar/type.md) [VARNAME](./VARNAME.md) [EQ](./EQ.md) [expression](./../Grammar/expression.md)  |
-| [type](./../Grammar/type.md) [VARNAME](./VARNAME.md)  |
+| [VARNAME](./VARNAME.md)  |
+
+
+#### [function_arg_name](./../Grammar/function_arg_name.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [VARNAME](./VARNAME.md)  |
 
 
 #### [type](./../Grammar/type.md)

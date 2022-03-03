@@ -31,7 +31,7 @@ Overview of the terminal: **[ENUM](./ENUM.md)**.
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [ENUM](./ENUM.md) [VARNAME](./VARNAME.md) [enum_block](./../Grammar/enum_block.md)  |
+| [ENUM](./ENUM.md) [enum_name](./../Grammar/enum_name.md) [enum_block](./../Grammar/enum_block.md)  |
 
 
 

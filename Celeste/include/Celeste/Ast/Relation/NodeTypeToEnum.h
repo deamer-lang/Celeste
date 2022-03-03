@@ -16,10 +16,12 @@ class expression;
 class class_declaration;
 class deamerreserved_arrow__base_type__;
 class deamerreserved_star__COMMA__;
+class class_name;
 class base_type;
 class class_block;
 class deamerreserved_star__class_stmt__;
 class enum_declaration;
+class enum_name;
 class enum_block;
 class deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 class function_declaration;
@@ -27,6 +29,8 @@ class deamerreserved_arrow__deamerreserved_optional__function_argument____;
 class deamerreserved_star__COMMA__function_argument__;
 class function_implementation;
 class function_argument;
+class function_arg_type;
+class function_arg_name;
 class type;
 class function_name;
 class return_type;
@@ -162,6 +166,13 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::class_name>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::class_name;
+		using type = ::Celeste::ast::node::class_name;
+	};
+
+	template<>
 	struct NodeTypeToEnum<::Celeste::ast::node::base_type>
 	{
 		constexpr static auto value = ::Celeste::ast::Type::base_type;
@@ -187,6 +198,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::enum_declaration;
 		using type = ::Celeste::ast::node::enum_declaration;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::enum_name>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::enum_name;
+		using type = ::Celeste::ast::node::enum_name;
 	};
 
 	template<>
@@ -236,6 +254,20 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::function_argument;
 		using type = ::Celeste::ast::node::function_argument;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::function_arg_type>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::function_arg_type;
+		using type = ::Celeste::ast::node::function_arg_type;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::function_arg_name>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::function_arg_name;
+		using type = ::Celeste::ast::node::function_arg_name;
 	};
 
 	template<>

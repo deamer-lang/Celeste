@@ -16,6 +16,7 @@ Overview of the nonterminal: **[class_stmt](./class_stmt.md)**
 
 | ProductionRule |
 | ---- |
+| [variable_declaration](./variable_declaration.md)  |
 | [function_declaration](./function_declaration.md)  |
 | [function_implementation](./function_implementation.md)  |
 

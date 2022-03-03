@@ -1,3 +1,11 @@
+/* 
+ * This file is auto-generated and auto-maintained by DLDL
+ * Do not change code in this as it can be overwritten.
+ *
+ * For more information see the DLDL repo: https://github.com/Deruago/DLDL
+ * For more information about Deamer: https://github.com/Deruago/theDeamerProject
+ */
+
 #include "Celeste/Grammar.h"
 #include "Celeste/Language.h"
 
@@ -18,26 +26,30 @@ deamerreserved_star__expression__.Set(::deamer::language::type::definition::obje
 deamerreserved_arrow__RIGHT_SQUARE_BRACKET__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_arrow__RIGHT_SQUARE_BRACKET__", { deamerreserved_arrow__RIGHT_SQUARE_BRACKET___RIGHT_SQUARE_BRACKET_deamerreserved_star__meta_declaration__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 deamerreserved_star__meta_declaration__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__meta_declaration__", { deamerreserved_star__meta_declaration___meta_declaration_deamerreserved_star__meta_declaration__.Pointer(),deamerreserved_star__meta_declaration___EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 expression.Set(::deamer::language::type::definition::object::main::NonTerminal("expression", { expression_expression_PLUS_expression.Pointer(),expression_expression_MINUS_expression.Pointer(),expression_expression_DIVIDE_expression.Pointer(),expression_expression_MULTIPLY_expression.Pointer(),expression_expression_USERDEFINED_OPERATOR_expression.Pointer(),expression_VARNAME.Pointer(),expression_NUMBER.Pointer(),expression_DECIMAL.Pointer(),expression_TEXT.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
-class_declaration.Set(::deamer::language::type::definition::object::main::NonTerminal("class_declaration", { class_declaration_CLASS_VARNAME_COLON_deamerreserved_arrow__base_type___base_type_class_block.Pointer(),class_declaration_CLASS_VARNAME_class_block.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
+class_declaration.Set(::deamer::language::type::definition::object::main::NonTerminal("class_declaration", { class_declaration_CLASS_class_name_COLON_deamerreserved_arrow__base_type___base_type_class_block.Pointer(),class_declaration_CLASS_class_name_class_block.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_arrow__base_type__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_arrow__base_type__", { deamerreserved_arrow__base_type___base_type_deamerreserved_star__COMMA__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 deamerreserved_star__COMMA__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__COMMA__", { deamerreserved_star__COMMA___COMMA_deamerreserved_star__COMMA__.Pointer(),deamerreserved_star__COMMA___EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
+class_name.Set(::deamer::language::type::definition::object::main::NonTerminal("class_name", { class_name_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 base_type.Set(::deamer::language::type::definition::object::main::NonTerminal("base_type", { base_type_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 class_block.Set(::deamer::language::type::definition::object::main::NonTerminal("class_block", { class_block_LEFT_BRACKET_deamerreserved_star__class_stmt___RIGHT_BRACKET.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_star__class_stmt__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__class_stmt__", { deamerreserved_star__class_stmt___class_stmt_deamerreserved_star__class_stmt__.Pointer(),deamerreserved_star__class_stmt___EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
-enum_declaration.Set(::deamer::language::type::definition::object::main::NonTerminal("enum_declaration", { enum_declaration_ENUM_VARNAME_enum_block.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
+enum_declaration.Set(::deamer::language::type::definition::object::main::NonTerminal("enum_declaration", { enum_declaration_ENUM_enum_name_enum_block.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
+enum_name.Set(::deamer::language::type::definition::object::main::NonTerminal("enum_name", { enum_name_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 enum_block.Set(::deamer::language::type::definition::object::main::NonTerminal("enum_block", { enum_block_LEFT_BRACKET_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____RIGHT_BRACKET.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____", { deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____enum_stmt_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.Pointer(),deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____COMMA_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.Pointer(),deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 function_declaration.Set(::deamer::language::type::definition::object::main::NonTerminal("function_declaration", { function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_return_type_SEMICOLON.Pointer(),function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_SEMICOLON.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_arrow__deamerreserved_optional__function_argument____.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_arrow__deamerreserved_optional__function_argument____", { deamerreserved_arrow__deamerreserved_optional__function_argument_____function_argument_deamerreserved_star__COMMA__function_argument__.Pointer(),deamerreserved_arrow__deamerreserved_optional__function_argument_____EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 deamerreserved_star__COMMA__function_argument__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__COMMA__function_argument__", { deamerreserved_star__COMMA__function_argument___COMMA_function_argument_deamerreserved_star__COMMA__function_argument__.Pointer(),deamerreserved_star__COMMA__function_argument___EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 function_implementation.Set(::deamer::language::type::definition::object::main::NonTerminal("function_implementation", { function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_return_type_function_block.Pointer(),function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_function_block.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
-function_argument.Set(::deamer::language::type::definition::object::main::NonTerminal("function_argument", { function_argument_type_VARNAME_EQ_expression.Pointer(),function_argument_type_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
+function_argument.Set(::deamer::language::type::definition::object::main::NonTerminal("function_argument", { function_argument_function_arg_type_function_arg_name_EQ_expression.Pointer(),function_argument_function_arg_type_function_arg_name.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
+function_arg_type.Set(::deamer::language::type::definition::object::main::NonTerminal("function_arg_type", { function_arg_type_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
+function_arg_name.Set(::deamer::language::type::definition::object::main::NonTerminal("function_arg_name", { function_arg_name_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 type.Set(::deamer::language::type::definition::object::main::NonTerminal("type", { type_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
 function_name.Set(::deamer::language::type::definition::object::main::NonTerminal("function_name", { function_name_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
 return_type.Set(::deamer::language::type::definition::object::main::NonTerminal("return_type", { return_type_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
 function_block.Set(::deamer::language::type::definition::object::main::NonTerminal("function_block", { function_block_LEFT_BRACKET_deamerreserved_star__function_stmt___RIGHT_BRACKET.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_star__function_stmt__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__function_stmt__", { deamerreserved_star__function_stmt___function_stmt_deamerreserved_star__function_stmt__.Pointer(),deamerreserved_star__function_stmt___EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
-class_stmt.Set(::deamer::language::type::definition::object::main::NonTerminal("class_stmt", { class_stmt_function_declaration.Pointer(),class_stmt_function_implementation.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
+class_stmt.Set(::deamer::language::type::definition::object::main::NonTerminal("class_stmt", { class_stmt_variable_declaration.Pointer(),class_stmt_function_declaration.Pointer(),class_stmt_function_implementation.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
 enum_stmt.Set(::deamer::language::type::definition::object::main::NonTerminal("enum_stmt", { enum_stmt_VARNAME.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
 function_stmt.Set(::deamer::language::type::definition::object::main::NonTerminal("function_stmt", { function_stmt_logical_stmt.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
 logical_stmt.Set(::deamer::language::type::definition::object::main::NonTerminal("logical_stmt", { logical_stmt_variable_declaration.Pointer(),logical_stmt_variable_initialization.Pointer(),logical_stmt_condtional_declaration.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Group , false));
@@ -79,13 +91,15 @@ expression_TEXT.Set(::deamer::language::type::definition::object::main::Producti
 deamerreserved_arrow__base_type___base_type_deamerreserved_star__COMMA__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->base_type.Pointer(),Language->deamerreserved_star__COMMA__.Pointer() }));
 deamerreserved_star__COMMA___COMMA_deamerreserved_star__COMMA__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->COMMA.Pointer(),Language->deamerreserved_star__COMMA__.Pointer() }));
 deamerreserved_star__COMMA___EMPTY.Set(::deamer::language::type::definition::object::main::ProductionRule());
-class_declaration_CLASS_VARNAME_COLON_deamerreserved_arrow__base_type___base_type_class_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->CLASS.Pointer(),Language->VARNAME.Pointer(),Language->COLON.Pointer(),Language->deamerreserved_arrow__base_type__.Pointer(),Language->base_type.Pointer(),Language->class_block.Pointer() }));
-class_declaration_CLASS_VARNAME_class_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->CLASS.Pointer(),Language->VARNAME.Pointer(),Language->class_block.Pointer() }));
+class_declaration_CLASS_class_name_COLON_deamerreserved_arrow__base_type___base_type_class_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->CLASS.Pointer(),Language->class_name.Pointer(),Language->COLON.Pointer(),Language->deamerreserved_arrow__base_type__.Pointer(),Language->base_type.Pointer(),Language->class_block.Pointer() }));
+class_declaration_CLASS_class_name_class_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->CLASS.Pointer(),Language->class_name.Pointer(),Language->class_block.Pointer() }));
+class_name_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
 base_type_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
 deamerreserved_star__class_stmt___class_stmt_deamerreserved_star__class_stmt__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->class_stmt.Pointer(),Language->deamerreserved_star__class_stmt__.Pointer() }));
 deamerreserved_star__class_stmt___EMPTY.Set(::deamer::language::type::definition::object::main::ProductionRule());
 class_block_LEFT_BRACKET_deamerreserved_star__class_stmt___RIGHT_BRACKET.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->LEFT_BRACKET.Pointer(),Language->deamerreserved_star__class_stmt__.Pointer(),Language->RIGHT_BRACKET.Pointer() }));
-enum_declaration_ENUM_VARNAME_enum_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->ENUM.Pointer(),Language->VARNAME.Pointer(),Language->enum_block.Pointer() }));
+enum_declaration_ENUM_enum_name_enum_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->ENUM.Pointer(),Language->enum_name.Pointer(),Language->enum_block.Pointer() }));
+enum_name_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
 deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____enum_stmt_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->enum_stmt.Pointer(),Language->deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.Pointer() }));
 deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____COMMA_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->COMMA.Pointer(),Language->deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.Pointer() }));
 deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____EMPTY.Set(::deamer::language::type::definition::object::main::ProductionRule());
@@ -98,14 +112,17 @@ function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arro
 function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_SEMICOLON.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->FUNCTION.Pointer(),Language->function_name.Pointer(),Language->LEFT_PARANTHESIS.Pointer(),Language->deamerreserved_arrow__deamerreserved_optional__function_argument____.Pointer(),Language->RIGHT_PARANTHESIS.Pointer(),Language->SEMICOLON.Pointer() }));
 function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_return_type_function_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->FUNCTION.Pointer(),Language->function_name.Pointer(),Language->LEFT_PARANTHESIS.Pointer(),Language->deamerreserved_arrow__deamerreserved_optional__function_argument____.Pointer(),Language->RIGHT_PARANTHESIS.Pointer(),Language->return_type.Pointer(),Language->function_block.Pointer() }));
 function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_function_block.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->FUNCTION.Pointer(),Language->function_name.Pointer(),Language->LEFT_PARANTHESIS.Pointer(),Language->deamerreserved_arrow__deamerreserved_optional__function_argument____.Pointer(),Language->RIGHT_PARANTHESIS.Pointer(),Language->function_block.Pointer() }));
-function_argument_type_VARNAME_EQ_expression.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->type.Pointer(),Language->VARNAME.Pointer(),Language->EQ.Pointer(),Language->expression.Pointer() }));
-function_argument_type_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->type.Pointer(),Language->VARNAME.Pointer() }));
+function_argument_function_arg_type_function_arg_name_EQ_expression.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->function_arg_type.Pointer(),Language->function_arg_name.Pointer(),Language->EQ.Pointer(),Language->expression.Pointer() }));
+function_argument_function_arg_type_function_arg_name.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->function_arg_type.Pointer(),Language->function_arg_name.Pointer() }));
+function_arg_type_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
+function_arg_name_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
 type_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
 function_name_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
 return_type_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
 deamerreserved_star__function_stmt___function_stmt_deamerreserved_star__function_stmt__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->function_stmt.Pointer(),Language->deamerreserved_star__function_stmt__.Pointer() }));
 deamerreserved_star__function_stmt___EMPTY.Set(::deamer::language::type::definition::object::main::ProductionRule());
 function_block_LEFT_BRACKET_deamerreserved_star__function_stmt___RIGHT_BRACKET.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->LEFT_BRACKET.Pointer(),Language->deamerreserved_star__function_stmt__.Pointer(),Language->RIGHT_BRACKET.Pointer() }));
+class_stmt_variable_declaration.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->variable_declaration.Pointer() }));
 class_stmt_function_declaration.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->function_declaration.Pointer() }));
 class_stmt_function_implementation.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->function_implementation.Pointer() }));
 enum_stmt_VARNAME.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->VARNAME.Pointer() }));
@@ -140,10 +157,12 @@ AddObject(expression);
 AddObject(class_declaration);
 AddObject(deamerreserved_arrow__base_type__);
 AddObject(deamerreserved_star__COMMA__);
+AddObject(class_name);
 AddObject(base_type);
 AddObject(class_block);
 AddObject(deamerreserved_star__class_stmt__);
 AddObject(enum_declaration);
+AddObject(enum_name);
 AddObject(enum_block);
 AddObject(deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____);
 AddObject(function_declaration);
@@ -151,6 +170,8 @@ AddObject(deamerreserved_arrow__deamerreserved_optional__function_argument____);
 AddObject(deamerreserved_star__COMMA__function_argument__);
 AddObject(function_implementation);
 AddObject(function_argument);
+AddObject(function_arg_type);
+AddObject(function_arg_name);
 AddObject(type);
 AddObject(function_name);
 AddObject(return_type);
@@ -197,13 +218,15 @@ AddObject(expression_TEXT);
 AddObject(deamerreserved_arrow__base_type___base_type_deamerreserved_star__COMMA__);
 AddObject(deamerreserved_star__COMMA___COMMA_deamerreserved_star__COMMA__);
 AddObject(deamerreserved_star__COMMA___EMPTY);
-AddObject(class_declaration_CLASS_VARNAME_COLON_deamerreserved_arrow__base_type___base_type_class_block);
-AddObject(class_declaration_CLASS_VARNAME_class_block);
+AddObject(class_declaration_CLASS_class_name_COLON_deamerreserved_arrow__base_type___base_type_class_block);
+AddObject(class_declaration_CLASS_class_name_class_block);
+AddObject(class_name_VARNAME);
 AddObject(base_type_VARNAME);
 AddObject(deamerreserved_star__class_stmt___class_stmt_deamerreserved_star__class_stmt__);
 AddObject(deamerreserved_star__class_stmt___EMPTY);
 AddObject(class_block_LEFT_BRACKET_deamerreserved_star__class_stmt___RIGHT_BRACKET);
-AddObject(enum_declaration_ENUM_VARNAME_enum_block);
+AddObject(enum_declaration_ENUM_enum_name_enum_block);
+AddObject(enum_name_VARNAME);
 AddObject(deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____enum_stmt_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____);
 AddObject(deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____COMMA_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____);
 AddObject(deamerreserved_star__deamerreserved_or__enum_stmt__COMMA_____EMPTY);
@@ -216,14 +239,17 @@ AddObject(function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerres
 AddObject(function_declaration_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_SEMICOLON);
 AddObject(function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_return_type_function_block);
 AddObject(function_implementation_FUNCTION_function_name_LEFT_PARANTHESIS_deamerreserved_arrow__deamerreserved_optional__function_argument_____RIGHT_PARANTHESIS_function_block);
-AddObject(function_argument_type_VARNAME_EQ_expression);
-AddObject(function_argument_type_VARNAME);
+AddObject(function_argument_function_arg_type_function_arg_name_EQ_expression);
+AddObject(function_argument_function_arg_type_function_arg_name);
+AddObject(function_arg_type_VARNAME);
+AddObject(function_arg_name_VARNAME);
 AddObject(type_VARNAME);
 AddObject(function_name_VARNAME);
 AddObject(return_type_VARNAME);
 AddObject(deamerreserved_star__function_stmt___function_stmt_deamerreserved_star__function_stmt__);
 AddObject(deamerreserved_star__function_stmt___EMPTY);
 AddObject(function_block_LEFT_BRACKET_deamerreserved_star__function_stmt___RIGHT_BRACKET);
+AddObject(class_stmt_variable_declaration);
 AddObject(class_stmt_function_declaration);
 AddObject(class_stmt_function_implementation);
 AddObject(enum_stmt_VARNAME);

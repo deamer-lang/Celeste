@@ -16,7 +16,7 @@ Overview of the nonterminal: **[enum_declaration](./enum_declaration.md)**
 
 | ProductionRule |
 | ---- |
-| [ENUM](./../Lexicon/ENUM.md) [VARNAME](./../Lexicon/VARNAME.md) [enum_block](./enum_block.md)  |
+| [ENUM](./../Lexicon/ENUM.md) [enum_name](./enum_name.md) [enum_block](./enum_block.md)  |
 
 
 

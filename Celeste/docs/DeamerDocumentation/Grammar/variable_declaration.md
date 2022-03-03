@@ -26,6 +26,13 @@ Overview of the nonterminal: **[variable_declaration](./variable_declaration.md)
 ### NonTerminals
 
 
+#### [class_stmt](./../Grammar/class_stmt.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [variable_declaration](./variable_declaration.md)  |
+
+
 #### [logical_stmt](./../Grammar/logical_stmt.md)
 
 | Productionrule referencing this                      |

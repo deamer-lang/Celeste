@@ -45,10 +45,12 @@
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__class_stmt__.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
+#include "Celeste/Ast/Node/enum_name.h"
 #include "Celeste/Ast/Node/enum_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
@@ -56,6 +58,8 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
 #include "Celeste/Ast/Node/function_argument.h"
+#include "Celeste/Ast/Node/function_arg_type.h"
+#include "Celeste/Ast/Node/function_arg_name.h"
 #include "Celeste/Ast/Node/type.h"
 #include "Celeste/Ast/Node/function_name.h"
 #include "Celeste/Ast/Node/return_type.h"
@@ -287,6 +291,11 @@ namespace Celeste { namespace ast { namespace Visitor {
 				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__*>(node));
 				break;
 			}
+			case Celeste::ast::Type::class_name:
+			{
+				Visit(static_cast<const Celeste::ast::node::class_name*>(node));
+				break;
+			}
 			case Celeste::ast::Type::base_type:
 			{
 				Visit(static_cast<const Celeste::ast::node::base_type*>(node));
@@ -305,6 +314,11 @@ namespace Celeste { namespace ast { namespace Visitor {
 			case Celeste::ast::Type::enum_declaration:
 			{
 				Visit(static_cast<const Celeste::ast::node::enum_declaration*>(node));
+				break;
+			}
+			case Celeste::ast::Type::enum_name:
+			{
+				Visit(static_cast<const Celeste::ast::node::enum_name*>(node));
 				break;
 			}
 			case Celeste::ast::Type::enum_block:
@@ -340,6 +354,16 @@ namespace Celeste { namespace ast { namespace Visitor {
 			case Celeste::ast::Type::function_argument:
 			{
 				Visit(static_cast<const Celeste::ast::node::function_argument*>(node));
+				break;
+			}
+			case Celeste::ast::Type::function_arg_type:
+			{
+				Visit(static_cast<const Celeste::ast::node::function_arg_type*>(node));
+				break;
+			}
+			case Celeste::ast::Type::function_arg_name:
+			{
+				Visit(static_cast<const Celeste::ast::node::function_arg_name*>(node));
 				break;
 			}
 			case Celeste::ast::Type::type:
@@ -540,6 +564,9 @@ namespace Celeste { namespace ast { namespace Visitor {
 		virtual void Visit(const Celeste::ast::node::deamerreserved_star__COMMA__* node)
 		{
 		}
+		virtual void Visit(const Celeste::ast::node::class_name* node)
+		{
+		}
 		virtual void Visit(const Celeste::ast::node::base_type* node)
 		{
 		}
@@ -550,6 +577,9 @@ namespace Celeste { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::enum_declaration* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::enum_name* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::enum_block* node)
@@ -571,6 +601,12 @@ namespace Celeste { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::function_argument* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::function_arg_type* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::function_arg_name* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::type* node)

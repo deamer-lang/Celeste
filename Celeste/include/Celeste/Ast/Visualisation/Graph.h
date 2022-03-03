@@ -136,6 +136,16 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__COMMA__\"];\n";
 		}
 
+		void ListenEntry(const ::Celeste::ast::node::class_name* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"class_name\"];\n";
+		}
+
 		void ListenEntry(const ::Celeste::ast::node::base_type* node) override
 		{
 			for (const auto* child : node->GetNodes())
@@ -174,6 +184,16 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			}
 
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"enum_declaration\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::enum_name* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"enum_name\"];\n";
 		}
 
 		void ListenEntry(const ::Celeste::ast::node::enum_block* node) override
@@ -244,6 +264,26 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			}
 
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"function_argument\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::function_arg_type* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"function_arg_type\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::function_arg_name* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"function_arg_name\"];\n";
 		}
 
 		void ListenEntry(const ::Celeste::ast::node::type* node) override
@@ -731,6 +771,10 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 		{
 		}
 
+		void ListenExit(const ::Celeste::ast::node::class_name* node) override
+		{
+		}
+
 		void ListenExit(const ::Celeste::ast::node::base_type* node) override
 		{
 		}
@@ -744,6 +788,10 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 		}
 
 		void ListenExit(const ::Celeste::ast::node::enum_declaration* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::enum_name* node) override
 		{
 		}
 
@@ -772,6 +820,14 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 		}
 
 		void ListenExit(const ::Celeste::ast::node::function_argument* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::function_arg_type* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::function_arg_name* node) override
 		{
 		}
 

@@ -56,7 +56,7 @@ Overview of the nonterminal: **[expression](./expression.md)**
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md)  |
+| [function_arg_type](./function_arg_type.md) [function_arg_name](./function_arg_name.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md)  |
 
 
 #### [condtional_declaration](./../Grammar/condtional_declaration.md)

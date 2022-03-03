@@ -30,8 +30,11 @@ expression
 	TEXT
 
 class_declaration
-	CLASS VARNAME COLON base_type -> COMMA base_type class_block
-	CLASS VARNAME class_block
+	CLASS class_name COLON base_type -> COMMA base_type class_block
+	CLASS class_name class_block
+
+class_name
+	VARNAME
 
 base_type
 	VARNAME
@@ -40,20 +43,31 @@ class_block
 	LEFT_BRACKET class_stmt* RIGHT_BRACKET
 	
 enum_declaration
-	ENUM VARNAME enum_block
+	ENUM enum_name enum_block
+
+enum_name
+	VARNAME
 
 enum_block
 	LEFT_BRACKET (enum_stmt|COMMA)* RIGHT_BRACKET
 
 function_declaration
-	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS [return_type] SEMICOLON
+	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS return_type SEMICOLON
+	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS SEMICOLON
 	
 function_implementation
-	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS [return_type] function_block
+	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS return_type function_block
+	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS function_block
 
 function_argument
-	type VARNAME EQ expression
-	type VARNAME
+	function_arg_type function_arg_name EQ expression
+	function_arg_type function_arg_name
+
+function_arg_type
+	VARNAME
+
+function_arg_name
+	VARNAME
 
 Group: type
 	VARNAME
@@ -68,6 +82,7 @@ function_block
 	LEFT_BRACKET function_stmt* RIGHT_BRACKET
 
 Group: class_stmt
+	variable_declaration
 	function_declaration
 	function_implementation
 

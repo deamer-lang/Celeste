@@ -1,14 +1,16 @@
-#ifndef Celeste_AST_ENUM_TYPE_H
-#define Celeste_AST_ENUM_TYPE_H
+#ifndef CELESTE_AST_ENUM_TYPE_H
+#define CELESTE_AST_ENUM_TYPE_H
 
-namespace Celeste { namespace ast {
+#include <cstddef>
 
-	enum class Type
+namespace Celeste { namespace ast { 
+
+	enum class Type : std::size_t
 	{
 		// Reserved
 		deamerreserved_unknown,
 
-		// Terminals
+		// Terminal
 		CLASS,
 		ENUM,
 		FUNCTION,
@@ -39,7 +41,8 @@ namespace Celeste { namespace ast {
 		TEXT,
 		ESCAPE_CHARS,
 
-		// Non-Terminals
+
+		// NonTerminal
 		program,
 		deamerreserved_star__stmt__,
 		stmt,
@@ -51,10 +54,12 @@ namespace Celeste { namespace ast {
 		class_declaration,
 		deamerreserved_arrow__base_type__,
 		deamerreserved_star__COMMA__,
+		class_name,
 		base_type,
 		class_block,
 		deamerreserved_star__class_stmt__,
 		enum_declaration,
+		enum_name,
 		enum_block,
 		deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____,
 		function_declaration,
@@ -62,6 +67,8 @@ namespace Celeste { namespace ast {
 		deamerreserved_star__COMMA__function_argument__,
 		function_implementation,
 		function_argument,
+		function_arg_type,
+		function_arg_name,
 		type,
 		function_name,
 		return_type,
@@ -77,8 +84,28 @@ namespace Celeste { namespace ast {
 		condtional_stmt,
 		variable_declaration,
 		variable_initialization,
+
 	};
 
+	static inline bool operator==(std::size_t lhs, ::Celeste::ast::Type rhs)
+	{
+		return lhs == static_cast<std::size_t>(rhs);
+	}
+
+	static inline bool operator==(::Celeste::ast::Type lhs, std::size_t rhs)
+	{
+		return static_cast<std::size_t>(lhs) == rhs;
+	}
+
+	static inline bool operator==(int lhs, ::Celeste::ast::Type rhs)
+	{
+		return lhs == static_cast<std::size_t>(rhs);
+	}
+
+	static inline bool operator==(::Celeste::ast::Type lhs, int rhs)
+	{
+		return static_cast<std::size_t>(lhs) == rhs;
+	}
 }}
 
-#endif // Celeste_AST_ENUM_TYPE_H
+#endif // CELESTE_AST_ENUM_TYPE_H

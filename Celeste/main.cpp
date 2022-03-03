@@ -1,5 +1,8 @@
+#include "Celeste/Ast/Listener/User/StructureTranslator.h"
 #include "Celeste/Ast/Visualisation/Graph.h"
 #include "Celeste/Bison/Parser.h"
+#include "Celeste/OopSyntaxRecognizer/OopSyntaxRecognizer.h"
+#include "Deamer/External/Cpp/Tool/OopToPlantUML/Type/ConvertOopModelToPUML.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -53,6 +56,27 @@ int main(int argc, const char* argv[])
 			auto graph = Celeste::ast::listener::deamer::visualisation::Graph();
 			graph.Dispatch(ast->GetStartNode());
 			std::cout << graph.GetGraph() << std::endl;
+		}
+		if (true)
+		{
+			auto structTranslater = Celeste::ast::listener::user::StructureTranslator();
+			structTranslater.Dispatch(ast->GetStartNode());
+			std::cout << "Struct translated!\n";
+		}
+		if (true)
+		{
+			auto oopRecognizer = Celeste::ast::listener::tool::oopsyntaxrecognizer::Recognizer();
+			oopRecognizer.Dispatch(ast->GetStartNode());
+			auto oopModel = oopRecognizer.GetOutput();
+			std::cout << "Oop concepts recognized! Now showing the result:\n";
+			oopModel.Print();
+			std::cout << "\n";
+
+			std::cout << "PlantUml class diagram:\n";
+			const auto puml =
+				deamer::external::cpp::tool::ooptoplantuml::ConvertOopModelToPUML::ConvertOopModel(
+					oopModel);
+			std::cout << puml << "\n";
 		}
 		delete ast;
 	}

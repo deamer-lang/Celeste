@@ -1,3 +1,11 @@
+/* 
+ * This file is auto-generated and auto-maintained by DLDL
+ * Do not change code in this as it can be overwritten.
+ *
+ * For more information see the DLDL repo: https://github.com/Deruago/DLDL
+ * For more information about Deamer: https://github.com/Deruago/theDeamerProject
+ */
+ 
 #ifndef CELESTE_GENERATION_H
 #define CELESTE_GENERATION_H
 
@@ -21,6 +29,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Generate> generate_Bison;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Generate> generate_DeamerAST;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Generate> generate_DeamerDocumentation;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Generate> generate_OopSyntaxRecognizer;
 
 		::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Integrate> integrate_FlexAndBison;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Integrate> integrate_FlexAndDeamerAST;
@@ -42,6 +51,7 @@ namespace Celeste
 generate_Bison.Set(::deamer::language::type::definition::object::main::Generate(::deamer::tool::type::Tool::Bison));
 generate_DeamerAST.Set(::deamer::language::type::definition::object::main::Generate(::deamer::tool::type::Tool::DeamerAST));
 generate_DeamerDocumentation.Set(::deamer::language::type::definition::object::main::Generate(::deamer::tool::type::Tool::DeamerDocumentation));
+generate_OopSyntaxRecognizer.Set(::deamer::language::type::definition::object::main::Generate(::deamer::tool::type::Tool::OopSyntaxRecognizer));
 
 			integrate_FlexAndBison.Set(::deamer::language::type::definition::object::main::Integrate(::deamer::tool::type::Tool::Flex, ::deamer::tool::type::Tool::Bison));
 integrate_FlexAndDeamerAST.Set(::deamer::language::type::definition::object::main::Integrate(::deamer::tool::type::Tool::Flex, ::deamer::tool::type::Tool::DeamerAST));
@@ -56,6 +66,7 @@ integrate_BisonAndDeamerAST.Set(::deamer::language::type::definition::object::ma
 AddObject(generate_Bison);
 AddObject(generate_DeamerAST);
 AddObject(generate_DeamerDocumentation);
+AddObject(generate_OopSyntaxRecognizer);
 
 			AddObject(integrate_FlexAndBison);
 AddObject(integrate_FlexAndDeamerAST);

@@ -2,12 +2,13 @@
 #define Celeste_AST_NODE_variable_declaration_H
 
 #include "Celeste/Ast/Node/Celeste.h"
+#include "Celeste/Ast/Node/class_stmt.h"
 #include "Celeste/Ast/Node/logical_stmt.h"
 #include <Deamer/External/Cpp/Ast/Node.h>
 
 namespace Celeste { namespace ast { namespace node { 
 
-	class variable_declaration : public Celeste<variable_declaration>, public ::Celeste::ast::common::node::logical_stmt
+	class variable_declaration : public Celeste<variable_declaration>, public ::Celeste::ast::common::node::class_stmt, public ::Celeste::ast::common::node::logical_stmt
 	{
 	private:
 	public:

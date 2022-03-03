@@ -1,4 +1,4 @@
-/* A Bison parser, made by GNU Bison 3.7.5.  */
+/* A Bison parser, made by GNU Bison 3.8.2.  */
 
 /* Bison interface for Yacc-like parsers in C
 
@@ -16,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -81,7 +81,8 @@ extern int Celestedebug;
     VARNAME = 282,                 /* VARNAME  */
     NUMBER = 283,                  /* NUMBER  */
     DECIMAL = 284,                 /* DECIMAL  */
-    TEXT = 285                     /* TEXT  */
+    TEXT = 285,                    /* TEXT  */
+    ESCAPE_CHARS = 286             /* ESCAPE_CHARS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -90,7 +91,7 @@ extern int Celestedebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 163 "./Celeste_parser.y"
+#line 177 "./Celeste_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::Celeste::ast::node::CLASS* Celeste_CLASS;
@@ -133,10 +134,12 @@ union YYSTYPE
 	::Celeste::ast::node::class_declaration* Celeste_class_declaration;
 	::Celeste::ast::node::deamerreserved_arrow__base_type__* Celeste_deamerreserved_arrow__base_type__;
 	::Celeste::ast::node::deamerreserved_star__COMMA__* Celeste_deamerreserved_star__COMMA__;
+	::Celeste::ast::node::class_name* Celeste_class_name;
 	::Celeste::ast::node::base_type* Celeste_base_type;
 	::Celeste::ast::node::class_block* Celeste_class_block;
 	::Celeste::ast::node::deamerreserved_star__class_stmt__* Celeste_deamerreserved_star__class_stmt__;
 	::Celeste::ast::node::enum_declaration* Celeste_enum_declaration;
+	::Celeste::ast::node::enum_name* Celeste_enum_name;
 	::Celeste::ast::node::enum_block* Celeste_enum_block;
 	::Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____* Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____;
 	::Celeste::ast::node::function_declaration* Celeste_function_declaration;
@@ -144,6 +147,8 @@ union YYSTYPE
 	::Celeste::ast::node::deamerreserved_star__COMMA__function_argument__* Celeste_deamerreserved_star__COMMA__function_argument__;
 	::Celeste::ast::node::function_implementation* Celeste_function_implementation;
 	::Celeste::ast::node::function_argument* Celeste_function_argument;
+	::Celeste::ast::node::function_arg_type* Celeste_function_arg_type;
+	::Celeste::ast::node::function_arg_name* Celeste_function_arg_name;
 	::Celeste::ast::node::type* Celeste_type;
 	::Celeste::ast::node::function_name* Celeste_function_name;
 	::Celeste::ast::node::return_type* Celeste_return_type;
@@ -160,7 +165,8 @@ union YYSTYPE
 	::Celeste::ast::node::variable_declaration* Celeste_variable_declaration;
 	::Celeste::ast::node::variable_initialization* Celeste_variable_initialization;
 
-#line 164 "Celeste_parser.tab.h"
+
+#line 170 "Celeste_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -171,6 +177,8 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE Celestelval;
 
+
 int Celesteparse (void);
+
 
 #endif /* !YY_CELESTE_CELESTE_PARSER_TAB_H_INCLUDED  */

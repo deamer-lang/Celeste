@@ -16,8 +16,8 @@ Overview of the nonterminal: **[class_declaration](./class_declaration.md)**
 
 | ProductionRule |
 | ---- |
-| [CLASS](./../Lexicon/CLASS.md) [VARNAME](./../Lexicon/VARNAME.md) [COLON](./../Lexicon/COLON.md) [deamerreserved_arrow__base_type__](./deamerreserved_arrow__base_type__.md) [base_type](./base_type.md) [class_block](./class_block.md)  |
-| [CLASS](./../Lexicon/CLASS.md) [VARNAME](./../Lexicon/VARNAME.md) [class_block](./class_block.md)  |
+| [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [COLON](./../Lexicon/COLON.md) [deamerreserved_arrow__base_type__](./deamerreserved_arrow__base_type__.md) [base_type](./base_type.md) [class_block](./class_block.md)  |
+| [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [class_block](./class_block.md)  |
 
 
 

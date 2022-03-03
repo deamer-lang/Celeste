@@ -31,7 +31,7 @@ Overview of the terminal: **[EQ](./EQ.md)**.
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [type](./../Grammar/type.md) [VARNAME](./VARNAME.md) [EQ](./EQ.md) [expression](./../Grammar/expression.md)  |
+| [function_arg_type](./../Grammar/function_arg_type.md) [function_arg_name](./../Grammar/function_arg_name.md) [EQ](./EQ.md) [expression](./../Grammar/expression.md)  |
 
 
 #### [variable_initialization](./../Grammar/variable_initialization.md)

@@ -26,14 +26,6 @@ Overview of the nonterminal: **[type](./type.md)**
 ### NonTerminals
 
 
-#### [function_argument](./../Grammar/function_argument.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md)  |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md)  |
-
-
 #### [variable_declaration](./../Grammar/variable_declaration.md)
 
 | Productionrule referencing this                      |

@@ -1,4 +1,4 @@
-/* A Bison parser, made by GNU Bison 3.7.5.  */
+/* A Bison parser, made by GNU Bison 3.8.2.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
@@ -16,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -46,10 +46,10 @@
    USER NAME SPACE" below.  */
 
 /* Identify Bison output, and Bison version.  */
-#define YYBISON 30705
+#define YYBISON 30802
 
 /* Bison version string.  */
-#define YYBISON_VERSION "3.7.5"
+#define YYBISON_VERSION "3.8.2"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -74,7 +74,7 @@
 #define yychar          Celestechar
 
 /* First part of user prologue.  */
-#line 1 "./Celeste_parser.y"
+#line 4 "./Celeste_parser.y"
 
 #include <iostream>
 #include <vector>
@@ -117,6 +117,7 @@
 #include "Celeste/Ast/Node/TEXT.h"
 #include "Celeste/Ast/Node/ESCAPE_CHARS.h"
 
+
 #include "Celeste/Ast/Node/program.h"
 #include "Celeste/Ast/Node/deamerreserved_star__stmt__.h"
 #include "Celeste/Ast/Node/stmt.h"
@@ -128,10 +129,12 @@
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__class_stmt__.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
+#include "Celeste/Ast/Node/enum_name.h"
 #include "Celeste/Ast/Node/enum_block.h"
 #include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.h"
 #include "Celeste/Ast/Node/function_declaration.h"
@@ -139,6 +142,8 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__function_argument__.h"
 #include "Celeste/Ast/Node/function_implementation.h"
 #include "Celeste/Ast/Node/function_argument.h"
+#include "Celeste/Ast/Node/function_arg_type.h"
+#include "Celeste/Ast/Node/function_arg_name.h"
 #include "Celeste/Ast/Node/type.h"
 #include "Celeste/Ast/Node/function_name.h"
 #include "Celeste/Ast/Node/return_type.h"
@@ -155,6 +160,7 @@
 #include "Celeste/Ast/Node/variable_declaration.h"
 #include "Celeste/Ast/Node/variable_initialization.h"
 
+
 #ifndef YY_parse_NERRS
 #define YY_parse_NERRS Celestenerrs
 #endif //YY_parse_NERRS
@@ -167,7 +173,7 @@ void Celesteerror(const char* s);
 int Celestelex();
 static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 
-#line 171 "Celeste_parser.tab.c"
+#line 177 "Celeste_parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -226,44 +232,49 @@ enum yysymbol_kind_t
   YYSYMBOL_NUMBER = 28,                    /* NUMBER  */
   YYSYMBOL_DECIMAL = 29,                   /* DECIMAL  */
   YYSYMBOL_TEXT = 30,                      /* TEXT  */
-  YYSYMBOL_YYACCEPT = 31,                  /* $accept  */
-  YYSYMBOL_program = 32,                   /* program  */
-  YYSYMBOL_deamerreserved_star__stmt__ = 33, /* deamerreserved_star__stmt__  */
-  YYSYMBOL_stmt = 34,                      /* stmt  */
-  YYSYMBOL_meta_declaration = 35,          /* meta_declaration  */
-  YYSYMBOL_deamerreserved_star__expression__ = 36, /* deamerreserved_star__expression__  */
-  YYSYMBOL_deamerreserved_arrow__RIGHT_SQUARE_BRACKET__ = 37, /* deamerreserved_arrow__RIGHT_SQUARE_BRACKET__  */
-  YYSYMBOL_deamerreserved_star__meta_declaration__ = 38, /* deamerreserved_star__meta_declaration__  */
-  YYSYMBOL_expression = 39,                /* expression  */
-  YYSYMBOL_class_declaration = 40,         /* class_declaration  */
-  YYSYMBOL_deamerreserved_arrow__base_type__ = 41, /* deamerreserved_arrow__base_type__  */
-  YYSYMBOL_deamerreserved_star__COMMA__ = 42, /* deamerreserved_star__COMMA__  */
-  YYSYMBOL_base_type = 43,                 /* base_type  */
-  YYSYMBOL_class_block = 44,               /* class_block  */
-  YYSYMBOL_deamerreserved_star__class_stmt__ = 45, /* deamerreserved_star__class_stmt__  */
-  YYSYMBOL_enum_declaration = 46,          /* enum_declaration  */
-  YYSYMBOL_enum_block = 47,                /* enum_block  */
-  YYSYMBOL_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ = 48, /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____  */
-  YYSYMBOL_function_declaration = 49,      /* function_declaration  */
-  YYSYMBOL_deamerreserved_arrow__deamerreserved_optional__function_argument____ = 50, /* deamerreserved_arrow__deamerreserved_optional__function_argument____  */
-  YYSYMBOL_deamerreserved_star__COMMA__function_argument__ = 51, /* deamerreserved_star__COMMA__function_argument__  */
-  YYSYMBOL_function_implementation = 52,   /* function_implementation  */
-  YYSYMBOL_function_argument = 53,         /* function_argument  */
-  YYSYMBOL_type = 54,                      /* type  */
-  YYSYMBOL_function_name = 55,             /* function_name  */
-  YYSYMBOL_return_type = 56,               /* return_type  */
-  YYSYMBOL_function_block = 57,            /* function_block  */
-  YYSYMBOL_deamerreserved_star__function_stmt__ = 58, /* deamerreserved_star__function_stmt__  */
-  YYSYMBOL_class_stmt = 59,                /* class_stmt  */
-  YYSYMBOL_enum_stmt = 60,                 /* enum_stmt  */
-  YYSYMBOL_function_stmt = 61,             /* function_stmt  */
-  YYSYMBOL_logical_stmt = 62,              /* logical_stmt  */
-  YYSYMBOL_condtional_declaration = 63,    /* condtional_declaration  */
-  YYSYMBOL_conditional_block = 64,         /* conditional_block  */
-  YYSYMBOL_deamerreserved_star__condtional_stmt__ = 65, /* deamerreserved_star__condtional_stmt__  */
-  YYSYMBOL_condtional_stmt = 66,           /* condtional_stmt  */
-  YYSYMBOL_variable_declaration = 67,      /* variable_declaration  */
-  YYSYMBOL_variable_initialization = 68    /* variable_initialization  */
+  YYSYMBOL_ESCAPE_CHARS = 31,              /* ESCAPE_CHARS  */
+  YYSYMBOL_YYACCEPT = 32,                  /* $accept  */
+  YYSYMBOL_program = 33,                   /* program  */
+  YYSYMBOL_deamerreserved_star__stmt__ = 34, /* deamerreserved_star__stmt__  */
+  YYSYMBOL_stmt = 35,                      /* stmt  */
+  YYSYMBOL_meta_declaration = 36,          /* meta_declaration  */
+  YYSYMBOL_deamerreserved_star__expression__ = 37, /* deamerreserved_star__expression__  */
+  YYSYMBOL_deamerreserved_arrow__RIGHT_SQUARE_BRACKET__ = 38, /* deamerreserved_arrow__RIGHT_SQUARE_BRACKET__  */
+  YYSYMBOL_deamerreserved_star__meta_declaration__ = 39, /* deamerreserved_star__meta_declaration__  */
+  YYSYMBOL_expression = 40,                /* expression  */
+  YYSYMBOL_class_declaration = 41,         /* class_declaration  */
+  YYSYMBOL_deamerreserved_arrow__base_type__ = 42, /* deamerreserved_arrow__base_type__  */
+  YYSYMBOL_deamerreserved_star__COMMA__ = 43, /* deamerreserved_star__COMMA__  */
+  YYSYMBOL_class_name = 44,                /* class_name  */
+  YYSYMBOL_base_type = 45,                 /* base_type  */
+  YYSYMBOL_class_block = 46,               /* class_block  */
+  YYSYMBOL_deamerreserved_star__class_stmt__ = 47, /* deamerreserved_star__class_stmt__  */
+  YYSYMBOL_enum_declaration = 48,          /* enum_declaration  */
+  YYSYMBOL_enum_name = 49,                 /* enum_name  */
+  YYSYMBOL_enum_block = 50,                /* enum_block  */
+  YYSYMBOL_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ = 51, /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____  */
+  YYSYMBOL_function_declaration = 52,      /* function_declaration  */
+  YYSYMBOL_deamerreserved_arrow__deamerreserved_optional__function_argument____ = 53, /* deamerreserved_arrow__deamerreserved_optional__function_argument____  */
+  YYSYMBOL_deamerreserved_star__COMMA__function_argument__ = 54, /* deamerreserved_star__COMMA__function_argument__  */
+  YYSYMBOL_function_implementation = 55,   /* function_implementation  */
+  YYSYMBOL_function_argument = 56,         /* function_argument  */
+  YYSYMBOL_function_arg_type = 57,         /* function_arg_type  */
+  YYSYMBOL_function_arg_name = 58,         /* function_arg_name  */
+  YYSYMBOL_type = 59,                      /* type  */
+  YYSYMBOL_function_name = 60,             /* function_name  */
+  YYSYMBOL_return_type = 61,               /* return_type  */
+  YYSYMBOL_function_block = 62,            /* function_block  */
+  YYSYMBOL_deamerreserved_star__function_stmt__ = 63, /* deamerreserved_star__function_stmt__  */
+  YYSYMBOL_class_stmt = 64,                /* class_stmt  */
+  YYSYMBOL_enum_stmt = 65,                 /* enum_stmt  */
+  YYSYMBOL_function_stmt = 66,             /* function_stmt  */
+  YYSYMBOL_logical_stmt = 67,              /* logical_stmt  */
+  YYSYMBOL_condtional_declaration = 68,    /* condtional_declaration  */
+  YYSYMBOL_conditional_block = 69,         /* conditional_block  */
+  YYSYMBOL_deamerreserved_star__condtional_stmt__ = 70, /* deamerreserved_star__condtional_stmt__  */
+  YYSYMBOL_condtional_stmt = 71,           /* condtional_stmt  */
+  YYSYMBOL_variable_declaration = 72,      /* variable_declaration  */
+  YYSYMBOL_variable_initialization = 73    /* variable_initialization  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -421,12 +432,18 @@ typedef int yy_state_fast_t;
 # define YY_USE(E) /* empty */
 #endif
 
-#if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
 /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN                            \
+#if defined __GNUC__ && ! defined __ICC && 406 <= __GNUC__ * 100 + __GNUC_MINOR__
+# if __GNUC__ * 100 + __GNUC_MINOR__ < 407
+#  define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN                           \
+    _Pragma ("GCC diagnostic push")                                     \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")
+# else
+#  define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN                           \
     _Pragma ("GCC diagnostic push")                                     \
     _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")              \
     _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+# endif
 # define YY_IGNORE_MAYBE_UNINITIALIZED_END      \
     _Pragma ("GCC diagnostic pop")
 #else
@@ -455,33 +472,9 @@ typedef int yy_state_fast_t;
 
 #define YY_ASSERT(E) ((void) (0 && (E)))
 
-#if !defined yyoverflow
+#if 1
 
 /* The parser invokes alloca or malloc; define the necessary symbols.  */
-
-# ifdef YYSTACK_USE_ALLOCA
-#  if YYSTACK_USE_ALLOCA
-#   ifdef __GNUC__
-#    define YYSTACK_ALLOC __builtin_alloca
-#   elif defined __BUILTIN_VA_ARG_INCR
-#    include <alloca.h> /* INFRINGES ON USER NAME SPACE */
-#   elif defined _AIX
-#    define YYSTACK_ALLOC __alloca
-#   elif defined _MSC_VER
-#    include <malloc.h> /* INFRINGES ON USER NAME SPACE */
-#    define alloca _alloca
-#   else
-#    define YYSTACK_ALLOC alloca
-#    if ! defined _ALLOCA_H && ! defined EXIT_SUCCESS
-#     include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-      /* Use EXIT_SUCCESS as a witness for stdlib.h.  */
-#     ifndef EXIT_SUCCESS
-#      define EXIT_SUCCESS 0
-#     endif
-#    endif
-#   endif
-#  endif
-# endif
 
 # ifdef YYSTACK_ALLOC
    /* Pacify GCC's 'empty if-body' warning.  */
@@ -520,7 +513,8 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
 # endif
-#endif /* !defined yyoverflow */
+# define YYCOPY_NEEDED 1
+#endif /* 1 */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
@@ -583,21 +577,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  23
+#define YYFINAL  25
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   139
+#define YYLAST   145
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  31
+#define YYNTOKENS  32
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  38
+#define YYNNTS  42
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  73
+#define YYNRULES  78
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  131
+#define YYNSTATES  138
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   285
+#define YYMAXUTOK   286
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -639,28 +633,28 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30
+      25,    26,    27,    28,    29,    30,    31
 };
 
 #if YYDEBUG
-  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+/* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   236,   236,   244,   248,   255,   259,   263,   267,   271,
-     278,   282,   286,   290,   297,   301,   308,   315,   319,   326,
-     330,   334,   338,   342,   346,   350,   354,   358,   365,   369,
-     376,   383,   387,   394,   401,   408,   412,   419,   426,   433,
-     437,   441,   448,   452,   459,   463,   470,   474,   481,   485,
-     492,   496,   503,   510,   517,   524,   531,   535,   542,   546,
-     553,   560,   567,   571,   575,   582,   586,   590,   597,   604,
-     608,   615,   622,   629
+       0,   256,   256,   267,   273,   283,   289,   295,   301,   307,
+     317,   324,   332,   340,   352,   358,   368,   379,   385,   395,
+     401,   407,   413,   419,   425,   431,   437,   443,   453,   460,
+     470,   480,   487,   497,   507,   517,   529,   535,   545,   555,
+     565,   577,   583,   590,   600,   609,   622,   628,   638,   645,
+     655,   663,   675,   681,   691,   701,   711,   721,   731,   741,
+     753,   759,   769,   775,   781,   791,   801,   811,   817,   823,
+     833,   841,   849,   861,   873,   879,   889,   899,   910
 };
 #endif
 
 /** Accessing symbol of state STATE.  */
 #define YY_ACCESSING_SYMBOL(State) YY_CAST (yysymbol_kind_t, yystos[State])
 
-#if YYDEBUG || 0
+#if 1
 /* The user-facing name of the symbol whose (internal) number is
    YYSYMBOL.  No bounds checking.  */
 static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
@@ -675,23 +669,24 @@ static const char *const yytname[] =
   "RIGHT_PARANTHESIS", "COLON", "SEMICOLON", "COMMA", "DOT", "EQEQ", "EQ",
   "NOTEQ", "NOT", "PLUS", "MINUS", "DIVIDE", "MULTIPLY",
   "USERDEFINED_OPERATOR", "VARNAME", "NUMBER", "DECIMAL", "TEXT",
-  "$accept", "program", "deamerreserved_star__stmt__", "stmt",
-  "meta_declaration", "deamerreserved_star__expression__",
+  "ESCAPE_CHARS", "$accept", "program", "deamerreserved_star__stmt__",
+  "stmt", "meta_declaration", "deamerreserved_star__expression__",
   "deamerreserved_arrow__RIGHT_SQUARE_BRACKET__",
   "deamerreserved_star__meta_declaration__", "expression",
   "class_declaration", "deamerreserved_arrow__base_type__",
-  "deamerreserved_star__COMMA__", "base_type", "class_block",
-  "deamerreserved_star__class_stmt__", "enum_declaration", "enum_block",
+  "deamerreserved_star__COMMA__", "class_name", "base_type", "class_block",
+  "deamerreserved_star__class_stmt__", "enum_declaration", "enum_name",
+  "enum_block",
   "deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____",
   "function_declaration",
   "deamerreserved_arrow__deamerreserved_optional__function_argument____",
   "deamerreserved_star__COMMA__function_argument__",
-  "function_implementation", "function_argument", "type", "function_name",
-  "return_type", "function_block", "deamerreserved_star__function_stmt__",
-  "class_stmt", "enum_stmt", "function_stmt", "logical_stmt",
-  "condtional_declaration", "conditional_block",
-  "deamerreserved_star__condtional_stmt__", "condtional_stmt",
-  "variable_declaration", "variable_initialization", YY_NULLPTR
+  "function_implementation", "function_argument", "function_arg_type",
+  "function_arg_name", "type", "function_name", "return_type",
+  "function_block", "deamerreserved_star__function_stmt__", "class_stmt",
+  "enum_stmt", "function_stmt", "logical_stmt", "condtional_declaration",
+  "conditional_block", "deamerreserved_star__condtional_stmt__",
+  "condtional_stmt", "variable_declaration", "variable_initialization", YY_NULLPTR
 };
 
 static const char *
@@ -701,19 +696,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#ifdef YYPRINT
-/* YYTOKNUM[NUM] -- (External) token number corresponding to the
-   (internal) symbol number NUM (which must be that of a token).  */
-static const yytype_int16 yytoknum[] =
-{
-       0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285
-};
-#endif
-
-#define YYPACT_NINF (-84)
+#define YYPACT_NINF (-46)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -723,148 +706,152 @@ static const yytype_int16 yytoknum[] =
 #define yytable_value_is_error(Yyn) \
   0
 
-  /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
-     STATE-NUM.  */
+/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+   STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      57,    -8,    11,    23,    67,    64,   -84,    57,   -84,   -84,
-     -84,   -84,   -84,    37,    61,   -84,    53,   -84,   -84,   -84,
-     -84,    68,    60,   -84,   -84,    63,    44,   -84,    -1,   -84,
-      78,    88,   -84,    67,    67,    67,    67,    67,   -84,    71,
-     -84,   -84,    63,   -84,    44,    90,    -1,   -84,    95,    -1,
-     -84,    94,    92,    82,    23,   100,   -84,   -84,   -84,   -84,
-      77,    77,    77,    77,    77,   -84,   -84,   103,    90,   -84,
-     -84,   -84,   -84,    -2,    78,   -84,    93,   101,   -84,   -84,
-     -84,     2,   -84,   -84,     6,   -84,    92,    67,    78,   102,
-      41,    89,   106,     2,   -84,   -84,   -84,   -84,   -84,   -84,
-     -84,    77,   104,    67,   107,    67,     3,   -84,   -84,    -3,
-      10,    67,    17,   -84,    67,   105,   110,    33,   110,    51,
-       2,   -84,   110,   -84,   -84,   -84,   112,     2,   -84,   -84,
-     -84
+      67,    58,    60,    69,    27,    98,   -46,    67,   -46,   -46,
+     -46,   -46,   -46,   -46,    10,   -46,    93,   -46,    90,   -46,
+     -46,   -46,   -46,    92,    39,   -46,   -46,     1,    77,   -46,
+      31,   -46,    78,    70,   -46,    27,    27,    27,    27,    27,
+     -46,   -46,    97,   -46,   -46,    80,     1,   -46,   -46,    77,
+      94,    31,   -46,    99,    31,   -46,    96,    95,    85,    69,
+     103,   -46,   -46,   -46,   -46,    68,    68,    68,    68,    68,
+     -46,   100,   -46,   106,    94,   -46,   -46,   -46,   -46,    -1,
+      78,   -46,   -46,   101,   104,   -46,   -46,   -46,   -46,     2,
+     -46,   -46,    73,   -46,    95,    27,    78,   105,    47,    91,
+     110,     2,   -46,   -46,   -46,   -46,   -46,   -46,   -46,    68,
+     108,    27,   111,    27,    64,   -46,   -46,    -2,    -3,    27,
+      14,    27,   107,   116,    20,   116,    26,     2,   -46,   116,
+     -46,   -46,   -46,   117,     2,   -46,   -46,   -46
 };
 
-  /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
-     Performed when YYTABLE does not specify something else to do.  Zero
-     means the default is an error.  */
+/* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+   Performed when YYTABLE does not specify something else to do.  Zero
+   means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
        4,     0,     0,     0,    15,     0,     2,     4,     9,     5,
-       6,     7,     8,     0,     0,    53,     0,    24,    25,    26,
-      27,     0,    15,     1,     3,    36,     0,    29,    41,    37,
-      45,    18,    10,     0,     0,     0,     0,     0,    14,     0,
-      58,    59,    36,    33,     0,    32,    41,    60,     0,    41,
-      52,     0,    47,     0,     0,    18,    16,    11,    12,    13,
-      19,    20,    21,    22,    23,    34,    35,     0,    32,    30,
-      40,    38,    39,     0,     0,    44,    51,     0,    17,    28,
-      31,    57,    43,    54,     0,    49,    47,     0,    45,     0,
-       0,     0,     0,    57,    61,    64,    62,    63,    42,    48,
-      46,    50,     0,     0,     0,     0,     0,    55,    56,     0,
-       0,     0,     0,    72,     0,     0,     0,     0,     0,     0,
-      70,    65,     0,    67,    73,    71,     0,    70,    66,    68,
-      69
+       6,     7,     8,    33,     0,    39,     0,    57,     0,    24,
+      25,    26,    27,     0,    15,     1,     3,    37,     0,    29,
+      43,    38,    47,    18,    10,     0,     0,     0,     0,     0,
+      14,    56,     0,    63,    64,     0,    37,    62,    34,     0,
+      32,    43,    65,     0,    43,    54,     0,    49,     0,     0,
+      18,    16,    11,    12,    13,    19,    20,    21,    22,    23,
+      35,     0,    36,     0,    32,    30,    42,    40,    41,     0,
+       0,    46,    55,    53,     0,    17,    77,    28,    31,    61,
+      45,    58,     0,    51,    49,     0,    47,     0,     0,     0,
+       0,    61,    66,    69,    67,    68,    44,    50,    48,    52,
+       0,     0,     0,     0,     0,    59,    60,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    75,    70,     0,
+      72,    78,    76,     0,    75,    71,    73,    74
 };
 
-  /* YYPGOTO[NTERM-NUM].  */
+/* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -84,   -84,   115,   -84,   -24,   108,   -84,    69,   -33,    96,
-     -84,    55,    81,    59,    86,    98,   -84,   -29,   -15,    43,
-      46,   -14,    62,   -25,    79,    25,    54,    42,   -84,   -84,
-     -84,   -83,   -84,   -70,    12,   -84,   -84,   -84
+     -46,   -46,   118,   -46,   -28,   109,   -46,    71,   -35,   102,
+     -46,    53,   -46,    79,    56,    84,   112,   -46,   -46,    46,
+     -16,    36,    40,   -15,    57,   -46,   -46,   -12,    81,    19,
+      49,    37,   -46,   -46,   -46,   -45,   -46,   -30,     5,   -46,
+     -11,   -46
 };
 
-  /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int8 yydefgoto[] =
+/* YYDEFGOTO[NTERM-NUM].  */
+static const yytype_uint8 yydefgoto[] =
 {
-       0,     5,     6,     7,     8,    21,    32,    56,    22,     9,
-      44,    69,    45,    27,    39,    10,    29,    48,    11,    51,
-      75,    12,    52,    91,    16,    84,    85,    92,    42,    49,
-      93,    94,    95,   121,   126,   127,    96,    97
+       0,     5,     6,     7,     8,    23,    34,    61,    24,     9,
+      49,    75,    14,    50,    29,    42,    10,    16,    31,    53,
+      11,    56,    81,    12,    57,    58,    83,    99,    18,    92,
+      93,   100,    46,    54,   101,   102,   103,   128,   133,   134,
+     104,   105
 };
 
-  /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
-     positive, shift that token.  If negative, reduce the rule whose
-     number is the opposite.  If YYTABLE_NINF, syntax error.  */
+/* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+   positive, shift that token.  If negative, reduce the rule whose
+   number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      60,    61,    62,    63,    64,    53,    81,    55,    89,    90,
-      40,    41,    82,    82,    81,    46,    59,    70,   113,    13,
-      72,    98,   114,   116,    83,    83,    47,    40,    41,    50,
-     118,    55,    33,    34,    35,    36,    37,   125,    14,    33,
-      34,    35,    36,    37,   125,    25,   122,   104,   123,    53,
-      15,    26,   128,   105,   101,    33,    34,    35,    36,    37,
-       1,     2,     3,    53,    23,    30,   124,     4,     3,    28,
-     110,    43,   112,    33,    34,    35,    36,    37,   117,    31,
-      65,   119,    33,    34,    35,    36,    37,    17,    18,    19,
-      20,     1,     2,    54,    17,    18,    19,    20,     4,    33,
-      34,    35,    36,    37,    71,    50,    68,    73,    74,    76,
-       4,    25,    87,    88,   103,   107,   106,   109,   120,   111,
-      98,   129,    24,    80,    78,    67,    79,    57,    66,    58,
-      38,   102,   100,    77,   115,   108,    86,     0,    99,   130
+      65,    66,    67,    68,    69,    60,     3,    89,    97,    98,
+     123,    43,    44,    90,    90,    45,    47,    64,    27,    35,
+      36,    37,    38,    39,    28,    91,    91,   125,    41,    41,
+      43,    44,    60,   129,    45,    47,    35,    36,    37,    38,
+      39,   131,    35,    36,    37,    38,    39,    51,    35,    36,
+      37,    38,    39,   112,    19,    20,    21,    22,    52,   113,
+     109,    35,    36,    37,    38,    39,    19,    20,    21,    22,
+       1,     2,     3,     1,     2,    59,   118,     4,   120,    86,
+       4,    89,   132,   121,   124,    13,   126,    15,   106,   132,
+      35,    36,    37,    38,    39,   130,    17,    76,    25,   135,
+      78,    30,    32,    33,    48,    55,    70,    71,    77,    79,
+      74,    80,    82,     4,    27,    86,    96,   111,   114,   115,
+      95,   117,   106,   119,   127,    26,   136,    88,    73,    87,
+      72,    85,   110,    40,   108,    62,   122,    94,   116,   137,
+      84,   107,     0,     0,     0,    63
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-      33,    34,    35,    36,    37,    30,     8,    31,     6,     7,
-      25,    25,    15,    15,     8,    16,    31,    46,    15,    27,
-      49,    15,    19,    13,    27,    27,    27,    42,    42,    27,
-      13,    55,    22,    23,    24,    25,    26,   120,    27,    22,
-      23,    24,    25,    26,   127,     8,    13,     6,   118,    74,
-      27,    14,   122,    12,    87,    22,    23,    24,    25,    26,
-       3,     4,     5,    88,     0,    12,    15,    10,     5,     8,
-     103,    27,   105,    22,    23,    24,    25,    26,   111,    11,
-       9,   114,    22,    23,    24,    25,    26,    27,    28,    29,
-      30,     3,     4,     5,    27,    28,    29,    30,    10,    22,
-      23,    24,    25,    26,     9,    27,    16,    13,    16,    27,
-      10,     8,    19,    12,    12,     9,    27,    13,     8,    12,
-      15,     9,     7,    68,    55,    44,    67,    31,    42,    31,
-      22,    88,    86,    54,   109,    93,    74,    -1,    84,   127
+      35,    36,    37,    38,    39,    33,     5,     8,     6,     7,
+      13,    27,    27,    15,    15,    27,    27,    33,     8,    22,
+      23,    24,    25,    26,    14,    27,    27,    13,    27,    27,
+      46,    46,    60,    13,    46,    46,    22,    23,    24,    25,
+      26,    15,    22,    23,    24,    25,    26,    16,    22,    23,
+      24,    25,    26,     6,    27,    28,    29,    30,    27,    12,
+      95,    22,    23,    24,    25,    26,    27,    28,    29,    30,
+       3,     4,     5,     3,     4,     5,   111,    10,   113,    15,
+      10,     8,   127,    19,   119,    27,   121,    27,    15,   134,
+      22,    23,    24,    25,    26,   125,    27,    51,     0,   129,
+      54,     8,    12,    11,    27,    27,     9,    27,     9,    13,
+      16,    16,    27,    10,     8,    15,    12,    12,    27,     9,
+      19,    13,    15,    12,     8,     7,     9,    74,    49,    73,
+      46,    60,    96,    24,    94,    33,   117,    80,   101,   134,
+      59,    92,    -1,    -1,    -1,    33
 };
 
-  /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
-     symbol of state STATE-NUM.  */
+/* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
+   state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     4,     5,    10,    32,    33,    34,    35,    40,
-      46,    49,    52,    27,    27,    27,    55,    27,    28,    29,
-      30,    36,    39,     0,    33,     8,    14,    44,     8,    47,
-      12,    11,    37,    22,    23,    24,    25,    26,    36,    45,
-      49,    52,    59,    27,    41,    43,    16,    27,    48,    60,
-      27,    50,    53,    54,     5,    35,    38,    40,    46,    49,
-      39,    39,    39,    39,    39,     9,    45,    43,    16,    42,
-      48,     9,    48,    13,    16,    51,    27,    55,    38,    44,
-      42,     8,    15,    27,    56,    57,    53,    19,    12,     6,
-       7,    54,    58,    61,    62,    63,    67,    68,    15,    57,
-      51,    39,    50,    12,     6,    12,    27,     9,    58,    13,
-      39,    12,    39,    15,    19,    56,    13,    39,    13,    39,
-       8,    64,    13,    64,    15,    62,    65,    66,    64,     9,
-      65
+       0,     3,     4,     5,    10,    33,    34,    35,    36,    41,
+      48,    52,    55,    27,    44,    27,    49,    27,    60,    27,
+      28,    29,    30,    37,    40,     0,    34,     8,    14,    46,
+       8,    50,    12,    11,    38,    22,    23,    24,    25,    26,
+      37,    27,    47,    52,    55,    59,    64,    72,    27,    42,
+      45,    16,    27,    51,    65,    27,    53,    56,    57,     5,
+      36,    39,    41,    48,    52,    40,    40,    40,    40,    40,
+       9,    27,    47,    45,    16,    43,    51,     9,    51,    13,
+      16,    54,    27,    58,    60,    39,    15,    46,    43,     8,
+      15,    27,    61,    62,    56,    19,    12,     6,     7,    59,
+      63,    66,    67,    68,    72,    73,    15,    62,    54,    40,
+      53,    12,     6,    12,    27,     9,    63,    13,    40,    12,
+      40,    19,    61,    13,    40,    13,    40,     8,    69,    13,
+      69,    15,    67,    70,    71,    69,     9,    70
 };
 
-  /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
+/* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    31,    32,    33,    33,    34,    34,    34,    34,    34,
-      35,    35,    35,    35,    36,    36,    37,    38,    38,    39,
-      39,    39,    39,    39,    39,    39,    39,    39,    40,    40,
-      41,    42,    42,    43,    44,    45,    45,    46,    47,    48,
-      48,    48,    49,    49,    50,    50,    51,    51,    52,    52,
-      53,    53,    54,    55,    56,    57,    58,    58,    59,    59,
-      60,    61,    62,    62,    62,    63,    63,    63,    64,    65,
-      65,    66,    67,    68
+       0,    32,    33,    34,    34,    35,    35,    35,    35,    35,
+      36,    36,    36,    36,    37,    37,    38,    39,    39,    40,
+      40,    40,    40,    40,    40,    40,    40,    40,    41,    41,
+      42,    43,    43,    44,    45,    46,    47,    47,    48,    49,
+      50,    51,    51,    51,    52,    52,    53,    53,    54,    54,
+      55,    55,    56,    56,    57,    58,    59,    60,    61,    62,
+      63,    63,    64,    64,    64,    65,    66,    67,    67,    67,
+      68,    68,    68,    69,    70,    70,    71,    72,    73
 };
 
-  /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
+/* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     2,     0,     1,     1,     1,     1,     1,
        3,     4,     4,     4,     2,     0,     2,     2,     0,     3,
        3,     3,     3,     3,     1,     1,     1,     1,     6,     3,
-       2,     2,     0,     1,     3,     2,     0,     3,     3,     2,
-       2,     0,     7,     6,     2,     0,     3,     0,     7,     6,
-       4,     2,     1,     1,     1,     3,     2,     0,     1,     1,
-       1,     1,     1,     1,     1,     5,     6,     5,     3,     2,
-       0,     1,     3,     5
+       2,     2,     0,     1,     1,     3,     2,     0,     3,     1,
+       3,     2,     2,     0,     7,     6,     2,     0,     3,     0,
+       7,     6,     4,     2,     1,     1,     1,     1,     1,     3,
+       2,     0,     1,     1,     1,     1,     1,     1,     1,     1,
+       5,     6,     5,     3,     2,     0,     1,     3,     5
 };
 
 
@@ -876,6 +863,7 @@ enum { YYENOMEM = -2 };
 #define YYACCEPT        goto yyacceptlab
 #define YYABORT         goto yyabortlab
 #define YYERROR         goto yyerrorlab
+#define YYNOMEM         goto yyexhaustedlab
 
 
 #define YYRECOVERING()  (!!yyerrstatus)
@@ -888,6 +876,7 @@ enum { YYENOMEM = -2 };
         yylval = (Value);                                         \
         YYPOPSTACK (yylen);                                       \
         yystate = *yyssp;                                         \
+        YY_LAC_DISCARD ("YYBACKUP");                              \
         goto yybackup;                                            \
       }                                                           \
     else                                                          \
@@ -916,10 +905,7 @@ do {                                            \
     YYFPRINTF Args;                             \
 } while (0)
 
-/* This macro is provided for backward compatibility. */
-# ifndef YY_LOCATION_PRINT
-#  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
-# endif
+
 
 
 # define YY_SYMBOL_PRINT(Title, Kind, Value, Location)                    \
@@ -946,10 +932,6 @@ yy_symbol_value_print (FILE *yyo,
   YY_USE (yyoutput);
   if (!yyvaluep)
     return;
-# ifdef YYPRINT
-  if (yykind < YYNTOKENS)
-    YYPRINT (yyo, yytoknum[yykind], *yyvaluep);
-# endif
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   YY_USE (yykind);
   YY_IGNORE_MAYBE_UNINITIALIZED_END
@@ -1053,8 +1035,521 @@ int yydebug;
 #endif
 
 
+/* Given a state stack such that *YYBOTTOM is its bottom, such that
+   *YYTOP is either its top or is YYTOP_EMPTY to indicate an empty
+   stack, and such that *YYCAPACITY is the maximum number of elements it
+   can hold without a reallocation, make sure there is enough room to
+   store YYADD more elements.  If not, allocate a new stack using
+   YYSTACK_ALLOC, copy the existing elements, and adjust *YYBOTTOM,
+   *YYTOP, and *YYCAPACITY to reflect the new capacity and memory
+   location.  If *YYBOTTOM != YYBOTTOM_NO_FREE, then free the old stack
+   using YYSTACK_FREE.  Return 0 if successful or if no reallocation is
+   required.  Return YYENOMEM if memory is exhausted.  */
+static int
+yy_lac_stack_realloc (YYPTRDIFF_T *yycapacity, YYPTRDIFF_T yyadd,
+#if YYDEBUG
+                      char const *yydebug_prefix,
+                      char const *yydebug_suffix,
+#endif
+                      yy_state_t **yybottom,
+                      yy_state_t *yybottom_no_free,
+                      yy_state_t **yytop, yy_state_t *yytop_empty)
+{
+  YYPTRDIFF_T yysize_old =
+    *yytop == yytop_empty ? 0 : *yytop - *yybottom + 1;
+  YYPTRDIFF_T yysize_new = yysize_old + yyadd;
+  if (*yycapacity < yysize_new)
+    {
+      YYPTRDIFF_T yyalloc = 2 * yysize_new;
+      yy_state_t *yybottom_new;
+      /* Use YYMAXDEPTH for maximum stack size given that the stack
+         should never need to grow larger than the main state stack
+         needs to grow without LAC.  */
+      if (YYMAXDEPTH < yysize_new)
+        {
+          YYDPRINTF ((stderr, "%smax size exceeded%s", yydebug_prefix,
+                      yydebug_suffix));
+          return YYENOMEM;
+        }
+      if (YYMAXDEPTH < yyalloc)
+        yyalloc = YYMAXDEPTH;
+      yybottom_new =
+        YY_CAST (yy_state_t *,
+                 YYSTACK_ALLOC (YY_CAST (YYSIZE_T,
+                                         yyalloc * YYSIZEOF (*yybottom_new))));
+      if (!yybottom_new)
+        {
+          YYDPRINTF ((stderr, "%srealloc failed%s", yydebug_prefix,
+                      yydebug_suffix));
+          return YYENOMEM;
+        }
+      if (*yytop != yytop_empty)
+        {
+          YYCOPY (yybottom_new, *yybottom, yysize_old);
+          *yytop = yybottom_new + (yysize_old - 1);
+        }
+      if (*yybottom != yybottom_no_free)
+        YYSTACK_FREE (*yybottom);
+      *yybottom = yybottom_new;
+      *yycapacity = yyalloc;
+    }
+  return 0;
+}
+
+/* Establish the initial context for the current lookahead if no initial
+   context is currently established.
+
+   We define a context as a snapshot of the parser stacks.  We define
+   the initial context for a lookahead as the context in which the
+   parser initially examines that lookahead in order to select a
+   syntactic action.  Thus, if the lookahead eventually proves
+   syntactically unacceptable (possibly in a later context reached via a
+   series of reductions), the initial context can be used to determine
+   the exact set of tokens that would be syntactically acceptable in the
+   lookahead's place.  Moreover, it is the context after which any
+   further semantic actions would be erroneous because they would be
+   determined by a syntactically unacceptable token.
+
+   YY_LAC_ESTABLISH should be invoked when a reduction is about to be
+   performed in an inconsistent state (which, for the purposes of LAC,
+   includes consistent states that don't know they're consistent because
+   their default reductions have been disabled).  Iff there is a
+   lookahead token, it should also be invoked before reporting a syntax
+   error.  This latter case is for the sake of the debugging output.
+
+   For parse.lac=full, the implementation of YY_LAC_ESTABLISH is as
+   follows.  If no initial context is currently established for the
+   current lookahead, then check if that lookahead can eventually be
+   shifted if syntactic actions continue from the current context.
+   Report a syntax error if it cannot.  */
+#define YY_LAC_ESTABLISH                                                \
+do {                                                                    \
+  if (!yy_lac_established)                                              \
+    {                                                                   \
+      YYDPRINTF ((stderr,                                               \
+                  "LAC: initial context established for %s\n",          \
+                  yysymbol_name (yytoken)));                            \
+      yy_lac_established = 1;                                           \
+      switch (yy_lac (yyesa, &yyes, &yyes_capacity, yyssp, yytoken))    \
+        {                                                               \
+        case YYENOMEM:                                                  \
+          YYNOMEM;                                                      \
+        case 1:                                                         \
+          goto yyerrlab;                                                \
+        }                                                               \
+    }                                                                   \
+} while (0)
+
+/* Discard any previous initial lookahead context because of Event,
+   which may be a lookahead change or an invalidation of the currently
+   established initial context for the current lookahead.
+
+   The most common example of a lookahead change is a shift.  An example
+   of both cases is syntax error recovery.  That is, a syntax error
+   occurs when the lookahead is syntactically erroneous for the
+   currently established initial context, so error recovery manipulates
+   the parser stacks to try to find a new initial context in which the
+   current lookahead is syntactically acceptable.  If it fails to find
+   such a context, it discards the lookahead.  */
+#if YYDEBUG
+# define YY_LAC_DISCARD(Event)                                           \
+do {                                                                     \
+  if (yy_lac_established)                                                \
+    {                                                                    \
+      YYDPRINTF ((stderr, "LAC: initial context discarded due to "       \
+                  Event "\n"));                                          \
+      yy_lac_established = 0;                                            \
+    }                                                                    \
+} while (0)
+#else
+# define YY_LAC_DISCARD(Event) yy_lac_established = 0
+#endif
+
+/* Given the stack whose top is *YYSSP, return 0 iff YYTOKEN can
+   eventually (after perhaps some reductions) be shifted, return 1 if
+   not, or return YYENOMEM if memory is exhausted.  As preconditions and
+   postconditions: *YYES_CAPACITY is the allocated size of the array to
+   which *YYES points, and either *YYES = YYESA or *YYES points to an
+   array allocated with YYSTACK_ALLOC.  yy_lac may overwrite the
+   contents of either array, alter *YYES and *YYES_CAPACITY, and free
+   any old *YYES other than YYESA.  */
+static int
+yy_lac (yy_state_t *yyesa, yy_state_t **yyes,
+        YYPTRDIFF_T *yyes_capacity, yy_state_t *yyssp, yysymbol_kind_t yytoken)
+{
+  yy_state_t *yyes_prev = yyssp;
+  yy_state_t *yyesp = yyes_prev;
+  /* Reduce until we encounter a shift and thereby accept the token.  */
+  YYDPRINTF ((stderr, "LAC: checking lookahead %s:", yysymbol_name (yytoken)));
+  if (yytoken == YYSYMBOL_YYUNDEF)
+    {
+      YYDPRINTF ((stderr, " Always Err\n"));
+      return 1;
+    }
+  while (1)
+    {
+      int yyrule = yypact[+*yyesp];
+      if (yypact_value_is_default (yyrule)
+          || (yyrule += yytoken) < 0 || YYLAST < yyrule
+          || yycheck[yyrule] != yytoken)
+        {
+          /* Use the default action.  */
+          yyrule = yydefact[+*yyesp];
+          if (yyrule == 0)
+            {
+              YYDPRINTF ((stderr, " Err\n"));
+              return 1;
+            }
+        }
+      else
+        {
+          /* Use the action from yytable.  */
+          yyrule = yytable[yyrule];
+          if (yytable_value_is_error (yyrule))
+            {
+              YYDPRINTF ((stderr, " Err\n"));
+              return 1;
+            }
+          if (0 < yyrule)
+            {
+              YYDPRINTF ((stderr, " S%d\n", yyrule));
+              return 0;
+            }
+          yyrule = -yyrule;
+        }
+      /* By now we know we have to simulate a reduce.  */
+      YYDPRINTF ((stderr, " R%d", yyrule - 1));
+      {
+        /* Pop the corresponding number of values from the stack.  */
+        YYPTRDIFF_T yylen = yyr2[yyrule];
+        /* First pop from the LAC stack as many tokens as possible.  */
+        if (yyesp != yyes_prev)
+          {
+            YYPTRDIFF_T yysize = yyesp - *yyes + 1;
+            if (yylen < yysize)
+              {
+                yyesp -= yylen;
+                yylen = 0;
+              }
+            else
+              {
+                yyesp = yyes_prev;
+                yylen -= yysize;
+              }
+          }
+        /* Only afterwards look at the main stack.  */
+        if (yylen)
+          yyesp = yyes_prev -= yylen;
+      }
+      /* Push the resulting state of the reduction.  */
+      {
+        yy_state_fast_t yystate;
+        {
+          const int yylhs = yyr1[yyrule] - YYNTOKENS;
+          const int yyi = yypgoto[yylhs] + *yyesp;
+          yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyesp
+                     ? yytable[yyi]
+                     : yydefgoto[yylhs]);
+        }
+        if (yyesp == yyes_prev)
+          {
+            yyesp = *yyes;
+            YY_IGNORE_USELESS_CAST_BEGIN
+            *yyesp = YY_CAST (yy_state_t, yystate);
+            YY_IGNORE_USELESS_CAST_END
+          }
+        else
+          {
+            if (yy_lac_stack_realloc (yyes_capacity, 1,
+#if YYDEBUG
+                                      " (", ")",
+#endif
+                                      yyes, yyesa, &yyesp, yyes_prev))
+              {
+                YYDPRINTF ((stderr, "\n"));
+                return YYENOMEM;
+              }
+            YY_IGNORE_USELESS_CAST_BEGIN
+            *++yyesp = YY_CAST (yy_state_t, yystate);
+            YY_IGNORE_USELESS_CAST_END
+          }
+        YYDPRINTF ((stderr, " G%d", yystate));
+      }
+    }
+}
+
+/* Context of a parse error.  */
+typedef struct
+{
+  yy_state_t *yyssp;
+  yy_state_t *yyesa;
+  yy_state_t **yyes;
+  YYPTRDIFF_T *yyes_capacity;
+  yysymbol_kind_t yytoken;
+} yypcontext_t;
+
+/* Put in YYARG at most YYARGN of the expected tokens given the
+   current YYCTX, and return the number of tokens stored in YYARG.  If
+   YYARG is null, return the number of expected tokens (guaranteed to
+   be less than YYNTOKENS).  Return YYENOMEM on memory exhaustion.
+   Return 0 if there are more than YYARGN expected tokens, yet fill
+   YYARG up to YYARGN. */
+static int
+yypcontext_expected_tokens (const yypcontext_t *yyctx,
+                            yysymbol_kind_t yyarg[], int yyargn)
+{
+  /* Actual size of YYARG. */
+  int yycount = 0;
+
+  int yyx;
+  for (yyx = 0; yyx < YYNTOKENS; ++yyx)
+    {
+      yysymbol_kind_t yysym = YY_CAST (yysymbol_kind_t, yyx);
+      if (yysym != YYSYMBOL_YYerror && yysym != YYSYMBOL_YYUNDEF)
+        switch (yy_lac (yyctx->yyesa, yyctx->yyes, yyctx->yyes_capacity, yyctx->yyssp, yysym))
+          {
+          case YYENOMEM:
+            return YYENOMEM;
+          case 1:
+            continue;
+          default:
+            if (!yyarg)
+              ++yycount;
+            else if (yycount == yyargn)
+              return 0;
+            else
+              yyarg[yycount++] = yysym;
+          }
+    }
+  if (yyarg && yycount == 0 && 0 < yyargn)
+    yyarg[0] = YYSYMBOL_YYEMPTY;
+  return yycount;
+}
 
 
+
+
+#ifndef yystrlen
+# if defined __GLIBC__ && defined _STRING_H
+#  define yystrlen(S) (YY_CAST (YYPTRDIFF_T, strlen (S)))
+# else
+/* Return the length of YYSTR.  */
+static YYPTRDIFF_T
+yystrlen (const char *yystr)
+{
+  YYPTRDIFF_T yylen;
+  for (yylen = 0; yystr[yylen]; yylen++)
+    continue;
+  return yylen;
+}
+# endif
+#endif
+
+#ifndef yystpcpy
+# if defined __GLIBC__ && defined _STRING_H && defined _GNU_SOURCE
+#  define yystpcpy stpcpy
+# else
+/* Copy YYSRC to YYDEST, returning the address of the terminating '\0' in
+   YYDEST.  */
+static char *
+yystpcpy (char *yydest, const char *yysrc)
+{
+  char *yyd = yydest;
+  const char *yys = yysrc;
+
+  while ((*yyd++ = *yys++) != '\0')
+    continue;
+
+  return yyd - 1;
+}
+# endif
+#endif
+
+#ifndef yytnamerr
+/* Copy to YYRES the contents of YYSTR after stripping away unnecessary
+   quotes and backslashes, so that it's suitable for yyerror.  The
+   heuristic is that double-quoting is unnecessary unless the string
+   contains an apostrophe, a comma, or backslash (other than
+   backslash-backslash).  YYSTR is taken from yytname.  If YYRES is
+   null, do not copy; instead, return the length of what the result
+   would have been.  */
+static YYPTRDIFF_T
+yytnamerr (char *yyres, const char *yystr)
+{
+  if (*yystr == '"')
+    {
+      YYPTRDIFF_T yyn = 0;
+      char const *yyp = yystr;
+      for (;;)
+        switch (*++yyp)
+          {
+          case '\'':
+          case ',':
+            goto do_not_strip_quotes;
+
+          case '\\':
+            if (*++yyp != '\\')
+              goto do_not_strip_quotes;
+            else
+              goto append;
+
+          append:
+          default:
+            if (yyres)
+              yyres[yyn] = *yyp;
+            yyn++;
+            break;
+
+          case '"':
+            if (yyres)
+              yyres[yyn] = '\0';
+            return yyn;
+          }
+    do_not_strip_quotes: ;
+    }
+
+  if (yyres)
+    return yystpcpy (yyres, yystr) - yyres;
+  else
+    return yystrlen (yystr);
+}
+#endif
+
+
+static int
+yy_syntax_error_arguments (const yypcontext_t *yyctx,
+                           yysymbol_kind_t yyarg[], int yyargn)
+{
+  /* Actual size of YYARG. */
+  int yycount = 0;
+  /* There are many possibilities here to consider:
+     - If this state is a consistent state with a default action, then
+       the only way this function was invoked is if the default action
+       is an error action.  In that case, don't check for expected
+       tokens because there are none.
+     - The only way there can be no lookahead present (in yychar) is if
+       this state is a consistent state with a default action.  Thus,
+       detecting the absence of a lookahead is sufficient to determine
+       that there is no unexpected or expected token to report.  In that
+       case, just report a simple "syntax error".
+     - Don't assume there isn't a lookahead just because this state is a
+       consistent state with a default action.  There might have been a
+       previous inconsistent state, consistent state with a non-default
+       action, or user semantic action that manipulated yychar.
+       In the first two cases, it might appear that the current syntax
+       error should have been detected in the previous state when yy_lac
+       was invoked.  However, at that time, there might have been a
+       different syntax error that discarded a different initial context
+       during error recovery, leaving behind the current lookahead.
+  */
+  if (yyctx->yytoken != YYSYMBOL_YYEMPTY)
+    {
+      int yyn;
+      YYDPRINTF ((stderr, "Constructing syntax error message\n"));
+      if (yyarg)
+        yyarg[yycount] = yyctx->yytoken;
+      ++yycount;
+      yyn = yypcontext_expected_tokens (yyctx,
+                                        yyarg ? yyarg + 1 : yyarg, yyargn - 1);
+      if (yyn == YYENOMEM)
+        return YYENOMEM;
+      else if (yyn == 0)
+        YYDPRINTF ((stderr, "No expected tokens.\n"));
+      else
+        yycount += yyn;
+    }
+  return yycount;
+}
+
+/* Copy into *YYMSG, which is of size *YYMSG_ALLOC, an error message
+   about the unexpected token YYTOKEN for the state stack whose top is
+   YYSSP.  In order to see if a particular token T is a
+   valid looakhead, invoke yy_lac (YYESA, YYES, YYES_CAPACITY, YYSSP, T).
+
+   Return 0 if *YYMSG was successfully written.  Return -1 if *YYMSG is
+   not large enough to hold the message.  In that case, also set
+   *YYMSG_ALLOC to the required number of bytes.  Return YYENOMEM if the
+   required number of bytes is too large to store or if
+   yy_lac returned YYENOMEM.  */
+static int
+yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
+                const yypcontext_t *yyctx)
+{
+  enum { YYARGS_MAX = 5 };
+  /* Internationalized format string. */
+  const char *yyformat = YY_NULLPTR;
+  /* Arguments of yyformat: reported tokens (one for the "unexpected",
+     one per "expected"). */
+  yysymbol_kind_t yyarg[YYARGS_MAX];
+  /* Cumulated lengths of YYARG.  */
+  YYPTRDIFF_T yysize = 0;
+
+  /* Actual size of YYARG. */
+  int yycount = yy_syntax_error_arguments (yyctx, yyarg, YYARGS_MAX);
+  if (yycount == YYENOMEM)
+    return YYENOMEM;
+
+  switch (yycount)
+    {
+#define YYCASE_(N, S)                       \
+      case N:                               \
+        yyformat = S;                       \
+        break
+    default: /* Avoid compiler warnings. */
+      YYCASE_(0, YY_("syntax error"));
+      YYCASE_(1, YY_("syntax error, unexpected %s"));
+      YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
+      YYCASE_(3, YY_("syntax error, unexpected %s, expecting %s or %s"));
+      YYCASE_(4, YY_("syntax error, unexpected %s, expecting %s or %s or %s"));
+      YYCASE_(5, YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s"));
+#undef YYCASE_
+    }
+
+  /* Compute error message size.  Don't count the "%s"s, but reserve
+     room for the terminator.  */
+  yysize = yystrlen (yyformat) - 2 * yycount + 1;
+  {
+    int yyi;
+    for (yyi = 0; yyi < yycount; ++yyi)
+      {
+        YYPTRDIFF_T yysize1
+          = yysize + yytnamerr (YY_NULLPTR, yytname[yyarg[yyi]]);
+        if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
+          yysize = yysize1;
+        else
+          return YYENOMEM;
+      }
+  }
+
+  if (*yymsg_alloc < yysize)
+    {
+      *yymsg_alloc = 2 * yysize;
+      if (! (yysize <= *yymsg_alloc
+             && *yymsg_alloc <= YYSTACK_ALLOC_MAXIMUM))
+        *yymsg_alloc = YYSTACK_ALLOC_MAXIMUM;
+      return -1;
+    }
+
+  /* Avoid sprintf, as that infringes on the user's name space.
+     Don't have undefined behavior even if the translation
+     produced a string with the wrong number of "%s"s.  */
+  {
+    char *yyp = *yymsg;
+    int yyi = 0;
+    while ((*yyp = *yyformat) != '\0')
+      if (*yyp == '%' && yyformat[1] == 's' && yyi < yycount)
+        {
+          yyp += yytnamerr (yyp, yytname[yyarg[yyi++]]);
+          yyformat += 2;
+        }
+      else
+        {
+          ++yyp;
+          ++yyformat;
+        }
+  }
+  return 0;
+}
 
 
 /*-----------------------------------------------.
@@ -1114,6 +1609,12 @@ yyparse (void)
     YYSTYPE *yyvs = yyvsa;
     YYSTYPE *yyvsp = yyvs;
 
+    yy_state_t yyesa[20];
+    yy_state_t *yyes = yyesa;
+    YYPTRDIFF_T yyes_capacity = 20 < YYMAXDEPTH ? 20 : YYMAXDEPTH;
+
+  /* Whether LAC context is established.  A Boolean.  */
+  int yy_lac_established = 0;
   int yyn;
   /* The return value of yyparse.  */
   int yyresult;
@@ -1123,7 +1624,10 @@ yyparse (void)
      action routines.  */
   YYSTYPE yyval;
 
-
+  /* Buffer for error messages, and its allocated size.  */
+  char yymsgbuf[128];
+  char *yymsg = yymsgbuf;
+  YYPTRDIFF_T yymsg_alloc = sizeof yymsgbuf;
 
 #define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
 
@@ -1134,6 +1638,7 @@ yyparse (void)
   YYDPRINTF ((stderr, "Starting parse\n"));
 
   yychar = YYEMPTY; /* Cause a token to be read.  */
+
   goto yysetstate;
 
 
@@ -1159,7 +1664,7 @@ yysetstate:
 
   if (yyss + yystacksize - 1 <= yyssp)
 #if !defined yyoverflow && !defined YYSTACK_RELOCATE
-    goto yyexhaustedlab;
+    YYNOMEM;
 #else
     {
       /* Get the current used size of the three stacks, in elements.  */
@@ -1187,7 +1692,7 @@ yysetstate:
 # else /* defined YYSTACK_RELOCATE */
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
-        goto yyexhaustedlab;
+        YYNOMEM;
       yystacksize *= 2;
       if (YYMAXDEPTH < yystacksize)
         yystacksize = YYMAXDEPTH;
@@ -1198,7 +1703,7 @@ yysetstate:
           YY_CAST (union yyalloc *,
                    YYSTACK_ALLOC (YY_CAST (YYSIZE_T, YYSTACK_BYTES (yystacksize))));
         if (! yyptr)
-          goto yyexhaustedlab;
+          YYNOMEM;
         YYSTACK_RELOCATE (yyss_alloc, yyss);
         YYSTACK_RELOCATE (yyvs_alloc, yyvs);
 #  undef YYSTACK_RELOCATE
@@ -1219,6 +1724,7 @@ yysetstate:
         YYABORT;
     }
 #endif /* !defined yyoverflow && !defined YYSTACK_RELOCATE */
+
 
   if (yystate == YYFINAL)
     YYACCEPT;
@@ -1273,13 +1779,17 @@ yybackup:
      detect an error, take that action.  */
   yyn += yytoken;
   if (yyn < 0 || YYLAST < yyn || yycheck[yyn] != yytoken)
-    goto yydefault;
+    {
+      YY_LAC_ESTABLISH;
+      goto yydefault;
+    }
   yyn = yytable[yyn];
   if (yyn <= 0)
     {
       if (yytable_value_is_error (yyn))
         goto yyerrlab;
       yyn = -yyn;
+      YY_LAC_ESTABLISH;
       goto yyreduce;
     }
 
@@ -1297,6 +1807,7 @@ yybackup:
 
   /* Discard the shifted token.  */
   yychar = YYEMPTY;
+  YY_LAC_DISCARD ("shift");
   goto yynewstate;
 
 
@@ -1329,662 +1840,904 @@ yyreduce:
 
 
   YY_REDUCE_PRINT (yyn);
-  switch (yyn)
-    {
+  {
+    int yychar_backup = yychar;
+    switch (yyn)
+      {
   case 2: /* program: deamerreserved_star__stmt__  */
-#line 236 "./Celeste_parser.y"
-                                    {
-		auto* const newNode = new Celeste::ast::node::program({::Celeste::ast::Type::program, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_deamerreserved_star__stmt__) });
+#line 256 "./Celeste_parser.y"
+                                     {
+		auto* const newNode = new Celeste::ast::node::program({::Celeste::ast::Type::program, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_deamerreserved_star__stmt__) });
 		(yyval.Celeste_program) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 		outputTree = new ::deamer::external::cpp::ast::Tree(newNode);
 	}
-#line 1342 "Celeste_parser.tab.c"
+#line 1857 "Celeste_parser.tab.c"
     break;
 
   case 3: /* deamerreserved_star__stmt__: stmt deamerreserved_star__stmt__  */
-#line 244 "./Celeste_parser.y"
-                                         {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__stmt__({::Celeste::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_stmt), (yyvsp[0].Celeste_deamerreserved_star__stmt__) });
+#line 267 "./Celeste_parser.y"
+                                          {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__stmt__({::Celeste::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_stmt), (yyvsp[0].Celeste_deamerreserved_star__stmt__) });
 		(yyval.Celeste_deamerreserved_star__stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 	}
-#line 1351 "Celeste_parser.tab.c"
+#line 1868 "Celeste_parser.tab.c"
     break;
 
   case 4: /* deamerreserved_star__stmt__: %empty  */
-#line 248 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__stmt__({::Celeste::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
+#line 273 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__stmt__({::Celeste::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
 		(yyval.Celeste_deamerreserved_star__stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 	}
-#line 1360 "Celeste_parser.tab.c"
+#line 1879 "Celeste_parser.tab.c"
     break;
 
   case 5: /* stmt: class_declaration  */
-#line 255 "./Celeste_parser.y"
-                          {
-		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_class_declaration) });
+#line 283 "./Celeste_parser.y"
+                           {
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_class_declaration) });
 		(yyval.Celeste_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 	}
-#line 1369 "Celeste_parser.tab.c"
+#line 1890 "Celeste_parser.tab.c"
     break;
 
   case 6: /* stmt: enum_declaration  */
-#line 259 "./Celeste_parser.y"
-                           {
-		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_enum_declaration) });
+#line 289 "./Celeste_parser.y"
+                            {
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_enum_declaration) });
 		(yyval.Celeste_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 	}
-#line 1378 "Celeste_parser.tab.c"
+#line 1901 "Celeste_parser.tab.c"
     break;
 
   case 7: /* stmt: function_declaration  */
-#line 263 "./Celeste_parser.y"
-                               {
-		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_function_declaration) });
+#line 295 "./Celeste_parser.y"
+                                {
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_function_declaration) });
 		(yyval.Celeste_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 	}
-#line 1387 "Celeste_parser.tab.c"
+#line 1912 "Celeste_parser.tab.c"
     break;
 
   case 8: /* stmt: function_implementation  */
-#line 267 "./Celeste_parser.y"
-                                  {
-		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {3, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_function_implementation) });
+#line 301 "./Celeste_parser.y"
+                                   {
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_function_implementation) });
 		(yyval.Celeste_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 	}
-#line 1396 "Celeste_parser.tab.c"
+#line 1923 "Celeste_parser.tab.c"
     break;
 
   case 9: /* stmt: meta_declaration  */
-#line 271 "./Celeste_parser.y"
-                           {
-		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {4, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_meta_declaration) });
+#line 307 "./Celeste_parser.y"
+                            {
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_meta_declaration) });
 		(yyval.Celeste_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
 	}
-#line 1405 "Celeste_parser.tab.c"
+#line 1934 "Celeste_parser.tab.c"
     break;
 
   case 10: /* meta_declaration: LEFT_SQUARE_BRACKET deamerreserved_star__expression__ deamerreserved_arrow__RIGHT_SQUARE_BRACKET__  */
-#line 278 "./Celeste_parser.y"
-                                                                                                           {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_deamerreserved_arrow__RIGHT_SQUARE_BRACKET__) });
+#line 317 "./Celeste_parser.y"
+                                                                                                            {
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_deamerreserved_arrow__RIGHT_SQUARE_BRACKET__) });
 		(yyval.Celeste_meta_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-2].Terminal);
 	}
-#line 1414 "Celeste_parser.tab.c"
+#line 1946 "Celeste_parser.tab.c"
     break;
 
   case 11: /* meta_declaration: LEFT_SQUARE_BRACKET deamerreserved_star__expression__ RIGHT_SQUARE_BRACKET class_declaration  */
-#line 282 "./Celeste_parser.y"
-                                                                                                       {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_class_declaration) });
+#line 324 "./Celeste_parser.y"
+                                                                                                        {
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_class_declaration) });
 		(yyval.Celeste_meta_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
 	}
-#line 1423 "Celeste_parser.tab.c"
+#line 1959 "Celeste_parser.tab.c"
     break;
 
   case 12: /* meta_declaration: LEFT_SQUARE_BRACKET deamerreserved_star__expression__ RIGHT_SQUARE_BRACKET enum_declaration  */
-#line 286 "./Celeste_parser.y"
-                                                                                                      {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_enum_declaration) });
+#line 332 "./Celeste_parser.y"
+                                                                                                       {
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_enum_declaration) });
 		(yyval.Celeste_meta_declaration) = newNode;
-	}
-#line 1432 "Celeste_parser.tab.c"
-    break;
 
-  case 13: /* meta_declaration: LEFT_SQUARE_BRACKET deamerreserved_star__expression__ RIGHT_SQUARE_BRACKET function_declaration  */
-#line 290 "./Celeste_parser.y"
-                                                                                                          {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {3, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_function_declaration) });
-		(yyval.Celeste_meta_declaration) = newNode;
-	}
-#line 1441 "Celeste_parser.tab.c"
-    break;
-
-  case 14: /* deamerreserved_star__expression__: expression deamerreserved_star__expression__  */
-#line 297 "./Celeste_parser.y"
-                                                     {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__expression__({::Celeste::ast::Type::deamerreserved_star__expression__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_expression), (yyvsp[0].Celeste_deamerreserved_star__expression__) });
-		(yyval.Celeste_deamerreserved_star__expression__) = newNode;
-	}
-#line 1450 "Celeste_parser.tab.c"
-    break;
-
-  case 15: /* deamerreserved_star__expression__: %empty  */
-#line 301 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__expression__({::Celeste::ast::Type::deamerreserved_star__expression__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__expression__) = newNode;
-	}
-#line 1459 "Celeste_parser.tab.c"
-    break;
-
-  case 16: /* deamerreserved_arrow__RIGHT_SQUARE_BRACKET__: RIGHT_SQUARE_BRACKET deamerreserved_star__meta_declaration__  */
-#line 308 "./Celeste_parser.y"
-                                                                     {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__({::Celeste::ast::Type::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_deamerreserved_star__meta_declaration__) });
-		(yyval.Celeste_deamerreserved_arrow__RIGHT_SQUARE_BRACKET__) = newNode;
-	}
-#line 1468 "Celeste_parser.tab.c"
-    break;
-
-  case 17: /* deamerreserved_star__meta_declaration__: meta_declaration deamerreserved_star__meta_declaration__  */
-#line 315 "./Celeste_parser.y"
-                                                                 {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__meta_declaration__({::Celeste::ast::Type::deamerreserved_star__meta_declaration__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_meta_declaration), (yyvsp[0].Celeste_deamerreserved_star__meta_declaration__) });
-		(yyval.Celeste_deamerreserved_star__meta_declaration__) = newNode;
-	}
-#line 1477 "Celeste_parser.tab.c"
-    break;
-
-  case 18: /* deamerreserved_star__meta_declaration__: %empty  */
-#line 319 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__meta_declaration__({::Celeste::ast::Type::deamerreserved_star__meta_declaration__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__meta_declaration__) = newNode;
-	}
-#line 1486 "Celeste_parser.tab.c"
-    break;
-
-  case 19: /* expression: expression PLUS expression  */
-#line 326 "./Celeste_parser.y"
-                                   {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::PLUS({::Celeste::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_expression) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1495 "Celeste_parser.tab.c"
-    break;
-
-  case 20: /* expression: expression MINUS expression  */
-#line 330 "./Celeste_parser.y"
-                                      {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::MINUS({::Celeste::ast::Type::MINUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_expression) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1504 "Celeste_parser.tab.c"
-    break;
-
-  case 21: /* expression: expression DIVIDE expression  */
-#line 334 "./Celeste_parser.y"
-                                       {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::DIVIDE({::Celeste::ast::Type::DIVIDE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_expression) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1513 "Celeste_parser.tab.c"
-    break;
-
-  case 22: /* expression: expression MULTIPLY expression  */
-#line 338 "./Celeste_parser.y"
-                                         {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {3, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::MULTIPLY({::Celeste::ast::Type::MULTIPLY, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_expression) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1522 "Celeste_parser.tab.c"
-    break;
-
-  case 23: /* expression: expression USERDEFINED_OPERATOR expression  */
-#line 342 "./Celeste_parser.y"
-                                                     {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {4, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::USERDEFINED_OPERATOR({::Celeste::ast::Type::USERDEFINED_OPERATOR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_expression) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1531 "Celeste_parser.tab.c"
-    break;
-
-  case 24: /* expression: VARNAME  */
-#line 346 "./Celeste_parser.y"
-                  {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {5, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1540 "Celeste_parser.tab.c"
-    break;
-
-  case 25: /* expression: NUMBER  */
-#line 350 "./Celeste_parser.y"
-                 {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {6, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::NUMBER({::Celeste::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1549 "Celeste_parser.tab.c"
-    break;
-
-  case 26: /* expression: DECIMAL  */
-#line 354 "./Celeste_parser.y"
-                  {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {7, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::DECIMAL({::Celeste::ast::Type::DECIMAL, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1558 "Celeste_parser.tab.c"
-    break;
-
-  case 27: /* expression: TEXT  */
-#line 358 "./Celeste_parser.y"
-               {
-		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, {8, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::TEXT({::Celeste::ast::Type::TEXT, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_expression) = newNode;
-	}
-#line 1567 "Celeste_parser.tab.c"
-    break;
-
-  case 28: /* class_declaration: CLASS VARNAME COLON deamerreserved_arrow__base_type__ base_type class_block  */
-#line 365 "./Celeste_parser.y"
-                                                                                    {
-		auto* const newNode = new Celeste::ast::node::class_declaration({::Celeste::ast::Type::class_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::CLASS({::Celeste::ast::Type::CLASS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal)}), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal)}), (yyvsp[-2].Celeste_deamerreserved_arrow__base_type__), (yyvsp[-1].Celeste_base_type), (yyvsp[0].Celeste_class_block) });
-		(yyval.Celeste_class_declaration) = newNode;
-	}
-#line 1576 "Celeste_parser.tab.c"
-    break;
-
-  case 29: /* class_declaration: CLASS VARNAME class_block  */
-#line 369 "./Celeste_parser.y"
-                                    {
-		auto* const newNode = new Celeste::ast::node::class_declaration({::Celeste::ast::Type::class_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::CLASS({::Celeste::ast::Type::CLASS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal)}), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_class_block) });
-		(yyval.Celeste_class_declaration) = newNode;
-	}
-#line 1585 "Celeste_parser.tab.c"
-    break;
-
-  case 30: /* deamerreserved_arrow__base_type__: base_type deamerreserved_star__COMMA__  */
-#line 376 "./Celeste_parser.y"
-                                               {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__base_type__({::Celeste::ast::Type::deamerreserved_arrow__base_type__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_base_type), (yyvsp[0].Celeste_deamerreserved_star__COMMA__) });
-		(yyval.Celeste_deamerreserved_arrow__base_type__) = newNode;
-	}
-#line 1594 "Celeste_parser.tab.c"
-    break;
-
-  case 31: /* deamerreserved_star__COMMA__: COMMA deamerreserved_star__COMMA__  */
-#line 383 "./Celeste_parser.y"
-                                           {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__({::Celeste::ast::Type::deamerreserved_star__COMMA__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_deamerreserved_star__COMMA__) });
-		(yyval.Celeste_deamerreserved_star__COMMA__) = newNode;
-	}
-#line 1603 "Celeste_parser.tab.c"
-    break;
-
-  case 32: /* deamerreserved_star__COMMA__: %empty  */
-#line 387 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__({::Celeste::ast::Type::deamerreserved_star__COMMA__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__COMMA__) = newNode;
-	}
-#line 1612 "Celeste_parser.tab.c"
-    break;
-
-  case 33: /* base_type: VARNAME  */
-#line 394 "./Celeste_parser.y"
-                {
-		auto* const newNode = new Celeste::ast::node::base_type({::Celeste::ast::Type::base_type, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_base_type) = newNode;
-	}
-#line 1621 "Celeste_parser.tab.c"
-    break;
-
-  case 34: /* class_block: LEFT_BRACKET deamerreserved_star__class_stmt__ RIGHT_BRACKET  */
-#line 401 "./Celeste_parser.y"
-                                                                     {
-		auto* const newNode = new Celeste::ast::node::class_block({::Celeste::ast::Type::class_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_deamerreserved_star__class_stmt__) });
-		(yyval.Celeste_class_block) = newNode;
-	}
-#line 1630 "Celeste_parser.tab.c"
-    break;
-
-  case 35: /* deamerreserved_star__class_stmt__: class_stmt deamerreserved_star__class_stmt__  */
-#line 408 "./Celeste_parser.y"
-                                                     {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__class_stmt__({::Celeste::ast::Type::deamerreserved_star__class_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_class_stmt), (yyvsp[0].Celeste_deamerreserved_star__class_stmt__) });
-		(yyval.Celeste_deamerreserved_star__class_stmt__) = newNode;
-	}
-#line 1639 "Celeste_parser.tab.c"
-    break;
-
-  case 36: /* deamerreserved_star__class_stmt__: %empty  */
-#line 412 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__class_stmt__({::Celeste::ast::Type::deamerreserved_star__class_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__class_stmt__) = newNode;
-	}
-#line 1648 "Celeste_parser.tab.c"
-    break;
-
-  case 37: /* enum_declaration: ENUM VARNAME enum_block  */
-#line 419 "./Celeste_parser.y"
-                                {
-		auto* const newNode = new Celeste::ast::node::enum_declaration({::Celeste::ast::Type::enum_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::ENUM({::Celeste::ast::Type::ENUM, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal)}), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_enum_block) });
-		(yyval.Celeste_enum_declaration) = newNode;
-	}
-#line 1657 "Celeste_parser.tab.c"
-    break;
-
-  case 38: /* enum_block: LEFT_BRACKET deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ RIGHT_BRACKET  */
-#line 426 "./Celeste_parser.y"
-                                                                                                {
-		auto* const newNode = new Celeste::ast::node::enum_block({::Celeste::ast::Type::enum_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) });
-		(yyval.Celeste_enum_block) = newNode;
-	}
-#line 1666 "Celeste_parser.tab.c"
-    break;
-
-  case 39: /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____: enum_stmt deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____  */
-#line 433 "./Celeste_parser.y"
-                                                                               {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_enum_stmt), (yyvsp[0].Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) });
-		(yyval.Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) = newNode;
-	}
-#line 1675 "Celeste_parser.tab.c"
-    break;
-
-  case 40: /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____: COMMA deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____  */
-#line 437 "./Celeste_parser.y"
-                                                                             {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) });
-		(yyval.Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) = newNode;
-	}
-#line 1684 "Celeste_parser.tab.c"
-    break;
-
-  case 41: /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____: %empty  */
-#line 441 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) = newNode;
-	}
-#line 1693 "Celeste_parser.tab.c"
-    break;
-
-  case 42: /* function_declaration: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type SEMICOLON  */
-#line 448 "./Celeste_parser.y"
-                                                                                                                                                             {
-		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-6].Terminal)}), (yyvsp[-5].Celeste_function_name), (yyvsp[-3].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____), (yyvsp[-1].Celeste_return_type) });
-		(yyval.Celeste_function_declaration) = newNode;
-	}
-#line 1702 "Celeste_parser.tab.c"
-    break;
-
-  case 43: /* function_declaration: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS SEMICOLON  */
-#line 452 "./Celeste_parser.y"
-                                                                                                                                                   {
-		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal)}), (yyvsp[-4].Celeste_function_name), (yyvsp[-2].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____) });
-		(yyval.Celeste_function_declaration) = newNode;
-	}
-#line 1711 "Celeste_parser.tab.c"
-    break;
-
-  case 44: /* deamerreserved_arrow__deamerreserved_optional__function_argument____: function_argument deamerreserved_star__COMMA__function_argument__  */
-#line 459 "./Celeste_parser.y"
-                                                                          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____({::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_function_argument), (yyvsp[0].Celeste_deamerreserved_star__COMMA__function_argument__) });
-		(yyval.Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____) = newNode;
-	}
-#line 1720 "Celeste_parser.tab.c"
-    break;
-
-  case 45: /* deamerreserved_arrow__deamerreserved_optional__function_argument____: %empty  */
-#line 463 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____({::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____) = newNode;
-	}
-#line 1729 "Celeste_parser.tab.c"
-    break;
-
-  case 46: /* deamerreserved_star__COMMA__function_argument__: COMMA function_argument deamerreserved_star__COMMA__function_argument__  */
-#line 470 "./Celeste_parser.y"
-                                                                                {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_function_argument), (yyvsp[0].Celeste_deamerreserved_star__COMMA__function_argument__) });
-		(yyval.Celeste_deamerreserved_star__COMMA__function_argument__) = newNode;
-	}
-#line 1738 "Celeste_parser.tab.c"
-    break;
-
-  case 47: /* deamerreserved_star__COMMA__function_argument__: %empty  */
-#line 474 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__COMMA__function_argument__) = newNode;
-	}
-#line 1747 "Celeste_parser.tab.c"
-    break;
-
-  case 48: /* function_implementation: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type function_block  */
-#line 481 "./Celeste_parser.y"
-                                                                                                                                                                  {
-		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-6].Terminal)}), (yyvsp[-5].Celeste_function_name), (yyvsp[-3].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____), (yyvsp[-1].Celeste_return_type), (yyvsp[0].Celeste_function_block) });
-		(yyval.Celeste_function_implementation) = newNode;
-	}
-#line 1756 "Celeste_parser.tab.c"
-    break;
-
-  case 49: /* function_implementation: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS function_block  */
-#line 485 "./Celeste_parser.y"
-                                                                                                                                                        {
-		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal)}), (yyvsp[-4].Celeste_function_name), (yyvsp[-2].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____), (yyvsp[0].Celeste_function_block) });
-		(yyval.Celeste_function_implementation) = newNode;
-	}
-#line 1765 "Celeste_parser.tab.c"
-    break;
-
-  case 50: /* function_argument: type VARNAME EQ expression  */
-#line 492 "./Celeste_parser.y"
-                                   {
-		auto* const newNode = new Celeste::ast::node::function_argument({::Celeste::ast::Type::function_argument, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-3].Celeste_type), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal)}), new Celeste::ast::node::EQ({::Celeste::ast::Type::EQ, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}), (yyvsp[0].Celeste_expression) });
-		(yyval.Celeste_function_argument) = newNode;
-	}
-#line 1774 "Celeste_parser.tab.c"
-    break;
-
-  case 51: /* function_argument: type VARNAME  */
-#line 496 "./Celeste_parser.y"
-                       {
-		auto* const newNode = new Celeste::ast::node::function_argument({::Celeste::ast::Type::function_argument, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_type), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_function_argument) = newNode;
-	}
-#line 1783 "Celeste_parser.tab.c"
-    break;
-
-  case 52: /* type: VARNAME  */
-#line 503 "./Celeste_parser.y"
-                {
-		auto* const newNode = new Celeste::ast::node::type({::Celeste::ast::Type::type, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_type) = newNode;
-	}
-#line 1792 "Celeste_parser.tab.c"
-    break;
-
-  case 53: /* function_name: VARNAME  */
-#line 510 "./Celeste_parser.y"
-                {
-		auto* const newNode = new Celeste::ast::node::function_name({::Celeste::ast::Type::function_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_function_name) = newNode;
-	}
-#line 1801 "Celeste_parser.tab.c"
-    break;
-
-  case 54: /* return_type: VARNAME  */
-#line 517 "./Celeste_parser.y"
-                {
-		auto* const newNode = new Celeste::ast::node::return_type({::Celeste::ast::Type::return_type, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_return_type) = newNode;
-	}
-#line 1810 "Celeste_parser.tab.c"
-    break;
-
-  case 55: /* function_block: LEFT_BRACKET deamerreserved_star__function_stmt__ RIGHT_BRACKET  */
-#line 524 "./Celeste_parser.y"
-                                                                        {
-		auto* const newNode = new Celeste::ast::node::function_block({::Celeste::ast::Type::function_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_deamerreserved_star__function_stmt__) });
-		(yyval.Celeste_function_block) = newNode;
-	}
-#line 1819 "Celeste_parser.tab.c"
-    break;
-
-  case 56: /* deamerreserved_star__function_stmt__: function_stmt deamerreserved_star__function_stmt__  */
-#line 531 "./Celeste_parser.y"
-                                                           {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__function_stmt__({::Celeste::ast::Type::deamerreserved_star__function_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_function_stmt), (yyvsp[0].Celeste_deamerreserved_star__function_stmt__) });
-		(yyval.Celeste_deamerreserved_star__function_stmt__) = newNode;
-	}
-#line 1828 "Celeste_parser.tab.c"
-    break;
-
-  case 57: /* deamerreserved_star__function_stmt__: %empty  */
-#line 535 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__function_stmt__({::Celeste::ast::Type::deamerreserved_star__function_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__function_stmt__) = newNode;
-	}
-#line 1837 "Celeste_parser.tab.c"
-    break;
-
-  case 58: /* class_stmt: function_declaration  */
-#line 542 "./Celeste_parser.y"
-                             {
-		auto* const newNode = new Celeste::ast::node::class_stmt({::Celeste::ast::Type::class_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_function_declaration) });
-		(yyval.Celeste_class_stmt) = newNode;
-	}
-#line 1846 "Celeste_parser.tab.c"
-    break;
-
-  case 59: /* class_stmt: function_implementation  */
-#line 546 "./Celeste_parser.y"
-                                  {
-		auto* const newNode = new Celeste::ast::node::class_stmt({::Celeste::ast::Type::class_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_function_implementation) });
-		(yyval.Celeste_class_stmt) = newNode;
-	}
-#line 1855 "Celeste_parser.tab.c"
-    break;
-
-  case 60: /* enum_stmt: VARNAME  */
-#line 553 "./Celeste_parser.y"
-                {
-		auto* const newNode = new Celeste::ast::node::enum_stmt({::Celeste::ast::Type::enum_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal)}) });
-		(yyval.Celeste_enum_stmt) = newNode;
-	}
-#line 1864 "Celeste_parser.tab.c"
-    break;
-
-  case 61: /* function_stmt: logical_stmt  */
-#line 560 "./Celeste_parser.y"
-                     {
-		auto* const newNode = new Celeste::ast::node::function_stmt({::Celeste::ast::Type::function_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_logical_stmt) });
-		(yyval.Celeste_function_stmt) = newNode;
-	}
-#line 1873 "Celeste_parser.tab.c"
-    break;
-
-  case 62: /* logical_stmt: variable_declaration  */
-#line 567 "./Celeste_parser.y"
-                             {
-		auto* const newNode = new Celeste::ast::node::logical_stmt({::Celeste::ast::Type::logical_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_variable_declaration) });
-		(yyval.Celeste_logical_stmt) = newNode;
-	}
-#line 1882 "Celeste_parser.tab.c"
-    break;
-
-  case 63: /* logical_stmt: variable_initialization  */
-#line 571 "./Celeste_parser.y"
-                                  {
-		auto* const newNode = new Celeste::ast::node::logical_stmt({::Celeste::ast::Type::logical_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_variable_initialization) });
-		(yyval.Celeste_logical_stmt) = newNode;
-	}
-#line 1891 "Celeste_parser.tab.c"
-    break;
-
-  case 64: /* logical_stmt: condtional_declaration  */
-#line 575 "./Celeste_parser.y"
-                                 {
-		auto* const newNode = new Celeste::ast::node::logical_stmt({::Celeste::ast::Type::logical_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_condtional_declaration) });
-		(yyval.Celeste_logical_stmt) = newNode;
-	}
-#line 1900 "Celeste_parser.tab.c"
-    break;
-
-  case 65: /* condtional_declaration: IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  */
-#line 582 "./Celeste_parser.y"
-                                                                           {
-		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal)}), (yyvsp[-2].Celeste_expression), (yyvsp[0].Celeste_conditional_block) });
-		(yyval.Celeste_condtional_declaration) = newNode;
-	}
-#line 1909 "Celeste_parser.tab.c"
-    break;
-
-  case 66: /* condtional_declaration: ELSE IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  */
-#line 586 "./Celeste_parser.y"
-                                                                                  {
-		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal)}), new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal)}), (yyvsp[-2].Celeste_expression), (yyvsp[0].Celeste_conditional_block) });
-		(yyval.Celeste_condtional_declaration) = newNode;
-	}
-#line 1918 "Celeste_parser.tab.c"
-    break;
-
-  case 67: /* condtional_declaration: ELSE LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  */
-#line 590 "./Celeste_parser.y"
-                                                                               {
-		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {2, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal)}), (yyvsp[-2].Celeste_expression), (yyvsp[0].Celeste_conditional_block) });
-		(yyval.Celeste_condtional_declaration) = newNode;
-	}
-#line 1927 "Celeste_parser.tab.c"
-    break;
-
-  case 68: /* conditional_block: LEFT_BRACKET deamerreserved_star__condtional_stmt__ RIGHT_BRACKET  */
-#line 597 "./Celeste_parser.y"
-                                                                          {
-		auto* const newNode = new Celeste::ast::node::conditional_block({::Celeste::ast::Type::conditional_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_deamerreserved_star__condtional_stmt__) });
-		(yyval.Celeste_conditional_block) = newNode;
-	}
-#line 1936 "Celeste_parser.tab.c"
-    break;
-
-  case 69: /* deamerreserved_star__condtional_stmt__: condtional_stmt deamerreserved_star__condtional_stmt__  */
-#line 604 "./Celeste_parser.y"
-                                                               {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__condtional_stmt__({::Celeste::ast::Type::deamerreserved_star__condtional_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-1].Celeste_condtional_stmt), (yyvsp[0].Celeste_deamerreserved_star__condtional_stmt__) });
-		(yyval.Celeste_deamerreserved_star__condtional_stmt__) = newNode;
-	}
-#line 1945 "Celeste_parser.tab.c"
-    break;
-
-  case 70: /* deamerreserved_star__condtional_stmt__: %empty  */
-#line 608 "./Celeste_parser.y"
-          {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__condtional_stmt__({::Celeste::ast::Type::deamerreserved_star__condtional_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, {1, ::deamer::external::cpp::ast::ProductionRuleType::user}}, {  });
-		(yyval.Celeste_deamerreserved_star__condtional_stmt__) = newNode;
-	}
-#line 1954 "Celeste_parser.tab.c"
-    break;
-
-  case 71: /* condtional_stmt: logical_stmt  */
-#line 615 "./Celeste_parser.y"
-                     {
-		auto* const newNode = new Celeste::ast::node::condtional_stmt({::Celeste::ast::Type::condtional_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[0].Celeste_logical_stmt) });
-		(yyval.Celeste_condtional_stmt) = newNode;
-	}
-#line 1963 "Celeste_parser.tab.c"
-    break;
-
-  case 72: /* variable_declaration: type VARNAME SEMICOLON  */
-#line 622 "./Celeste_parser.y"
-                               {
-		auto* const newNode = new Celeste::ast::node::variable_declaration({::Celeste::ast::Type::variable_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-2].Celeste_type), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal)}) });
-		(yyval.Celeste_variable_declaration) = newNode;
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
 	}
 #line 1972 "Celeste_parser.tab.c"
     break;
 
-  case 73: /* variable_initialization: type VARNAME EQ expression SEMICOLON  */
-#line 629 "./Celeste_parser.y"
-                                             {
-		auto* const newNode = new Celeste::ast::node::variable_initialization({::Celeste::ast::Type::variable_initialization, ::deamer::external::cpp::ast::NodeValue::nonterminal, {0, ::deamer::external::cpp::ast::ProductionRuleType::user}}, { (yyvsp[-4].Celeste_type), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-3].Terminal)}), new Celeste::ast::node::EQ({::Celeste::ast::Type::EQ, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal)}), (yyvsp[-1].Celeste_expression) });
-		(yyval.Celeste_variable_initialization) = newNode;
+  case 13: /* meta_declaration: LEFT_SQUARE_BRACKET deamerreserved_star__expression__ RIGHT_SQUARE_BRACKET function_declaration  */
+#line 340 "./Celeste_parser.y"
+                                                                                                           {
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_deamerreserved_star__expression__), (yyvsp[0].Celeste_function_declaration) });
+		(yyval.Celeste_meta_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
 	}
-#line 1981 "Celeste_parser.tab.c"
+#line 1985 "Celeste_parser.tab.c"
+    break;
+
+  case 14: /* deamerreserved_star__expression__: expression deamerreserved_star__expression__  */
+#line 352 "./Celeste_parser.y"
+                                                      {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__expression__({::Celeste::ast::Type::deamerreserved_star__expression__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_expression), (yyvsp[0].Celeste_deamerreserved_star__expression__) });
+		(yyval.Celeste_deamerreserved_star__expression__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1996 "Celeste_parser.tab.c"
+    break;
+
+  case 15: /* deamerreserved_star__expression__: %empty  */
+#line 358 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__expression__({::Celeste::ast::Type::deamerreserved_star__expression__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__expression__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2007 "Celeste_parser.tab.c"
+    break;
+
+  case 16: /* deamerreserved_arrow__RIGHT_SQUARE_BRACKET__: RIGHT_SQUARE_BRACKET deamerreserved_star__meta_declaration__  */
+#line 368 "./Celeste_parser.y"
+                                                                      {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__({::Celeste::ast::Type::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[0].Celeste_deamerreserved_star__meta_declaration__) });
+		(yyval.Celeste_deamerreserved_arrow__RIGHT_SQUARE_BRACKET__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-1].Terminal);
+	}
+#line 2019 "Celeste_parser.tab.c"
+    break;
+
+  case 17: /* deamerreserved_star__meta_declaration__: meta_declaration deamerreserved_star__meta_declaration__  */
+#line 379 "./Celeste_parser.y"
+                                                                  {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__meta_declaration__({::Celeste::ast::Type::deamerreserved_star__meta_declaration__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_meta_declaration), (yyvsp[0].Celeste_deamerreserved_star__meta_declaration__) });
+		(yyval.Celeste_deamerreserved_star__meta_declaration__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2030 "Celeste_parser.tab.c"
+    break;
+
+  case 18: /* deamerreserved_star__meta_declaration__: %empty  */
+#line 385 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__meta_declaration__({::Celeste::ast::Type::deamerreserved_star__meta_declaration__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__meta_declaration__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2041 "Celeste_parser.tab.c"
+    break;
+
+  case 19: /* expression: expression PLUS expression  */
+#line 395 "./Celeste_parser.y"
+                                    {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::PLUS({::Celeste::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].Celeste_expression) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2052 "Celeste_parser.tab.c"
+    break;
+
+  case 20: /* expression: expression MINUS expression  */
+#line 401 "./Celeste_parser.y"
+                                       {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::MINUS({::Celeste::ast::Type::MINUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].Celeste_expression) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2063 "Celeste_parser.tab.c"
+    break;
+
+  case 21: /* expression: expression DIVIDE expression  */
+#line 407 "./Celeste_parser.y"
+                                        {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::DIVIDE({::Celeste::ast::Type::DIVIDE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].Celeste_expression) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2074 "Celeste_parser.tab.c"
+    break;
+
+  case 22: /* expression: expression MULTIPLY expression  */
+#line 413 "./Celeste_parser.y"
+                                          {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::MULTIPLY({::Celeste::ast::Type::MULTIPLY, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].Celeste_expression) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2085 "Celeste_parser.tab.c"
+    break;
+
+  case 23: /* expression: expression USERDEFINED_OPERATOR expression  */
+#line 419 "./Celeste_parser.y"
+                                                      {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_expression), new Celeste::ast::node::USERDEFINED_OPERATOR({::Celeste::ast::Type::USERDEFINED_OPERATOR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].Celeste_expression) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2096 "Celeste_parser.tab.c"
+    break;
+
+  case 24: /* expression: VARNAME  */
+#line 425 "./Celeste_parser.y"
+                   {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2107 "Celeste_parser.tab.c"
+    break;
+
+  case 25: /* expression: NUMBER  */
+#line 431 "./Celeste_parser.y"
+                  {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::NUMBER({::Celeste::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2118 "Celeste_parser.tab.c"
+    break;
+
+  case 26: /* expression: DECIMAL  */
+#line 437 "./Celeste_parser.y"
+                   {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::DECIMAL({::Celeste::ast::Type::DECIMAL, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2129 "Celeste_parser.tab.c"
+    break;
+
+  case 27: /* expression: TEXT  */
+#line 443 "./Celeste_parser.y"
+                {
+		auto* const newNode = new Celeste::ast::node::expression({::Celeste::ast::Type::expression, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 8, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::TEXT({::Celeste::ast::Type::TEXT, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_expression) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2140 "Celeste_parser.tab.c"
+    break;
+
+  case 28: /* class_declaration: CLASS class_name COLON deamerreserved_arrow__base_type__ base_type class_block  */
+#line 453 "./Celeste_parser.y"
+                                                                                        {
+		auto* const newNode = new Celeste::ast::node::class_declaration({::Celeste::ast::Type::class_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::CLASS({::Celeste::ast::Type::CLASS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal) }), (yyvsp[-4].Celeste_class_name), (yyvsp[-2].Celeste_deamerreserved_arrow__base_type__), (yyvsp[-1].Celeste_base_type), (yyvsp[0].Celeste_class_block) });
+		(yyval.Celeste_class_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+	}
+#line 2152 "Celeste_parser.tab.c"
+    break;
+
+  case 29: /* class_declaration: CLASS class_name class_block  */
+#line 460 "./Celeste_parser.y"
+                                        {
+		auto* const newNode = new Celeste::ast::node::class_declaration({::Celeste::ast::Type::class_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::CLASS({::Celeste::ast::Type::CLASS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal) }), (yyvsp[-1].Celeste_class_name), (yyvsp[0].Celeste_class_block) });
+		(yyval.Celeste_class_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2163 "Celeste_parser.tab.c"
+    break;
+
+  case 30: /* deamerreserved_arrow__base_type__: base_type deamerreserved_star__COMMA__  */
+#line 470 "./Celeste_parser.y"
+                                                {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__base_type__({::Celeste::ast::Type::deamerreserved_arrow__base_type__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_base_type), (yyvsp[0].Celeste_deamerreserved_star__COMMA__) });
+		(yyval.Celeste_deamerreserved_arrow__base_type__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2174 "Celeste_parser.tab.c"
+    break;
+
+  case 31: /* deamerreserved_star__COMMA__: COMMA deamerreserved_star__COMMA__  */
+#line 480 "./Celeste_parser.y"
+                                            {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__({::Celeste::ast::Type::deamerreserved_star__COMMA__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[0].Celeste_deamerreserved_star__COMMA__) });
+		(yyval.Celeste_deamerreserved_star__COMMA__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-1].Terminal);
+	}
+#line 2186 "Celeste_parser.tab.c"
+    break;
+
+  case 32: /* deamerreserved_star__COMMA__: %empty  */
+#line 487 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__({::Celeste::ast::Type::deamerreserved_star__COMMA__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__COMMA__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2197 "Celeste_parser.tab.c"
+    break;
+
+  case 33: /* class_name: VARNAME  */
+#line 497 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::class_name({::Celeste::ast::Type::class_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_class_name) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2208 "Celeste_parser.tab.c"
+    break;
+
+  case 34: /* base_type: VARNAME  */
+#line 507 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::base_type({::Celeste::ast::Type::base_type, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_base_type) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2219 "Celeste_parser.tab.c"
+    break;
+
+  case 35: /* class_block: LEFT_BRACKET deamerreserved_star__class_stmt__ RIGHT_BRACKET  */
+#line 517 "./Celeste_parser.y"
+                                                                      {
+		auto* const newNode = new Celeste::ast::node::class_block({::Celeste::ast::Type::class_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].Celeste_deamerreserved_star__class_stmt__) });
+		(yyval.Celeste_class_block) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-2].Terminal);
+		delete (yyvsp[0].Terminal);
+	}
+#line 2232 "Celeste_parser.tab.c"
+    break;
+
+  case 36: /* deamerreserved_star__class_stmt__: class_stmt deamerreserved_star__class_stmt__  */
+#line 529 "./Celeste_parser.y"
+                                                      {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__class_stmt__({::Celeste::ast::Type::deamerreserved_star__class_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_class_stmt), (yyvsp[0].Celeste_deamerreserved_star__class_stmt__) });
+		(yyval.Celeste_deamerreserved_star__class_stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2243 "Celeste_parser.tab.c"
+    break;
+
+  case 37: /* deamerreserved_star__class_stmt__: %empty  */
+#line 535 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__class_stmt__({::Celeste::ast::Type::deamerreserved_star__class_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__class_stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2254 "Celeste_parser.tab.c"
+    break;
+
+  case 38: /* enum_declaration: ENUM enum_name enum_block  */
+#line 545 "./Celeste_parser.y"
+                                   {
+		auto* const newNode = new Celeste::ast::node::enum_declaration({::Celeste::ast::Type::enum_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::ENUM({::Celeste::ast::Type::ENUM, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal) }), (yyvsp[-1].Celeste_enum_name), (yyvsp[0].Celeste_enum_block) });
+		(yyval.Celeste_enum_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2265 "Celeste_parser.tab.c"
+    break;
+
+  case 39: /* enum_name: VARNAME  */
+#line 555 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::enum_name({::Celeste::ast::Type::enum_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_enum_name) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2276 "Celeste_parser.tab.c"
+    break;
+
+  case 40: /* enum_block: LEFT_BRACKET deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ RIGHT_BRACKET  */
+#line 565 "./Celeste_parser.y"
+                                                                                                 {
+		auto* const newNode = new Celeste::ast::node::enum_block({::Celeste::ast::Type::enum_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) });
+		(yyval.Celeste_enum_block) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-2].Terminal);
+		delete (yyvsp[0].Terminal);
+	}
+#line 2289 "Celeste_parser.tab.c"
+    break;
+
+  case 41: /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____: enum_stmt deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____  */
+#line 577 "./Celeste_parser.y"
+                                                                                {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_enum_stmt), (yyvsp[0].Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) });
+		(yyval.Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2300 "Celeste_parser.tab.c"
+    break;
+
+  case 42: /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____: COMMA deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____  */
+#line 583 "./Celeste_parser.y"
+                                                                              {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[0].Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) });
+		(yyval.Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-1].Terminal);
+	}
+#line 2312 "Celeste_parser.tab.c"
+    break;
+
+  case 43: /* deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____: %empty  */
+#line 590 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2323 "Celeste_parser.tab.c"
+    break;
+
+  case 44: /* function_declaration: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type SEMICOLON  */
+#line 600 "./Celeste_parser.y"
+                                                                                                                                                              {
+		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-6].Terminal) }), (yyvsp[-5].Celeste_function_name), (yyvsp[-3].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____), (yyvsp[-1].Celeste_return_type) });
+		(yyval.Celeste_function_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-4].Terminal);
+		delete (yyvsp[-2].Terminal);
+		delete (yyvsp[0].Terminal);
+	}
+#line 2337 "Celeste_parser.tab.c"
+    break;
+
+  case 45: /* function_declaration: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS SEMICOLON  */
+#line 609 "./Celeste_parser.y"
+                                                                                                                                                    {
+		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal) }), (yyvsp[-4].Celeste_function_name), (yyvsp[-2].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____) });
+		(yyval.Celeste_function_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
+		delete (yyvsp[0].Terminal);
+	}
+#line 2351 "Celeste_parser.tab.c"
+    break;
+
+  case 46: /* deamerreserved_arrow__deamerreserved_optional__function_argument____: function_argument deamerreserved_star__COMMA__function_argument__  */
+#line 622 "./Celeste_parser.y"
+                                                                           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____({::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_function_argument), (yyvsp[0].Celeste_deamerreserved_star__COMMA__function_argument__) });
+		(yyval.Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2362 "Celeste_parser.tab.c"
+    break;
+
+  case 47: /* deamerreserved_arrow__deamerreserved_optional__function_argument____: %empty  */
+#line 628 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__deamerreserved_optional__function_argument____({::Celeste::ast::Type::deamerreserved_arrow__deamerreserved_optional__function_argument____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2373 "Celeste_parser.tab.c"
+    break;
+
+  case 48: /* deamerreserved_star__COMMA__function_argument__: COMMA function_argument deamerreserved_star__COMMA__function_argument__  */
+#line 638 "./Celeste_parser.y"
+                                                                                 {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_function_argument), (yyvsp[0].Celeste_deamerreserved_star__COMMA__function_argument__) });
+		(yyval.Celeste_deamerreserved_star__COMMA__function_argument__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-2].Terminal);
+	}
+#line 2385 "Celeste_parser.tab.c"
+    break;
+
+  case 49: /* deamerreserved_star__COMMA__function_argument__: %empty  */
+#line 645 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__COMMA__function_argument__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2396 "Celeste_parser.tab.c"
+    break;
+
+  case 50: /* function_implementation: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type function_block  */
+#line 655 "./Celeste_parser.y"
+                                                                                                                                                                   {
+		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-6].Terminal) }), (yyvsp[-5].Celeste_function_name), (yyvsp[-3].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____), (yyvsp[-1].Celeste_return_type), (yyvsp[0].Celeste_function_block) });
+		(yyval.Celeste_function_implementation) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-4].Terminal);
+		delete (yyvsp[-2].Terminal);
+	}
+#line 2409 "Celeste_parser.tab.c"
+    break;
+
+  case 51: /* function_implementation: FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS function_block  */
+#line 663 "./Celeste_parser.y"
+                                                                                                                                                         {
+		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal) }), (yyvsp[-4].Celeste_function_name), (yyvsp[-2].Celeste_deamerreserved_arrow__deamerreserved_optional__function_argument____), (yyvsp[0].Celeste_function_block) });
+		(yyval.Celeste_function_implementation) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
+	}
+#line 2422 "Celeste_parser.tab.c"
+    break;
+
+  case 52: /* function_argument: function_arg_type function_arg_name EQ expression  */
+#line 675 "./Celeste_parser.y"
+                                                           {
+		auto* const newNode = new Celeste::ast::node::function_argument({::Celeste::ast::Type::function_argument, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-3].Celeste_function_arg_type), (yyvsp[-2].Celeste_function_arg_name), new Celeste::ast::node::EQ({::Celeste::ast::Type::EQ, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].Celeste_expression) });
+		(yyval.Celeste_function_argument) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2433 "Celeste_parser.tab.c"
+    break;
+
+  case 53: /* function_argument: function_arg_type function_arg_name  */
+#line 681 "./Celeste_parser.y"
+                                               {
+		auto* const newNode = new Celeste::ast::node::function_argument({::Celeste::ast::Type::function_argument, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].Celeste_function_arg_type), (yyvsp[0].Celeste_function_arg_name) });
+		(yyval.Celeste_function_argument) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2444 "Celeste_parser.tab.c"
+    break;
+
+  case 54: /* function_arg_type: VARNAME  */
+#line 691 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::function_arg_type({::Celeste::ast::Type::function_arg_type, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_function_arg_type) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2455 "Celeste_parser.tab.c"
+    break;
+
+  case 55: /* function_arg_name: VARNAME  */
+#line 701 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::function_arg_name({::Celeste::ast::Type::function_arg_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_function_arg_name) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2466 "Celeste_parser.tab.c"
+    break;
+
+  case 56: /* type: VARNAME  */
+#line 711 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::type({::Celeste::ast::Type::type, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_type) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2477 "Celeste_parser.tab.c"
+    break;
+
+  case 57: /* function_name: VARNAME  */
+#line 721 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::function_name({::Celeste::ast::Type::function_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_function_name) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2488 "Celeste_parser.tab.c"
+    break;
+
+  case 58: /* return_type: VARNAME  */
+#line 731 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::return_type({::Celeste::ast::Type::return_type, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_return_type) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2499 "Celeste_parser.tab.c"
+    break;
+
+  case 59: /* function_block: LEFT_BRACKET deamerreserved_star__function_stmt__ RIGHT_BRACKET  */
+#line 741 "./Celeste_parser.y"
+                                                                         {
+		auto* const newNode = new Celeste::ast::node::function_block({::Celeste::ast::Type::function_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].Celeste_deamerreserved_star__function_stmt__) });
+		(yyval.Celeste_function_block) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-2].Terminal);
+		delete (yyvsp[0].Terminal);
+	}
+#line 2512 "Celeste_parser.tab.c"
+    break;
+
+  case 60: /* deamerreserved_star__function_stmt__: function_stmt deamerreserved_star__function_stmt__  */
+#line 753 "./Celeste_parser.y"
+                                                            {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__function_stmt__({::Celeste::ast::Type::deamerreserved_star__function_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_function_stmt), (yyvsp[0].Celeste_deamerreserved_star__function_stmt__) });
+		(yyval.Celeste_deamerreserved_star__function_stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2523 "Celeste_parser.tab.c"
+    break;
+
+  case 61: /* deamerreserved_star__function_stmt__: %empty  */
+#line 759 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__function_stmt__({::Celeste::ast::Type::deamerreserved_star__function_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__function_stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2534 "Celeste_parser.tab.c"
+    break;
+
+  case 62: /* class_stmt: variable_declaration  */
+#line 769 "./Celeste_parser.y"
+                              {
+		auto* const newNode = new Celeste::ast::node::class_stmt({::Celeste::ast::Type::class_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_variable_declaration) });
+		(yyval.Celeste_class_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2545 "Celeste_parser.tab.c"
+    break;
+
+  case 63: /* class_stmt: function_declaration  */
+#line 775 "./Celeste_parser.y"
+                                {
+		auto* const newNode = new Celeste::ast::node::class_stmt({::Celeste::ast::Type::class_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_function_declaration) });
+		(yyval.Celeste_class_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2556 "Celeste_parser.tab.c"
+    break;
+
+  case 64: /* class_stmt: function_implementation  */
+#line 781 "./Celeste_parser.y"
+                                   {
+		auto* const newNode = new Celeste::ast::node::class_stmt({::Celeste::ast::Type::class_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_function_implementation) });
+		(yyval.Celeste_class_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2567 "Celeste_parser.tab.c"
+    break;
+
+  case 65: /* enum_stmt: VARNAME  */
+#line 791 "./Celeste_parser.y"
+                 {
+		auto* const newNode = new Celeste::ast::node::enum_stmt({::Celeste::ast::Type::enum_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
+		(yyval.Celeste_enum_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2578 "Celeste_parser.tab.c"
+    break;
+
+  case 66: /* function_stmt: logical_stmt  */
+#line 801 "./Celeste_parser.y"
+                      {
+		auto* const newNode = new Celeste::ast::node::function_stmt({::Celeste::ast::Type::function_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_logical_stmt) });
+		(yyval.Celeste_function_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2589 "Celeste_parser.tab.c"
+    break;
+
+  case 67: /* logical_stmt: variable_declaration  */
+#line 811 "./Celeste_parser.y"
+                              {
+		auto* const newNode = new Celeste::ast::node::logical_stmt({::Celeste::ast::Type::logical_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_variable_declaration) });
+		(yyval.Celeste_logical_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2600 "Celeste_parser.tab.c"
+    break;
+
+  case 68: /* logical_stmt: variable_initialization  */
+#line 817 "./Celeste_parser.y"
+                                   {
+		auto* const newNode = new Celeste::ast::node::logical_stmt({::Celeste::ast::Type::logical_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_variable_initialization) });
+		(yyval.Celeste_logical_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2611 "Celeste_parser.tab.c"
+    break;
+
+  case 69: /* logical_stmt: condtional_declaration  */
+#line 823 "./Celeste_parser.y"
+                                  {
+		auto* const newNode = new Celeste::ast::node::logical_stmt({::Celeste::ast::Type::logical_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_condtional_declaration) });
+		(yyval.Celeste_logical_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2622 "Celeste_parser.tab.c"
+    break;
+
+  case 70: /* condtional_declaration: IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  */
+#line 833 "./Celeste_parser.y"
+                                                                            {
+		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-2].Celeste_expression), (yyvsp[0].Celeste_conditional_block) });
+		(yyval.Celeste_condtional_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
+	}
+#line 2635 "Celeste_parser.tab.c"
+    break;
+
+  case 71: /* condtional_declaration: ELSE IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  */
+#line 841 "./Celeste_parser.y"
+                                                                                   {
+		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-5].Terminal) }), new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-2].Celeste_expression), (yyvsp[0].Celeste_conditional_block) });
+		(yyval.Celeste_condtional_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
+	}
+#line 2648 "Celeste_parser.tab.c"
+    break;
+
+  case 72: /* condtional_declaration: ELSE LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  */
+#line 849 "./Celeste_parser.y"
+                                                                                {
+		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-2].Celeste_expression), (yyvsp[0].Celeste_conditional_block) });
+		(yyval.Celeste_condtional_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-3].Terminal);
+		delete (yyvsp[-1].Terminal);
+	}
+#line 2661 "Celeste_parser.tab.c"
+    break;
+
+  case 73: /* conditional_block: LEFT_BRACKET deamerreserved_star__condtional_stmt__ RIGHT_BRACKET  */
+#line 861 "./Celeste_parser.y"
+                                                                           {
+		auto* const newNode = new Celeste::ast::node::conditional_block({::Celeste::ast::Type::conditional_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].Celeste_deamerreserved_star__condtional_stmt__) });
+		(yyval.Celeste_conditional_block) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[-2].Terminal);
+		delete (yyvsp[0].Terminal);
+	}
+#line 2674 "Celeste_parser.tab.c"
+    break;
+
+  case 74: /* deamerreserved_star__condtional_stmt__: condtional_stmt deamerreserved_star__condtional_stmt__  */
+#line 873 "./Celeste_parser.y"
+                                                                {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__condtional_stmt__({::Celeste::ast::Type::deamerreserved_star__condtional_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].Celeste_condtional_stmt), (yyvsp[0].Celeste_deamerreserved_star__condtional_stmt__) });
+		(yyval.Celeste_deamerreserved_star__condtional_stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2685 "Celeste_parser.tab.c"
+    break;
+
+  case 75: /* deamerreserved_star__condtional_stmt__: %empty  */
+#line 879 "./Celeste_parser.y"
+           {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__condtional_stmt__({::Celeste::ast::Type::deamerreserved_star__condtional_stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		(yyval.Celeste_deamerreserved_star__condtional_stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2696 "Celeste_parser.tab.c"
+    break;
+
+  case 76: /* condtional_stmt: logical_stmt  */
+#line 889 "./Celeste_parser.y"
+                      {
+		auto* const newNode = new Celeste::ast::node::condtional_stmt({::Celeste::ast::Type::condtional_stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].Celeste_logical_stmt) });
+		(yyval.Celeste_condtional_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2707 "Celeste_parser.tab.c"
+    break;
+
+  case 77: /* variable_declaration: type VARNAME SEMICOLON  */
+#line 899 "./Celeste_parser.y"
+                                {
+		auto* const newNode = new Celeste::ast::node::variable_declaration({::Celeste::ast::Type::variable_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].Celeste_type), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }) });
+		(yyval.Celeste_variable_declaration) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[0].Terminal);
+	}
+#line 2719 "Celeste_parser.tab.c"
+    break;
+
+  case 78: /* variable_initialization: type VARNAME EQ expression SEMICOLON  */
+#line 910 "./Celeste_parser.y"
+                                              {
+		auto* const newNode = new Celeste::ast::node::variable_initialization({::Celeste::ast::Type::variable_initialization, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-4].Celeste_type), new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-3].Terminal) }), new Celeste::ast::node::EQ({::Celeste::ast::Type::EQ, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal) }), (yyvsp[-1].Celeste_expression) });
+		(yyval.Celeste_variable_initialization) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete (yyvsp[0].Terminal);
+	}
+#line 2731 "Celeste_parser.tab.c"
     break;
 
 
-#line 1985 "Celeste_parser.tab.c"
+#line 2735 "Celeste_parser.tab.c"
 
-      default: break;
-    }
+        default: break;
+      }
+    if (yychar_backup != yychar)
+      YY_LAC_DISCARD ("yychar change");
+  }
   /* User semantic actions sometimes alter yychar, and that requires
      that yytoken be updated with the new translation.  We take the
      approach of translating immediately before every use of yytoken.
@@ -2028,7 +2781,39 @@ yyerrlab:
   if (!yyerrstatus)
     {
       ++yynerrs;
-      yyerror (YY_("syntax error"));
+      {
+        yypcontext_t yyctx
+          = {yyssp, yyesa, &yyes, &yyes_capacity, yytoken};
+        char const *yymsgp = YY_("syntax error");
+        int yysyntax_error_status;
+        if (yychar != YYEMPTY)
+          YY_LAC_ESTABLISH;
+        yysyntax_error_status = yysyntax_error (&yymsg_alloc, &yymsg, &yyctx);
+        if (yysyntax_error_status == 0)
+          yymsgp = yymsg;
+        else if (yysyntax_error_status == -1)
+          {
+            if (yymsg != yymsgbuf)
+              YYSTACK_FREE (yymsg);
+            yymsg = YY_CAST (char *,
+                             YYSTACK_ALLOC (YY_CAST (YYSIZE_T, yymsg_alloc)));
+            if (yymsg)
+              {
+                yysyntax_error_status
+                  = yysyntax_error (&yymsg_alloc, &yymsg, &yyctx);
+                yymsgp = yymsg;
+              }
+            else
+              {
+                yymsg = yymsgbuf;
+                yymsg_alloc = sizeof yymsgbuf;
+                yysyntax_error_status = YYENOMEM;
+              }
+          }
+        yyerror (yymsgp);
+        if (yysyntax_error_status == YYENOMEM)
+          YYNOMEM;
+      }
     }
 
   if (yyerrstatus == 3)
@@ -2063,6 +2848,7 @@ yyerrorlab:
      label yyerrorlab therefore never appears in user code.  */
   if (0)
     YYERROR;
+  ++yynerrs;
 
   /* Do not reclaim the symbols of the rule whose action triggered
      this YYERROR.  */
@@ -2106,6 +2892,10 @@ yyerrlab1:
       YY_STACK_PRINT (yyss, yyssp);
     }
 
+  /* If the stack popping above didn't lose the initial context for the
+     current lookahead token, the shift below will for sure.  */
+  YY_LAC_DISCARD ("error recovery");
+
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END
@@ -2123,7 +2913,7 @@ yyerrlab1:
 `-------------------------------------*/
 yyacceptlab:
   yyresult = 0;
-  goto yyreturn;
+  goto yyreturnlab;
 
 
 /*-----------------------------------.
@@ -2131,24 +2921,22 @@ yyacceptlab:
 `-----------------------------------*/
 yyabortlab:
   yyresult = 1;
-  goto yyreturn;
+  goto yyreturnlab;
 
 
-#if !defined yyoverflow
-/*-------------------------------------------------.
-| yyexhaustedlab -- memory exhaustion comes here.  |
-`-------------------------------------------------*/
+/*-----------------------------------------------------------.
+| yyexhaustedlab -- YYNOMEM (memory exhaustion) comes here.  |
+`-----------------------------------------------------------*/
 yyexhaustedlab:
   yyerror (YY_("memory exhausted"));
   yyresult = 2;
-  goto yyreturn;
-#endif
+  goto yyreturnlab;
 
 
-/*-------------------------------------------------------.
-| yyreturn -- parsing is finished, clean up and return.  |
-`-------------------------------------------------------*/
-yyreturn:
+/*----------------------------------------------------------.
+| yyreturnlab -- parsing is finished, clean up and return.  |
+`----------------------------------------------------------*/
+yyreturnlab:
   if (yychar != YYEMPTY)
     {
       /* Make sure we have latest lookahead translation.  See comments at
@@ -2171,11 +2959,14 @@ yyreturn:
   if (yyss != yyssa)
     YYSTACK_FREE (yyss);
 #endif
-
+  if (yyes != yyesa)
+    YYSTACK_FREE (yyes);
+  if (yymsg != yymsgbuf)
+    YYSTACK_FREE (yymsg);
   return yyresult;
 }
 
-#line 635 "./Celeste_parser.y"
+#line 921 "./Celeste_parser.y"
 
 
 void Celesteerror(const char* s)
@@ -2194,4 +2985,3 @@ deamer::external::cpp::ast::Tree* Celeste::parser::Parser::Parse(const std::stri
 
 	return outputTree;
 }
-

@@ -1,9 +1,20 @@
+/* 
+ * This file is auto-generated and auto-maintained by DLDL
+ * Do not change code in this as it can be overwritten.
+ *
+ * For more information see the DLDL repo: https://github.com/Deruago/DLDL
+ * For more information about Deamer: https://github.com/Deruago/theDeamerProject
+ */
+
 #ifndef CELESTE_LEXICON_H
 #define CELESTE_LEXICON_H
+
 #include "Deamer/Language/Generator/Definition/Property/User/Main/Lexicon.h"
+
 namespace Celeste
 {
 	class Language;
+
 	class Lexicon : public ::deamer::language::generator::definition::property::user::Lexicon<
 								::Celeste::Language>
 	{
@@ -46,6 +57,7 @@ namespace Celeste
 					::Celeste::Language>(language)
 		{
 		}
+
 		void GenerateObjects() override
 		{
 			// Terminals
@@ -79,6 +91,7 @@ DECIMAL.Set(deamer::language::type::definition::object::main::Terminal("DECIMAL"
 TEXT.Set(deamer::language::type::definition::object::main::Terminal("TEXT", "[\"]([\\\\][\"]|[\\\\][\\\\]|[^\"])*[\"]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 ESCAPE_CHARS.Set(deamer::language::type::definition::object::main::Terminal("ESCAPE_CHARS", "[\\n\\r\\t\\a\\b\\f\\v ]+", ::deamer::language::type::definition::object::main::SpecialType::Delete));
 
+
 			// Add object calls
 			// AddObject(...)
 			AddObject(CLASS);
@@ -111,6 +124,7 @@ AddObject(DECIMAL);
 AddObject(TEXT);
 AddObject(ESCAPE_CHARS);
 
+
 			// Place higher level operations here.
 			// ReplaceObject(..., ...)
 			// DeleteObject(..., ...)
@@ -118,4 +132,5 @@ AddObject(ESCAPE_CHARS);
 		}
 	};
 }
+
 #endif // CELESTE_LEXICON_H

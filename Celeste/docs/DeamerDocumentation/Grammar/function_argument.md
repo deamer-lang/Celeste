@@ -16,8 +16,8 @@ Overview of the nonterminal: **[function_argument](./function_argument.md)**
 
 | ProductionRule |
 | ---- |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md)  |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md)  |
+| [function_arg_type](./function_arg_type.md) [function_arg_name](./function_arg_name.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md)  |
+| [function_arg_type](./function_arg_type.md) [function_arg_name](./function_arg_name.md)  |
 
 
 

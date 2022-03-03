@@ -63,6 +63,11 @@ namespace Celeste { namespace ast { namespace relation {
 			return true;
 		}
 
+		if (t == ::Celeste::ast::Type::class_name)
+		{
+			return false;
+		}
+
 		if (t == ::Celeste::ast::Type::base_type)
 		{
 			return false;
@@ -79,6 +84,11 @@ namespace Celeste { namespace ast { namespace relation {
 		}
 
 		if (t == ::Celeste::ast::Type::enum_declaration)
+		{
+			return false;
+		}
+
+		if (t == ::Celeste::ast::Type::enum_name)
 		{
 			return false;
 		}
@@ -114,6 +124,16 @@ namespace Celeste { namespace ast { namespace relation {
 		}
 
 		if (t == ::Celeste::ast::Type::function_argument)
+		{
+			return false;
+		}
+
+		if (t == ::Celeste::ast::Type::function_arg_type)
+		{
+			return false;
+		}
+
+		if (t == ::Celeste::ast::Type::function_arg_name)
 		{
 			return false;
 		}
