@@ -1,5 +1,8 @@
 Generate: lexer Flex
+Generate: lexer Antlr_Lexer
+Generate: lexer Dleg
 Generate: parser Bison
+Generate: parser Antlr_Parser
 Generate: ast CPP
 Generate: extension DeamerDocumentation
 Generate: extension OopSyntaxRecognizer

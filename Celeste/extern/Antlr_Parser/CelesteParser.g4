@@ -64,19 +64,24 @@ expression:
 	;
 
 class_declaration:
-	CLASS VARNAME COLON deamerreserved_arrow__base_type__ base_type class_block 
-	| CLASS VARNAME class_block 
+	CLASS class_name COLON deamerreserved_arrow__base_type__ class_block 
+	| CLASS class_name class_block 
 
 	;
 
 deamerreserved_arrow__base_type__:
-	base_type deamerreserved_star__COMMA__ 
+	base_type deamerreserved_star__COMMA__base_type__ 
 
 	;
 
-deamerreserved_star__COMMA__:
-	COMMA deamerreserved_star__COMMA__ 
+deamerreserved_star__COMMA__base_type__:
+	COMMA base_type deamerreserved_star__COMMA__base_type__ 
 	| 
+
+	;
+
+class_name:
+	VARNAME 
 
 	;
 
@@ -97,7 +102,12 @@ deamerreserved_star__class_stmt__:
 	;
 
 enum_declaration:
-	ENUM VARNAME enum_block 
+	ENUM enum_name enum_block 
+
+	;
+
+enum_name:
+	VARNAME 
 
 	;
 
@@ -138,8 +148,18 @@ function_implementation:
 	;
 
 function_argument:
-	type VARNAME EQ expression 
-	| type VARNAME 
+	function_arg_type function_arg_name EQ expression 
+	| function_arg_type function_arg_name 
+
+	;
+
+function_arg_type:
+	VARNAME 
+
+	;
+
+function_arg_name:
+	VARNAME 
 
 	;
 
@@ -170,7 +190,8 @@ deamerreserved_star__function_stmt__:
 	;
 
 class_stmt:
-	function_declaration 
+	variable_declaration 
+	| function_declaration 
 	| function_implementation 
 
 	;

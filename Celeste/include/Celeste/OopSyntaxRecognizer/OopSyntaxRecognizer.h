@@ -140,7 +140,36 @@ namespace Celeste::ast::listener::tool::oopsyntaxrecognizer
 
 
 
+		void ListenEntry(const Celeste::ast::node::base_type* node) override
+		{
+			BaseTypeFlavor++;
+			FlavorStack.push_back(FlavorType::BaseType);
+			currentBaseTypeObject = new ::deamer::external::cpp::tool::oopsyntaxrecognizer::BaseTypeObject();
+			createdBaseTypes.push_back(currentBaseTypeObject);
+		}
 
+
+
+		void ListenExit(const Celeste::ast::node::base_type* node) override
+		{
+			BaseTypeFlavor--;
+			FlavorStack.pop_back();
+			
+			if (ClassFlavor > 0 && currentClassObject != nullptr && GetTopOfFlavorStack() == FlavorType::Class)
+			{
+				currentClassObject->AddBaseType(currentBaseTypeObject);
+			}
+			else if (StructFlavor > 0 && currentStructObject != nullptr && GetTopOfFlavorStack() == FlavorType::Struct)
+			{
+				currentStructObject->AddBaseType(currentBaseTypeObject);
+			}
+			else if (InterfaceFlavor > 0 && currentInterfaceObject != nullptr && GetTopOfFlavorStack() == FlavorType::Interface)
+			{
+				currentInterfaceObject->AddBaseType(currentBaseTypeObject);
+			}
+
+			currentBaseTypeObject = nullptr;
+		}
 
 
 
@@ -188,7 +217,23 @@ namespace Celeste::ast::listener::tool::oopsyntaxrecognizer
 
 
 
+		void ListenEntry(const Celeste::ast::node::enum_declaration* node) override
+		{
+			EnumFlavor++;
+			FlavorStack.push_back(FlavorType::Enum);
+			currentEnumObject =
+				new ::deamer::external::cpp::tool::oopsyntaxrecognizer::EnumObject();
+			createdTypes.push_back(currentEnumObject);
+		}
 
+
+
+		void ListenExit(const Celeste::ast::node::enum_declaration* node) override
+		{
+			EnumFlavor--;
+			FlavorStack.pop_back();
+			currentEnumObject = nullptr;
+		}
 
 
 
@@ -227,9 +272,45 @@ namespace Celeste::ast::listener::tool::oopsyntaxrecognizer
 			currentPropertyObject = new ::deamer::external::cpp::tool::oopsyntaxrecognizer::PropertyObject();
 		}
 
+		void ListenEntry(const Celeste::ast::node::variable_initialization* node) override
+		{
+			PropertyFlavor++;
+			FlavorStack.push_back(FlavorType::Property);
+			currentPropertyObject = new ::deamer::external::cpp::tool::oopsyntaxrecognizer::PropertyObject();
+		}
+
 
 
 		void ListenExit(const Celeste::ast::node::variable_declaration* node) override
+		{
+			PropertyFlavor--;
+			FlavorStack.pop_back();
+
+			if (ClassFlavor > 0 && FunctionFlavor > 0)
+			{
+				// Add to function
+			}
+			else if (StructFlavor > 0 && FunctionFlavor > 0)
+			{
+				// Add to function
+			}
+			else if (ClassFlavor > 0 && GetTopOfFlavorStack() == FlavorType::Class && currentClassObject != nullptr)
+			{
+				currentClassObject->AddProperty(currentPropertyObject);
+			}
+			else if (StructFlavor > 0 && GetTopOfFlavorStack() == FlavorType::Struct && currentStructObject != nullptr)
+			{
+				currentStructObject->AddProperty(currentPropertyObject);
+			}
+			else
+			{
+				globalProperties.push_back(currentPropertyObject);
+			}
+
+			currentPropertyObject = nullptr;
+		}
+
+		void ListenExit(const Celeste::ast::node::variable_initialization* node) override
 		{
 			PropertyFlavor--;
 			FlavorStack.pop_back();
@@ -267,6 +348,23 @@ namespace Celeste::ast::listener::tool::oopsyntaxrecognizer
 			// This is extended each time a new specialization
 			const ::deamer::external::cpp::ast::Node* parent = node;
 parent = parent->GetParent();
+			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::class_declaration) && (parent->GetMatchedProductionRule().id == 0))
+			{
+				// If the conditional was True, checks if the next conditions are correct
+				// And executes the logic.
+							if (ClassFlavor > 0 && GetTopOfFlavorStack() == FlavorType::Class &&
+				currentClassObject != nullptr)
+			{
+				currentClassObject->SetTypeName(node->GetText());
+			}
+			else
+			{
+				// Error
+			}
+
+			}
+
+
 			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::class_declaration) && (parent->GetMatchedProductionRule().id == 1))
 			{
 				// If the conditional was True, checks if the next conditions are correct
@@ -275,6 +373,31 @@ parent = parent->GetParent();
 				currentClassObject != nullptr)
 			{
 				currentClassObject->SetTypeName(node->GetText());
+			}
+			else
+			{
+				// Error
+			}
+
+			}
+
+
+		}
+
+
+		void ListenEntry(const Celeste::ast::node::enum_name* node) override
+		{
+			// This is extended each time a new specialization
+			const ::deamer::external::cpp::ast::Node* parent = node;
+parent = parent->GetParent();
+			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::enum_declaration) && (parent->GetMatchedProductionRule().id == 0))
+			{
+				// If the conditional was True, checks if the next conditions are correct
+				// And executes the logic.
+							if (EnumFlavor > 0 && GetTopOfFlavorStack() == FlavorType::Enum &&
+				currentEnumObject != nullptr)
+			{
+				currentEnumObject->SetTypeName(node->GetText());
 			}
 			else
 			{
@@ -393,6 +516,23 @@ parent = parent->GetParent();
 			}
 
 
+			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::variable_initialization) && (parent->GetMatchedProductionRule().id == 0))
+			{
+				// If the conditional was True, checks if the next conditions are correct
+				// And executes the logic.
+							if (PropertyFlavor > 0 && GetTopOfFlavorStack() == FlavorType::Property &&
+				currentPropertyObject != nullptr)
+			{
+				currentPropertyObject->SetType(GetType(node->GetText()));
+			}
+			else
+			{
+				// Error
+			}
+
+			}
+
+
 		}
 
 
@@ -454,6 +594,23 @@ parent = parent->GetParent();
 			// This is extended each time a new specialization
 			const ::deamer::external::cpp::ast::Node* parent = node;
 parent = parent->GetParent();
+			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::base_type) && (parent->GetMatchedProductionRule().id == 0))
+			{
+				// If the conditional was True, checks if the next conditions are correct
+				// And executes the logic.
+							if (BaseTypeFlavor > 0 && GetTopOfFlavorStack() == FlavorType::BaseType &&
+				currentBaseTypeObject != nullptr)
+			{
+				currentBaseTypeObject->SetType(GetType(node->GetText()));
+			}
+			else
+			{
+				// Error
+			}
+
+			}
+
+
 			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::variable_declaration) && (parent->GetMatchedProductionRule().id == 0))
 			{
 				// If the conditional was True, checks if the next conditions are correct
@@ -462,6 +619,40 @@ parent = parent->GetParent();
 				currentPropertyObject != nullptr)
 			{
 				currentPropertyObject->SetName(node->GetText());
+			}
+			else
+			{
+				// Error
+			}
+
+			}
+
+
+			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::variable_initialization) && (parent->GetMatchedProductionRule().id == 0))
+			{
+				// If the conditional was True, checks if the next conditions are correct
+				// And executes the logic.
+							if (PropertyFlavor > 0 && GetTopOfFlavorStack() == FlavorType::Property &&
+				currentPropertyObject != nullptr)
+			{
+				currentPropertyObject->SetName(node->GetText());
+			}
+			else
+			{
+				// Error
+			}
+
+			}
+
+
+			if ((parent != nullptr) && (parent->GetType() == Celeste::ast::Type::enum_stmt) && (parent->GetMatchedProductionRule().id == 0))
+			{
+				// If the conditional was True, checks if the next conditions are correct
+				// And executes the logic.
+							if (EnumFlavor > 0 && GetTopOfFlavorStack() == FlavorType::Enum &&
+				currentEnumObject != nullptr)
+			{
+				currentEnumObject->AddMember(node->GetText());
 			}
 			else
 			{

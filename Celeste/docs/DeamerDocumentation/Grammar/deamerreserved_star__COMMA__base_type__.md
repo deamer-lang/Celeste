@@ -1,6 +1,6 @@
-# NonTerminal: **[base_type](./base_type.md)**
+# NonTerminal: **[deamerreserved_star__COMMA__base_type__](./deamerreserved_star__COMMA__base_type__.md)**
 
-Overview of the nonterminal: **[base_type](./base_type.md)**
+Overview of the nonterminal: **[deamerreserved_star__COMMA__base_type__](./deamerreserved_star__COMMA__base_type__.md)**
 
 
 
@@ -8,7 +8,7 @@ Overview of the nonterminal: **[base_type](./base_type.md)**
 
 | Name:                | Abstraction:    | Is Inlined |
 | -------------------- | --------------- | ---------- |
-| base_type | Standard | No |
+| deamerreserved_star__COMMA__base_type__ | Standard | Yes |
 
 
 
@@ -16,7 +16,8 @@ Overview of the nonterminal: **[base_type](./base_type.md)**
 
 | ProductionRule |
 | ---- |
-| [VARNAME](./../Lexicon/VARNAME.md)  |
+| [COMMA](./../Lexicon/COMMA.md) [base_type](./base_type.md) [deamerreserved_star__COMMA__base_type__](./deamerreserved_star__COMMA__base_type__.md)  |
+| EMPTY  |
 
 
 

@@ -8,4 +8,7 @@
 # This file is part of the directory: extern
 
 add_subdirectory(Flex)
+add_subdirectory(Antlr_Lexer)
+add_subdirectory(Dleg)
 add_subdirectory(Bison)
+add_subdirectory(Antlr_Parser)

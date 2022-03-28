@@ -58,7 +58,7 @@ namespace Celeste { namespace ast { namespace relation {
 			return true;
 		}
 
-		if (t == ::Celeste::ast::Type::deamerreserved_star__COMMA__)
+		if (t == ::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__)
 		{
 			return true;
 		}

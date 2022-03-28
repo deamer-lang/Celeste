@@ -18,7 +18,7 @@ Overview of the terminal: **[NOTEQ](./NOTEQ.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[NOTEQ](./NOTEQ.md)** | [!][=] | NoValue |
+| **[NOTEQ](./NOTEQ.md)** | [!][=] | Standard |
 
 
 

@@ -60,8 +60,8 @@ namespace Celeste { namespace ast { namespace relation {
 	}
 	
 
-	case ::Celeste::ast::Type::deamerreserved_star__COMMA__: {
-		return "deamerreserved_star__COMMA__";
+	case ::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__: {
+		return "deamerreserved_star__COMMA__base_type__";
 	}
 	
 

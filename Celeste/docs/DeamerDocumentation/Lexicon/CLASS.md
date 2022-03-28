@@ -17,7 +17,7 @@ Overview of the terminal: **[CLASS](./CLASS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[CLASS](./CLASS.md)** | class | NoValue |
+| **[CLASS](./CLASS.md)** | class | Standard |
 
 
 
@@ -30,7 +30,7 @@ Overview of the terminal: **[CLASS](./CLASS.md)**.
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [CLASS](./CLASS.md) [class_name](./../Grammar/class_name.md) [COLON](./COLON.md) [deamerreserved_arrow__base_type__](./../Grammar/deamerreserved_arrow__base_type__.md) [base_type](./../Grammar/base_type.md) [class_block](./../Grammar/class_block.md)  |
+| [CLASS](./CLASS.md) [class_name](./../Grammar/class_name.md) [COLON](./COLON.md) [deamerreserved_arrow__base_type__](./../Grammar/deamerreserved_arrow__base_type__.md) [class_block](./../Grammar/class_block.md)  |
 | [CLASS](./CLASS.md) [class_name](./../Grammar/class_name.md) [class_block](./../Grammar/class_block.md)  |
 
 

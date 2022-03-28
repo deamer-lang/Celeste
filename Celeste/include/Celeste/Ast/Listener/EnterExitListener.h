@@ -45,7 +45,7 @@
 #include "Celeste/Ast/Node/expression.h"
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
-#include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__base_type__.h"
 #include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
@@ -461,12 +461,12 @@ namespace Celeste { namespace ast { namespace listener {
 				break;
 			}
 
-			case Celeste::ast::Type::deamerreserved_star__COMMA__:
+			case Celeste::ast::Type::deamerreserved_star__COMMA__base_type__:
 			{
 				// Enter nonterminal
 				EnterAnything(node);
 				EnterNonTerminal(node);
-				ListenEntry(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__*>(node));
+				ListenEntry(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__base_type__*>(node));
 				break;
 			}
 
@@ -1104,10 +1104,10 @@ namespace Celeste { namespace ast { namespace listener {
 				break;
 			}
 
-			case Celeste::ast::Type::deamerreserved_star__COMMA__:
+			case Celeste::ast::Type::deamerreserved_star__COMMA__base_type__:
 			{
 				// Exit nonterminal
-				ListenExit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__*>(node));
+				ListenExit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__base_type__*>(node));
 				ExitNonTerminal(node);
 				ExitAnything(node);
 				break;
@@ -1662,7 +1662,7 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
-		virtual void ListenEntry(const Celeste::ast::node::deamerreserved_star__COMMA__* node) 
+		virtual void ListenEntry(const Celeste::ast::node::deamerreserved_star__COMMA__base_type__* node) 
 		{
 		}
 
@@ -1827,7 +1827,7 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
-		virtual void ListenExit(const Celeste::ast::node::deamerreserved_star__COMMA__* node) 
+		virtual void ListenExit(const Celeste::ast::node::deamerreserved_star__COMMA__base_type__* node) 
 		{
 		}
 

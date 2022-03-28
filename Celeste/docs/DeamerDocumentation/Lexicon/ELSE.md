@@ -18,7 +18,7 @@ Overview of the terminal: **[ELSE](./ELSE.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[ELSE](./ELSE.md)** | else | NoValue |
+| **[ELSE](./ELSE.md)** | else | Standard |
 
 
 

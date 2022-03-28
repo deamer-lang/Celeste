@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 	::Celeste::CompilerGenerator Celeste_compiler;
 	::deamer::file::generate::Compiler Celeste_WriteToDisk(Celeste_compiler.Generate());
 	Celeste_WriteToDisk.SetProjectType(::deamer::file::generate::Compiler::ProjectType::single);
+	
 	Celeste_WriteToDisk.Generate();
 
 

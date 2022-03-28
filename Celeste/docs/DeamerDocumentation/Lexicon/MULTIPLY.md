@@ -18,7 +18,7 @@ Overview of the terminal: **[MULTIPLY](./MULTIPLY.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[MULTIPLY](./MULTIPLY.md)** | [*] | NoValue |
+| **[MULTIPLY](./MULTIPLY.md)** | [*] | Standard |
 
 
 

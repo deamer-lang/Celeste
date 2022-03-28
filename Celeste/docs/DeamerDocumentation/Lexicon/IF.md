@@ -18,7 +18,7 @@ Overview of the terminal: **[IF](./IF.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[IF](./IF.md)** | if | NoValue |
+| **[IF](./IF.md)** | if | Standard |
 
 
 

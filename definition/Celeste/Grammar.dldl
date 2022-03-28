@@ -30,7 +30,7 @@ expression
 	TEXT
 
 class_declaration
-	CLASS class_name COLON base_type -> COMMA base_type class_block
+	CLASS class_name COLON base_type -> (COMMA base_type) class_block
 	CLASS class_name class_block
 
 class_name

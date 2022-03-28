@@ -18,7 +18,7 @@ Overview of the terminal: **[ENUM](./ENUM.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[ENUM](./ENUM.md)** | enum | NoValue |
+| **[ENUM](./ENUM.md)** | enum | Standard |
 
 
 

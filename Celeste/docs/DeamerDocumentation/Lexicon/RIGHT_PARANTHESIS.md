@@ -18,7 +18,7 @@ Overview of the terminal: **[RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)** | [)] | Ignore |
+| **[RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)** | [)] | Standard |
 
 
 

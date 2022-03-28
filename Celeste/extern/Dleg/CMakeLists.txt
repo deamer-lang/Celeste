@@ -5,8 +5,7 @@
 # If you want to contribute to Deamer.
 # Please visit: https://github.com/Deruago/theDeamerProject 
 #
-# This file is part of the directory: Flex
+# This file is part of the directory: Dleg
 
-set(source_files ./lex.Celeste.cpp)
-#Celeste_add_external_library(Flex ${source_files})
-
+set(source_files ./Dleg.cpp)
+Celeste_add_external_library(Dleg ${source_files})

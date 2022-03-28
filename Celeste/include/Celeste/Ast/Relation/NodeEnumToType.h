@@ -13,7 +13,7 @@
 #include "Celeste/Ast/Node/expression.h"
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
-#include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__base_type__.h"
 #include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
@@ -156,10 +156,10 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__COMMA__>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__>
 	{
-		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__;
-		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__;
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__;
+		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__;
 	};
 
 	template<>

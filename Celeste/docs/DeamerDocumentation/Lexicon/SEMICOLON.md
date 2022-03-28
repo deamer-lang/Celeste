@@ -18,7 +18,7 @@ Overview of the terminal: **[SEMICOLON](./SEMICOLON.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[SEMICOLON](./SEMICOLON.md)** | [;] | Ignore |
+| **[SEMICOLON](./SEMICOLON.md)** | [;] | Standard |
 
 
 

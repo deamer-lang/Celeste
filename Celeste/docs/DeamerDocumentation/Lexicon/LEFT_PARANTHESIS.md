@@ -18,7 +18,7 @@ Overview of the terminal: **[LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md)** | [(] | Ignore |
+| **[LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md)** | [(] | Standard |
 
 
 

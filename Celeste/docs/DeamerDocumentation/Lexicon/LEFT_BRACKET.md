@@ -18,7 +18,7 @@ Overview of the terminal: **[LEFT_BRACKET](./LEFT_BRACKET.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[LEFT_BRACKET](./LEFT_BRACKET.md)** | [{] | Ignore |
+| **[LEFT_BRACKET](./LEFT_BRACKET.md)** | [{] | Standard |
 
 
 

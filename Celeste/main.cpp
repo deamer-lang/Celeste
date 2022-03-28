@@ -1,6 +1,7 @@
 #include "Celeste/Ast/Listener/User/StructureTranslator.h"
 #include "Celeste/Ast/Visualisation/Graph.h"
 #include "Celeste/Bison/Parser.h"
+//#include "Celeste/Dleg/Lexer.h"
 #include "Celeste/OopSyntaxRecognizer/OopSyntaxRecognizer.h"
 #include "Deamer/External/Cpp/Tool/OopToPlantUML/Type/ConvertOopModelToPUML.h"
 #include <fstream>
@@ -36,7 +37,15 @@ int main(int argc, const char* argv[])
 		std::cout << "File: " << filename << "\n";
 		std::cout << text << "\n";
 		std::cout << "\n";
+		/*
+		auto lexer = Celeste::lexer::Lexer();
+		auto tokens = lexer.Tokenize(text);
 
+		for (auto token : tokens)
+		{
+			token->Print();
+		}
+		*/
 		auto parser = Celeste::parser::Parser();
 		auto* ast = parser.Parse(text);
 		if (ast == nullptr)
@@ -79,6 +88,7 @@ int main(int argc, const char* argv[])
 			std::cout << puml << "\n";
 		}
 		delete ast;
+		
 	}
 
 	std::cout << "Compilation succeeded!\n";

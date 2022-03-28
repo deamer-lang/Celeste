@@ -18,7 +18,7 @@ Overview of the terminal: **[COMMA](./COMMA.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[COMMA](./COMMA.md)** | [,] | Ignore |
+| **[COMMA](./COMMA.md)** | [,] | Standard |
 
 
 
@@ -27,11 +27,11 @@ Overview of the terminal: **[COMMA](./COMMA.md)**.
 ### NonTerminals
 
 
-#### [deamerreserved_star__COMMA__](./../Grammar/deamerreserved_star__COMMA__.md)
+#### [deamerreserved_star__COMMA__base_type__](./../Grammar/deamerreserved_star__COMMA__base_type__.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [COMMA](./COMMA.md) [deamerreserved_star__COMMA__](./../Grammar/deamerreserved_star__COMMA__.md)  |
+| [COMMA](./COMMA.md) [base_type](./../Grammar/base_type.md) [deamerreserved_star__COMMA__base_type__](./../Grammar/deamerreserved_star__COMMA__base_type__.md)  |
 
 
 #### [deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____](./../Grammar/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.md)

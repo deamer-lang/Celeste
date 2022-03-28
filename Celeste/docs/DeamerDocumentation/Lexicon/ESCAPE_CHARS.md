@@ -18,7 +18,7 @@ Overview of the terminal: **[ESCAPE_CHARS](./ESCAPE_CHARS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[ESCAPE_CHARS](./ESCAPE_CHARS.md)** | [\n\r\t\a\b\f\v ]+ | Delete |
+| **[ESCAPE_CHARS](./ESCAPE_CHARS.md)** | [\n\r\t ]+ | Delete |
 
 
 

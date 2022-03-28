@@ -18,7 +18,7 @@ Overview of the terminal: **[DIVIDE](./DIVIDE.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[DIVIDE](./DIVIDE.md)** | [/] | NoValue |
+| **[DIVIDE](./DIVIDE.md)** | [/] | Standard |
 
 
 

@@ -1,6 +1,7 @@
 %define parse.error verbose
 %define parse.lac full
 
+
 %{
 #include <iostream>
 #include <vector>
@@ -54,7 +55,7 @@
 #include "Celeste/Ast/Node/expression.h"
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
-#include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__base_type__.h"
 #include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
@@ -141,7 +142,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 %nterm<Celeste_expression> expression
 %nterm<Celeste_class_declaration> class_declaration
 %nterm<Celeste_deamerreserved_arrow__base_type__> deamerreserved_arrow__base_type__
-%nterm<Celeste_deamerreserved_star__COMMA__> deamerreserved_star__COMMA__
+%nterm<Celeste_deamerreserved_star__COMMA__base_type__> deamerreserved_star__COMMA__base_type__
 %nterm<Celeste_class_name> class_name
 %nterm<Celeste_base_type> base_type
 %nterm<Celeste_class_block> class_block
@@ -215,7 +216,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 	::Celeste::ast::node::expression* Celeste_expression;
 	::Celeste::ast::node::class_declaration* Celeste_class_declaration;
 	::Celeste::ast::node::deamerreserved_arrow__base_type__* Celeste_deamerreserved_arrow__base_type__;
-	::Celeste::ast::node::deamerreserved_star__COMMA__* Celeste_deamerreserved_star__COMMA__;
+	::Celeste::ast::node::deamerreserved_star__COMMA__base_type__* Celeste_deamerreserved_star__COMMA__base_type__;
 	::Celeste::ast::node::class_name* Celeste_class_name;
 	::Celeste::ast::node::base_type* Celeste_base_type;
 	::Celeste::ast::node::class_block* Celeste_class_block;
@@ -315,35 +316,28 @@ stmt:
 
 meta_declaration:
 	LEFT_SQUARE_BRACKET deamerreserved_star__expression__ deamerreserved_arrow__RIGHT_SQUARE_BRACKET__  {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2, $3 });
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_SQUARE_BRACKET({::Celeste::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $3 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
 	}
 	| LEFT_SQUARE_BRACKET deamerreserved_star__expression__ RIGHT_SQUARE_BRACKET class_declaration  {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2, $4 });
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_SQUARE_BRACKET({::Celeste::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::RIGHT_SQUARE_BRACKET({::Celeste::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
-		delete $3;
 	}
 	| LEFT_SQUARE_BRACKET deamerreserved_star__expression__ RIGHT_SQUARE_BRACKET enum_declaration  {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2, $4 });
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_SQUARE_BRACKET({::Celeste::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::RIGHT_SQUARE_BRACKET({::Celeste::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
-		delete $3;
 	}
 	| LEFT_SQUARE_BRACKET deamerreserved_star__expression__ RIGHT_SQUARE_BRACKET function_declaration  {
-		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2, $4 });
+		auto* const newNode = new Celeste::ast::node::meta_declaration({::Celeste::ast::Type::meta_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_SQUARE_BRACKET({::Celeste::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::RIGHT_SQUARE_BRACKET({::Celeste::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
-		delete $3;
 	}
 ;
 
@@ -366,11 +360,10 @@ deamerreserved_star__expression__:
 
 deamerreserved_arrow__RIGHT_SQUARE_BRACKET__:
 	RIGHT_SQUARE_BRACKET deamerreserved_star__meta_declaration__  {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__({::Celeste::ast::Type::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $2 });
+		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__({::Celeste::ast::Type::deamerreserved_arrow__RIGHT_SQUARE_BRACKET__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new Celeste::ast::node::RIGHT_SQUARE_BRACKET({::Celeste::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
 	}
 ;
 
@@ -450,12 +443,11 @@ expression:
 
 
 class_declaration:
-	CLASS class_name COLON deamerreserved_arrow__base_type__ base_type class_block  {
-		auto* const newNode = new Celeste::ast::node::class_declaration({::Celeste::ast::Type::class_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::CLASS({::Celeste::ast::Type::CLASS, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $4, $5, $6 });
+	CLASS class_name COLON deamerreserved_arrow__base_type__ class_block  {
+		auto* const newNode = new Celeste::ast::node::class_declaration({::Celeste::ast::Type::class_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::CLASS({::Celeste::ast::Type::CLASS, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::COLON({::Celeste::ast::Type::COLON, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4, $5 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $3;
 	}
 	| CLASS class_name class_block  {
 		auto* const newNode = new Celeste::ast::node::class_declaration({::Celeste::ast::Type::class_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::CLASS({::Celeste::ast::Type::CLASS, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $3 });
@@ -467,7 +459,7 @@ class_declaration:
 
 
 deamerreserved_arrow__base_type__:
-	base_type deamerreserved_star__COMMA__  {
+	base_type deamerreserved_star__COMMA__base_type__  {
 		auto* const newNode = new Celeste::ast::node::deamerreserved_arrow__base_type__({::Celeste::ast::Type::deamerreserved_arrow__base_type__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, $2 });
 		$$ = newNode;
 
@@ -476,16 +468,15 @@ deamerreserved_arrow__base_type__:
 ;
 
 
-deamerreserved_star__COMMA__:
-	COMMA deamerreserved_star__COMMA__  {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__({::Celeste::ast::Type::deamerreserved_star__COMMA__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $2 });
+deamerreserved_star__COMMA__base_type__:
+	COMMA base_type deamerreserved_star__COMMA__base_type__  {
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__base_type__({::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new Celeste::ast::node::COMMA({::Celeste::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $3 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
 	}
 	|  {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__({::Celeste::ast::Type::deamerreserved_star__COMMA__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__base_type__({::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
@@ -515,12 +506,10 @@ base_type:
 
 class_block:
 	LEFT_BRACKET deamerreserved_star__class_stmt__ RIGHT_BRACKET  {
-		auto* const newNode = new Celeste::ast::node::class_block({::Celeste::ast::Type::class_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2 });
+		auto* const newNode = new Celeste::ast::node::class_block({::Celeste::ast::Type::class_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_BRACKET({::Celeste::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::RIGHT_BRACKET({::Celeste::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
-		delete $3;
 	}
 ;
 
@@ -563,12 +552,10 @@ enum_name:
 
 enum_block:
 	LEFT_BRACKET deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____ RIGHT_BRACKET  {
-		auto* const newNode = new Celeste::ast::node::enum_block({::Celeste::ast::Type::enum_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2 });
+		auto* const newNode = new Celeste::ast::node::enum_block({::Celeste::ast::Type::enum_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_BRACKET({::Celeste::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::RIGHT_BRACKET({::Celeste::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
-		delete $3;
 	}
 ;
 
@@ -581,11 +568,10 @@ deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____:
 		// Ignored, Deleted, tokens are deleted
 	}
 	| COMMA deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____  {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $2 });
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new Celeste::ast::node::COMMA({::Celeste::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
 	}
 	|  {
 		auto* const newNode = new Celeste::ast::node::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____({::Celeste::ast::Type::deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
@@ -598,22 +584,16 @@ deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____:
 
 function_declaration:
 	FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type SEMICOLON  {
-		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $4, $6 });
+		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::LEFT_PARANTHESIS({::Celeste::ast::Type::LEFT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4, new Celeste::ast::node::RIGHT_PARANTHESIS({::Celeste::ast::Type::RIGHT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $5 }), $6, new Celeste::ast::node::SEMICOLON({::Celeste::ast::Type::SEMICOLON, ::deamer::external::cpp::ast::NodeValue::terminal, $7 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $3;
-		delete $5;
-		delete $7;
 	}
 	| FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS SEMICOLON  {
-		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $4 });
+		auto* const newNode = new Celeste::ast::node::function_declaration({::Celeste::ast::Type::function_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::LEFT_PARANTHESIS({::Celeste::ast::Type::LEFT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4, new Celeste::ast::node::RIGHT_PARANTHESIS({::Celeste::ast::Type::RIGHT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $5 }), new Celeste::ast::node::SEMICOLON({::Celeste::ast::Type::SEMICOLON, ::deamer::external::cpp::ast::NodeValue::terminal, $6 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $3;
-		delete $5;
-		delete $6;
 	}
 ;
 
@@ -636,11 +616,10 @@ deamerreserved_arrow__deamerreserved_optional__function_argument____:
 
 deamerreserved_star__COMMA__function_argument__:
 	COMMA function_argument deamerreserved_star__COMMA__function_argument__  {
-		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $2, $3 });
+		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new Celeste::ast::node::COMMA({::Celeste::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $3 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
 	}
 	|  {
 		auto* const newNode = new Celeste::ast::node::deamerreserved_star__COMMA__function_argument__({::Celeste::ast::Type::deamerreserved_star__COMMA__function_argument__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
@@ -653,20 +632,16 @@ deamerreserved_star__COMMA__function_argument__:
 
 function_implementation:
 	FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS return_type function_block  {
-		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $4, $6, $7 });
+		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::LEFT_PARANTHESIS({::Celeste::ast::Type::LEFT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4, new Celeste::ast::node::RIGHT_PARANTHESIS({::Celeste::ast::Type::RIGHT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $5 }), $6, $7 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $3;
-		delete $5;
 	}
 	| FUNCTION function_name LEFT_PARANTHESIS deamerreserved_arrow__deamerreserved_optional__function_argument____ RIGHT_PARANTHESIS function_block  {
-		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, $4, $6 });
+		auto* const newNode = new Celeste::ast::node::function_implementation({::Celeste::ast::Type::function_implementation, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FUNCTION({::Celeste::ast::Type::FUNCTION, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::LEFT_PARANTHESIS({::Celeste::ast::Type::LEFT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4, new Celeste::ast::node::RIGHT_PARANTHESIS({::Celeste::ast::Type::RIGHT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $5 }), $6 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $3;
-		delete $5;
 	}
 ;
 
@@ -739,12 +714,10 @@ return_type:
 
 function_block:
 	LEFT_BRACKET deamerreserved_star__function_stmt__ RIGHT_BRACKET  {
-		auto* const newNode = new Celeste::ast::node::function_block({::Celeste::ast::Type::function_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2 });
+		auto* const newNode = new Celeste::ast::node::function_block({::Celeste::ast::Type::function_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_BRACKET({::Celeste::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::RIGHT_BRACKET({::Celeste::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
-		delete $3;
 	}
 ;
 
@@ -831,40 +804,32 @@ logical_stmt:
 
 condtional_declaration:
 	IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  {
-		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $3, $5 });
+		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), new Celeste::ast::node::LEFT_PARANTHESIS({::Celeste::ast::Type::LEFT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), $3, new Celeste::ast::node::RIGHT_PARANTHESIS({::Celeste::ast::Type::RIGHT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $4 }), $5 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $2;
-		delete $4;
 	}
 	| ELSE IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  {
-		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), $4, $6 });
+		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), new Celeste::ast::node::IF({::Celeste::ast::Type::IF, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), new Celeste::ast::node::LEFT_PARANTHESIS({::Celeste::ast::Type::LEFT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4, new Celeste::ast::node::RIGHT_PARANTHESIS({::Celeste::ast::Type::RIGHT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $5 }), $6 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $3;
-		delete $5;
 	}
 	| ELSE LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block  {
-		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $3, $5 });
+		auto* const newNode = new Celeste::ast::node::condtional_declaration({::Celeste::ast::Type::condtional_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::ELSE({::Celeste::ast::Type::ELSE, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), new Celeste::ast::node::LEFT_PARANTHESIS({::Celeste::ast::Type::LEFT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), $3, new Celeste::ast::node::RIGHT_PARANTHESIS({::Celeste::ast::Type::RIGHT_PARANTHESIS, ::deamer::external::cpp::ast::NodeValue::terminal, $4 }), $5 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $2;
-		delete $4;
 	}
 ;
 
 
 conditional_block:
 	LEFT_BRACKET deamerreserved_star__condtional_stmt__ RIGHT_BRACKET  {
-		auto* const newNode = new Celeste::ast::node::conditional_block({::Celeste::ast::Type::conditional_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2 });
+		auto* const newNode = new Celeste::ast::node::conditional_block({::Celeste::ast::Type::conditional_block, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LEFT_BRACKET({::Celeste::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::RIGHT_BRACKET({::Celeste::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $1;
-		delete $3;
 	}
 ;
 
@@ -897,22 +862,20 @@ condtional_stmt:
 
 variable_declaration:
 	type VARNAME SEMICOLON  {
-		auto* const newNode = new Celeste::ast::node::variable_declaration({::Celeste::ast::Type::variable_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }) });
+		auto* const newNode = new Celeste::ast::node::variable_declaration({::Celeste::ast::Type::variable_declaration, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), new Celeste::ast::node::SEMICOLON({::Celeste::ast::Type::SEMICOLON, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $3;
 	}
 ;
 
 
 variable_initialization:
 	type VARNAME EQ expression SEMICOLON  {
-		auto* const newNode = new Celeste::ast::node::variable_initialization({::Celeste::ast::Type::variable_initialization, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), new Celeste::ast::node::EQ({::Celeste::ast::Type::EQ, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4 });
+		auto* const newNode = new Celeste::ast::node::variable_initialization({::Celeste::ast::Type::variable_initialization, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), new Celeste::ast::node::EQ({::Celeste::ast::Type::EQ, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4, new Celeste::ast::node::SEMICOLON({::Celeste::ast::Type::SEMICOLON, ::deamer::external::cpp::ast::NodeValue::terminal, $5 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
-		delete $5;
 	}
 ;
 

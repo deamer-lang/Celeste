@@ -44,7 +44,7 @@
 #include "Celeste/Ast/Node/expression.h"
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
-#include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__base_type__.h"
 #include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
@@ -286,9 +286,9 @@ namespace Celeste { namespace ast { namespace Visitor {
 				Visit(static_cast<const Celeste::ast::node::deamerreserved_arrow__base_type__*>(node));
 				break;
 			}
-			case Celeste::ast::Type::deamerreserved_star__COMMA__:
+			case Celeste::ast::Type::deamerreserved_star__COMMA__base_type__:
 			{
-				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__*>(node));
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__base_type__*>(node));
 				break;
 			}
 			case Celeste::ast::Type::class_name:
@@ -561,7 +561,7 @@ namespace Celeste { namespace ast { namespace Visitor {
 		virtual void Visit(const Celeste::ast::node::deamerreserved_arrow__base_type__* node)
 		{
 		}
-		virtual void Visit(const Celeste::ast::node::deamerreserved_star__COMMA__* node)
+		virtual void Visit(const Celeste::ast::node::deamerreserved_star__COMMA__base_type__* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::class_name* node)

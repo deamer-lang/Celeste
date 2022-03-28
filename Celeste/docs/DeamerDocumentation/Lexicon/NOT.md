@@ -18,7 +18,7 @@ Overview of the terminal: **[NOT](./NOT.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[NOT](./NOT.md)** | [!] | NoValue |
+| **[NOT](./NOT.md)** | [!] | Standard |
 
 
 

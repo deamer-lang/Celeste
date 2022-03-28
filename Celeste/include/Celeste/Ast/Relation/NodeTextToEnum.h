@@ -42,7 +42,7 @@ namespace Celeste { namespace ast { namespace relation {
 		{ "deamerreserved_arrow__base_type__", ::Celeste::ast::Type::deamerreserved_arrow__base_type__ },
 	
 
-		{ "deamerreserved_star__COMMA__", ::Celeste::ast::Type::deamerreserved_star__COMMA__ },
+		{ "deamerreserved_star__COMMA__base_type__", ::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__ },
 	
 
 		{ "class_name", ::Celeste::ast::Type::class_name },

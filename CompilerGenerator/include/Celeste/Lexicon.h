@@ -61,35 +61,35 @@ namespace Celeste
 		void GenerateObjects() override
 		{
 			// Terminals
-			CLASS.Set(deamer::language::type::definition::object::main::Terminal("CLASS", "class", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-ENUM.Set(deamer::language::type::definition::object::main::Terminal("ENUM", "enum", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-FUNCTION.Set(deamer::language::type::definition::object::main::Terminal("FUNCTION", "function", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-IF.Set(deamer::language::type::definition::object::main::Terminal("IF", "if", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-ELSE.Set(deamer::language::type::definition::object::main::Terminal("ELSE", "else", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-LEFT_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("LEFT_BRACKET", "[{]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-RIGHT_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("RIGHT_BRACKET", "[}]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-LEFT_SQUARE_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("LEFT_SQUARE_BRACKET", "[\\[]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-RIGHT_SQUARE_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("RIGHT_SQUARE_BRACKET", "[\\]]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-LEFT_PARANTHESIS.Set(deamer::language::type::definition::object::main::Terminal("LEFT_PARANTHESIS", "[(]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-RIGHT_PARANTHESIS.Set(deamer::language::type::definition::object::main::Terminal("RIGHT_PARANTHESIS", "[)]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-COLON.Set(deamer::language::type::definition::object::main::Terminal("COLON", "[:]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-SEMICOLON.Set(deamer::language::type::definition::object::main::Terminal("SEMICOLON", "[;]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-COMMA.Set(deamer::language::type::definition::object::main::Terminal("COMMA", "[,]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-DOT.Set(deamer::language::type::definition::object::main::Terminal("DOT", "[.]", ::deamer::language::type::definition::object::main::SpecialType::Ignore));
-EQEQ.Set(deamer::language::type::definition::object::main::Terminal("EQEQ", "[=][=]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-EQ.Set(deamer::language::type::definition::object::main::Terminal("EQ", "[=]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-NOTEQ.Set(deamer::language::type::definition::object::main::Terminal("NOTEQ", "[!][=]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-NOT.Set(deamer::language::type::definition::object::main::Terminal("NOT", "[!]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-PLUS.Set(deamer::language::type::definition::object::main::Terminal("PLUS", "[+]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-MINUS.Set(deamer::language::type::definition::object::main::Terminal("MINUS", "[-]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-DIVIDE.Set(deamer::language::type::definition::object::main::Terminal("DIVIDE", "[/]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-MULTIPLY.Set(deamer::language::type::definition::object::main::Terminal("MULTIPLY", "[*]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
-USERDEFINED_OPERATOR.Set(deamer::language::type::definition::object::main::Terminal("USERDEFINED_OPERATOR", "[=!+-/*&^%$#@][=!+-/*&^%$#@]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+			CLASS.Set(deamer::language::type::definition::object::main::Terminal("CLASS", "class", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+ENUM.Set(deamer::language::type::definition::object::main::Terminal("ENUM", "enum", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+FUNCTION.Set(deamer::language::type::definition::object::main::Terminal("FUNCTION", "function", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+IF.Set(deamer::language::type::definition::object::main::Terminal("IF", "if", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+ELSE.Set(deamer::language::type::definition::object::main::Terminal("ELSE", "else", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+LEFT_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("LEFT_BRACKET", "[{]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+RIGHT_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("RIGHT_BRACKET", "[}]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+LEFT_SQUARE_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("LEFT_SQUARE_BRACKET", "[\\[]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+RIGHT_SQUARE_BRACKET.Set(deamer::language::type::definition::object::main::Terminal("RIGHT_SQUARE_BRACKET", "[\\]]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+LEFT_PARANTHESIS.Set(deamer::language::type::definition::object::main::Terminal("LEFT_PARANTHESIS", "[(]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+RIGHT_PARANTHESIS.Set(deamer::language::type::definition::object::main::Terminal("RIGHT_PARANTHESIS", "[)]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+COLON.Set(deamer::language::type::definition::object::main::Terminal("COLON", "[:]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+SEMICOLON.Set(deamer::language::type::definition::object::main::Terminal("SEMICOLON", "[;]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+COMMA.Set(deamer::language::type::definition::object::main::Terminal("COMMA", "[,]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+DOT.Set(deamer::language::type::definition::object::main::Terminal("DOT", "[.]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+EQEQ.Set(deamer::language::type::definition::object::main::Terminal("EQEQ", "[=][=]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+EQ.Set(deamer::language::type::definition::object::main::Terminal("EQ", "[=]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+NOTEQ.Set(deamer::language::type::definition::object::main::Terminal("NOTEQ", "[!][=]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+NOT.Set(deamer::language::type::definition::object::main::Terminal("NOT", "[!]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+PLUS.Set(deamer::language::type::definition::object::main::Terminal("PLUS", "[+]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+MINUS.Set(deamer::language::type::definition::object::main::Terminal("MINUS", "[\\-]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+DIVIDE.Set(deamer::language::type::definition::object::main::Terminal("DIVIDE", "[/]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+MULTIPLY.Set(deamer::language::type::definition::object::main::Terminal("MULTIPLY", "[*]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+USERDEFINED_OPERATOR.Set(deamer::language::type::definition::object::main::Terminal("USERDEFINED_OPERATOR", "[=!+\\-/*&\\^%$#@][=!+\\-/*&\\^%$#@]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 VARNAME.Set(deamer::language::type::definition::object::main::Terminal("VARNAME", "[a-zA-Z_]+[a-zA-Z_0-9]*", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 NUMBER.Set(deamer::language::type::definition::object::main::Terminal("NUMBER", "[0-9]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 DECIMAL.Set(deamer::language::type::definition::object::main::Terminal("DECIMAL", "[0-9]+[\\.][0-9]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 TEXT.Set(deamer::language::type::definition::object::main::Terminal("TEXT", "[\"]([\\\\][\"]|[\\\\][\\\\]|[^\"])*[\"]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
-ESCAPE_CHARS.Set(deamer::language::type::definition::object::main::Terminal("ESCAPE_CHARS", "[\\n\\r\\t\\a\\b\\f\\v ]+", ::deamer::language::type::definition::object::main::SpecialType::Delete));
+ESCAPE_CHARS.Set(deamer::language::type::definition::object::main::Terminal("ESCAPE_CHARS", "[\\n\\r\\t ]+", ::deamer::language::type::definition::object::main::SpecialType::Delete));
 
 
 			// Add object calls

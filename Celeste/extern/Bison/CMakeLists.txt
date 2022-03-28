@@ -8,5 +8,4 @@
 # This file is part of the directory: Bison
 
 set(source_files ./Celeste_parser.tab.cpp)
-Celeste_add_external_library(Bison ${source_files})
-target_link_libraries(Celeste_Bison_static_library PUBLIC Celeste_Flex_static_library)
+#Celeste_add_external_library(Bison ${source_files})

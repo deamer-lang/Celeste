@@ -18,7 +18,7 @@ Overview of the terminal: **[DOT](./DOT.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[DOT](./DOT.md)** | [.] | Ignore |
+| **[DOT](./DOT.md)** | [.] | Standard |
 
 
 

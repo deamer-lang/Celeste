@@ -18,7 +18,7 @@ Overview of the terminal: **[FUNCTION](./FUNCTION.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[FUNCTION](./FUNCTION.md)** | function | NoValue |
+| **[FUNCTION](./FUNCTION.md)** | function | Standard |
 
 
 

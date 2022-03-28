@@ -18,7 +18,7 @@ Overview of the terminal: **[MINUS](./MINUS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[MINUS](./MINUS.md)** | [-] | NoValue |
+| **[MINUS](./MINUS.md)** | [\-] | Standard |
 
 
 

@@ -18,7 +18,7 @@ Overview of the terminal: **[EQEQ](./EQEQ.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[EQEQ](./EQEQ.md)** | [=][=] | NoValue |
+| **[EQEQ](./EQEQ.md)** | [=][=] | Standard |
 
 
 

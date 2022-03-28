@@ -126,14 +126,14 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_arrow__base_type__\"];\n";
 		}
 
-		void ListenEntry(const ::Celeste::ast::node::deamerreserved_star__COMMA__* node) override
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__* node) override
 		{
 			for (const auto* child : node->GetNodes())
 			{
 				AddConnection(node, child);
 			}
 
-			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__COMMA__\"];\n";
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__COMMA__base_type__\"];\n";
 		}
 
 		void ListenEntry(const ::Celeste::ast::node::class_name* node) override
@@ -767,7 +767,7 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 		{
 		}
 
-		void ListenExit(const ::Celeste::ast::node::deamerreserved_star__COMMA__* node) override
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__* node) override
 		{
 		}
 

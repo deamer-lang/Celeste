@@ -16,7 +16,7 @@
 #include "Celeste/Ast/Node/expression.h"
 #include "Celeste/Ast/Node/class_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_arrow__base_type__.h"
-#include "Celeste/Ast/Node/deamerreserved_star__COMMA__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__base_type__.h"
 #include "Celeste/Ast/Node/class_name.h"
 #include "Celeste/Ast/Node/base_type.h"
 #include "Celeste/Ast/Node/class_block.h"
@@ -188,7 +188,7 @@ namespace Celeste { namespace ast { namespace reference {
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__base_type__>;
 	template<>
-	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>;
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::class_name>;
 	template<>
@@ -1267,7 +1267,7 @@ AccessTemplateBase<::Celeste::ast::node::TEXT> TEXT();
 
 	public:
 		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__base_type__> deamerreserved_arrow__base_type__();
-AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__> deamerreserved_star__COMMA__();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__> deamerreserved_star__COMMA__base_type__();
 AccessTemplateBase<::Celeste::ast::node::class_name> class_name();
 AccessTemplateBase<::Celeste::ast::node::base_type> base_type();
 AccessTemplateBase<::Celeste::ast::node::class_block> class_block();
@@ -1380,7 +1380,7 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 		}
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__> deamerreserved_star__COMMA__();
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__> deamerreserved_star__COMMA__base_type__();
 AccessTemplateBase<::Celeste::ast::node::base_type> base_type();
 AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
@@ -1418,28 +1418,28 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 	};
 
 	template<>
-	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__> : public AccessBase
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__> : public AccessBase
 	{
 	protected:
-		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__*> ts;
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__*> ts;
 
 	public:
-		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__*> ts_) : ts(std::move(ts_))
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__*> ts_) : ts(std::move(ts_))
 		{
 		}
 
-		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__& t) : ts({&t})
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__& t) : ts({&t})
 		{
 		}
 
-		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__* t) : ts({t})
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__* t) : ts({t})
 		{
 		}
 
 		AccessTemplateBase() = default;
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>& operator[](::std::size_t index)
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>& operator[](::std::size_t index)
 		{
 			if (index >= ts.size())
 			{
@@ -1455,7 +1455,7 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return *this;
 		}
 
-		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
 		{
 			// swap if the other is larger
 			if (indexBegin > indexEnd)
@@ -1471,7 +1471,7 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			}
 			else
 			{
-				std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__*> temporaries;
+				std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__*> temporaries;
 				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
 				{
 					temporaries.push_back(ts[i]);
@@ -1483,18 +1483,19 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return *this;
 		}
 
-		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__*> GetContent()
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__*> GetContent()
 		{
 			return ts;
 		}
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__> deamerreserved_star__COMMA__();
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__> deamerreserved_star__COMMA__base_type__();
+AccessTemplateBase<::Celeste::ast::node::base_type> base_type();
 AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 
 		template<typename FunctionType>
-		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>& for_all(FunctionType function)
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -8167,12 +8168,12 @@ AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
 			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__base_type__>(Get<::Celeste::ast::Type::deamerreserved_arrow__base_type__>(ts));
 		}
 
-		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__> AccessTemplateBase<::Celeste::ast::node::class_declaration>::deamerreserved_star__COMMA__()
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__> AccessTemplateBase<::Celeste::ast::node::class_declaration>::deamerreserved_star__COMMA__base_type__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__>(ts));
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::class_name> AccessTemplateBase<::Celeste::ast::node::class_declaration>::class_name()
@@ -8223,12 +8224,12 @@ AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
 			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
 		}
 
-		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__base_type__>::deamerreserved_star__COMMA__()
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__base_type__>::deamerreserved_star__COMMA__base_type__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__>(ts));
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::base_type> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__base_type__>::base_type()
@@ -8247,15 +8248,23 @@ AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
 			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
 		}
 
-		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>::deamerreserved_star__COMMA__()
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>::deamerreserved_star__COMMA__base_type__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__>(ts));
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__>(ts));
 		}
 
-		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__>::COMMA()
+		inline AccessTemplateBase<::Celeste::ast::node::base_type> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>::base_type()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::base_type>(Get<::Celeste::ast::Type::base_type>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>::COMMA()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 

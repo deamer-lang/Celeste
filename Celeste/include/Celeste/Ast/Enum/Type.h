@@ -53,7 +53,7 @@ namespace Celeste { namespace ast {
 		expression,
 		class_declaration,
 		deamerreserved_arrow__base_type__,
-		deamerreserved_star__COMMA__,
+		deamerreserved_star__COMMA__base_type__,
 		class_name,
 		base_type,
 		class_block,

@@ -91,7 +91,7 @@ extern int Celestedebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 177 "./Celeste_parser.y"
+#line 178 "./Celeste_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::Celeste::ast::node::CLASS* Celeste_CLASS;
@@ -133,7 +133,7 @@ union YYSTYPE
 	::Celeste::ast::node::expression* Celeste_expression;
 	::Celeste::ast::node::class_declaration* Celeste_class_declaration;
 	::Celeste::ast::node::deamerreserved_arrow__base_type__* Celeste_deamerreserved_arrow__base_type__;
-	::Celeste::ast::node::deamerreserved_star__COMMA__* Celeste_deamerreserved_star__COMMA__;
+	::Celeste::ast::node::deamerreserved_star__COMMA__base_type__* Celeste_deamerreserved_star__COMMA__base_type__;
 	::Celeste::ast::node::class_name* Celeste_class_name;
 	::Celeste::ast::node::base_type* Celeste_base_type;
 	::Celeste::ast::node::class_block* Celeste_class_block;

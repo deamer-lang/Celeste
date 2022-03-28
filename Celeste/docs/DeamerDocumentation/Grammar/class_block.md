@@ -30,7 +30,7 @@ Overview of the nonterminal: **[class_block](./class_block.md)**
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [COLON](./../Lexicon/COLON.md) [deamerreserved_arrow__base_type__](./deamerreserved_arrow__base_type__.md) [base_type](./base_type.md) [class_block](./class_block.md)  |
+| [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [COLON](./../Lexicon/COLON.md) [deamerreserved_arrow__base_type__](./deamerreserved_arrow__base_type__.md) [class_block](./class_block.md)  |
 | [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [class_block](./class_block.md)  |
 
 

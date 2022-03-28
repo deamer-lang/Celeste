@@ -15,7 +15,7 @@ class deamerreserved_star__meta_declaration__;
 class expression;
 class class_declaration;
 class deamerreserved_arrow__base_type__;
-class deamerreserved_star__COMMA__;
+class deamerreserved_star__COMMA__base_type__;
 class class_name;
 class base_type;
 class class_block;
@@ -159,10 +159,10 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeTypeToEnum<::Celeste::ast::node::deamerreserved_star__COMMA__>
+	struct NodeTypeToEnum<::Celeste::ast::node::deamerreserved_star__COMMA__base_type__>
 	{
-		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__;
-		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__;
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__base_type__;
+		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__base_type__;
 	};
 
 	template<>

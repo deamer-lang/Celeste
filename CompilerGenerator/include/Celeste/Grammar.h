@@ -37,7 +37,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> expression;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> class_declaration;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_arrow__base_type__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__COMMA__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__COMMA__base_type__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> class_name;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> base_type;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> class_block;
@@ -97,10 +97,10 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> expression_NUMBER;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> expression_DECIMAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> expression_TEXT;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__base_type___base_type_deamerreserved_star__COMMA__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA___COMMA_deamerreserved_star__COMMA__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA___EMPTY;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_declaration_CLASS_class_name_COLON_deamerreserved_arrow__base_type___base_type_class_block;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__base_type___base_type_deamerreserved_star__COMMA__base_type__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__base_type___COMMA_base_type_deamerreserved_star__COMMA__base_type__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__base_type___EMPTY;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_declaration_CLASS_class_name_COLON_deamerreserved_arrow__base_type___class_block;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_declaration_CLASS_class_name_class_block;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_name_VARNAME;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> base_type_VARNAME;

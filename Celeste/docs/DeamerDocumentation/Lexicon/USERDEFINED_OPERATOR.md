@@ -18,7 +18,7 @@ Overview of the terminal: **[USERDEFINED_OPERATOR](./USERDEFINED_OPERATOR.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[USERDEFINED_OPERATOR](./USERDEFINED_OPERATOR.md)** | [=!+-/*&^%$#@][=!+-/*&^%$#@]+ | Standard |
+| **[USERDEFINED_OPERATOR](./USERDEFINED_OPERATOR.md)** | [=!+\-/*&\^%$#@][=!+\-/*&\^%$#@]+ | Standard |
 
 
 

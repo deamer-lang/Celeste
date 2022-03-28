@@ -18,7 +18,7 @@ Overview of the terminal: **[EQ](./EQ.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[EQ](./EQ.md)** | [=] | NoValue |
+| **[EQ](./EQ.md)** | [=] | Standard |
 
 
 

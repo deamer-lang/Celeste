@@ -18,7 +18,7 @@ Overview of the terminal: **[PLUS](./PLUS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[PLUS](./PLUS.md)** | [+] | NoValue |
+| **[PLUS](./PLUS.md)** | [+] | Standard |
 
 
 

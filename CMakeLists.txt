@@ -4,7 +4,10 @@ project(Celeste_LanguageProject
                       DESCRIPTION "Project for the language(s): Celeste"
                       LANGUAGES CXX)
 
-find_package(Deamer REQUIRED)
+option(Celeste_ENABLE_COMPILER_GENERATOR "Enable Compiler Generation" ON)
+if (Celeste_ENABLE_COMPILER_GENERATOR)
+	find_package(Deamer REQUIRED)
+	add_subdirectory(CompilerGenerator)
+endif()
 
-add_subdirectory(CompilerGenerator)
 add_subdirectory(Celeste)
