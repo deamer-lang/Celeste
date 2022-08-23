@@ -33,10 +33,7 @@ Celeste::ir::inputreconstruction::CodeFunction::GetFunctionName()
 }
 
 bool Celeste::ir::inputreconstruction::CodeFunction::Accepts(
-	std::variant<ast::reference::Access<ast::node::symbol>,
-				 ast::reference::Access<ast::node::symbol_secondary>,
-				 ast::reference::Access<ast::node::VARNAME>>
-		symbol)
+	std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*> symbol)
 {
 	return false;
 }

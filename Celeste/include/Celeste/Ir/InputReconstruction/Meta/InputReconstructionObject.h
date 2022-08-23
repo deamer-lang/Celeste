@@ -34,8 +34,15 @@ namespace Celeste::ir::inputreconstruction
 		virtual void Add(InputReconstructionObject* innerObject);
 		virtual void Add(std::vector<InputReconstructionObject*> innerObjects);
 		virtual std::vector<InputReconstructionObject*>::iterator
-		GetIterator(InputReconstructionObject* parent);
+		GetIterator(InputReconstructionObject* irComponent);
+		virtual std::vector<InputReconstructionObject*>::iterator begin();
+		virtual std::vector<InputReconstructionObject*>::iterator end();
 		virtual std::vector<InputReconstructionObject*>& GetScope();
+
+		virtual std::vector<InputReconstructionObject*>::reverse_iterator
+		GetReverseIterator(InputReconstructionObject* irComponent);
+		virtual std::vector<InputReconstructionObject*>::reverse_iterator rend();
+		virtual std::vector<InputReconstructionObject*>::reverse_iterator rbegin();
 	};
 }
 

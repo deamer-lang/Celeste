@@ -16,7 +16,6 @@ namespace Celeste::ir::inputreconstruction
 	{
 	private:
 		struct ResolveLogic;
-		std::unique_ptr<ResolveLogic> impl;
 
 	private:
 		std::variant<ast::node::symbol_reference*, ast::node::VARNAME*> symbolReference;
@@ -38,6 +37,7 @@ namespace Celeste::ir::inputreconstruction
 		NameReference(ast::node::symbol_reference* symbolReference_);
 		NameReference(ast::node::VARNAME* varname_);
 		virtual ~NameReference() = default;
+		std::vector<const ast::node::symbol_access*> GetSymbolAccesses();
 
 	protected:
 		NameReference(Type forward_);
@@ -45,20 +45,13 @@ namespace Celeste::ir::inputreconstruction
 		NameReference(Type forward_, ast::node::VARNAME* symbolReference_);
 
 	public:
+		void SetLinkedAst(deamer::external::cpp::ast::Node* node);
 		void SetSymbolName(const std::string& symbolName_);
 
-		void ContinueResolve(
-			InputReconstructionObject* startingIr,
-			std::variant<ast::reference::Access<ast::node::symbol>,
-						 ast::reference::Access<ast::node::symbol_secondary>,
-						 ast::reference::Access<ast::node::VARNAME>>
-				symbol,
-			std::vector<std::variant<ast::reference::Access<ast::node::symbol>,
-									 ast::reference::Access<ast::node::symbol_secondary>,
-									 ast::reference::Access<ast::node::VARNAME>>>
-				nextSymbols,
-			std::optional<InputReconstructionObject*> cameFromIrComponent = std::nullopt,
-			bool extend = true);
+		void ContinueResolve(std::variant<ast::reference::Access<ast::node::symbol>,
+										  ast::reference::Access<ast::node::symbol_secondary>,
+										  ast::reference::Access<ast::node::VARNAME>>
+								 symbol);
 		void ContinueResolveAccess(const ast::node::symbol_access* access);
 
 		void Resolve();
@@ -103,7 +96,7 @@ namespace Celeste::ir::inputreconstruction
 		 */
 		std::string GetSymbolName();
 
-	private:
+	public:
 		std::string
 		GetSymbolNameFromSymbol(Celeste::ast::reference::Access<Celeste::ast::node::symbol> symbol);
 		std::string GetSymbolNameFromSymbol(

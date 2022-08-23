@@ -5,6 +5,8 @@ namespace Celeste::ir::inputreconstruction
 {
 	enum class Type
 	{
+		Unknown,
+
 		// Structuring
 		Class,
 		InheritBase,

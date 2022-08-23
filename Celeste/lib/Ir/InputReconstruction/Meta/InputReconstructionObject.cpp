@@ -50,25 +50,66 @@ void Celeste::ir::inputreconstruction::InputReconstructionObject::Add(
 {
 	for (auto& _ : innerObjects)
 	{
-		scope.push_back(_);
+		Add(_);
 	}
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetIterator(
-	InputReconstructionObject* parent)
+	InputReconstructionObject* irComponent)
 {
 	for (auto iter = std::begin(scope); iter != std::end(scope); ++iter)
 	{
-		if (*iter == parent)
+		if (*iter == irComponent)
 		{
 			return iter;
 		}
 	}
+
+	return std::end(scope);
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
+Celeste::ir::inputreconstruction::InputReconstructionObject::begin()
+{
+	return std::begin(scope);
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
+Celeste::ir::inputreconstruction::InputReconstructionObject::end()
+{
+	return std::end(scope);
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>&
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetScope()
 {
 	return scope;
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
+Celeste::ir::inputreconstruction::InputReconstructionObject::GetReverseIterator(
+	InputReconstructionObject* irComponent)
+{
+	for (auto iter = std::rbegin(scope); iter != std::rend(scope); ++iter)
+	{
+		if (*iter == irComponent)
+		{
+			return iter;
+		}
+	}
+
+	return std::rend(scope);
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
+Celeste::ir::inputreconstruction::InputReconstructionObject::rend()
+{
+	return std::rend(scope);
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
+Celeste::ir::inputreconstruction::InputReconstructionObject::rbegin()
+{
+	return std::rbegin(scope);
 }

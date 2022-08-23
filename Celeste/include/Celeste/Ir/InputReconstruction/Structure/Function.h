@@ -8,6 +8,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
 #include <memory>
+#include <string>
 
 namespace Celeste::ir::inputreconstruction
 {
@@ -33,10 +34,9 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		NameReference* GetFunctionName();
-		bool Accepts(std::variant<ast::reference::Access<ast::node::symbol>,
-								  ast::reference::Access<ast::node::symbol_secondary>,
-								  ast::reference::Access<ast::node::VARNAME>>
-						 symbol);
+		bool
+		Accepts(std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
+					symbol);
 		InputReconstructionObject* GetReturnType();
 		bool
 		Accepts(const std::string& functionName,

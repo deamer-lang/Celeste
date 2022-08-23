@@ -27,7 +27,7 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~Class() = default;
 
 	public:
-		void Add(InputReconstructionObject* object);
+		void Add(InputReconstructionObject* object) override;
 		void Add(InputReconstructionObject* object, Accessibility accessibility);
 
 		void AddCompoundBase(std::unique_ptr<CompoundBase> compoundBase);

@@ -39,6 +39,7 @@ namespace Celeste::ir::inputreconstruction
 		void AddUnresolvedSymbolReference(InputReconstructionObject* unresolvedSymbolReferenceCall);
 		std::vector<InputReconstructionObject*> GetUnresolvedSymbolReferences();
 		InputReconstructionObject* GetIrBottom();
+		InputReconstructionObject* GetRoot();
 	};
 }
 

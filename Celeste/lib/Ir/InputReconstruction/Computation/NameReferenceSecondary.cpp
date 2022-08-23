@@ -5,25 +5,22 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 
 Celeste::ir::inputreconstruction::NameReferenceSecondary::NameReferenceSecondary(
-	std::variant<ast::reference::Access<ast::node::symbol>,
-				 ast::reference::Access<ast::node::symbol_secondary>,
-				 ast::reference::Access<ast::node::VARNAME>>
+	std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
 		symbolReference_)
-	: NameReference(Type::SymbolResolveSecondary)
+	: NameReference(Type::SymbolResolveSecondary),
+	  symbolReference(symbolReference_)
 {
-	if (std::holds_alternative<ast::reference::Access<ast::node::symbol>>(symbolReference))
+	if (std::holds_alternative<ast::node::symbol*>(symbolReference))
 	{
-		auto symbolDereference =
-			std::get<ast::reference::Access<ast::node::symbol>>(symbolReference);
-		SetSymbolName(symbolDereference.symbol_name().VARNAME().GetContent()[0]->GetText());
+		auto symbolDereference = ast::reference::Access<ast::node::symbol>(
+			std::get<ast::node::symbol*>(symbolReference));
+		SetSymbolName(symbolDereference.symbol_name().GetContent()[0]->GetText());
 	}
-	else if (std::holds_alternative<ast::reference::Access<ast::node::symbol_secondary>>(
-				 symbolReference))
+	else if (std::holds_alternative<ast::node::symbol_secondary*>(symbolReference))
 	{
-		auto symbolDereference =
-			std::get<ast::reference::Access<ast::node::symbol_secondary>>(symbolReference);
-		SetSymbolName(
-			symbolDereference.symbol_name_secondary().VARNAME().GetContent()[0]->GetText());
+		auto symbolDereference = ast::reference::Access<ast::node::symbol_secondary>(
+			std::get<ast::node::symbol_secondary*>(symbolReference));
+		SetSymbolName(symbolDereference.symbol_name_secondary().GetContent()[0]->GetText());
 	}
 	else
 	{
@@ -32,27 +29,24 @@ Celeste::ir::inputreconstruction::NameReferenceSecondary::NameReferenceSecondary
 }
 
 void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
-	std::vector<std::variant<ast::reference::Access<ast::node::symbol>,
-							 ast::reference::Access<ast::node::symbol_secondary>,
-							 ast::reference::Access<ast::node::VARNAME>>>
+	std::vector<std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>>
 		nextSymbols)
 {
 	auto continueAccessResolve = [&](std::size_t startI) {
-		if (std::holds_alternative<ast::reference::Access<ast::node::symbol>>(symbolReference))
+		if (std::holds_alternative<ast::node::symbol*>(symbolReference))
 		{
-			auto symbolDereference =
-				std::get<ast::reference::Access<ast::node::symbol>>(symbolReference);
+			auto symbolDereference = ast::reference::Access<ast::node::symbol>(
+				std::get<ast::node::symbol*>(symbolReference));
 			for (; startI < symbolDereference.symbol_access().GetContent().size(); startI++)
 			{
 				auto access = symbolDereference.symbol_access().GetContent()[startI];
 				ContinueResolveAccess(access);
 			}
 		}
-		else if (std::holds_alternative<ast::reference::Access<ast::node::symbol_secondary>>(
-					 symbolReference))
+		else if (std::holds_alternative<ast::node::symbol_secondary*>(symbolReference))
 		{
-			auto symbolDereference =
-				std::get<ast::reference::Access<ast::node::symbol_secondary>>(symbolReference);
+			auto symbolDereference = ast::reference::Access<ast::node::symbol_secondary>(
+				std::get<ast::node::symbol_secondary*>(symbolReference));
 			for (; startI < symbolDereference.symbol_access().GetContent().size(); startI++)
 			{
 				auto access = symbolDereference.symbol_access().GetContent()[startI];
@@ -82,6 +76,11 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 	if (GetParent()->GetType() == Type::NameReference)
 	{
 		auto parent = static_cast<NameReference*>(GetParent());
+		finalIr = parent->GetFinalLinkedIr();
+	}
+	else if (GetParent()->GetType() == Type::SymbolReferenceCall)
+	{
+		auto parent = static_cast<SymbolReferenceCall*>(GetParent());
 		finalIr = parent->GetFinalLinkedIr();
 	}
 	else if (GetParent()->GetType() == Type::SymbolResolveSecondary)
@@ -187,9 +186,8 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 	}
 }
 
-std::variant<Celeste::ast::reference::Access<Celeste::ast::node::symbol>,
-			 Celeste::ast::reference::Access<Celeste::ast::node::symbol_secondary>,
-			 Celeste::ast::reference::Access<Celeste::ast::node::VARNAME>>
+std::variant<Celeste::ast::node::symbol*, Celeste::ast::node::symbol_secondary*,
+			 Celeste::ast::node::VARNAME*>
 Celeste::ir::inputreconstruction::NameReferenceSecondary::GetSymbolReferenceAst()
 {
 	return symbolReference;

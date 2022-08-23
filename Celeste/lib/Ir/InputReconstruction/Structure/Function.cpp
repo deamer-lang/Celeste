@@ -1,4 +1,5 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+#include <string>
 
 Celeste::ir::inputreconstruction::Function::Function(std::unique_ptr<NameReference> functionName_,
 													 std::unique_ptr<TypeConstruct> returnType_)
@@ -50,24 +51,22 @@ Celeste::ir::inputreconstruction::Function::GetFunctionName()
 }
 
 bool Celeste::ir::inputreconstruction::Function::Accepts(
-	std::variant<ast::reference::Access<ast::node::symbol>,
-				 ast::reference::Access<ast::node::symbol_secondary>,
-				 ast::reference::Access<ast::node::VARNAME>>
-		symbol)
+	std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*> symbol)
 {
 	ast::reference::Access<ast::node::symbol_access> symbolAccess;
-	if (std::holds_alternative<ast::reference::Access<ast::node::symbol>>(symbol))
-	{
-		auto symbolDereferenced = std::get<ast::reference::Access<ast::node::symbol>>(symbol);
-		symbolAccess = symbolDereferenced.symbol_access();
-	}
-	else if (std::holds_alternative<ast::reference::Access<ast::node::symbol_secondary>>(symbol))
+	if (std::holds_alternative<ast::node::symbol*>(symbol))
 	{
 		auto symbolDereferenced =
-			std::get<ast::reference::Access<ast::node::symbol_secondary>>(symbol);
+			ast::reference::Access<ast::node::symbol>(std::get<ast::node::symbol*>(symbol));
 		symbolAccess = symbolDereferenced.symbol_access();
 	}
-	else if (std::holds_alternative<ast::reference::Access<ast::node::VARNAME>>(symbol))
+	else if (std::holds_alternative<ast::node::symbol_secondary*>(symbol))
+	{
+		auto symbolDereferenced = ast::reference::Access<ast::node::symbol_secondary>(
+			std::get<ast::node::symbol_secondary*>(symbol));
+		symbolAccess = symbolDereferenced.symbol_access();
+	}
+	else if (std::holds_alternative<ast::node::VARNAME*>(symbol))
 	{
 		// VARNAME may not be used to reference some function
 		// As functions are in the form: name + [arguments]
