@@ -117,6 +117,13 @@ Overview of the nonterminal: **[symbol_reference](./symbol_reference.md)**
 | [symbol_reference](./symbol_reference.md)  |
 
 
+#### [member_field_name](./../Grammar/member_field_name.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [symbol_reference](./symbol_reference.md)  |
+
+
 #### [inherit_base_name](./../Grammar/inherit_base_name.md)
 
 | Productionrule referencing this                      |

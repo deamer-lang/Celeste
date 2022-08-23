@@ -123,7 +123,9 @@ namespace Celeste::ast::listener::user::ir
 
 				auto Access = reference::Access(node);
 
-				AddCurrentScope(GetSymbolReference(node));
+				auto newSymbolReference = GetSymbolReference(node);
+				newSymbolReference->SetParent(GetParent());
+				AddCurrentScope(std::move(newSymbolReference));
 			}
 			else
 			{
@@ -155,9 +157,9 @@ namespace Celeste::ast::listener::user::ir
 
 		void CloseScope()
 		{
-			if (!std::rbegin(inputReconstructionObjects)++->empty())
+			if (!(++std::rbegin(inputReconstructionObjects))->empty())
 			{
-				(*std::rbegin(*(std::rbegin(inputReconstructionObjects)++)))
+				(*std::rbegin(*(++std::rbegin(inputReconstructionObjects))))
 					->Add(*std::rbegin(inputReconstructionObjects));
 			}
 
@@ -340,6 +342,8 @@ namespace Celeste::ast::listener::user::ir
 						Class->AddInheritedBase(std::move(inheritBase));
 					}
 				});
+
+			Class->SetParent(GetParent());
 
 			AddCurrentScope(std::move(Class));
 			OpenScope();
@@ -841,6 +845,42 @@ namespace Celeste::ast::listener::user::ir
 		}
 
 		void ListenExit(const Celeste::ast::node::variable_declaration* node) override
+		{
+			if (skip)
+			{
+				return;
+			}
+		}
+
+		void
+		ListenEntry(const Celeste::ast::node::class_stmt_member_field_declaration* node) override
+		{
+			if (skip)
+			{
+				return;
+			}
+
+			auto Access = reference::Access(node);
+			auto VariableDeclaration =
+				std::make_unique<Celeste::ir::inputreconstruction::VariableDeclaration>(
+					GetName(Access.member_field_name().symbol_reference().GetContent()[0]),
+					GetType(Access.type().GetContent()[0]));
+
+			VariableDeclaration->SetFile(file);
+			VariableDeclaration->SetParent(GetParent());
+			VariableDeclaration->Complete();
+
+			// Add Variable Initialization Value
+			for (auto value : Access.value_list().full_value().expression().GetContent())
+			{
+				VariableDeclaration->AddValue(GetExpression(value));
+			}
+
+			AddCurrentScope(std::move(VariableDeclaration));
+		}
+
+		void
+		ListenExit(const Celeste::ast::node::class_stmt_member_field_declaration* node) override
 		{
 			if (skip)
 			{

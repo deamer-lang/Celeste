@@ -10825,7 +10825,7 @@ AccessTemplateBase<::Celeste::ast::node::EQ> EQ();
 		}
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
+		AccessTemplateBase<::Celeste::ast::node::symbol_reference> symbol_reference();
 
 
 		template<typename FunctionType>
@@ -25892,12 +25892,12 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::EQ>(Get<::Celeste::ast::Type::EQ>(ts));
 		}
 
-		inline AccessTemplateBase<::Celeste::ast::node::VARNAME> AccessTemplateBase<::Celeste::ast::node::member_field_name>::VARNAME()
+		inline AccessTemplateBase<::Celeste::ast::node::symbol_reference> AccessTemplateBase<::Celeste::ast::node::member_field_name>::symbol_reference()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::Celeste::ast::node::VARNAME>(Get<::Celeste::ast::Type::VARNAME>(ts));
+			return AccessTemplateBase<::Celeste::ast::node::symbol_reference>(Get<::Celeste::ast::Type::symbol_reference>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::function_declaration> AccessTemplateBase<::Celeste::ast::node::class_stmt_member_function>::function_declaration()

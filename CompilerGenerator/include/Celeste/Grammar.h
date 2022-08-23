@@ -445,7 +445,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_member_field_declaration_type_member_field_name_SEMICOLON;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_member_field_declaration_type_member_field_name_EQ_value_list;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_member_field_declaration_type_member_field_name;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> member_field_name_VARNAME;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> member_field_name_symbol_reference;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_member_function_VIRTUAL_function_declaration_OVERRIDE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_member_function_VIRTUAL_function_declaration;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> class_stmt_member_function_PURE_function_declaration_OVERRIDE;

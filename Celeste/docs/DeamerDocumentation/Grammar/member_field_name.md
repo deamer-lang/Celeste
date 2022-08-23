@@ -16,7 +16,7 @@ Overview of the nonterminal: **[member_field_name](./member_field_name.md)**
 
 | ProductionRule |
 | ---- |
-| [VARNAME](./../Lexicon/VARNAME.md)  |
+| [symbol_reference](./symbol_reference.md)  |
 
 
 

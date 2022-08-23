@@ -69,13 +69,6 @@ Overview of the terminal: **[VARNAME](./VARNAME.md)**.
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [member_field_name](./../Grammar/member_field_name.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [VARNAME](./VARNAME.md)  |
-
-
 #### [compound_base_alias](./../Grammar/compound_base_alias.md)
 
 | Productionrule referencing this                      |

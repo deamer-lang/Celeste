@@ -3553,8 +3553,8 @@ class_stmt_member_field_declaration:
 
 
 member_field_name:
-	VARNAME  {
-		auto* const newNode = new Celeste::ast::node::member_field_name({::Celeste::ast::Type::member_field_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::VARNAME({::Celeste::ast::Type::VARNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+	symbol_reference  {
+		auto* const newNode = new Celeste::ast::node::member_field_name({::Celeste::ast::Type::member_field_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted

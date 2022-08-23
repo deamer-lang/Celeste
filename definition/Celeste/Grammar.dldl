@@ -291,7 +291,7 @@ class_stmt_member_field_declaration
 	type member_field_name [EQ value_list] 
 
 member_field_name
-	VARNAME
+	symbol_reference
 	
 class_stmt_member_function
 	[VIRTUAL|PURE] function_declaration [OVERRIDE]
