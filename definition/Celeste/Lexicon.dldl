@@ -1,13 +1,53 @@
 / Lexicon of Celeste
 / Made by: Thimo Böhmer
-/ 2021
+/ 2021-2022
+
+/ Comments
+Delete: SINGLE_COMMENT [/][^\n\r]*[\n\r]{0,1}
 
 / Reserved Keywords
-NoValue: CLASS          class
-NoValue: ENUM           enum
-NoValue: FUNCTION       function
-NoValue: IF             if
-NoValue: ELSE           else
+Terminal: CONSTANT     [Cc][Oo][Nn][Ss][Tt]([Aa][Nn][Tt]){0,1}
+Terminal: FUNCTION     [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]
+Terminal: CLASS        [Cc][Ll][Aa][Ss][Ss]
+Terminal: ENUM         [Ee][Nn][Uu][Mm]
+Terminal: CONDITIONAL  [Cc][Oo][Nn][Dd][Ii][Tt][Ii][Oo][Nn][Aa][Ll]
+Terminal: CODE         [Cc][Oo][Dd][Ee]
+Terminal: RUNTIME      [Rr][Uu][Nn][Tt][Ii][Mm][Ee]
+Terminal: STATIC       [Ss][Tt][Aa][Tt][Ii][Cc]
+Terminal: AUTO         [Aa][Uu][Tt][Oo]
+Terminal: AUTOTYPE     [Aa][Uu][Tt][Oo][Tt][Yy][Pp][Ee]
+Terminal: TEMPLATE     [Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee]
+Terminal: NAMESPACE    [Nn][Aa][Mm][Ee][Ss][Pp][Aa][Cc][Ee]
+
+Terminal: OVERRIDE     [Oo][Vv][Ee][Rr][Rr][Ii][Dd][Ee]
+Terminal: VIRTUAL      [Vv][Ii][Rr][Tt][Uu][Aa][Ll]
+Terminal: PURE         (([Pp][Uu][Rr][Ee])|([Aa][Bb][Ss][Tt][Rr][Aa][Cc][Tt]))
+
+Terminal: AS           [Aa][Ss]
+Terminal: IN           [Ii][Nn]
+
+Terminal: DISPLAY      [Dd][Ii][Ss][Pp][Ll][Aa][Yy]
+Terminal: RETURN       [Rr][Ee][Tt][Uu][Rr][Nn]
+
+Terminal: FOR          [Ff][Oo][Rr]
+Terminal: IF           [Ii][Ff]
+Terminal: ELSEIF       [Ee][Ll]([Ss][Ee][ ]*){0,1}[Ii][Ff]
+Terminal: ELSE         [Ee][Ll][Ss][Ee]
+
+Terminal: INLINE       [Ii][Nn][Ll][Ii][Nn][Ee]
+Terminal: CONSTRUCTOR  [Cc][Oo][Nn][Ss][Tt][Rr][Uu][Cc][Tt][Oo][Rr]
+Terminal: FILE_        [Ff][Ii][Ll][Ee]
+Terminal: PROGRAM_     [Pp][Rr][Oo][Gg][Rr][Aa][Mm]
+Terminal: IMPORT       [Ii][Mm][Pp][Oo][Rr][Tt]
+
+/ Accessibility Keywords
+Terminal: PUBLIC       [Pp][Uu][Bb][Ll][Ii][Cc]
+Terminal: PROTECTED    [Pp][Rr][Oo][Tt][Ee][Cc][Tt][Ee][Dd]
+Terminal: PRIVATE      [Pp][Rr][Ii][Vv][Aa][Tt][Ee]
+
+/ Inheritance
+Terminal: INHERIT      [Ii][Nn][Hh][Ee][Rr][Ii][Tt]
+Terminal: COMPOSITE    [Cc][Oo][Mm][Pp][Oo][Ss][Ii][Tt][Ee]
 
 / Structure Symbols
 Ignore: LEFT_BRACKET         [{]
@@ -22,20 +62,27 @@ Ignore: COMMA                [,]
 Ignore: DOT                  [.]
 
 / Value Symbols
-NoValue: EQEQ      [=][=]
-NoValue: EQ        [=]
-NoValue: NOTEQ     [!][=]
-NoValue: NOT       [!]
-NoValue: PLUS      [+]
-NoValue: MINUS     [\-]
-NoValue: DIVIDE    [/]
-NoValue: MULTIPLY  [*]
-
-/ Reserved
-Terminal: USERDEFINED_OPERATOR [=!+\-/*&\^%$#@][=!+\-/*&\^%$#@]+
+NoValue: LTEQ         [<][=]
+NoValue: GTEQ         [>][=]
+NoValue: LT           [<]
+NoValue: GT           [>]
+NoValue: PLUSEQ       [+][=]
+NoValue: MINUSEQ      [-][=]
+NoValue: MULTIPLYEQ   [*][=]
+NoValue: DIVIDEEQ     [\\][=]
+NoValue: EQEQ         [=][=]
+NoValue: EQ           [=]
+NoValue: NOTEQ        [!][=]
+NoValue: NOT          [!]
+NoValue: PLUSPLUS     [+][+]
+NoValue: PLUS         [+]
+NoValue: MINUSMINUS   [\-][\-]
+NoValue: MINUS        [\-]
+NoValue: DIVIDE       [\\]
+NoValue: MULTIPLY     [*]
 
 / Values
-Terminal: VARNAME [a-zA-Z_]+[a-zA-Z_0-9]*
+Terminal: VARNAME [a-zA-Z_][a-zA-Z_0-9]*
 Terminal: NUMBER  [0-9]+
 Terminal: DECIMAL [0-9]+[\.][0-9]+
 Terminal: TEXT    ["]([\\]["]|[\\][\\]|[^"])*["]

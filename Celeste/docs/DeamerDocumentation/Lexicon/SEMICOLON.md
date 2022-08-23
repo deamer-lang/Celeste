@@ -18,7 +18,7 @@ Overview of the terminal: **[SEMICOLON](./SEMICOLON.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[SEMICOLON](./SEMICOLON.md)** | [;] | Standard |
+| **[SEMICOLON](./SEMICOLON.md)** | [;] | Ignore |
 
 
 
@@ -27,26 +27,20 @@ Overview of the terminal: **[SEMICOLON](./SEMICOLON.md)**.
 ### NonTerminals
 
 
-#### [function_declaration](./../Grammar/function_declaration.md)
+#### [stmt](./../Grammar/stmt.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [FUNCTION](./FUNCTION.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__deamerreserved_optional__function_argument____](./../Grammar/deamerreserved_arrow__deamerreserved_optional__function_argument____.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [return_type](./../Grammar/return_type.md) [SEMICOLON](./SEMICOLON.md)  |
-| [FUNCTION](./FUNCTION.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__deamerreserved_optional__function_argument____](./../Grammar/deamerreserved_arrow__deamerreserved_optional__function_argument____.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [SEMICOLON](./SEMICOLON.md)  |
+| [symbol_reference](./../Grammar/symbol_reference.md) [SEMICOLON](./SEMICOLON.md)  |
+| [SEMICOLON](./SEMICOLON.md)  |
 
 
-#### [variable_declaration](./../Grammar/variable_declaration.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [type](./../Grammar/type.md) [VARNAME](./VARNAME.md) [SEMICOLON](./SEMICOLON.md)  |
-
-
-#### [variable_initialization](./../Grammar/variable_initialization.md)
+#### [class_stmt_member_field_declaration](./../Grammar/class_stmt_member_field_declaration.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [type](./../Grammar/type.md) [VARNAME](./VARNAME.md) [EQ](./EQ.md) [expression](./../Grammar/expression.md) [SEMICOLON](./SEMICOLON.md)  |
+| [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md) [SEMICOLON](./SEMICOLON.md)  |
+| [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [SEMICOLON](./SEMICOLON.md)  |
 
 
 

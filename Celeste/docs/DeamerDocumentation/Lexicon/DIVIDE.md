@@ -18,7 +18,7 @@ Overview of the terminal: **[DIVIDE](./DIVIDE.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[DIVIDE](./DIVIDE.md)** | [/] | Standard |
+| **[DIVIDE](./DIVIDE.md)** | [\\] | NoValue |
 
 
 
@@ -27,11 +27,11 @@ Overview of the terminal: **[DIVIDE](./DIVIDE.md)**.
 ### NonTerminals
 
 
-#### [expression](./../Grammar/expression.md)
+#### [t_expression](./../Grammar/t_expression.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [expression](./../Grammar/expression.md) [DIVIDE](./DIVIDE.md) [expression](./../Grammar/expression.md)  |
+| [t_expression](./../Grammar/t_expression.md) [DIVIDE](./DIVIDE.md) [f_expression](./../Grammar/f_expression.md)  |
 
 
 

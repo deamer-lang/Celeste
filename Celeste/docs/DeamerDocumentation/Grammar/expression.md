@@ -16,15 +16,7 @@ Overview of the nonterminal: **[expression](./expression.md)**
 
 | ProductionRule |
 | ---- |
-| [expression](./expression.md) [PLUS](./../Lexicon/PLUS.md) [expression](./expression.md)  |
-| [expression](./expression.md) [MINUS](./../Lexicon/MINUS.md) [expression](./expression.md)  |
-| [expression](./expression.md) [DIVIDE](./../Lexicon/DIVIDE.md) [expression](./expression.md)  |
-| [expression](./expression.md) [MULTIPLY](./../Lexicon/MULTIPLY.md) [expression](./expression.md)  |
-| [expression](./expression.md) [USERDEFINED_OPERATOR](./../Lexicon/USERDEFINED_OPERATOR.md) [expression](./expression.md)  |
-| [VARNAME](./../Lexicon/VARNAME.md)  |
-| [NUMBER](./../Lexicon/NUMBER.md)  |
-| [DECIMAL](./../Lexicon/DECIMAL.md)  |
-| [TEXT](./../Lexicon/TEXT.md)  |
+| [expression_no_value](./expression_no_value.md)  |
 
 
 
@@ -34,45 +26,82 @@ Overview of the nonterminal: **[expression](./expression.md)**
 ### NonTerminals
 
 
-#### [deamerreserved_star__expression__](./../Grammar/deamerreserved_star__expression__.md)
+#### [assignment](./../Grammar/assignment.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [expression](./expression.md) [deamerreserved_star__expression__](./deamerreserved_star__expression__.md)  |
+| [symbol_reference](./symbol_reference.md) [assignment_operator](./assignment_operator.md) [expression](./expression.md)  |
 
 
-#### [expression](./../Grammar/expression.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [expression](./expression.md) [PLUS](./../Lexicon/PLUS.md) [expression](./expression.md)  |
-| [expression](./expression.md) [MINUS](./../Lexicon/MINUS.md) [expression](./expression.md)  |
-| [expression](./expression.md) [DIVIDE](./../Lexicon/DIVIDE.md) [expression](./expression.md)  |
-| [expression](./expression.md) [MULTIPLY](./../Lexicon/MULTIPLY.md) [expression](./expression.md)  |
-| [expression](./expression.md) [USERDEFINED_OPERATOR](./../Lexicon/USERDEFINED_OPERATOR.md) [expression](./expression.md)  |
-
-
-#### [function_argument](./../Grammar/function_argument.md)
+#### [conditional_if](./../Grammar/conditional_if.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [function_arg_type](./function_arg_type.md) [function_arg_name](./function_arg_name.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md)  |
+| [IF](./../Lexicon/IF.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [expression](./expression.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [conditional_block](./conditional_block.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
 
 
-#### [condtional_declaration](./../Grammar/condtional_declaration.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [IF](./../Lexicon/IF.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [expression](./expression.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [conditional_block](./conditional_block.md)  |
-| [ELSE](./../Lexicon/ELSE.md) [IF](./../Lexicon/IF.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [expression](./expression.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [conditional_block](./conditional_block.md)  |
-| [ELSE](./../Lexicon/ELSE.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [expression](./expression.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [conditional_block](./conditional_block.md)  |
-
-
-#### [variable_initialization](./../Grammar/variable_initialization.md)
+#### [conditional_else_if](./../Grammar/conditional_else_if.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md) [SEMICOLON](./../Lexicon/SEMICOLON.md)  |
+| [ELSEIF](./../Lexicon/ELSEIF.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [expression](./expression.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [conditional_block](./conditional_block.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [ELSE](./../Lexicon/ELSE.md) [IF](./../Lexicon/IF.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [expression](./expression.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [conditional_block](./conditional_block.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+
+
+#### [return_statement](./../Grammar/return_statement.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [RETURN](./../Lexicon/RETURN.md) [expression](./expression.md)  |
+
+
+#### [for_iteration_loop](./../Grammar/for_iteration_loop.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [FOR](./../Lexicon/FOR.md) [expression](./expression.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [for_block](./for_block.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+
+
+#### [array_declaration](./../Grammar/array_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_SQUARE_BRACKET](./../Lexicon/LEFT_SQUARE_BRACKET.md) [expression](./expression.md) [RIGHT_SQUARE_BRACKET](./../Lexicon/RIGHT_SQUARE_BRACKET.md)  |
+
+
+#### [deamerreserved_arrow__expression__](./../Grammar/deamerreserved_arrow__expression__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [expression](./expression.md) [deamerreserved_star__COMMA__expression__](./deamerreserved_star__COMMA__expression__.md)  |
+
+
+#### [deamerreserved_star__COMMA__expression__](./../Grammar/deamerreserved_star__COMMA__expression__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./../Lexicon/COMMA.md) [expression](./expression.md) [deamerreserved_star__COMMA__expression__](./deamerreserved_star__COMMA__expression__.md)  |
+
+
+#### [index_access](./../Grammar/index_access.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_SQUARE_BRACKET](./../Lexicon/LEFT_SQUARE_BRACKET.md) [expression](./expression.md) [RIGHT_SQUARE_BRACKET](./../Lexicon/RIGHT_SQUARE_BRACKET.md)  |
+
+
+#### [anonymous_access](./../Grammar/anonymous_access.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [expression](./expression.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+
+
+#### [full_value](./../Grammar/full_value.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [expression](./expression.md)  |
 
 
 

@@ -18,7 +18,7 @@ set_target_properties(Celeste PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(Celeste PUBLIC 
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-target_link_libraries(Celeste PRIVATE Deamer::External Deamer::Algorithm)
+target_link_libraries(Celeste PUBLIC Deamer::External Deamer::Algorithm)
 
 
 function(Celeste_root_library_extend projectname extern_directory include_directory source_files)

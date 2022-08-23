@@ -8,7 +8,7 @@ Overview of the terminal: **[EQEQ](./EQEQ.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [DOT](./DOT.md) |
+| Above             | [DIVIDEEQ](./DIVIDEEQ.md) |
 | This              | **[EQEQ](./EQEQ.md)** |
 | Below             | [EQ](./EQ.md) |
 
@@ -18,11 +18,20 @@ Overview of the terminal: **[EQEQ](./EQEQ.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[EQEQ](./EQEQ.md)** | [=][=] | Standard |
+| **[EQEQ](./EQEQ.md)** | [=][=] | NoValue |
 
 
 
 ## **Who references this**
+
+### NonTerminals
+
+
+#### [t_expression](./../Grammar/t_expression.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [t_expression](./../Grammar/t_expression.md) [EQEQ](./EQEQ.md) [f_expression](./../Grammar/f_expression.md)  |
 
 
 

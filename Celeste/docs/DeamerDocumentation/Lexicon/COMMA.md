@@ -18,7 +18,7 @@ Overview of the terminal: **[COMMA](./COMMA.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[COMMA](./COMMA.md)** | [,] | Standard |
+| **[COMMA](./COMMA.md)** | [,] | Ignore |
 
 
 
@@ -27,18 +27,67 @@ Overview of the terminal: **[COMMA](./COMMA.md)**.
 ### NonTerminals
 
 
-#### [deamerreserved_star__COMMA__base_type__](./../Grammar/deamerreserved_star__COMMA__base_type__.md)
+#### [mutation_group](./../Grammar/mutation_group.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [COMMA](./COMMA.md) [base_type](./../Grammar/base_type.md) [deamerreserved_star__COMMA__base_type__](./../Grammar/deamerreserved_star__COMMA__base_type__.md)  |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__symbol_reference__](./../Grammar/deamerreserved_arrow__symbol_reference__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [standard_block](./../Grammar/standard_block.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [standard_block](./../Grammar/standard_block.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
 
 
-#### [deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____](./../Grammar/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.md)
+#### [deamerreserved_star__COMMA__symbol_reference__](./../Grammar/deamerreserved_star__COMMA__symbol_reference__.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [COMMA](./COMMA.md) [deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____](./../Grammar/deamerreserved_star__deamerreserved_or__enum_stmt__COMMA____.md)  |
+| [COMMA](./COMMA.md) [symbol_reference](./../Grammar/symbol_reference.md) [deamerreserved_star__COMMA__symbol_reference__](./../Grammar/deamerreserved_star__COMMA__symbol_reference__.md)  |
+
+
+#### [template_conditional_function_declaration](./../Grammar/template_conditional_function_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONDITIONAL](./CONDITIONAL.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [deamerreserved_star__COMMA__template_parameter__](./../Grammar/deamerreserved_star__COMMA__template_parameter__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [template_parameter](./../Grammar/template_parameter.md) [deamerreserved_star__COMMA__template_parameter__](./../Grammar/deamerreserved_star__COMMA__template_parameter__.md)  |
+
+
+#### [deamerreserved_star__COMMA__conditional_function_argument__](./../Grammar/deamerreserved_star__COMMA__conditional_function_argument__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [conditional_function_argument](./../Grammar/conditional_function_argument.md) [deamerreserved_star__COMMA__conditional_function_argument__](./../Grammar/deamerreserved_star__COMMA__conditional_function_argument__.md)  |
 
 
 #### [deamerreserved_star__COMMA__function_argument__](./../Grammar/deamerreserved_star__COMMA__function_argument__.md)
@@ -46,6 +95,232 @@ Overview of the terminal: **[COMMA](./COMMA.md)**.
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [COMMA](./COMMA.md) [function_argument](./../Grammar/function_argument.md) [deamerreserved_star__COMMA__function_argument__](./../Grammar/deamerreserved_star__COMMA__function_argument__.md)  |
+
+
+#### [conditional_function_declaration](./../Grammar/conditional_function_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__conditional_function_argument__](./../Grammar/deamerreserved_arrow__conditional_function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONDITIONAL](./CONDITIONAL.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [template_code_function_declaration](./../Grammar/template_code_function_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CODE](./CODE.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CODE](./CODE.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CODE](./CODE.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CODE](./CODE.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [code_function_declaration](./../Grammar/code_function_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [CODE](./CODE.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CODE](./CODE.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [inline_class_declaration](./../Grammar/inline_class_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [created_class_name](./../Grammar/created_class_name.md) [COLON](./COLON.md) [deamerreserved_arrow__inline_class_declaration_composite__](./../Grammar/deamerreserved_arrow__inline_class_declaration_composite__.md) [COMMA](./COMMA.md)  |
+| [created_class_name](./../Grammar/created_class_name.md) [COLON](./COLON.md) [COMMA](./COMMA.md)  |
+
+
+#### [deamerreserved_star__COMMA__inline_class_declaration_composite__](./../Grammar/deamerreserved_star__COMMA__inline_class_declaration_composite__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [inline_class_declaration_composite](./../Grammar/inline_class_declaration_composite.md) [deamerreserved_star__COMMA__inline_class_declaration_composite__](./../Grammar/deamerreserved_star__COMMA__inline_class_declaration_composite__.md)  |
+
+
+#### [inline_class_declaration_composite](./../Grammar/inline_class_declaration_composite.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__inline_class_declaration_composite_alias__](./../Grammar/deamerreserved_arrow__inline_class_declaration_composite_alias__.md) [COMMA](./COMMA.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [COLON](./COLON.md) [inline_class_declaration_composite_name](./../Grammar/inline_class_declaration_composite_name.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md)  |
+| [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [COMMA](./COMMA.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [COLON](./COLON.md) [inline_class_declaration_composite_name](./../Grammar/inline_class_declaration_composite_name.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md)  |
+
+
+#### [deamerreserved_star__COMMA__inline_class_declaration_composite_alias__](./../Grammar/deamerreserved_star__COMMA__inline_class_declaration_composite_alias__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [inline_class_declaration_composite_alias](./../Grammar/inline_class_declaration_composite_alias.md) [deamerreserved_star__COMMA__inline_class_declaration_composite_alias__](./../Grammar/deamerreserved_star__COMMA__inline_class_declaration_composite_alias__.md)  |
+
+
+#### [code_block](./../Grammar/code_block.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__code_block_input_argument__](./../Grammar/deamerreserved_arrow__code_block_input_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [code_block_program](./../Grammar/code_block_program.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md)  |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [code_block_program](./../Grammar/code_block_program.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md)  |
+
+
+#### [deamerreserved_star__COMMA__code_block_input_argument__](./../Grammar/deamerreserved_star__COMMA__code_block_input_argument__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [code_block_input_argument](./../Grammar/code_block_input_argument.md) [deamerreserved_star__COMMA__code_block_input_argument__](./../Grammar/deamerreserved_star__COMMA__code_block_input_argument__.md)  |
+
+
+#### [template_function_declaration](./../Grammar/template_function_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [trailing_return_type](./../Grammar/trailing_return_type.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [trailing_return_type](./../Grammar/trailing_return_type.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [trailing_return_type](./../Grammar/trailing_return_type.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [trailing_return_type](./../Grammar/trailing_return_type.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [function_declaration](./../Grammar/function_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [trailing_return_type](./../Grammar/trailing_return_type.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [trailing_return_type](./../Grammar/trailing_return_type.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [FUNCTION](./FUNCTION.md) [return_type](./../Grammar/return_type.md) [function_name](./../Grammar/function_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [condition_modifier_function_call](./../Grammar/condition_modifier_function_call.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [condition_modifier_name](./../Grammar/condition_modifier_name.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__condition_modifier_argument__](./../Grammar/deamerreserved_arrow__condition_modifier_argument__.md) [COMMA](./COMMA.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)  |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [condition_modifier_name](./../Grammar/condition_modifier_name.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [COMMA](./COMMA.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)  |
+
+
+#### [deamerreserved_star__COMMA__condition_modifier_argument__](./../Grammar/deamerreserved_star__COMMA__condition_modifier_argument__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [condition_modifier_argument](./../Grammar/condition_modifier_argument.md) [deamerreserved_star__COMMA__condition_modifier_argument__](./../Grammar/deamerreserved_star__COMMA__condition_modifier_argument__.md)  |
+
+
+#### [deamerreserved_star__COMMA__class_inherit_base__](./../Grammar/deamerreserved_star__COMMA__class_inherit_base__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [class_inherit_base](./../Grammar/class_inherit_base.md) [deamerreserved_star__COMMA__class_inherit_base__](./../Grammar/deamerreserved_star__COMMA__class_inherit_base__.md)  |
+
+
+#### [class_stmt_member_field_declaration](./../Grammar/class_stmt_member_field_declaration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md) [COMMA](./COMMA.md)  |
+| [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [COMMA](./COMMA.md)  |
+
+
+#### [template_class_stmt_constructor](./../Grammar/template_class_stmt_constructor.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__template_parameter__](./../Grammar/deamerreserved_arrow__template_parameter__.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [TEMPLATE](./TEMPLATE.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [CONSTRUCTOR](./CONSTRUCTOR.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [class_stmt_constructor](./../Grammar/class_stmt_constructor.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONSTRUCTOR](./CONSTRUCTOR.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONSTRUCTOR](./CONSTRUCTOR.md) [class_name](./../Grammar/class_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONSTRUCTOR](./CONSTRUCTOR.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./../Grammar/deamerreserved_arrow__function_argument__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [CONSTRUCTOR](./CONSTRUCTOR.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [compound_base](./../Grammar/compound_base.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMPOSITE](./COMPOSITE.md) [compound_base_name](./../Grammar/compound_base_name.md) [AS](./AS.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [deamerreserved_arrow__compound_base_alias__](./../Grammar/deamerreserved_arrow__compound_base_alias__.md) [COMMA](./COMMA.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md)  |
+| [COMPOSITE](./COMPOSITE.md) [compound_base_name](./../Grammar/compound_base_name.md) [AS](./AS.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [COMMA](./COMMA.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md)  |
+
+
+#### [deamerreserved_star__COMMA__compound_base_alias__](./../Grammar/deamerreserved_star__COMMA__compound_base_alias__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [compound_base_alias](./../Grammar/compound_base_alias.md) [deamerreserved_star__COMMA__compound_base_alias__](./../Grammar/deamerreserved_star__COMMA__compound_base_alias__.md)  |
+
+
+#### [enumeration](./../Grammar/enumeration.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [enumeration_name](./../Grammar/enumeration_name.md) [EQ](./EQ.md) [enumeration_value](./../Grammar/enumeration_value.md) [COMMA](./COMMA.md)  |
+| [enumeration_name](./../Grammar/enumeration_name.md) [COMMA](./COMMA.md)  |
+
+
+#### [function_access](./../Grammar/function_access.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__expression__](./../Grammar/deamerreserved_arrow__expression__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)  |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)  |
+
+
+#### [deamerreserved_star__COMMA__expression__](./../Grammar/deamerreserved_star__COMMA__expression__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [expression](./../Grammar/expression.md) [deamerreserved_star__COMMA__expression__](./../Grammar/deamerreserved_star__COMMA__expression__.md)  |
+
+
+#### [value_list](./../Grammar/value_list.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [deamerreserved_arrow__full_value__](./../Grammar/deamerreserved_arrow__full_value__.md) [COMMA](./COMMA.md)  |
+
+
+#### [deamerreserved_star__COMMA__full_value__](./../Grammar/deamerreserved_star__COMMA__full_value__.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [COMMA](./COMMA.md) [full_value](./../Grammar/full_value.md) [deamerreserved_star__COMMA__full_value__](./../Grammar/deamerreserved_star__COMMA__full_value__.md)  |
+
+
+#### [tuple](./../Grammar/tuple.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [deamerreserved_arrow__full_value__](./../Grammar/deamerreserved_arrow__full_value__.md) [COMMA](./COMMA.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)  |
 
 
 

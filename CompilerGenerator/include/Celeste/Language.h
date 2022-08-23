@@ -15,7 +15,6 @@
 #include "Celeste/Generation.h"
 #include "Celeste/Grammar.h"
 #include "Celeste/Lexicon.h"
-#include "Celeste/OopSyntax.h"
 
 
 namespace Celeste
@@ -35,14 +34,12 @@ namespace Celeste
 , ::Celeste::Generation
 , ::Celeste::Grammar
 , ::Celeste::Lexicon
-, ::Celeste::OopSyntax
 >
 						 , public ::Celeste::Threat
 , public ::Celeste::Identity
 , public ::Celeste::Generation
 , public ::Celeste::Grammar
 , public ::Celeste::Lexicon
-, public ::Celeste::OopSyntax
 
 	{
 	public:
@@ -52,14 +49,12 @@ namespace Celeste
 , ::Celeste::Generation
 , ::Celeste::Grammar
 , ::Celeste::Lexicon
-, ::Celeste::OopSyntax
 >()
 		, ::Celeste::Threat::Threat(this)
 , ::Celeste::Identity::Identity(this)
 , ::Celeste::Generation::Generation(this)
 , ::Celeste::Grammar::Grammar(this)
 , ::Celeste::Lexicon::Lexicon(this)
-, ::Celeste::OopSyntax::OopSyntax(this)
 
 		{
 		}

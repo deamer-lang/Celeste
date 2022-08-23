@@ -8,9 +8,9 @@ Overview of the terminal: **[ELSE](./ELSE.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [IF](./IF.md) |
+| Above             | [ELSEIF](./ELSEIF.md) |
 | This              | **[ELSE](./ELSE.md)** |
-| Below             | [LEFT_BRACKET](./LEFT_BRACKET.md) |
+| Below             | [INLINE](./INLINE.md) |
 
 
 
@@ -18,7 +18,7 @@ Overview of the terminal: **[ELSE](./ELSE.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[ELSE](./ELSE.md)** | else | Standard |
+| **[ELSE](./ELSE.md)** | [Ee][Ll][Ss][Ee] | Standard |
 
 
 
@@ -27,12 +27,25 @@ Overview of the terminal: **[ELSE](./ELSE.md)**.
 ### NonTerminals
 
 
-#### [condtional_declaration](./../Grammar/condtional_declaration.md)
+#### [conditional_else_if](./../Grammar/conditional_else_if.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [ELSE](./ELSE.md) [IF](./IF.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [expression](./../Grammar/expression.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [conditional_block](./../Grammar/conditional_block.md)  |
-| [ELSE](./ELSE.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [expression](./../Grammar/expression.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [conditional_block](./../Grammar/conditional_block.md)  |
+| [ELSE](./ELSE.md) [IF](./IF.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [expression](./../Grammar/expression.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [conditional_block](./../Grammar/conditional_block.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [conditional_else](./../Grammar/conditional_else.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [ELSE](./ELSE.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [conditional_block](./../Grammar/conditional_block.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+
+
+#### [symbol_name_secondary](./../Grammar/symbol_name_secondary.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [ELSE](./ELSE.md)  |
 
 
 

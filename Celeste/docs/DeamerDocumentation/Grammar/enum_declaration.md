@@ -16,7 +16,7 @@ Overview of the nonterminal: **[enum_declaration](./enum_declaration.md)**
 
 | ProductionRule |
 | ---- |
-| [ENUM](./../Lexicon/ENUM.md) [enum_name](./enum_name.md) [enum_block](./enum_block.md)  |
+| [ENUM](./../Lexicon/ENUM.md) [enum_name](./enum_name.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [deamerreserved_star__enumeration__](./deamerreserved_star__enumeration__.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
 
 
 
@@ -31,13 +31,6 @@ Overview of the nonterminal: **[enum_declaration](./enum_declaration.md)**
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [enum_declaration](./enum_declaration.md)  |
-
-
-#### [meta_declaration](./../Grammar/meta_declaration.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [LEFT_SQUARE_BRACKET](./../Lexicon/LEFT_SQUARE_BRACKET.md) [deamerreserved_star__expression__](./deamerreserved_star__expression__.md) [RIGHT_SQUARE_BRACKET](./../Lexicon/RIGHT_SQUARE_BRACKET.md) [enum_declaration](./enum_declaration.md)  |
 
 
 

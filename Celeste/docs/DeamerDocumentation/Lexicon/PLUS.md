@@ -8,9 +8,9 @@ Overview of the terminal: **[PLUS](./PLUS.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [NOT](./NOT.md) |
+| Above             | [PLUSPLUS](./PLUSPLUS.md) |
 | This              | **[PLUS](./PLUS.md)** |
-| Below             | [MINUS](./MINUS.md) |
+| Below             | [MINUSMINUS](./MINUSMINUS.md) |
 
 
 
@@ -18,7 +18,7 @@ Overview of the terminal: **[PLUS](./PLUS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[PLUS](./PLUS.md)** | [+] | Standard |
+| **[PLUS](./PLUS.md)** | [+] | NoValue |
 
 
 
@@ -27,11 +27,11 @@ Overview of the terminal: **[PLUS](./PLUS.md)**.
 ### NonTerminals
 
 
-#### [expression](./../Grammar/expression.md)
+#### [expression_no_value](./../Grammar/expression_no_value.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [expression](./../Grammar/expression.md) [PLUS](./PLUS.md) [expression](./../Grammar/expression.md)  |
+| [expression_no_value](./../Grammar/expression_no_value.md) [PLUS](./PLUS.md) [t_expression](./../Grammar/t_expression.md)  |
 
 
 

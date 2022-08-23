@@ -16,8 +16,14 @@ Overview of the nonterminal: **[function_declaration](./function_declaration.md)
 
 | ProductionRule |
 | ---- |
-| [FUNCTION](./../Lexicon/FUNCTION.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [deamerreserved_arrow__deamerreserved_optional__function_argument____](./deamerreserved_arrow__deamerreserved_optional__function_argument____.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [return_type](./return_type.md) [SEMICOLON](./../Lexicon/SEMICOLON.md)  |
-| [FUNCTION](./../Lexicon/FUNCTION.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [deamerreserved_arrow__deamerreserved_optional__function_argument____](./deamerreserved_arrow__deamerreserved_optional__function_argument____.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [SEMICOLON](./../Lexicon/SEMICOLON.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./deamerreserved_arrow__function_argument__.md) [COMMA](./../Lexicon/COMMA.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [trailing_return_type](./trailing_return_type.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./deamerreserved_arrow__function_argument__.md) [COMMA](./../Lexicon/COMMA.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [trailing_return_type](./trailing_return_type.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [deamerreserved_arrow__function_argument__](./deamerreserved_arrow__function_argument__.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [COMMA](./../Lexicon/COMMA.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [trailing_return_type](./trailing_return_type.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [COMMA](./../Lexicon/COMMA.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [trailing_return_type](./trailing_return_type.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [FUNCTION](./../Lexicon/FUNCTION.md) [return_type](./return_type.md) [function_name](./function_name.md) [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [function_body](./function_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
 
 
 
@@ -34,17 +40,15 @@ Overview of the nonterminal: **[function_declaration](./function_declaration.md)
 | [function_declaration](./function_declaration.md)  |
 
 
-#### [meta_declaration](./../Grammar/meta_declaration.md)
+#### [class_stmt_member_function](./../Grammar/class_stmt_member_function.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [LEFT_SQUARE_BRACKET](./../Lexicon/LEFT_SQUARE_BRACKET.md) [deamerreserved_star__expression__](./deamerreserved_star__expression__.md) [RIGHT_SQUARE_BRACKET](./../Lexicon/RIGHT_SQUARE_BRACKET.md) [function_declaration](./function_declaration.md)  |
-
-
-#### [class_stmt](./../Grammar/class_stmt.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
+| [VIRTUAL](./../Lexicon/VIRTUAL.md) [function_declaration](./function_declaration.md) [OVERRIDE](./../Lexicon/OVERRIDE.md)  |
+| [VIRTUAL](./../Lexicon/VIRTUAL.md) [function_declaration](./function_declaration.md)  |
+| [PURE](./../Lexicon/PURE.md) [function_declaration](./function_declaration.md) [OVERRIDE](./../Lexicon/OVERRIDE.md)  |
+| [PURE](./../Lexicon/PURE.md) [function_declaration](./function_declaration.md)  |
+| [function_declaration](./function_declaration.md) [OVERRIDE](./../Lexicon/OVERRIDE.md)  |
 | [function_declaration](./function_declaration.md)  |
 
 

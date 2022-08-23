@@ -15,13 +15,9 @@
 
 
 #include "Deamer/Lexer/Generator/Flex/Flex.h"
-#include "Deamer/Lexer/Generator/Antlr_Lexer/Antlr_Lexer.h"
-#include "Deamer/Lexer/Generator/Dleg/Dleg.h"
 #include "Deamer/Parser/Generator/Bison/Bison.h"
-#include "Deamer/Parser/Generator/Antlr_Parser/Antlr_Parser.h"
 #include "Deamer/Ast/Generation/CPP/CPP.h"
 #include "Deamer/Tool/Type/DeamerDocumentation/DeamerDocumentation.h"
-#include "Deamer/Tool/Type/OopSyntaxRecognizer/OopSyntaxRecognizer.h"
 
 
 namespace Celeste
@@ -57,24 +53,16 @@ namespace Celeste
 
 			// Initialize language outputs
 			::deamer::lexer::generator::flex::Flex Flex(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
-::deamer::lexer::generator::antlr_lexer::Antlr_Lexer Antlr_Lexer(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
-::deamer::lexer::generator::dleg::Dleg Dleg(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
 ::deamer::parser::generator::bison::Bison Bison(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
-::deamer::parser::generator::antlr_parser::Antlr_Parser Antlr_Parser(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
 ::deamer::ast::generation::cpp::CPP CPP(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
 ::deamer::tool::type::deamerdocumentation::DeamerDocumentation DeamerDocumentation(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
-::deamer::tool::type::oopsyntaxrecognizer::OopSyntaxRecognizer OopSyntaxRecognizer(::deamer::compiler::generator::Compiler<::Celeste::Language>::GetLanguageDefinition());
 
 
 			// The language generation targets
 			output.AddLanguageToolOutput(Flex.Generate());
-output.AddLanguageToolOutput(Antlr_Lexer.Generate());
-output.AddLanguageToolOutput(Dleg.Generate());
 output.AddLanguageToolOutput(Bison.Generate());
-output.AddLanguageToolOutput(Antlr_Parser.Generate());
 output.AddLanguageToolOutput(CPP.Generate());
 output.AddLanguageToolOutput(DeamerDocumentation.Generate());
-output.AddLanguageToolOutput(OopSyntaxRecognizer.Generate());
 
 
 			return output;

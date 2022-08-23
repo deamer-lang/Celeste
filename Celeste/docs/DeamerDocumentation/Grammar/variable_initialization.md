@@ -16,7 +16,7 @@ Overview of the nonterminal: **[variable_initialization](./variable_initializati
 
 | ProductionRule |
 | ---- |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md) [EQ](./../Lexicon/EQ.md) [expression](./expression.md) [SEMICOLON](./../Lexicon/SEMICOLON.md)  |
+| [type](./type.md) [variable_name](./variable_name.md) [EQ](./../Lexicon/EQ.md) [value_list](./value_list.md)  |
 
 
 
@@ -26,7 +26,7 @@ Overview of the nonterminal: **[variable_initialization](./variable_initializati
 ### NonTerminals
 
 
-#### [logical_stmt](./../Grammar/logical_stmt.md)
+#### [stmt](./../Grammar/stmt.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |

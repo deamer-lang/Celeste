@@ -16,7 +16,8 @@ Overview of the nonterminal: **[variable_declaration](./variable_declaration.md)
 
 | ProductionRule |
 | ---- |
-| [type](./type.md) [VARNAME](./../Lexicon/VARNAME.md) [SEMICOLON](./../Lexicon/SEMICOLON.md)  |
+| [type](./type.md) [variable_name](./variable_name.md) [EQ](./../Lexicon/EQ.md) [value_list](./value_list.md)  |
+| [type](./type.md) [variable_name](./variable_name.md)  |
 
 
 
@@ -26,14 +27,7 @@ Overview of the nonterminal: **[variable_declaration](./variable_declaration.md)
 ### NonTerminals
 
 
-#### [class_stmt](./../Grammar/class_stmt.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [variable_declaration](./variable_declaration.md)  |
-
-
-#### [logical_stmt](./../Grammar/logical_stmt.md)
+#### [stmt](./../Grammar/stmt.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |

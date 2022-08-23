@@ -10,7 +10,7 @@ Overview of the terminal: **[NOT](./NOT.md)**.
 | ----------------- | --------------------------------------------- |
 | Above             | [NOTEQ](./NOTEQ.md) |
 | This              | **[NOT](./NOT.md)** |
-| Below             | [PLUS](./PLUS.md) |
+| Below             | [PLUSPLUS](./PLUSPLUS.md) |
 
 
 
@@ -18,11 +18,20 @@ Overview of the terminal: **[NOT](./NOT.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[NOT](./NOT.md)** | [!] | Standard |
+| **[NOT](./NOT.md)** | [!] | NoValue |
 
 
 
 ## **Who references this**
+
+### NonTerminals
+
+
+#### [t_expression](./../Grammar/t_expression.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [NOT](./NOT.md) [f_expression](./../Grammar/f_expression.md)  |
 
 
 

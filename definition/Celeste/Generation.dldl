@@ -1,12 +1,11 @@
 Generate: lexer Flex
-Generate: lexer Antlr_Lexer
-Generate: lexer Dleg
 Generate: parser Bison
-Generate: parser Antlr_Parser
 Generate: ast CPP
 Generate: extension DeamerDocumentation
-Generate: extension OopSyntaxRecognizer
 
 Integrate: Flex  Bison
 Integrate: Flex  DeamerAST
 Integrate: Bison DeamerAST
+
+Argument: Bison activate-glr
+Argument: Bison activate-glr-debug

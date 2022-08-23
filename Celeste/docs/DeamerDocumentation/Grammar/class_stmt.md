@@ -8,7 +8,7 @@ Overview of the nonterminal: **[class_stmt](./class_stmt.md)**
 
 | Name:                | Abstraction:    | Is Inlined |
 | -------------------- | --------------- | ---------- |
-| class_stmt | Group | No |
+| class_stmt | Standard | No |
 
 
 
@@ -16,9 +16,12 @@ Overview of the nonterminal: **[class_stmt](./class_stmt.md)**
 
 | ProductionRule |
 | ---- |
-| [variable_declaration](./variable_declaration.md)  |
-| [function_declaration](./function_declaration.md)  |
-| [function_implementation](./function_implementation.md)  |
+| [accessibility](./accessibility.md)  |
+| [class_stmt_member_field_declaration](./class_stmt_member_field_declaration.md)  |
+| [class_stmt_member_function](./class_stmt_member_function.md)  |
+| [class_stmt_member_template_function](./class_stmt_member_template_function.md)  |
+| [class_stmt_constructor](./class_stmt_constructor.md)  |
+| [template_class_stmt_constructor](./template_class_stmt_constructor.md)  |
 
 
 

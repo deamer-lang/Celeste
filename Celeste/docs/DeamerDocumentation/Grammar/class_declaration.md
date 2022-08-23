@@ -16,8 +16,8 @@ Overview of the nonterminal: **[class_declaration](./class_declaration.md)**
 
 | ProductionRule |
 | ---- |
-| [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [COLON](./../Lexicon/COLON.md) [deamerreserved_arrow__base_type__](./deamerreserved_arrow__base_type__.md) [class_block](./class_block.md)  |
-| [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [class_block](./class_block.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [deamerreserved_arrow__class_inherit_base__](./deamerreserved_arrow__class_inherit_base__.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [class_body](./class_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [CLASS](./../Lexicon/CLASS.md) [class_name](./class_name.md) [LEFT_BRACKET](./../Lexicon/LEFT_BRACKET.md) [class_body](./class_body.md) [RIGHT_BRACKET](./../Lexicon/RIGHT_BRACKET.md)  |
 
 
 
@@ -32,13 +32,6 @@ Overview of the nonterminal: **[class_declaration](./class_declaration.md)**
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [class_declaration](./class_declaration.md)  |
-
-
-#### [meta_declaration](./../Grammar/meta_declaration.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [LEFT_SQUARE_BRACKET](./../Lexicon/LEFT_SQUARE_BRACKET.md) [deamerreserved_star__expression__](./deamerreserved_star__expression__.md) [RIGHT_SQUARE_BRACKET](./../Lexicon/RIGHT_SQUARE_BRACKET.md) [class_declaration](./class_declaration.md)  |
 
 
 

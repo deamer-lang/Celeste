@@ -8,7 +8,7 @@ Overview of the terminal: **[VARNAME](./VARNAME.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [USERDEFINED_OPERATOR](./USERDEFINED_OPERATOR.md) |
+| Above             | [MULTIPLY](./MULTIPLY.md) |
 | This              | **[VARNAME](./VARNAME.md)** |
 | Below             | [NUMBER](./NUMBER.md) |
 
@@ -18,7 +18,7 @@ Overview of the terminal: **[VARNAME](./VARNAME.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[VARNAME](./VARNAME.md)** | [a-zA-Z_]+[a-zA-Z_0-9]* | Standard |
+| **[VARNAME](./VARNAME.md)** | [a-zA-Z_][a-zA-Z_0-9]* | Standard |
 
 
 
@@ -27,88 +27,74 @@ Overview of the terminal: **[VARNAME](./VARNAME.md)**.
 ### NonTerminals
 
 
-#### [expression](./../Grammar/expression.md)
+#### [for_variable](./../Grammar/for_variable.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [class_name](./../Grammar/class_name.md)
+#### [namespace_name](./../Grammar/namespace_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [base_type](./../Grammar/base_type.md)
+#### [inline_class_declaration_composite_alias](./../Grammar/inline_class_declaration_composite_alias.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [enum_name](./../Grammar/enum_name.md)
+#### [created_class_name](./../Grammar/created_class_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [function_arg_type](./../Grammar/function_arg_type.md)
+#### [code_block_argument_name](./../Grammar/code_block_argument_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [function_arg_name](./../Grammar/function_arg_name.md)
+#### [template_parameter_name](./../Grammar/template_parameter_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [type](./../Grammar/type.md)
+#### [member_field_name](./../Grammar/member_field_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [function_name](./../Grammar/function_name.md)
+#### [compound_base_alias](./../Grammar/compound_base_alias.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [return_type](./../Grammar/return_type.md)
+#### [symbol_name_secondary](./../Grammar/symbol_name_secondary.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
 
 
-#### [enum_stmt](./../Grammar/enum_stmt.md)
+#### [symbol_name](./../Grammar/symbol_name.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
 | [VARNAME](./VARNAME.md)  |
-
-
-#### [variable_declaration](./../Grammar/variable_declaration.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [type](./../Grammar/type.md) [VARNAME](./VARNAME.md) [SEMICOLON](./SEMICOLON.md)  |
-
-
-#### [variable_initialization](./../Grammar/variable_initialization.md)
-
-| Productionrule referencing this                      |
-| ---------------------------------------------------- |
-| [type](./../Grammar/type.md) [VARNAME](./VARNAME.md) [EQ](./EQ.md) [expression](./../Grammar/expression.md) [SEMICOLON](./SEMICOLON.md)  |
 
 
 

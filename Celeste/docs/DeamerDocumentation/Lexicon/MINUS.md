@@ -8,7 +8,7 @@ Overview of the terminal: **[MINUS](./MINUS.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [PLUS](./PLUS.md) |
+| Above             | [MINUSMINUS](./MINUSMINUS.md) |
 | This              | **[MINUS](./MINUS.md)** |
 | Below             | [DIVIDE](./DIVIDE.md) |
 
@@ -18,7 +18,7 @@ Overview of the terminal: **[MINUS](./MINUS.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[MINUS](./MINUS.md)** | [\-] | Standard |
+| **[MINUS](./MINUS.md)** | [\-] | NoValue |
 
 
 
@@ -27,11 +27,11 @@ Overview of the terminal: **[MINUS](./MINUS.md)**.
 ### NonTerminals
 
 
-#### [expression](./../Grammar/expression.md)
+#### [expression_no_value](./../Grammar/expression_no_value.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [expression](./../Grammar/expression.md) [MINUS](./MINUS.md) [expression](./../Grammar/expression.md)  |
+| [expression_no_value](./../Grammar/expression_no_value.md) [MINUS](./MINUS.md) [t_expression](./../Grammar/t_expression.md)  |
 
 
 

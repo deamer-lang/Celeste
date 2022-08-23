@@ -12,7 +12,7 @@ add_library(Celeste_CompilerGenerator_implementation_detail STATIC)
 target_sources(Celeste_CompilerGenerator_implementation_detail PRIVATE ${SOURCE_LIST})
 
 target_include_directories(Celeste_CompilerGenerator_implementation_detail PUBLIC "${Celeste_CompilerGenerator_SOURCE_DIR}/include")
-target_link_libraries(Celeste_CompilerGenerator_implementation_detail PRIVATE Deamer::Deamer)
+target_link_libraries(Celeste_CompilerGenerator_implementation_detail PUBLIC Deamer::Deamer)
 target_compile_features(Celeste_CompilerGenerator_implementation_detail PUBLIC cxx_std_17)
 set_target_properties(Celeste_CompilerGenerator_implementation_detail PROPERTIES LINKER_LANGUAGE CXX)
 

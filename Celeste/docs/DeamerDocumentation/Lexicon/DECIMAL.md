@@ -27,7 +27,7 @@ Overview of the terminal: **[DECIMAL](./DECIMAL.md)**.
 ### NonTerminals
 
 
-#### [expression](./../Grammar/expression.md)
+#### [value](./../Grammar/value.md)
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |

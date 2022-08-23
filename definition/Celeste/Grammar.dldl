@@ -1,117 +1,417 @@
 / Grammar of Celeste
 / Made by: Thimo Böhmer
-/ 2021
+/ 2021-2022
 
 program
-	stmt*
+	root_program
 	
-Group: stmt
+root_program
+	standard_block
+	
+/ Symbol reference may map to variable declarations which is a specialization formulized as:
+/ Two consecutive symbol references resolve to the following pattern:
+/ - The first may be resolved semantically as a Type
+/ - The second may be resolved syntactically as a VARNAME
+/ When the top condition is true, the symbol_reference sequence must be seen as a variable declaration.
+/
+/ symbol_reference resolving syntactically to function calls can semantically result in changes in the meaning of the expression or statement.
+/ Function calls can be either returning:
+/ - Values, May be used at Runtime, Compile Time, Code Time
+/ - Types, May be used at Compile Time, Code Time
+/ - Names, May be used at Code Time
+/ Depending on the context, using a symbol reference as name for a variable declaration, may result in seeing the Variable Declaration as a:
+/ - A variable declaration (The Function Call resolves to a Resolvable name)
+/ - Two Function Calls (The first and the second Function Call resolve to Functions returning Values)
+/ - An Error (The Function Call resolves to a Type , and as a Type  may not be used as a Name, this results in a Compiler Error)
+/ - All other permutations will result in an Error.
+/
+/ Only Allowed Combinations:
+/ - Type Name
+/ - Value Value
+/
+/ Note: void is a Value Type, while VoidType is a Type Type.
+standard_block
+	stmt*
+
+stmt
+	template_function_declaration
+	template_class_declaration
+	function_declaration
 	class_declaration
 	enum_declaration
-	function_declaration
-	function_implementation
-	meta_declaration
+	variable_declaration
+	inline_class_declaration
+	namespace_declaration
+	symbol_reference SEMICOLON
+	for_loop
+	display_call
+	symbol_increase
+	symbol_decrease
+	return_statement
+	template_code_function_declaration
+	code_function_declaration
+	template_conditional_function_declaration
+	conditional_function_declaration
+	conditional_if
+	conditional_else_if
+	conditional_else
+	assignment
+	mutation_group
+	import_statement
+	SEMICOLON
+	
+import_statement
+	file_import
+	
+file_import
+	IMPORT FILE_ TEXT
+	
+mutation_group
+	[LEFT_PARANTHESIS [symbol_reference -> (COMMA symbol_reference)] [COMMA] RIGHT_PARANTHESIS] LEFT_BRACKET LEFT_SQUARE_BRACKET standard_block RIGHT_SQUARE_BRACKET RIGHT_BRACKET
+	
+assignment
+	symbol_reference assignment_operator expression
+	
+assignment_operator
+	PLUSEQ
+	MINUSEQ
+	MULTIPLYEQ
+	DIVIDEEQ
+	EQ
+	
+conditional_if
+	IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS LEFT_BRACKET conditional_block RIGHT_BRACKET
 
-meta_declaration
-	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET -> meta_declaration
-	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET class_declaration
-	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET enum_declaration
-	LEFT_SQUARE_BRACKET expression* RIGHT_SQUARE_BRACKET function_declaration
+conditional_else_if
+	ELSEIF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS LEFT_BRACKET conditional_block RIGHT_BRACKET
+	ELSE IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS LEFT_BRACKET conditional_block RIGHT_BRACKET
 
+conditional_else
+	ELSE LEFT_BRACKET conditional_block RIGHT_BRACKET
+	
+conditional_block
+	standard_block
+	
+template_conditional_function_declaration
+	execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET CONDITIONAL [LEFT_PARANTHESIS [conditional_function_argument -> (COMMA conditional_function_argument)] [COMMA] RIGHT_PARANTHESIS] function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+
+conditional_function_declaration
+	CONDITIONAL [LEFT_PARANTHESIS [conditional_function_argument -> (COMMA conditional_function_argument)] [COMMA] RIGHT_PARANTHESIS] function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	
+template_code_function_declaration
+	execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET CODE function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+
+code_function_declaration
+	CODE function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+
+	
+return_statement
+	RETURN expression
+	
+symbol_increase
+	symbol_reference PLUSPLUS
+	
+symbol_decrease
+	symbol_reference MINUSMINUS
+	
 expression
-	expression PLUS expression
-	expression MINUS expression
-	expression DIVIDE expression
-	expression MULTIPLY expression
-	expression USERDEFINED_OPERATOR expression
+	expression_no_value
+	
+expression_no_value
+	expression_no_value PLUS t_expression
+	expression_no_value MINUS t_expression
+	t_expression
+
+t_expression
+	t_expression MULTIPLY f_expression
+	t_expression DIVIDE f_expression
+	t_expression LTEQ f_expression
+	t_expression GTEQ f_expression
+	t_expression LT f_expression
+	t_expression GT f_expression
+	t_expression EQEQ f_expression
+	t_expression NOTEQ f_expression
+	NOT f_expression
+	f_expression
+	
+f_expression
+	LEFT_PARANTHESIS expression_no_value RIGHT_PARANTHESIS
+	value
+
+display_call
+	DISPLAY symbol_reference
+	
+for_loop
+	for_each_loop
+	for_iteration_loop
+	
+for_iteration_loop
+	FOR expression LEFT_BRACKET for_block RIGHT_BRACKET
+	
+for_each_loop
+	FOR LEFT_PARANTHESIS type for_variable (IN|COLON) iterator RIGHT_PARANTHESIS LEFT_BRACKET for_block RIGHT_BRACKET
+	
+for_variable
 	VARNAME
+	
+iterator
+	full_value
+	
+for_block
+	standard_block
+	
+namespace_declaration
+	NAMESPACE namespace_name -> (DOT namespace_name) LEFT_BRACKET namespace_block RIGHT_BRACKET
+	
+namespace_block
+	standard_block
+	
+namespace_name
+	VARNAME
+	
+inline_class_declaration
+	created_class_name COLON [inline_class_declaration_composite -> (COMMA inline_class_declaration_composite)] [COMMA]
+	
+inline_class_declaration_composite
+	inline_class_declaration_composite_name
+	inline_class_declaration_composite_name AS LEFT_SQUARE_BRACKET inline_class_declaration_composite_alias RIGHT_SQUARE_BRACKET
+	LEFT_SQUARE_BRACKET inline_class_declaration_composite_alias COLON inline_class_declaration_composite_name RIGHT_SQUARE_BRACKET
+	LEFT_SQUARE_BRACKET LEFT_SQUARE_BRACKET [inline_class_declaration_composite_alias -> (COMMA inline_class_declaration_composite_alias)] [COMMA] RIGHT_SQUARE_BRACKET COLON inline_class_declaration_composite_name RIGHT_SQUARE_BRACKET
+	
+inline_class_declaration_composite_alias
+	VARNAME
+	
+inline_class_declaration_composite_name
+	symbol_reference
+	
+created_class_name
+	VARNAME
+	
+code_block
+	[LEFT_PARANTHESIS [code_block_input_argument -> (COMMA code_block_input_argument)] [COMMA] RIGHT_PARANTHESIS] LEFT_SQUARE_BRACKET code_block_program RIGHT_SQUARE_BRACKET
+	
+code_block_input_argument
+	code_block_argument
+
+/ If a code block argument only exists of type -> symbol_reference then it is a code_block_modifier
+/ It is ill-formed if type is not a symbol_reference but has no name either
+code_block_argument
+	type [code_block_argument_name]
+
+code_block_argument_name
+	VARNAME
+	
+code_block_program
+	standard_block
+	
+variable_declaration
+	type variable_name [EQ value_list]
+
+array_declaration
+	LEFT_SQUARE_BRACKET expression RIGHT_SQUARE_BRACKET
+
+variable_name
+	symbol_reference
+	
+template_function_declaration
+	execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET execution_keyword_permutation FUNCTION return_type function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS [trailing_return_type] LEFT_BRACKET function_body RIGHT_BRACKET
+
+function_declaration
+	execution_keyword_permutation FUNCTION return_type function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS [trailing_return_type] LEFT_BRACKET function_body RIGHT_BRACKET
+
+trailing_return_type
+	return_type
+
+return_type
+	type
+
+conditional_function_argument
+	function_argument
+
+function_argument
+	function_argument_type function_argument_name [condition_modifier_function_call] [EQ full_value]
+	
+function_argument_type
+	type
+
+function_argument_name
+	symbol_reference
+	
+condition_modifier_function_call
+	LEFT_PARANTHESIS condition_modifier_name [LEFT_SQUARE_BRACKET [condition_modifier_argument -> (COMMA condition_modifier_argument)] [COMMA] RIGHT_SQUARE_BRACKET] RIGHT_PARANTHESIS
+	
+condition_modifier_name
+	symbol_reference
+	
+condition_modifier_argument
+	full_value
+
+function_body
+	standard_block
+
+function_name
+	symbol_reference
+
+template_class_declaration
+	execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET execution_keyword_permutation CLASS class_name [class_inherit_base] LEFT_BRACKET class_body RIGHT_BRACKET
+
+template_parameter
+	type template_parameter_name
+	
+template_parameter_name
+	VARNAME
+
+class_declaration
+	execution_keyword_permutation CLASS class_name [class_inherit_base -> (COMMA class_inherit_base)] LEFT_BRACKET class_body RIGHT_BRACKET
+	
+class_name
+	symbol_reference
+	
+execution_keyword_permutation
+	CODE
+	RUNTIME
+	CODE RUNTIME
+	RUNTIME CODE
+	EMPTY
+	
+class_body
+	class_stmt*
+	
+class_stmt
+	accessibility
+	class_stmt_member_field_declaration
+	class_stmt_member_function
+	class_stmt_member_template_function
+	class_stmt_constructor
+	template_class_stmt_constructor
+	
+class_stmt_member_field_declaration
+	type member_field_name [EQ value_list] COMMA
+	type member_field_name [EQ value_list] SEMICOLON
+	type member_field_name [EQ value_list] 
+
+member_field_name
+	VARNAME
+	
+class_stmt_member_function
+	[VIRTUAL|PURE] function_declaration [OVERRIDE]
+	
+class_stmt_member_template_function
+	[VIRTUAL|PURE] template_function_declaration [OVERRIDE]
+	
+template_class_stmt_constructor
+	TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET class_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET CONSTRUCTOR [class_name] LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	
+class_stmt_constructor
+	class_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	CONSTRUCTOR [class_name] LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+
+accessibility
+	PUBLIC
+	PROTECTED
+	PRIVATE
+
+class_inherit_base
+	inherit_base
+	compound_base
+
+inherit_base
+	INHERIT inherit_base_name
+	
+inherit_base_name
+	symbol_reference
+
+compound_base
+	COMPOSITE compound_base_name
+	COMPOSITE compound_base_name AS compound_base_alias
+	COMPOSITE compound_base_name AS LEFT_SQUARE_BRACKET [compound_base_alias -> (COMMA compound_base_alias)] [COMMA] RIGHT_SQUARE_BRACKET
+	
+compound_base_name
+	symbol_reference
+	
+compound_base_alias
+	VARNAME
+
+enum_declaration
+	ENUM enum_name LEFT_BRACKET enumeration* RIGHT_BRACKET
+
+enum_name
+	symbol_reference
+
+enumeration
+	enumeration_name [EQ enumeration_value] [COMMA]
+
+enumeration_name
+	symbol_reference
+	
+enumeration_value
+	full_value
+	
+symbol_reference
+	symbol -> (DOT symbol_secondary)
+
+symbol_secondary
+	symbol_name_secondary symbol_access*
+	
+symbol
+	symbol_name symbol_access*
+
+symbol_access
+	index_access
+	anonymous_access
+	function_access
+	auto_deduce_array
+
+auto_deduce_array
+	LEFT_SQUARE_BRACKET RIGHT_SQUARE_BRACKET
+
+symbol_name_secondary
+	VARNAME
+	FOR
+	CLASS
+	IF
+	ELSEIF
+	ELSE
+
+symbol_name
+	VARNAME
+	FOR
+
+function_access
+	LEFT_PARANTHESIS [expression -> (COMMA expression)] [COMMA] RIGHT_PARANTHESIS
+
+index_access
+	LEFT_SQUARE_BRACKET expression RIGHT_SQUARE_BRACKET
+	
+anonymous_access
+	LEFT_BRACKET expression RIGHT_BRACKET
+	
+type
+	type_modifier* symbol_reference
+	type_modifier* AUTOTYPE [array_declaration]
+	type_modifier* AUTO [array_declaration]
+
+type_modifier
+	STATIC
+	CONSTANT
+	INLINE
+	
+value_list
+	full_value -> (COMMA full_value) [COMMA]
+	
+full_value
+	expression
+
+value
 	NUMBER
 	DECIMAL
 	TEXT
-
-class_declaration
-	CLASS class_name COLON base_type -> (COMMA base_type) class_block
-	CLASS class_name class_block
-
-class_name
-	VARNAME
-
-base_type
-	VARNAME
-
-class_block
-	LEFT_BRACKET class_stmt* RIGHT_BRACKET
+	symbol_reference
+	code_block
+	tuple
 	
-enum_declaration
-	ENUM enum_name enum_block
-
-enum_name
-	VARNAME
-
-enum_block
-	LEFT_BRACKET (enum_stmt|COMMA)* RIGHT_BRACKET
-
-function_declaration
-	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS return_type SEMICOLON
-	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS SEMICOLON
+tuple
+	LEFT_PARANTHESIS full_value -> (COMMA full_value) [COMMA] RIGHT_PARANTHESIS
 	
-function_implementation
-	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS return_type function_block
-	FUNCTION function_name LEFT_PARANTHESIS [function_argument] -> (COMMA function_argument) RIGHT_PARANTHESIS function_block
-
-function_argument
-	function_arg_type function_arg_name EQ expression
-	function_arg_type function_arg_name
-
-function_arg_type
-	VARNAME
-
-function_arg_name
-	VARNAME
-
-Group: type
-	VARNAME
-
-Group: function_name
-	VARNAME
-
-Group: return_type
-	VARNAME
-
-function_block
-	LEFT_BRACKET function_stmt* RIGHT_BRACKET
-
-Group: class_stmt
-	variable_declaration
-	function_declaration
-	function_implementation
-
-Group: enum_stmt
-	VARNAME
-
-Group: function_stmt
-	logical_stmt
-	
-Group: logical_stmt
-	variable_declaration
-	variable_initialization
-	condtional_declaration
-
-Group: condtional_declaration
-	IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block
-	ELSE IF LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block
-	ELSE LEFT_PARANTHESIS expression RIGHT_PARANTHESIS conditional_block
-
-conditional_block
-	LEFT_BRACKET condtional_stmt* RIGHT_BRACKET
-
-Group: condtional_stmt
-	logical_stmt
-	
-variable_declaration
-	type VARNAME SEMICOLON
-
-variable_initialization
-	type VARNAME EQ expression SEMICOLON
-
 /
