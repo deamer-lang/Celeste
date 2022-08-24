@@ -34,7 +34,7 @@ namespace Celeste::ir::inputreconstruction
 		 */
 		InputReconstructionObject* DeduceType();
 
-		std::string GetOperatorFunctionName();
+		std::optional<std::string> GetOperatorFunctionName();
 	};
 }
 

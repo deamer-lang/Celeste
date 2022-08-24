@@ -38,8 +38,8 @@ void Celeste::ir::inputreconstruction::Value::Resolve()
 			std::make_unique<Celeste::ir::inputreconstruction::SymbolReferenceCall>(
 				static_cast<ast::node::symbol_reference*>(child));
 		newSymbolReferenceCall->SetFile(GetFile());
-		GetFile()->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
 		newSymbolReferenceCall->SetParent(this);
+		GetFile()->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
 		underlyingSpecialization = std::move(newSymbolReferenceCall);
 		break;
 	}

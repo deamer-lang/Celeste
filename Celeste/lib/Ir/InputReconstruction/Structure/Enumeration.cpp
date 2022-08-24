@@ -12,6 +12,9 @@ Celeste::ir::inputreconstruction::Enumeration::Enumeration(
 
 void Celeste::ir::inputreconstruction::Enumeration::Complete()
 {
+	enumerationName->SetParent(this);
+	enumerationName->SetFile(GetFile());
+
 	enumeration.enumeration().for_all([&](ast::reference::Access<ast::node::enumeration> access) {
 		auto newMember = std::make_unique<EnumerationMember>(
 			std::make_unique<NameReference>(const_cast<ast::node::symbol_reference*>(

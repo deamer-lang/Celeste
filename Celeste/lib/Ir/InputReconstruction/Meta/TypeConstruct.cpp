@@ -37,6 +37,7 @@ void Celeste::ir::inputreconstruction::TypeConstruct::Destructure()
 			const_cast<ast::node::array_declaration*>(access.array_declaration().GetContent()[0]));
 		_->SetParent(this);
 		_->SetFile(GetFile());
+		_->Resolve();
 
 		arrayDeclarationExpression = std::move(_);
 	}
@@ -59,9 +60,42 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::IsArrayDeclaration()
 	return arrayDeclarationExpression.has_value();
 }
 
+bool Celeste::ir::inputreconstruction::TypeConstruct::CoreEqual(
+	InputReconstructionObject* deduceType)
+{
+	if (!typeTarget.has_value())
+	{
+		// Internal Compiler Error
+		return false;
+	}
+
+	switch (deduceType->GetType())
+	{
+	case Type::TypeConstruct: {
+		if (!static_cast<TypeConstruct*>(deduceType)->GetSymbolReference().has_value())
+		{
+			return false;
+		}
+
+		return typeTarget.value()->GetResolvedLinkedIr() == static_cast<TypeConstruct*>(deduceType)
+																->GetSymbolReference()
+																.value()
+																->GetResolvedLinkedIr();
+	}
+	default: {
+		return typeTarget.value()->GetResolvedLinkedIr() == deduceType;
+	}
+	}
+}
+
 bool Celeste::ir::inputreconstruction::TypeConstruct::Equal(InputReconstructionObject* deduceType)
 {
-	return false;
+	if (deduceType == this)
+	{
+		return true;
+	}
+
+	return CoreEqual(deduceType);
 }
 
 std::optional<std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>>&

@@ -28,10 +28,42 @@ Celeste::ir::inputreconstruction::NameReferenceSecondary::NameReferenceSecondary
 	}
 }
 
+void Celeste::ir::inputreconstruction::NameReferenceSecondary::Complete()
+{
+	if (std::holds_alternative<ast::node::symbol*>(symbolReference))
+	{
+		auto access = ast::reference::Access<ast::node::symbol>(
+			std::get<ast::node::symbol*>(symbolReference));
+		access.symbol_access().for_all(
+			[&](ast::reference::Access<ast::node::symbol_access> symbolAccess) {
+				CreateAccess(symbolAccess);
+			});
+	}
+	else if (std::holds_alternative<ast::node::symbol_secondary*>(symbolReference))
+	{
+		auto access = ast::reference::Access<ast::node::symbol_secondary>(
+			std::get<ast::node::symbol_secondary*>(symbolReference));
+		access.symbol_access().for_all(
+			[&](ast::reference::Access<ast::node::symbol_access> symbolAccess) {
+				CreateAccess(symbolAccess);
+			});
+	}
+	else if (std::holds_alternative<ast::node::VARNAME*>(symbolReference))
+	{
+	}
+	else
+	{
+		// Internal Compiler Error
+	}
+	initialized = true;
+}
+
 void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 	std::vector<std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>>
 		nextSymbols)
 {
+	resolveIsRan = true;
+
 	auto continueAccessResolve = [&](std::size_t startI) {
 		if (std::holds_alternative<ast::node::symbol*>(symbolReference))
 		{
@@ -40,7 +72,7 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 			for (; startI < symbolDereference.symbol_access().GetContent().size(); startI++)
 			{
 				auto access = symbolDereference.symbol_access().GetContent()[startI];
-				ContinueResolveAccess(access);
+				ContinueResolveAccess(startI);
 			}
 		}
 		else if (std::holds_alternative<ast::node::symbol_secondary*>(symbolReference))
@@ -50,7 +82,7 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 			for (; startI < symbolDereference.symbol_access().GetContent().size(); startI++)
 			{
 				auto access = symbolDereference.symbol_access().GetContent()[startI];
-				ContinueResolveAccess(access);
+				ContinueResolveAccess(startI);
 			}
 		}
 		else
@@ -170,6 +202,24 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 
 		// Delegate static linkage to TypeConstruct
 		auto linkedIr = variableType->GetIrLinkage(this);
+
+		if (linkedIr == nullptr)
+		{
+			// Invalid
+			return;
+		}
+
+		// Valid Linkage as Type Construct returned a valid reference
+		SetLinkedIr(linkedIr);
+		continueAccessResolve(0);
+		continueThisResolve();
+		break;
+	}
+	case Type::FunctionArgument: {
+		auto functionArgument = static_cast<FunctionArgument*>(finalIr.value());
+		auto functionArgumentType = functionArgument->GetArgumentType();
+
+		auto linkedIr = functionArgumentType->GetIrLinkage(this);
 
 		if (linkedIr == nullptr)
 		{

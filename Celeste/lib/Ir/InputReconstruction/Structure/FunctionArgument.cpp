@@ -31,16 +31,8 @@ void Celeste::ir::inputreconstruction::FunctionArgument::AddConditionalModifier(
 }
 
 bool Celeste::ir::inputreconstruction::FunctionArgument::Accepts(
-	const ast::node::expression* functionAccess)
-{
-	// Not yet implemented
-	return false;
-}
-
-bool Celeste::ir::inputreconstruction::FunctionArgument::Accepts(
 	InputReconstructionObject* functionAccess)
 {
-	// Not yet implemented
 	switch (functionAccess->GetType())
 	{
 	case Type::Expression: {
@@ -54,4 +46,20 @@ bool Celeste::ir::inputreconstruction::FunctionArgument::Accepts(
 	}
 
 	return false;
+}
+
+bool Celeste::ir::inputreconstruction::FunctionArgument::Accepts(
+	const std::unique_ptr<Expression>& expression)
+{
+	return argumentType->Equal(expression->DeduceType());
+}
+
+std::string Celeste::ir::inputreconstruction::FunctionArgument::GetName()
+{
+	return argumentName->GetSymbolName();
+}
+
+Celeste::ir::inputreconstruction::TypeConstruct* Celeste::ir::inputreconstruction::FunctionArgument::GetArgumentType()
+{
+	return argumentType.get();
 }

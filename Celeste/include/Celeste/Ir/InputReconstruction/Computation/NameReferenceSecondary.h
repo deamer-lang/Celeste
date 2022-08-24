@@ -22,6 +22,7 @@ namespace Celeste::ir::inputreconstruction
 			std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
 				symbolReference_);
 		virtual ~NameReferenceSecondary() = default;
+		void Complete();
 
 	public:
 		void StartResolve(

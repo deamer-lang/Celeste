@@ -6,3 +6,9 @@ Celeste::ir::inputreconstruction::Display::Display(
 	  symbolReference(std::move(symbolReference_))
 {
 }
+
+void Celeste::ir::inputreconstruction::Display::Resolve()
+{
+	symbolReference->SetParent(this);
+	symbolReference->SetFile(GetFile());
+}

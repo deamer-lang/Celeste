@@ -344,6 +344,8 @@ namespace Celeste::ast::listener::user::ir
 				});
 
 			Class->SetParent(GetParent());
+			Class->SetFile(file);
+			Class->Complete();
 
 			AddCurrentScope(std::move(Class));
 			OpenScope();
@@ -441,6 +443,10 @@ namespace Celeste::ast::listener::user::ir
 				[&](reference::Access<node::template_parameter> template_parameter) {
 					Class->AddTemplateParameter(GetTemplateParameter(template_parameter));
 				});
+
+			Class->SetParent(GetParent());
+			Class->SetFile(file);
+			Class->Complete();
 
 			AddCurrentScope(std::move(Class));
 			OpenScope();
@@ -893,7 +899,7 @@ namespace Celeste::ast::listener::user::ir
 			if (!getText.empty() && getText[0] == '"' && (*std::rbegin(getText)) == '"')
 			{
 				getText.pop_back();
-				getText.erase(0);
+				getText.erase(0, 1);
 				return getText;
 			}
 
@@ -912,6 +918,8 @@ namespace Celeste::ast::listener::user::ir
 			// Also the Project GetFile must be upgraded to allow any location access.
 			auto Import = std::make_unique<Celeste::ir::inputreconstruction::Import>(
 				project->GetFile(GetText(Access.file_import().TEXT().GetContent()[0]->GetText())));
+			Import->SetParent(GetParent());
+			Import->SetFile(file);
 
 			// Later Class Specializing Imports are Name limiters in Reference Resolving Stage.
 
@@ -972,6 +980,8 @@ namespace Celeste::ast::listener::user::ir
 			auto Access = reference::Access(node);
 			auto newEnumeration = std::make_unique<Celeste::ir::inputreconstruction::Enumeration>(
 				GetName(Access.enum_name().symbol_reference().GetContent()[0]), node);
+			newEnumeration->SetParent(GetParent());
+			newEnumeration->SetFile(file);
 			newEnumeration->Complete();
 
 			AddCurrentScope(std::move(newEnumeration));
@@ -1043,6 +1053,9 @@ namespace Celeste::ast::listener::user::ir
 			auto Access = reference::Access(node);
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::Return>(
 				GetExpression(Access.expression().GetContent()[0]));
+			newObject->SetFile(file);
+			newObject->SetParent(GetParent());
+			newObject->Resolve();
 
 			AddCurrentScope(std::move(newObject));
 		}
@@ -1065,6 +1078,9 @@ namespace Celeste::ast::listener::user::ir
 			auto Access = reference::Access(node);
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::Display>(
 				GetSymbolReference(Access.symbol_reference().GetContent()[0]));
+			newObject->SetFile(file);
+			newObject->SetParent(GetParent());
+			newObject->Resolve();
 
 			AddCurrentScope(std::move(newObject));
 		}

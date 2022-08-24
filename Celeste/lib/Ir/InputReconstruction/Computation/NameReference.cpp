@@ -4,7 +4,9 @@
 #include "Celeste/Ir/InputReconstruction/CodeGeneration/CodeFunction.h"
 #include "Celeste/Ir/InputReconstruction/CodeGeneration/NameFunction.h"
 #include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Display.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReferenceSecondary.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Return.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Conditional/ConditionalFunction.h"
 #include "Celeste/Ir/InputReconstruction/Import.h"
@@ -13,6 +15,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Namespace.h"
+#include <set>
 
 struct Celeste::ir::inputreconstruction::NameReference::ResolveLogic
 {
@@ -43,6 +46,7 @@ public:
 	};
 
 private:
+	std::set<File*> importedFiles;
 	NameReference* reference;
 	deamer::external::cpp::ast::Node* symbol;
 	std::size_t accessCount = 0;
@@ -162,19 +166,46 @@ public:
 
 	void ContinueAccessImpl()
 	{
-		auto accesses = reference->GetSymbolAccesses();
-		for (std::size_t i = accessCount; i < accesses.size(); i++)
+		for (std::size_t i = 0; i < accessCount; i++)
 		{
-			auto access = accesses[i];
-			reference->ContinueResolveAccess(access);
+			reference->hiddenAccess.push_back(std::move(reference->GetSymbolAccesses()[0]));
+			reference->GetSymbolAccesses().erase(std::begin(reference->GetSymbolAccesses()));
 		}
+
+		for (std::size_t i = 0; i < reference->linkedIrViaAccess.size(); i++)
+		{
+			reference->ContinueResolveAccess(i);
+		}
+	}
+
+	bool IsBiDirectional(Type type_)
+	{
+		switch (type_)
+		{
+		case Type::Root:
+		case Type::Namespace:
+		case Type::Enumeration:
+		case Type::Class: {
+			return true;
+		}
+		default: {
+			return false;
+		}
+		}
+	}
+
+	bool HasFunctionAccess()
+	{
+		return !reference->GetSymbolAccesses().empty() &&
+			   reference->GetSymbolAccesses()[0]->IsFunctionAccess();
 	}
 
 	void EntryPointCheck(InputReconstructionObject* uncheckedMember, ResolveArgument argument)
 	{
 		if (uncheckedMember == argument.originObject)
 		{
-			std::cout << "Internal Compiler Error, UncheckedMember is already Checked\n";
+			std::cout
+				<< "Internal Non-Critical Compiler Error, UncheckedMember is already Checked\n";
 			return;
 		}
 
@@ -196,7 +227,28 @@ public:
 		}
 		case Type::Import: {
 			auto irComponent = static_cast<Import*>(uncheckedMember);
-			auto next = irComponent->GetFile()->GetIrBottom();
+			importedFiles.insert(irComponent->GetFile());
+
+			// If the targeted file is already imported, ignore the import.
+			if (importedFiles.find(irComponent->GetTarget()) != importedFiles.end())
+			{
+				return;
+			}
+
+			auto targetFile = irComponent->GetTarget();
+			if (targetFile == nullptr)
+			{
+				std::cout << "Referenced Import File does not exist\n";
+				return;
+			}
+
+			auto next = targetFile->GetIrBottom();
+			if (next == nullptr)
+			{
+				// Target File is empty, and thus useless
+				return;
+			}
+
 			std::size_t addedCounter = 0;
 			for (auto iter = next->GetParent()->GetReverseIterator(next);
 				 iter != next->GetParent()->rend(); ++iter)
@@ -211,8 +263,9 @@ public:
 				// The referenced File objects may not add the Parent,
 				// As we are already starting at the top.
 				// Adding the parent will only result in infinite loops
-				uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
-									 {currentElement, ResolveArgument{next, direction, false}});
+				uncheckedList.insert(
+					std::begin(uncheckedList) + addedCounter++,
+					{currentElement, ResolveArgument{irComponent, direction, false}});
 			}
 			return;
 		}
@@ -238,6 +291,25 @@ public:
 				}
 			}
 
+			if (argument.direction == Direction::Up)
+			{
+				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
+					 iter != irComponent->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				// Both ways as namespaces can only occur in bi directional accessable blocks.
+				for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+					 iter != irComponent->GetParent()->end(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+			}
 			if (argument.addParent && argument.direction == Direction::Up)
 			{
 				uncheckedList.insert(
@@ -286,6 +358,17 @@ public:
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
 			}
 			if (argument.direction == Direction::Up && argument.addParent)
 			{
@@ -321,6 +404,17 @@ public:
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
 				}
 			}
 
@@ -360,10 +454,60 @@ public:
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
 			}
 			else if (argument.direction == Direction::Up &&
 					 irComponent->GetParent()->GetType() == Type::Class)
 			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<Class*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<Class*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				irComponent->GetParent()->GetType() == Type::Function)
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
 			}
 
 			if (argument.direction == Direction::Up && argument.addParent)
@@ -378,7 +522,7 @@ public:
 			auto irComponent = static_cast<Function*>(uncheckedMember);
 
 			if (irComponent->GetFunctionName()->GetResolvedName() == GetSymbolName() &&
-				irComponent->Accepts(GetSymbolVariant()))
+				irComponent->Accepts(reference))
 			{
 				// If the Function Name is the same as the Name we are searching for.
 				// And the Access utilizes a Function Access,
@@ -407,10 +551,48 @@ public:
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
 			}
 			else if (argument.direction == Direction::Up &&
 					 irComponent->GetParent()->GetType() == Type::Class)
 			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<Class*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<Class*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
 			}
 
 			if (argument.direction == Direction::Up && argument.addParent)
@@ -452,6 +634,17 @@ public:
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
 				}
 			}
 
@@ -495,6 +688,17 @@ public:
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
 			}
 
 			if (argument.direction == Direction::Up && argument.addParent)
@@ -537,6 +741,17 @@ public:
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
 			}
 
 			if (argument.direction == Direction::Up && argument.addParent)
@@ -550,9 +765,14 @@ public:
 		case Type::FunctionArgument: {
 			auto irComponent = static_cast<FunctionArgument*>(uncheckedMember);
 
-			// We may not reference other function arguments in function arguments.
-			// Maybe in later versions. But not in this version.
-			// So continue to the function.
+			if (irComponent->GetName() == GetSymbolName() && !HasFunctionAccess())
+			{
+				SetEntryPoint(irComponent);
+				ContinueAccess();
+				Finalize();
+				return;
+			}
+
 			if (argument.addByNeighbour)
 			{
 				return;
@@ -567,6 +787,17 @@ public:
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
 				}
 			}
 
@@ -595,6 +826,112 @@ public:
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
 						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				irComponent->GetParent()->GetType() == Type::Function)
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+			}
+
+			if (argument.direction == Direction::Up && argument.addParent)
+			{
+				uncheckedList.insert(
+					std::begin(uncheckedList) + addedCounter++,
+					{irComponent->GetParent(), ResolveArgument{irComponent, Direction::Up, true}});
+			}
+			break;
+		}
+		case Type::Display: {
+		case Type::Return: {
+			auto irComponent = static_cast<Return*>(uncheckedMember);
+			if (argument.addByNeighbour)
+			{
+				return;
+			}
+
+			std::size_t addedCounter = 0;
+			if (argument.direction == Direction::Up &&
+				irComponent->GetParent()->GetType() != Type::Class)
+			{
+				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
+					 iter != irComponent->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetParent()->GetType() == Type::Class)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<Class*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<Class*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				irComponent->GetParent()->GetType() == Type::Function)
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 			}
 
@@ -625,6 +962,7 @@ public:
 			}
 
 			break;
+		}
 		}
 		}
 	}
@@ -668,36 +1006,10 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(ast::node::VARNAM
 	SetSymbolName(varname_->GetText());
 }
 
-std::vector<const Celeste::ast::node::symbol_access*>
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::SymbolAccess>>&
 Celeste::ir::inputreconstruction::NameReference::GetSymbolAccesses()
 {
-	if (std::holds_alternative<ast::node::VARNAME*>(symbolReference))
-	{
-		return {};
-	}
-	else if (std::holds_alternative<ast::node::symbol_reference*>(symbolReference))
-	{
-		auto access = ast::reference::Access<ast::node::symbol_reference>(
-			std::get<ast::node::symbol_reference*>(symbolReference));
-		if (!access.symbol().GetContent().empty())
-		{
-			return access.symbol().symbol_access().GetContent();
-		}
-		else if (!access.symbol_secondary().GetContent().empty())
-		{
-			return access.symbol_secondary().symbol_access().GetContent();
-		}
-		else
-		{
-			// Internal Compiler Error
-			return {};
-		}
-	}
-	else
-	{
-		// Internal Compiler Error
-		return {};
-	}
+	return linkedIrViaAccess;
 }
 
 Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_)
@@ -718,6 +1030,26 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_,
 	  symbolReference(symbolReference_),
 	  staticallyResolvable(true)
 {
+}
+
+void Celeste::ir::inputreconstruction::NameReference::CreateAccess(
+	const Celeste::ast::reference::Access<Celeste::ast::node::symbol_access>& access)
+{
+	auto reference = ast::reference::Access(access);
+	auto symbolAccess = std::make_unique<SymbolAccess>(this, reference);
+	if (linkedIrViaAccess.empty())
+	{
+		symbolAccess->SetParent(this);
+	}
+	else
+	{
+		symbolAccess->SetParent(GetFinalLinkedCombination().get());
+		GetFinalLinkedCombination()->Add(symbolAccess.get());
+	}
+
+	symbolAccess->SetFile(GetFile());
+	symbolAccess->Complete();
+	linkedIrViaAccess.push_back(std::move(symbolAccess));
 }
 
 void Celeste::ir::inputreconstruction::NameReference::SetLinkedAst(
@@ -770,6 +1102,45 @@ Celeste::ir::inputreconstruction::NameReference::GetSymbolAccessesFromSymbol(
 	return {};
 }
 
+std::variant<Celeste::ast::node::symbol*, Celeste::ast::node::symbol_secondary*,
+			 Celeste::ast::node::VARNAME*>
+Celeste::ir::inputreconstruction::NameReference::GetSymbolReferenceAst()
+{
+	if (GetType() == Type::SymbolResolveSecondary)
+	{
+		return static_cast<NameReferenceSecondary*>(this)->GetSymbolReferenceAst();
+	}
+
+	if (std::holds_alternative<ast::node::VARNAME*>(symbolReference))
+	{
+		return std::get<ast::node::VARNAME*>(symbolReference);
+	}
+	else if (std::holds_alternative<ast::node::symbol_reference*>(symbolReference))
+	{
+		auto access = ast::reference::Access<ast::node::symbol_reference>(
+			std::get<ast::node::symbol_reference*>(symbolReference));
+		if (!access.symbol().GetContent().empty())
+		{
+			return const_cast<ast::node::symbol*>(access.symbol().GetContent()[0]);
+		}
+		else if (!access.symbol_secondary().GetContent().empty())
+		{
+			return const_cast<ast::node::symbol_secondary*>(
+				access.symbol_secondary().GetContent()[0]);
+		}
+		else
+		{
+			// Unsupported Syntax
+			throw std::logic_error("Internal Compiler Error this should not occur.");
+		}
+	}
+	else
+	{
+		// Internal compiler error
+		throw std::logic_error("Internal Compiler Error this should not occur.");
+	}
+}
+
 void Celeste::ir::inputreconstruction::NameReference::ContinueResolve(
 	std::variant<ast::reference::Access<ast::node::symbol>,
 				 ast::reference::Access<ast::node::symbol_secondary>,
@@ -801,48 +1172,32 @@ void Celeste::ir::inputreconstruction::NameReference::ContinueResolve(
 		nameReferenceSecondary = std::make_unique<NameReferenceSecondary>(nextSymbols[0]);
 		nameReferenceSecondary.value()->SetParent(this);
 		nameReferenceSecondary.value()->SetFile(GetFile());
+		nameReferenceSecondary.value()->Complete();
 		nextSymbols.erase(std::cbegin(nextSymbols));
 		nameReferenceSecondary.value()->StartResolve(nextSymbols);
 	}
 }
 
-void Celeste::ir::inputreconstruction::NameReference::ContinueResolveAccess(
-	const ast::node::symbol_access* access)
+void Celeste::ir::inputreconstruction::NameReference::ContinueResolveAccess(std::size_t i)
 {
-	auto irComponentBase = GetFinalLinkedIr();
-	if (!irComponentBase.has_value())
-	{
-		// Invalid
-		return;
-	}
-	auto irComponent = irComponentBase.value();
-
-	auto reference = ast::reference::Access(access);
-	auto symbolAccess = std::make_unique<SymbolAccess>(this, reference);
-	if (linkedIrViaAccess.empty())
-	{
-		symbolAccess->SetParent(this);
-	}
-	else
-	{
-		symbolAccess->SetParent(GetFinalLinkedCombination().get());
-		GetFinalLinkedCombination()->Add(symbolAccess.get());
-	}
-
-	symbolAccess->SetFile(GetFile());
-	symbolAccess->Complete();
-
 	// Resolving Logic is delegated to Symbol Access object
-	symbolAccess->Resolve();
-
-	linkedIrViaAccess.push_back(std::move(symbolAccess));
+	linkedIrViaAccess[i]->Resolve();
 }
 
 void Celeste::ir::inputreconstruction::NameReference::Resolve()
 {
+	resolveIsRan = true;
+
+	// This may never be ran as secondary, as secondaries do not have an entry point logic.
+	if (GetType() == Type::SymbolResolveSecondary)
+	{
+		return;
+	}
+
 	if (std::holds_alternative<ast::node::VARNAME*>(symbolReference))
 	{
 		auto varname = std::get<ast::node::VARNAME*>(symbolReference);
+		SetSymbolName(varname->GetText());
 		if (GetType() != Type::SymbolReferenceCall)
 		{
 			linkedAstNode = varname;
@@ -860,14 +1215,41 @@ void Celeste::ir::inputreconstruction::NameReference::Resolve()
 				ContinueResolve(varname);
 			}
 		}
+		initialized = true;
 	}
 	else if (std::holds_alternative<ast::node::symbol_reference*>(symbolReference))
 	{
+		if (!initialized)
+		{
+			auto access = ast::reference::Access<ast::node::symbol_reference>(
+				std::get<ast::node::symbol_reference*>(symbolReference));
+			if (!access.symbol().GetContent().empty())
+			{
+				access.symbol().symbol_access().for_all(
+					[&](ast::reference::Access<ast::node::symbol_access> symbolAccess) {
+						CreateAccess(symbolAccess);
+					});
+			}
+			else if (!access.symbol_secondary().GetContent().empty())
+			{
+				access.symbol_secondary().symbol_access().for_all(
+					[&](ast::reference::Access<ast::node::symbol_access> symbolAccess) {
+						CreateAccess(symbolAccess);
+					});
+			}
+			else
+			{
+				// Internal Compiler Error
+			}
+			initialized = true;
+		}
+
 		auto symbolRef = std::get<ast::node::symbol_reference*>(symbolReference);
 		auto symbolRefAccess = ast::reference::Access<ast::node::symbol_reference>(symbolRef);
 		auto symbol = symbolRefAccess.symbol();
 
 		auto symbol_name = symbol.symbol_name().GetContent()[0];
+		SetSymbolName(symbol_name->GetText());
 		linkedAstNode = const_cast<::deamer::external::cpp::ast::Node*>(
 			static_cast<const ::deamer::external::cpp::ast::Node*>(symbol_name));
 
@@ -882,19 +1264,6 @@ void Celeste::ir::inputreconstruction::NameReference::Resolve()
 
 		// As we need to run the code to evaluate resolved names
 		staticallyResolvable = false;
-
-		// Calculate the next symbols
-		auto calculateNextSymbols = [&]() {
-			std::vector<std::variant<ast::reference::Access<ast::node::symbol>,
-									 ast::reference::Access<ast::node::symbol_secondary>,
-									 ast::reference::Access<ast::node::VARNAME>>>
-				nextSymbol;
-			for (auto secondary_symbol : symbolRefAccess.symbol_secondary().GetContent())
-			{
-				nextSymbol.emplace_back(secondary_symbol);
-			}
-			return nextSymbol;
-		};
 
 		// If there is an access, then the symbol is not generating but referencing. Thus we
 		// need to reference it. The access part will use this object to continue the resolving.
@@ -925,6 +1294,11 @@ void Celeste::ir::inputreconstruction::NameReference::Resolve()
 
 std::string Celeste::ir::inputreconstruction::NameReference::GetResolvedName()
 {
+	if (!resolveIsRan)
+	{
+		Resolve();
+	}
+
 	if (CanStaticallyBeResolved())
 	{
 		return linkedAstNode->GetText();
@@ -942,7 +1316,10 @@ bool Celeste::ir::inputreconstruction::NameReference::CanStaticallyBeResolved()
 std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
 Celeste::ir::inputreconstruction::NameReference::GetFinalLinkedIr()
 {
-	if (linkedIrViaAccess.empty())
+	// Initial function accesses must be hidden
+	// When they aren't then we know it failed resolution.
+	if (linkedIrViaAccess.empty() ||
+		(linkedIrViaAccess.size() == 1 && (*std::rbegin(linkedIrViaAccess))->IsFunctionAccess()))
 	{
 		return linkedIr;
 	}
@@ -964,14 +1341,14 @@ Celeste::ir::inputreconstruction::NameReference::GetFinalLinkedCombination()
 std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
 Celeste::ir::inputreconstruction::NameReference::GetResolvedLinkedIr()
 {
+	if (!resolveIsRan && GetType() != Type::SymbolResolveSecondary)
+	{
+		Resolve();
+	}
+
 	if (nameReferenceSecondary.has_value())
 	{
 		return nameReferenceSecondary.value()->GetResolvedLinkedIr();
-	}
-
-	if (linkedIrViaAccess.empty())
-	{
-		return GetFinalLinkedIr();
 	}
 
 	return GetFinalLinkedIr();

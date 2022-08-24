@@ -17,6 +17,8 @@ namespace Celeste::ir::inputreconstruction
 		Display(std::unique_ptr<SymbolReferenceCall> symbolReference_);
 		virtual ~Display() = default;
 
+		void Resolve();
+
 	public:
 	};
 }

@@ -26,7 +26,7 @@ void Celeste::ir::inputreconstruction::VariableDeclaration::AddValue(
 	values.push_back(std::move(newExpression));
 }
 
-Celeste::ir::inputreconstruction::InputReconstructionObject*
+Celeste::ir::inputreconstruction::TypeConstruct*
 Celeste::ir::inputreconstruction::VariableDeclaration::GetVariableType()
 {
 	return type.get();

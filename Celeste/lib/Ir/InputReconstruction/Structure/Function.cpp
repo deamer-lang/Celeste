@@ -50,51 +50,25 @@ Celeste::ir::inputreconstruction::Function::GetFunctionName()
 	return functionName.get();
 }
 
-bool Celeste::ir::inputreconstruction::Function::Accepts(
-	std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*> symbol)
+bool Celeste::ir::inputreconstruction::Function::Accepts(NameReference* symbol)
 {
-	ast::reference::Access<ast::node::symbol_access> symbolAccess;
-	if (std::holds_alternative<ast::node::symbol*>(symbol))
-	{
-		auto symbolDereferenced =
-			ast::reference::Access<ast::node::symbol>(std::get<ast::node::symbol*>(symbol));
-		symbolAccess = symbolDereferenced.symbol_access();
-	}
-	else if (std::holds_alternative<ast::node::symbol_secondary*>(symbol))
-	{
-		auto symbolDereferenced = ast::reference::Access<ast::node::symbol_secondary>(
-			std::get<ast::node::symbol_secondary*>(symbol));
-		symbolAccess = symbolDereferenced.symbol_access();
-	}
-	else if (std::holds_alternative<ast::node::VARNAME*>(symbol))
-	{
-		// VARNAME may not be used to reference some function
-		// As functions are in the form: name + [arguments]
-		// Thus VARNAME is an incomplete object for referencing Functions
-		return false;
-	}
-
-	if (!symbolAccess.anonymous_access().GetContent().empty() ||
-		!symbolAccess.auto_deduce_array().GetContent().empty())
+	auto& accesses = symbol->GetSymbolAccesses();
+	if (accesses.empty() || !accesses[0]->IsFunctionAccess())
 	{
 		return false;
 	}
 
-	auto functionAccess = symbolAccess.function_access();
+	auto& functionAccess = accesses[0];
+	auto& expressions = functionAccess->GetExpressions();
 
-	if (functionAccess.GetContent().empty())
-	{
-		return functionArguments.empty();
-	}
-
-	if (functionAccess[0].expression().GetContent().size() != functionArguments.size())
+	if (expressions.size() != functionArguments.size())
 	{
 		return false;
 	}
 
-	for (std::size_t i = 0; i < functionAccess[0].expression().GetContent().size(); i++)
+	for (std::size_t i = 0; i < expressions.size(); i++)
 	{
-		auto functionAccessMember = functionAccess[0].expression().GetContent()[i];
+		auto& functionAccessMember = expressions[i];
 		auto functionArgument = functionArguments[i].get();
 
 		if (!functionArgument->Accepts(functionAccessMember))
@@ -138,4 +112,10 @@ bool Celeste::ir::inputreconstruction::Function::Accepts(
 	}
 
 	return true;
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::FunctionArgument>>&
+Celeste::ir::inputreconstruction::Function::GetFunctionArguments()
+{
+	return functionArguments;
 }

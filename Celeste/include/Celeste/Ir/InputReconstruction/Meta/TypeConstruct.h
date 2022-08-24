@@ -31,6 +31,7 @@ namespace Celeste::ir::inputreconstruction
 		bool IsAuto();
 		bool IsAutoType();
 		bool IsArrayDeclaration();
+		bool CoreEqual(InputReconstructionObject* deduceType);
 		bool Equal(InputReconstructionObject* deduceType);
 
 		std::optional<std::unique_ptr<SymbolReferenceCall>>& GetSymbolReference();

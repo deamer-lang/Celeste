@@ -53,12 +53,18 @@ Celeste::ir::inputreconstruction::File::GetUnresolvedSymbolReferences()
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::File::GetIrBottom()
 {
-	return *std::rbegin(GetRoot()->GetScope());
+	auto targetScope = GetRoot()->GetScope();
+	if (targetScope.empty())
+	{
+		return nullptr;
+	}
+
+	return *std::rbegin(targetScope);
 }
 
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::File::GetRoot()
 {
 	// Root
-	return std::rbegin(inputReconstructionObjects)->get();
+	return std::begin(inputReconstructionObjects)->get();
 }

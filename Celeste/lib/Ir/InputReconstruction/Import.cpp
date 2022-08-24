@@ -5,3 +5,8 @@ Celeste::ir::inputreconstruction::Import::Import(File* targetFile_)
 	  targetFile(targetFile_)
 {
 }
+
+Celeste::ir::inputreconstruction::File* Celeste::ir::inputreconstruction::Import::GetTarget()
+{
+	return targetFile;
+}

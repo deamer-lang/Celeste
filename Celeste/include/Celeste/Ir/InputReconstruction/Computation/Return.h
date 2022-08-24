@@ -18,6 +18,8 @@ namespace Celeste::ir::inputreconstruction
 		Return(std::unique_ptr<Expression> expression_);
 		virtual ~Return() = default;
 
+		void Resolve();
+
 	public:
 	};
 }

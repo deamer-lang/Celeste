@@ -1,6 +1,10 @@
 #include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
 #include "Celeste/Ir/InputReconstruction/Computation/Value.h"
+#include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+#include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
+#include <iostream>
 
 Celeste::ir::inputreconstruction::Expression::Expression(
 	::deamer::external::cpp::ast::Node* expression_)
@@ -18,6 +22,7 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 			const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(0)));
 		_->SetFile(GetFile());
 		_->SetParent(this);
+		_->Resolve();
 		lhs = std::move(_);
 		break;
 	}
@@ -30,12 +35,14 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 				const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(0)));
 			lhs_->SetFile(GetFile());
 			lhs_->SetParent(this);
+			lhs_->Resolve();
 			lhs = std::move(lhs_);
 
 			auto rhs_ = std::make_unique<Expression>(
 				const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(2)));
 			rhs_->SetFile(GetFile());
 			rhs_->SetParent(this);
+			rhs_->Resolve();
 			rhs = std::move(rhs_);
 
 			switch (static_cast<ast::Type>(expression->GetIndex(1)->GetType()))
@@ -56,6 +63,7 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 				const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(0)));
 			_->SetFile(GetFile());
 			_->SetParent(this);
+			_->Resolve();
 			lhs = std::move(_);
 		}
 		break;
@@ -65,10 +73,19 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 			static_cast<const ast::node::t_expression*>(expression));
 		if (!access.t_expression().GetContent().empty())
 		{
-			lhs = std::make_unique<Expression>(
+			auto lhs_ = std::make_unique<Expression>(
 				const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(0)));
-			rhs = std::make_unique<Expression>(
+			lhs_->SetParent(this);
+			lhs_->SetFile(GetFile());
+			lhs_->Resolve();
+			lhs = std::move(lhs_);
+
+			auto rhs_ = std::make_unique<Expression>(
 				const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(2)));
+			rhs_->SetParent(this);
+			rhs_->SetFile(GetFile());
+			rhs_->Resolve();
+			rhs = std::move(rhs_);
 
 			switch (static_cast<ast::Type>(expression->GetIndex(1)->GetType()))
 			{
@@ -126,6 +143,7 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 					const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(0)));
 				_->SetFile(GetFile());
 				_->SetParent(this);
+				_->Resolve();
 				lhs = std::move(_);
 			}
 			else
@@ -134,6 +152,7 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 					const_cast<::deamer::external::cpp::ast::Node*>(expression->GetIndex(1)));
 				_->SetFile(GetFile());
 				_->SetParent(this);
+				_->Resolve();
 				lhs = std::move(_);
 
 				switch (static_cast<ast::Type>(expression->GetIndex(0)->GetType()))
@@ -197,6 +216,7 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 					access.expression_no_value().GetContent()[0])));
 			_->SetFile(GetFile());
 			_->SetParent(this);
+			_->Resolve();
 			lhs = std::move(_);
 		}
 		else if (!access.value().GetContent().empty())
@@ -262,11 +282,38 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 	if (!deducedTypeRhs.has_value())
 	{
 		auto operatorFunctionName = GetOperatorFunctionName();
+		if (!operatorFunctionName.has_value())
+		{
+			switch (deducedTypeLhs.value()->GetType())
+			{
+			case Type::VariableDeclaration: {
+				auto variableDeclarationIr =
+					static_cast<VariableDeclaration*>(deducedTypeLhs.value());
+				return variableDeclarationIr->GetVariableType();
+			}
+			case Type::FunctionArgument: {
+				auto functionArgumentIr = static_cast<FunctionArgument*>(deducedTypeLhs.value());
+				return functionArgumentIr->GetArgumentType();
+			}
+			case Type::Function: {
+				auto functionIr = static_cast<Function*>(deducedTypeLhs.value());
+				return functionIr->GetReturnType();
+			}
+			case Type::TypeConstruct:
+			case Type::Enumeration:
+			case Type::Class: {
+				return deducedTypeLhs.value();
+			}
+			}
+
+			return nullptr;
+		}
+
 		switch (deducedTypeLhs.value()->GetType())
 		{
 		case Type::Class: {
 			auto classIr = static_cast<Class*>(deducedTypeLhs.value());
-			return classIr->GetMember(operatorFunctionName, {});
+			return classIr->GetMember(operatorFunctionName.value(), {});
 		}
 		case Type::Integer: {
 		}
@@ -288,13 +335,13 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 			auto classIr = static_cast<Class*>(deducedTypeLhs.value());
 			if (std::holds_alternative<std::unique_ptr<Expression>>(rhs))
 			{
-				return classIr->GetMember(operatorFunctionName,
+				return classIr->GetMember(operatorFunctionName.value(),
 										  std::vector<InputReconstructionObject*>{
 											  std::get<std::unique_ptr<Expression>>(rhs).get()});
 			}
 			else if (std::holds_alternative<std::unique_ptr<Expression>>(rhs))
 			{
-				return classIr->GetMember(operatorFunctionName,
+				return classIr->GetMember(operatorFunctionName.value(),
 										  std::vector<InputReconstructionObject*>{
 											  std::get<std::unique_ptr<Value>>(rhs).get()});
 			}
@@ -315,7 +362,7 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 	return nullptr;
 }
 
-std::string Celeste::ir::inputreconstruction::Expression::GetOperatorFunctionName()
+std::optional<std::string> Celeste::ir::inputreconstruction::Expression::GetOperatorFunctionName()
 {
 	switch (OperatorType)
 	{
@@ -348,7 +395,7 @@ std::string Celeste::ir::inputreconstruction::Expression::GetOperatorFunctionNam
 	case Operator::GreaterOrEqual:
 		return "operator>=";
 	case Operator::Unknown:
-		return "operator?";
+		return std::nullopt;
 	}
 
 	return "operatorUnimplemented";

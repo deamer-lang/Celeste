@@ -39,6 +39,7 @@ void Celeste::ir::inputreconstruction::SymbolAccess::Complete()
 	{
 		expression->SetParent(this);
 		expression->SetFile(GetFile());
+		expression->Resolve();
 	}
 }
 
@@ -50,4 +51,21 @@ std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
 Celeste::ir::inputreconstruction::SymbolAccess::GetLinkedIr()
 {
 	return linkedIr;
+}
+
+bool Celeste::ir::inputreconstruction::SymbolAccess::IsFunctionAccess()
+{
+	return AccessType == SymbolAccessType::FunctionAccess;
+}
+
+Celeste::ast::reference::Access<Celeste::ast::node::symbol_access>
+Celeste::ir::inputreconstruction::SymbolAccess::GetAst()
+{
+	return symbolAccessAst;
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::Expression>>&
+Celeste::ir::inputreconstruction::SymbolAccess::GetExpressions()
+{
+	return expressions;
 }

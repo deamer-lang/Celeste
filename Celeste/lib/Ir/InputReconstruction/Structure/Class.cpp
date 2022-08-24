@@ -9,6 +9,12 @@ Celeste::ir::inputreconstruction::Class::Class(std::unique_ptr<NameReference> cl
 {
 }
 
+void Celeste::ir::inputreconstruction::Class::Complete()
+{
+	className->SetParent(this);
+	className->SetFile(GetFile());
+}
+
 void Celeste::ir::inputreconstruction::Class::Add(InputReconstructionObject* object)
 {
 	object->SetParent(this);
@@ -61,13 +67,13 @@ Celeste::ir::inputreconstruction::Class::GetInheritedBases()
 }
 
 Celeste::ir::inputreconstruction::InputReconstructionObject*
-Celeste::ir::inputreconstruction::Class::GetMember(NameReferenceSecondary* nameReferenceSecondary,
+Celeste::ir::inputreconstruction::Class::GetMember(NameReference* nameReference,
 												   Accessibility accessibility)
 {
 	for (auto& compoundBase : GetCompoundBases())
 	{
 		// Verify CompoundBases alias possibility
-		if (!compoundBase->HasAlias(nameReferenceSecondary->GetSymbolName()))
+		if (!compoundBase->HasAlias(nameReference->GetSymbolName()))
 		{
 			continue;
 		}
@@ -96,9 +102,8 @@ Celeste::ir::inputreconstruction::Class::GetMember(NameReferenceSecondary* nameR
 		case Type::Function: {
 			auto function = static_cast<Function*>(member);
 			// Check if the function is accepting
-			if (function->GetFunctionName()->GetResolvedName() ==
-					nameReferenceSecondary->GetSymbolName() &&
-				function->Accepts(nameReferenceSecondary->GetSymbolReferenceAst()))
+			if (function->GetFunctionName()->GetResolvedName() == nameReference->GetSymbolName() &&
+				function->Accepts(nameReference))
 			{
 				return function;
 			}
@@ -111,8 +116,8 @@ Celeste::ir::inputreconstruction::Class::GetMember(NameReferenceSecondary* nameR
 
 			// Check if the function is accepting
 			if (constructor->GetFunctionName()->GetResolvedName() ==
-					nameReferenceSecondary->GetSymbolName() &&
-				constructor->Accepts(nameReferenceSecondary->GetSymbolReferenceAst()))
+					nameReference->GetSymbolName() &&
+				constructor->Accepts(nameReference))
 			{
 				return constructor;
 			}
@@ -122,7 +127,7 @@ Celeste::ir::inputreconstruction::Class::GetMember(NameReferenceSecondary* nameR
 		}
 		case Type::VariableDeclaration: {
 			auto variable = static_cast<VariableDeclaration*>(member);
-			if (variable->GetName()->GetResolvedName() == nameReferenceSecondary->GetSymbolName())
+			if (variable->GetName()->GetResolvedName() == nameReference->GetSymbolName())
 			{
 				return variable;
 			}
@@ -150,8 +155,8 @@ Celeste::ir::inputreconstruction::Class::GetMember(NameReferenceSecondary* nameR
 
 		if (resolvedIr.value()->GetType() == Type::Class)
 		{
-			auto result = static_cast<Class*>(resolvedIr.value())
-							  ->GetMember(nameReferenceSecondary, accessibility);
+			auto result =
+				static_cast<Class*>(resolvedIr.value())->GetMember(nameReference, accessibility);
 			if (result == nullptr)
 			{
 				continue;

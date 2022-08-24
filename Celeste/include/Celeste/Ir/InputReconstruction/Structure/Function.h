@@ -34,13 +34,12 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		NameReference* GetFunctionName();
-		bool
-		Accepts(std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
-					symbol);
+		bool Accepts(NameReference* symbol);
 		InputReconstructionObject* GetReturnType();
 		bool
 		Accepts(const std::string& functionName,
 				const std::optional<std::vector<InputReconstructionObject*>>& functionArguments);
+		std::vector<std::unique_ptr<FunctionArgument>>& GetFunctionArguments();
 	};
 }
 

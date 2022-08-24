@@ -25,7 +25,7 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		void AddValue(std::unique_ptr<Expression> newExpression);
-		InputReconstructionObject* GetVariableType();
+		TypeConstruct* GetVariableType();
 		NameReference* GetName();
 		std::vector<std::unique_ptr<Expression>>& GetExpressions();
 	};

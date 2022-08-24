@@ -9,6 +9,7 @@
 #include "ConditionModifierCall.h"
 #include <memory>
 #include <vector>
+#include <xstring>
 
 namespace Celeste::ir::inputreconstruction
 {
@@ -30,8 +31,10 @@ namespace Celeste::ir::inputreconstruction
 		void AddConditionalModifier(std::unique_ptr<ConditionModifierCall> unique);
 
 	public:
-		bool Accepts(const ast::node::expression* functionAccess);
 		bool Accepts(InputReconstructionObject* functionAccess);
+		bool Accepts(const std::unique_ptr<Expression>& expression);
+		std::string GetName();
+		TypeConstruct* GetArgumentType();
 	};
 }
 

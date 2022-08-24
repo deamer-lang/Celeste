@@ -32,17 +32,24 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<std::unique_ptr<NameReferenceSecondary>> nameReferenceSecondary;
 
 		std::string symbolName;
+		std::vector<std::unique_ptr<SymbolAccess>> hiddenAccess;
 
 	public:
 		NameReference(ast::node::symbol_reference* symbolReference_);
 		NameReference(ast::node::VARNAME* varname_);
 		virtual ~NameReference() = default;
-		std::vector<const ast::node::symbol_access*> GetSymbolAccesses();
+		std::vector<std::unique_ptr<SymbolAccess>>& GetSymbolAccesses();
 
 	protected:
+		bool resolveIsRan = false;
+		bool initialized = false;
+
 		NameReference(Type forward_);
 		NameReference(Type forward_, ast::node::symbol_reference* symbolReference_);
 		NameReference(Type forward_, ast::node::VARNAME* symbolReference_);
+
+		void CreateAccess(
+			const Celeste::ast::reference::Access<Celeste::ast::node::symbol_access>& access);
 
 	public:
 		void SetLinkedAst(deamer::external::cpp::ast::Node* node);
@@ -52,7 +59,7 @@ namespace Celeste::ir::inputreconstruction
 										  ast::reference::Access<ast::node::symbol_secondary>,
 										  ast::reference::Access<ast::node::VARNAME>>
 								 symbol);
-		void ContinueResolveAccess(const ast::node::symbol_access* access);
+		void ContinueResolveAccess(std::size_t i);
 
 		void Resolve();
 
@@ -110,6 +117,9 @@ namespace Celeste::ir::inputreconstruction
 			Celeste::ast::reference::Access<Celeste::ast::node::symbol_secondary> symbol);
 		std::vector<const Celeste::ast::node::symbol_access*> GetSymbolAccessesFromSymbol(
 			Celeste::ast::reference::Access<Celeste::ast::node::VARNAME> symbol);
+
+		std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
+		GetSymbolReferenceAst();
 	};
 }
 

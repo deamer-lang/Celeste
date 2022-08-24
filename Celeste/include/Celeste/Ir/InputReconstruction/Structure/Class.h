@@ -26,6 +26,8 @@ namespace Celeste::ir::inputreconstruction
 		Class(std::unique_ptr<NameReference> className_);
 		virtual ~Class() = default;
 
+		void Complete();
+
 	public:
 		void Add(InputReconstructionObject* object) override;
 		void Add(InputReconstructionObject* object, Accessibility accessibility);
@@ -37,7 +39,7 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<std::unique_ptr<CompoundBase>>& GetCompoundBases();
 		std::vector<std::unique_ptr<InheritBase>>& GetInheritedBases();
 
-		InputReconstructionObject* GetMember(NameReferenceSecondary* nameReferenceSecondary,
+		InputReconstructionObject* GetMember(NameReference* nameReference,
 											 Accessibility accessibility = Accessibility::Public);
 
 		InputReconstructionObject* GetMember(

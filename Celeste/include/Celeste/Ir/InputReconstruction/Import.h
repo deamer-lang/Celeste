@@ -17,6 +17,7 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~Import() = default;
 
 	public:
+		File* GetTarget();
 	};
 }
 
