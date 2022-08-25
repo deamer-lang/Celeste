@@ -1,4 +1,13 @@
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
+#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
+#include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Tuple.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Value.h"
+#include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 
 Celeste::ir::inputreconstruction::VariableDeclaration::VariableDeclaration(
 	std::unique_ptr<NameReference> variableName_, std::unique_ptr<TypeConstruct> type_)

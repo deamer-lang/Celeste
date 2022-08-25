@@ -68,3 +68,32 @@ Celeste::ir::inputreconstruction::File::GetRoot()
 	// Root
 	return std::begin(inputReconstructionObjects)->get();
 }
+
+std::optional<Celeste::ir::inputreconstruction::Class*>
+Celeste::ir::inputreconstruction::File::GetClass(std::string className, bool expandImports)
+{
+	if (expandImports)
+	{
+		std::cout
+			<< "Expanded Imports are not yet implemented yet. Defaulting to non import usage.\n";
+	}
+
+	for (auto& element : inputReconstructionObjects)
+	{
+		if (element->GetType() == Type::Class)
+		{
+			auto classElement = static_cast<Class*>(element.get());
+			if (classElement->GetClassName()->GetResolvedName() == className)
+			{
+				return classElement;
+			}
+		}
+		else if (element->GetType() == Type::InlineClass)
+		{
+			std::cout << "Inlined classes are not yet evaluatable\n";
+		}
+	}
+
+	// Failed to find a class name
+	return std::nullopt;
+}

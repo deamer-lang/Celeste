@@ -1,4 +1,6 @@
 #include "Celeste/Ir/InputReconstruction/Conditional/ConditionalFunction.h"
+#include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
+#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 
 Celeste::ir::inputreconstruction::ConditionalFunction::ConditionalFunction(
 	std::unique_ptr<NameReference> functionName_)

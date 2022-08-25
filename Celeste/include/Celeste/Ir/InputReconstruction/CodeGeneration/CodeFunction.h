@@ -2,6 +2,7 @@
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CODEFUNCTION
 
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Value.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"

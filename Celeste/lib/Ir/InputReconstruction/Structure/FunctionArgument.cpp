@@ -1,6 +1,11 @@
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
+#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
 #include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Tuple.h"
 #include "Celeste/Ir/InputReconstruction/Computation/Value.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 
 Celeste::ir::inputreconstruction::FunctionArgument::FunctionArgument(
 	std::unique_ptr<NameReference> argumentName_, std::unique_ptr<TypeConstruct> argumentType_)
@@ -59,7 +64,8 @@ std::string Celeste::ir::inputreconstruction::FunctionArgument::GetName()
 	return argumentName->GetSymbolName();
 }
 
-Celeste::ir::inputreconstruction::TypeConstruct* Celeste::ir::inputreconstruction::FunctionArgument::GetArgumentType()
+Celeste::ir::inputreconstruction::TypeConstruct*
+Celeste::ir::inputreconstruction::FunctionArgument::GetArgumentType()
 {
 	return argumentType.get();
 }

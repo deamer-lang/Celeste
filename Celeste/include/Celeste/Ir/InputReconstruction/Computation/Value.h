@@ -2,18 +2,19 @@
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_VALUE_H
 
 #include "Celeste/Ast/Node/value.h"
-#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
-#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
-#include "Celeste/Ir/InputReconstruction/Computation/Tuple.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
-#include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
-#include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
-#include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 #include <memory>
 #include <variant>
 
 namespace Celeste::ir::inputreconstruction
 {
+	class SymbolReferenceCall;
+	class CodeBlock;
+	class Tuple;
+	class Integer;
+	class Decimal;
+	class Text;
+
 	class Value : public InputReconstructionObject
 	{
 	private:

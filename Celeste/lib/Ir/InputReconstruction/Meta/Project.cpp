@@ -9,9 +9,19 @@ void Celeste::ir::inputreconstruction::Project::AddFile(std::unique_ptr<File> fi
 Celeste::ir::inputreconstruction::File*
 Celeste::ir::inputreconstruction::Project::GetFile(const std::string& cs)
 {
+	auto formatFileName = [](std::string fileName) {
+		if (fileName.size() > 2 && fileName[0] == '.' && fileName[1] == '/')
+		{
+			return fileName.substr(2);
+		}
+
+		return fileName;
+	};
+	const auto requestedFileName = formatFileName(cs);
+
 	for (auto& file : files)
 	{
-		if (file->GetFileName() == cs)
+		if (formatFileName(file->GetFileName()) == requestedFileName)
 		{
 			return file.get();
 		}

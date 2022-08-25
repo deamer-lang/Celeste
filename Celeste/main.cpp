@@ -48,8 +48,11 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 				unresolved_->Resolve();
 				auto finalLinked = unresolved_->GetFinalLinkedIr();
 				auto resolved = unresolved_->GetResolvedLinkedIr();
-				std::cout << std::boolalpha << "Reference: " << (finalLinked.has_value());
-				if (finalLinked.has_value() && resolved.has_value())
+				std::cout << std::boolalpha << "Reference: "
+						  << (finalLinked.has_value() && finalLinked.value() != nullptr &&
+							  resolved.has_value() && resolved.value() != nullptr);
+				if (finalLinked.has_value() && finalLinked.value() != nullptr &&
+					resolved.has_value() && resolved.value() != nullptr)
 				{
 					auto finalLinkedValue = finalLinked.value();
 					std::cout << " Type: " << static_cast<std::size_t>(finalLinkedValue->GetType())
@@ -83,7 +86,7 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 
 int main(int argc, const char* argv[])
 {
-	std::vector<std::string> filenames = {"./main.ce", "./Point.ce"};
+	std::vector<std::string> filenames = {"./Celeste/standard_types.ce", "./main.ce", "./Point.ce"};
 
 	for (auto i = 1; i < argc; i++)
 	{

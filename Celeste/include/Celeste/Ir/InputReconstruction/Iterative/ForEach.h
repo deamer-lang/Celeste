@@ -1,15 +1,15 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_ITERATIVE_FOREACH_H
 #define CELESTE_IR_INPUTRECONSTRUCTION_ITERATIVE_FOREACH_H
 
-#include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
-#include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
-#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
-#include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
 #include <memory>
 
 namespace Celeste::ir::inputreconstruction
 {
+	class TypeConstruct;
+	class NameReference;
+	class Expression;
+
 	class ForEach : public InputReconstructionObject
 	{
 	private:

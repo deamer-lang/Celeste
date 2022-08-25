@@ -4,6 +4,7 @@
 #include "Celeste/Ast/Node/VARNAME.h"
 #include "Celeste/Ast/Node/symbol_reference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
+#include "Celeste/Ir/InputReconstruction/Computation/NameReferenceSecondary.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include <optional>
 #include <variant>

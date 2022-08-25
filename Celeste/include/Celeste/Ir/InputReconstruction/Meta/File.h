@@ -2,6 +2,7 @@
 #define CELESTE_INPUTRECONSTRUCTION_META_FILE_H
 
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include <Deamer/External/Cpp/Ast/Tree.h>
 #include <memory>
 #include <string>
@@ -40,6 +41,7 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<InputReconstructionObject*> GetUnresolvedSymbolReferences();
 		InputReconstructionObject* GetIrBottom();
 		InputReconstructionObject* GetRoot();
+		std::optional<Class*> GetClass(std::string className, bool expandImports = false);
 	};
 }
 

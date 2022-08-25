@@ -1,5 +1,11 @@
 #include "Celeste/Ir/InputReconstruction/Computation/Value.h"
 #include "Celeste/Ast/Listener/User/Ir/InputReconstructionListener.h"
+#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
+#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Tuple.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 
 Celeste::ir::inputreconstruction::Value::Value(ast::node::value* value_)
 	: InputReconstructionObject(Type::Value),
@@ -89,14 +95,50 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 	}
 	else if (std::holds_alternative<std::unique_ptr<Decimal>>(underlyingSpecialization))
 	{
-		return std::get<std::unique_ptr<Decimal>>(underlyingSpecialization).get();
+		auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/standard_types.ce");
+		if (standardTypesFile == nullptr)
+		{
+			return nullptr;
+		}
+
+		auto result = standardTypesFile->GetClass("decimal");
+		if (result.has_value())
+		{
+			return result.value();
+		}
+
+		return nullptr;
 	}
 	else if (std::holds_alternative<std::unique_ptr<Integer>>(underlyingSpecialization))
 	{
-		return std::get<std::unique_ptr<Integer>>(underlyingSpecialization).get();
+		auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/standard_types.ce");
+		if (standardTypesFile == nullptr)
+		{
+			return nullptr;
+		}
+
+		auto result = standardTypesFile->GetClass("int");
+		if (result.has_value())
+		{
+			return result.value();
+		}
+
+		return nullptr;
 	}
 	else if (std::holds_alternative<std::unique_ptr<Text>>(underlyingSpecialization))
 	{
-		return std::get<std::unique_ptr<Text>>(underlyingSpecialization).get();
+		auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/standard_types.ce");
+		if (standardTypesFile == nullptr)
+		{
+			return nullptr;
+		}
+
+		auto result = standardTypesFile->GetClass("text");
+		if (result.has_value())
+		{
+			return result.value();
+		}
+
+		return nullptr;
 	}
 }

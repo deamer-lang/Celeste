@@ -1,7 +1,6 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CLASS
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CLASS
 
-#include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Accessibility.h"
@@ -12,6 +11,8 @@
 
 namespace Celeste::ir::inputreconstruction
 {
+	class NameReference;
+
 	class Class : public InputReconstructionObject
 	{
 	private:
@@ -48,6 +49,9 @@ namespace Celeste::ir::inputreconstruction
 			Accessibility accessibility = Accessibility::Public);
 
 		NameReference* GetClassName();
+		std::optional<InputReconstructionObject*>
+		GetConstructor(NameReference* nameReference,
+					   Accessibility accessibility = Accessibility::Public);
 	};
 }
 

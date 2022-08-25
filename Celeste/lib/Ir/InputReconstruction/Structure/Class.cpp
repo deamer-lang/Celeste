@@ -1,4 +1,5 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
+#include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
@@ -282,6 +283,59 @@ Celeste::ir::inputreconstruction::NameReference*
 Celeste::ir::inputreconstruction::Class::GetClassName()
 {
 	return className.get();
+}
+
+std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
+Celeste::ir::inputreconstruction::Class::GetConstructor(NameReference* nameReference,
+														Accessibility accessibility)
+{
+	for (auto& [access, member] : block)
+	{
+		if (access < accessibility)
+		{
+			continue;
+		}
+
+		// We have access to the type
+		// Verify if the resolved name is the symbol name we require for propagation
+		switch (member->GetType())
+		{
+		case Type::Function: {
+			auto function = static_cast<Function*>(member);
+			// Check if the function is accepting
+			if (function->GetFunctionName()->GetResolvedName() == nameReference->GetSymbolName() &&
+				function->Accepts(nameReference))
+			{
+				return function;
+			}
+
+			// It is not the reference, thus continue
+			break;
+		}
+		case Type::Constructor: {
+			auto constructor = static_cast<Constructor*>(member);
+
+			// Check if the function is accepting
+			if (constructor->GetFunctionName()->GetResolvedName() ==
+					nameReference->GetSymbolName() &&
+				constructor->Accepts(nameReference))
+			{
+				return constructor;
+			}
+
+			// It is not the reference, thus continue
+			break;
+		}
+		case Type::VariableDeclaration: {
+			auto variable = static_cast<VariableDeclaration*>(member);
+			if (variable->GetName()->GetResolvedName() == nameReference->GetSymbolName())
+			{
+				return variable;
+			}
+			break;
+		}
+		}
+	}
 }
 
 void Celeste::ir::inputreconstruction::Class::AddTemplateParameter(

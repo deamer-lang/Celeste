@@ -1,13 +1,13 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_DISPLAY_H
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_DISPLAY_H
 
-#include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
-#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include <memory>
 
 namespace Celeste::ir::inputreconstruction
 {
+	class SymbolReferenceCall;
+
 	class Display : public InputReconstructionObject
 	{
 	private:

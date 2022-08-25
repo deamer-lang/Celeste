@@ -8,8 +8,8 @@
 #include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
 #include "ConditionModifierCall.h"
 #include <memory>
+#include <string>
 #include <vector>
-#include <xstring>
 
 namespace Celeste::ir::inputreconstruction
 {

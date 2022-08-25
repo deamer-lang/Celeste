@@ -3,13 +3,14 @@
 
 #include "Celeste/Ast/Node/VARNAME.h"
 #include "Celeste/Ast/Node/symbol_reference.h"
-#include "Celeste/Ir/InputReconstruction/Computation/SymbolAccess.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
+#include <memory>
 #include <optional>
 #include <variant>
 
 namespace Celeste::ir::inputreconstruction
 {
+	class SymbolAccess;
 	class NameReferenceSecondary;
 
 	class NameReference : public InputReconstructionObject
@@ -18,6 +19,9 @@ namespace Celeste::ir::inputreconstruction
 		struct ResolveLogic;
 
 	private:
+		struct Impl;
+		std::unique_ptr<Impl> impl;
+
 		std::variant<ast::node::symbol_reference*, ast::node::VARNAME*> symbolReference;
 		std::optional<InputReconstructionObject*> cacheReferencedObjects;
 		// The link in the syntax tree, this is not the referenced syntax part.
@@ -26,19 +30,15 @@ namespace Celeste::ir::inputreconstruction
 		// linkedAstNode value
 		std::optional<InputReconstructionObject*> linkedIr;
 
-		std::vector<std::unique_ptr<SymbolAccess>> linkedIrViaAccess;
-
 		bool staticallyResolvable = false;
-		std::optional<std::unique_ptr<NameReferenceSecondary>> nameReferenceSecondary;
 
 		std::string symbolName;
-		std::vector<std::unique_ptr<SymbolAccess>> hiddenAccess;
 
 	public:
 		NameReference(ast::node::symbol_reference* symbolReference_);
 		NameReference(ast::node::VARNAME* varname_);
-		virtual ~NameReference() = default;
-		std::vector<std::unique_ptr<SymbolAccess>>& GetSymbolAccesses();
+		virtual ~NameReference();
+		std::vector<SymbolAccess*> GetSymbolAccesses();
 
 	protected:
 		bool resolveIsRan = false;
@@ -82,7 +82,7 @@ namespace Celeste::ir::inputreconstruction
 		 *
 		 *	\brief Get the last Access belonging to this Symbol
 		 */
-		std::unique_ptr<SymbolAccess>& GetFinalLinkedCombination();
+		SymbolAccess* GetFinalLinkedCombination();
 
 		/*!	\function GetResolvedLinkedIr
 		 *

@@ -1,4 +1,5 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+#include "Celeste/Ir/InputReconstruction/Computation/SymbolAccess.h"
 #include <string>
 
 Celeste::ir::inputreconstruction::Function::Function(std::unique_ptr<NameReference> functionName_,
@@ -20,9 +21,13 @@ void Celeste::ir::inputreconstruction::Function::Complete()
 {
 	functionName->SetParent(this);
 	functionName->SetFile(GetFile());
-	returnType->SetParent(this);
-	returnType->SetFile(GetFile());
-	returnType->Destructure();
+
+	if (GetType() == Type::Function)
+	{
+		returnType->SetParent(this);
+		returnType->SetFile(GetFile());
+		returnType->Destructure();
+	}
 }
 
 void Celeste::ir::inputreconstruction::Function::Add(InputReconstructionObject* newObject)
@@ -52,7 +57,7 @@ Celeste::ir::inputreconstruction::Function::GetFunctionName()
 
 bool Celeste::ir::inputreconstruction::Function::Accepts(NameReference* symbol)
 {
-	auto& accesses = symbol->GetSymbolAccesses();
+	auto accesses = symbol->GetSymbolAccesses();
 	if (accesses.empty() || !accesses[0]->IsFunctionAccess())
 	{
 		return false;

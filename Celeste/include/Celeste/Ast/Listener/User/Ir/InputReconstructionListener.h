@@ -485,6 +485,10 @@ namespace Celeste::ast::listener::user::ir
 					Function->AddTemplateParameter(GetTemplateParameter(template_parameter));
 				});
 
+			Function->SetParent(GetParent());
+			Function->SetFile(file);
+			Function->Complete();
+
 			AddCurrentScope(std::move(Function));
 			OpenScope();
 		}
@@ -515,6 +519,10 @@ namespace Celeste::ast::listener::user::ir
 				[&](reference::Access<node::function_argument> functionArgument) {
 					Function->AddFunctionArgument(GetFunctionArgument(functionArgument));
 				});
+
+			Function->SetParent(GetParent());
+			Function->SetFile(file);
+			Function->Complete();
 
 			AddCurrentScope(std::move(Function));
 			OpenScope();
@@ -1254,6 +1262,10 @@ namespace Celeste::ast::listener::user::ir
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::ForIteration>(
 				GetExpression(Access.expression().GetContent()[0]));
 
+			newObject->SetParent(GetParent());
+			newObject->SetFile(file);
+			newObject->Complete();
+			
 			AddCurrentScope(std::move(newObject));
 			OpenScope();
 		}
@@ -1282,6 +1294,10 @@ namespace Celeste::ast::listener::user::ir
 				const_cast<node::assignment_operator*>(
 					Access.assignment_operator().GetContent()[0]));
 
+			newObject->SetParent(GetParent());
+			newObject->SetFile(file);
+			newObject->Complete();
+
 			AddCurrentScope(std::move(newObject));
 		}
 
@@ -1304,6 +1320,10 @@ namespace Celeste::ast::listener::user::ir
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::SymbolIncrease>(
 				GetSymbolReference(Access.symbol_reference().GetContent()[0]));
 
+			newObject->SetParent(GetParent());
+			newObject->SetFile(file);
+			newObject->Complete();
+			
 			AddCurrentScope(std::move(newObject));
 		}
 
@@ -1326,6 +1346,10 @@ namespace Celeste::ast::listener::user::ir
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::SymbolDecrease>(
 				GetSymbolReference(Access.symbol_reference().GetContent()[0]));
 
+			newObject->SetParent(GetParent());
+			newObject->SetFile(file);
+			newObject->Complete();
+			
 			AddCurrentScope(std::move(newObject));
 		}
 

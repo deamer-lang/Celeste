@@ -2,13 +2,14 @@
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_ASSIGNMENT_H
 
 #include "Celeste/Ast/Node/assignment_operator.h"
-#include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
-#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include <memory>
 
 namespace Celeste::ir::inputreconstruction
 {
+	class SymbolReferenceCall;
+	class Expression;
+
 	class Assignment : public InputReconstructionObject
 	{
 	private:
@@ -21,6 +22,7 @@ namespace Celeste::ir::inputreconstruction
 				   std::unique_ptr<Expression> expression_,
 				   ast::node::assignment_operator* assignmentOperator_);
 		virtual ~Assignment() = default;
+		void Complete();
 
 	public:
 	};

@@ -1,4 +1,11 @@
 #include "Celeste/Ir/InputReconstruction/CodeGeneration/NameFunction.h"
+#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
+#include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
+#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Tuple.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 
 Celeste::ir::inputreconstruction::NameFunction::NameFunction(
 	std::unique_ptr<SymbolReferenceCall> functionName_)

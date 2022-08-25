@@ -2,11 +2,14 @@
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_NAMEFUNCTION
 
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Value.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include <memory>
 
 namespace Celeste::ir::inputreconstruction
 {
+	class SymbolReferenceCall;
+
 	class NameFunction : public InputReconstructionObject
 	{
 	private:

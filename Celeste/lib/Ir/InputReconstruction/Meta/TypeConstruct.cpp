@@ -90,6 +90,12 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::CoreEqual(
 
 bool Celeste::ir::inputreconstruction::TypeConstruct::Equal(InputReconstructionObject* deduceType)
 {
+	if (deduceType == nullptr)
+	{
+		std::cout << "Critical Error Occured, given Deduced Type is nullptr\n";
+		return false;
+	}
+
 	if (deduceType == this)
 	{
 		return true;

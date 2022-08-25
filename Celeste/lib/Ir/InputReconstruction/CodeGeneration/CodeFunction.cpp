@@ -1,4 +1,9 @@
 #include "Celeste/Ir/InputReconstruction/CodeGeneration/CodeFunction.h"
+#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Tuple.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 
 Celeste::ir::inputreconstruction::CodeFunction::CodeFunction(
 	std::unique_ptr<NameReference> functionName_)

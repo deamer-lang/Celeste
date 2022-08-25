@@ -1,8 +1,6 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CONDITIONALFUNCTION
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CONDITIONALFUNCTION
 
-#include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
-#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
@@ -10,6 +8,8 @@
 
 namespace Celeste::ir::inputreconstruction
 {
+	class NameReference;
+
 	class ConditionalFunction : public InputReconstructionObject
 	{
 	private:
