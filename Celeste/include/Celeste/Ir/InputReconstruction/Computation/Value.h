@@ -8,25 +8,15 @@
 
 namespace Celeste::ir::inputreconstruction
 {
-	class SymbolReferenceCall;
-	class CodeBlock;
-	class Tuple;
-	class Integer;
-	class Decimal;
-	class Text;
-
 	class Value : public InputReconstructionObject
 	{
 	private:
-		ast::node::value* value;
-		std::variant<std::monostate, std::unique_ptr<CodeBlock>,
-					 std::unique_ptr<SymbolReferenceCall>, std::unique_ptr<Tuple>,
-					 std::unique_ptr<Integer>, std::unique_ptr<Decimal>, std::unique_ptr<Text>>
-			underlyingSpecialization;
+		struct Impl;
+		std::unique_ptr<Impl> impl;
 
 	public:
 		Value(ast::node::value* value_);
-		virtual ~Value() = default;
+		virtual ~Value();
 
 	public:
 		void Resolve();

@@ -22,18 +22,6 @@ namespace Celeste::ir::inputreconstruction
 		struct Impl;
 		std::unique_ptr<Impl> impl;
 
-		std::variant<ast::node::symbol_reference*, ast::node::VARNAME*> symbolReference;
-		std::optional<InputReconstructionObject*> cacheReferencedObjects;
-		// The link in the syntax tree, this is not the referenced syntax part.
-		::deamer::external::cpp::ast::Node* linkedAstNode = nullptr;
-		// The resolved reference to the IR, the Name of the IR Component must be the same as the
-		// linkedAstNode value
-		std::optional<InputReconstructionObject*> linkedIr;
-
-		bool staticallyResolvable = false;
-
-		std::string symbolName;
-
 	public:
 		NameReference(ast::node::symbol_reference* symbolReference_);
 		NameReference(ast::node::VARNAME* varname_);

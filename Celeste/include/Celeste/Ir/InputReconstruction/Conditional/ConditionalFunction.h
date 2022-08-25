@@ -2,25 +2,24 @@
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CONDITIONALFUNCTION
 
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
-#include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
-#include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
 #include <memory>
+#include <variant>
 
 namespace Celeste::ir::inputreconstruction
 {
 	class NameReference;
+	class FunctionArgument;
+	class TemplateParameter;
 
 	class ConditionalFunction : public InputReconstructionObject
 	{
 	private:
-		std::unique_ptr<NameReference> functionName;
-		std::vector<std::unique_ptr<FunctionArgument>> functionArguments;
-		std::vector<std::unique_ptr<FunctionArgument>> conditionalFunctionArguments;
-		std::vector<std::unique_ptr<TemplateParameter>> templateParameters;
+		struct Impl;
+		std::unique_ptr<Impl> impl;
 
 	public:
 		ConditionalFunction(std::unique_ptr<NameReference> functionName_);
-		virtual ~ConditionalFunction() override = default;
+		virtual ~ConditionalFunction() override;
 
 	public:
 		void Add(InputReconstructionObject* newObject) override;

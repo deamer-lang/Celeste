@@ -13,15 +13,14 @@ namespace Celeste::ir::inputreconstruction
 	class Assignment : public InputReconstructionObject
 	{
 	private:
-		std::unique_ptr<SymbolReferenceCall> symbolReference;
-		std::unique_ptr<Expression> expression;
-		ast::node::assignment_operator* assignmentOperator;
+		struct Impl;
+		std::unique_ptr<Impl> impl;
 
 	public:
 		Assignment(std::unique_ptr<SymbolReferenceCall> symbolReference_,
 				   std::unique_ptr<Expression> expression_,
 				   ast::node::assignment_operator* assignmentOperator_);
-		virtual ~Assignment() = default;
+		virtual ~Assignment();
 		void Complete();
 
 	public:

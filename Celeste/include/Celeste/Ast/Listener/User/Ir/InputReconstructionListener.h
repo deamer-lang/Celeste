@@ -12,6 +12,8 @@
 #include "Celeste/Ir/InputReconstruction/Computation/Return.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolDecrease.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolIncrease.h"
+#include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Value.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Conditional/ConditionalFunction.h"
 #include "Celeste/Ir/InputReconstruction/Conditional/Else.h"
@@ -1265,7 +1267,7 @@ namespace Celeste::ast::listener::user::ir
 			newObject->SetParent(GetParent());
 			newObject->SetFile(file);
 			newObject->Complete();
-			
+
 			AddCurrentScope(std::move(newObject));
 			OpenScope();
 		}
@@ -1323,7 +1325,7 @@ namespace Celeste::ast::listener::user::ir
 			newObject->SetParent(GetParent());
 			newObject->SetFile(file);
 			newObject->Complete();
-			
+
 			AddCurrentScope(std::move(newObject));
 		}
 
@@ -1349,7 +1351,7 @@ namespace Celeste::ast::listener::user::ir
 			newObject->SetParent(GetParent());
 			newObject->SetFile(file);
 			newObject->Complete();
-			
+
 			AddCurrentScope(std::move(newObject));
 		}
 

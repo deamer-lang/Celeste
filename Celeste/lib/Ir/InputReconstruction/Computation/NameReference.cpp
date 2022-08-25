@@ -30,6 +30,32 @@ struct Celeste::ir::inputreconstruction::NameReference::Impl
 	std::vector<std::unique_ptr<SymbolAccess>> linkedIrViaAccess;
 	std::vector<std::unique_ptr<SymbolAccess>> hiddenAccess;
 	std::optional<std::unique_ptr<NameReferenceSecondary>> nameReferenceSecondary;
+
+	std::variant<std::monostate, ast::node::symbol_reference*, ast::node::VARNAME*> symbolReference;
+	std::optional<InputReconstructionObject*> cacheReferencedObjects;
+	// The link in the syntax tree, this is not the referenced syntax part.
+	::deamer::external::cpp::ast::Node* linkedAstNode = nullptr;
+	// The resolved reference to the IR, the Name of the IR Component must be the same as the
+	// linkedAstNode value
+	std::optional<InputReconstructionObject*> linkedIr;
+
+	bool staticallyResolvable;
+
+	std::string symbolName;
+
+	Impl() : staticallyResolvable(false)
+	{
+	}
+
+	Impl(std::variant<std::monostate, ast::node::symbol_reference*, ast::node::VARNAME*>
+			 symbolReference_,
+		 bool staticallyResolvable_ = false)
+		: symbolReference(symbolReference_),
+		  staticallyResolvable(staticallyResolvable_)
+	{
+	}
+
+	~Impl() = default;
 };
 
 struct Celeste::ir::inputreconstruction::NameReference::ResolveLogic
@@ -1371,8 +1397,7 @@ public:
 Celeste::ir::inputreconstruction::NameReference::NameReference(
 	ast::node::symbol_reference* symbolReference_)
 	: InputReconstructionObject(Type::NameReference),
-	  impl(std::make_unique<Impl>()),
-	  symbolReference(symbolReference_)
+	  impl(std::make_unique<Impl>(symbolReference_))
 {
 	SetSymbolName(ast::reference::Access<ast::node::symbol_reference>(symbolReference_)
 					  .symbol()
@@ -1384,9 +1409,7 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(
 
 Celeste::ir::inputreconstruction::NameReference::NameReference(ast::node::VARNAME* varname_)
 	: InputReconstructionObject(Type::NameReference),
-	  impl(std::make_unique<Impl>()),
-	  symbolReference(varname_),
-	  staticallyResolvable(true)
+	  impl(std::make_unique<Impl>(varname_, true))
 {
 	SetSymbolName(varname_->GetText());
 }
@@ -1415,17 +1438,14 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_)
 Celeste::ir::inputreconstruction::NameReference::NameReference(
 	Type forward_, ast::node::symbol_reference* symbolReference_)
 	: InputReconstructionObject(forward_),
-	  impl(std::make_unique<Impl>()),
-	  symbolReference(symbolReference_)
+	  impl(std::make_unique<Impl>(symbolReference_))
 {
 }
 
 Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_,
 															   ast::node::VARNAME* symbolReference_)
 	: InputReconstructionObject(forward_),
-	  impl(std::make_unique<Impl>()),
-	  symbolReference(symbolReference_),
-	  staticallyResolvable(true)
+	  impl(std::make_unique<Impl>(symbolReference_, true))
 {
 }
 
@@ -1452,12 +1472,12 @@ void Celeste::ir::inputreconstruction::NameReference::CreateAccess(
 void Celeste::ir::inputreconstruction::NameReference::SetLinkedAst(
 	deamer::external::cpp::ast::Node* node)
 {
-	linkedAstNode = node;
+	impl->linkedAstNode = node;
 }
 
 void Celeste::ir::inputreconstruction::NameReference::SetSymbolName(const std::string& symbolName_)
 {
-	symbolName = symbolName_;
+	impl->symbolName = symbolName_;
 }
 
 std::string Celeste::ir::inputreconstruction::NameReference::GetSymbolNameFromSymbol(
@@ -1508,14 +1528,14 @@ Celeste::ir::inputreconstruction::NameReference::GetSymbolReferenceAst()
 		return static_cast<NameReferenceSecondary*>(this)->GetSymbolReferenceAst();
 	}
 
-	if (std::holds_alternative<ast::node::VARNAME*>(symbolReference))
+	if (std::holds_alternative<ast::node::VARNAME*>(impl->symbolReference))
 	{
-		return std::get<ast::node::VARNAME*>(symbolReference);
+		return std::get<ast::node::VARNAME*>(impl->symbolReference);
 	}
-	else if (std::holds_alternative<ast::node::symbol_reference*>(symbolReference))
+	else if (std::holds_alternative<ast::node::symbol_reference*>(impl->symbolReference))
 	{
 		auto access = ast::reference::Access<ast::node::symbol_reference>(
-			std::get<ast::node::symbol_reference*>(symbolReference));
+			std::get<ast::node::symbol_reference*>(impl->symbolReference));
 		if (!access.symbol().GetContent().empty())
 		{
 			return const_cast<ast::node::symbol*>(access.symbol().GetContent()[0]);
@@ -1547,15 +1567,16 @@ void Celeste::ir::inputreconstruction::NameReference::ContinueResolve(
 	auto resolveLogic = ResolveLogic(this, symbol);
 	auto entryPoint = resolveLogic.FindEntryPoint();
 
-	if (std::holds_alternative<ast::node::symbol_reference*>(symbolReference))
+	if (std::holds_alternative<ast::node::symbol_reference*>(impl->symbolReference))
 	{
 		std::vector<
 			std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>>
 			nextSymbols;
-		for (auto secondary_symbol : ast::reference::Access<ast::node::symbol_reference>(
-										 std::get<ast::node::symbol_reference*>(symbolReference))
-										 .symbol_secondary()
-										 .GetContent())
+		for (auto secondary_symbol :
+			 ast::reference::Access<ast::node::symbol_reference>(
+				 std::get<ast::node::symbol_reference*>(impl->symbolReference))
+				 .symbol_secondary()
+				 .GetContent())
 		{
 			nextSymbols.emplace_back(const_cast<ast::node::symbol_secondary*>(secondary_symbol));
 		}
@@ -1591,14 +1612,14 @@ void Celeste::ir::inputreconstruction::NameReference::Resolve()
 		return;
 	}
 
-	if (std::holds_alternative<ast::node::VARNAME*>(symbolReference))
+	if (std::holds_alternative<ast::node::VARNAME*>(impl->symbolReference))
 	{
-		auto varname = std::get<ast::node::VARNAME*>(symbolReference);
+		auto varname = std::get<ast::node::VARNAME*>(impl->symbolReference);
 		SetSymbolName(varname->GetText());
 		if (GetType() != Type::SymbolReferenceCall)
 		{
-			linkedAstNode = varname;
-			staticallyResolvable = true;
+			impl->linkedAstNode = varname;
+			impl->staticallyResolvable = true;
 		}
 		else
 		{
@@ -1614,12 +1635,12 @@ void Celeste::ir::inputreconstruction::NameReference::Resolve()
 		}
 		initialized = true;
 	}
-	else if (std::holds_alternative<ast::node::symbol_reference*>(symbolReference))
+	else if (std::holds_alternative<ast::node::symbol_reference*>(impl->symbolReference))
 	{
 		if (!initialized)
 		{
 			auto access = ast::reference::Access<ast::node::symbol_reference>(
-				std::get<ast::node::symbol_reference*>(symbolReference));
+				std::get<ast::node::symbol_reference*>(impl->symbolReference));
 			if (!access.symbol().GetContent().empty())
 			{
 				access.symbol().symbol_access().for_all(
@@ -1641,26 +1662,26 @@ void Celeste::ir::inputreconstruction::NameReference::Resolve()
 			initialized = true;
 		}
 
-		auto symbolRef = std::get<ast::node::symbol_reference*>(symbolReference);
+		auto symbolRef = std::get<ast::node::symbol_reference*>(impl->symbolReference);
 		auto symbolRefAccess = ast::reference::Access<ast::node::symbol_reference>(symbolRef);
 		auto symbol = symbolRefAccess.symbol();
 
 		auto symbol_name = symbol.symbol_name().GetContent()[0];
 		SetSymbolName(symbol_name->GetText());
-		linkedAstNode = const_cast<::deamer::external::cpp::ast::Node*>(
+		impl->linkedAstNode = const_cast<::deamer::external::cpp::ast::Node*>(
 			static_cast<const ::deamer::external::cpp::ast::Node*>(symbol_name));
 
 		if (GetType() != Type::SymbolReferenceCall && symbol.symbol_access().GetContent().empty())
 		{
 			// Nullptr may only be used to specify that there is no linked IR
 			// and that this is okay.
-			linkedIr = nullptr;
-			staticallyResolvable = true;
+			impl->linkedIr = nullptr;
+			impl->staticallyResolvable = true;
 			return;
 		}
 
 		// As we need to run the code to evaluate resolved names
-		staticallyResolvable = false;
+		impl->staticallyResolvable = false;
 
 		// If there is an access, then the symbol is not generating but referencing. Thus we
 		// need to reference it. The access part will use this object to continue the resolving.
@@ -1677,15 +1698,21 @@ void Celeste::ir::inputreconstruction::NameReference::Resolve()
 
 ::deamer::external::cpp::ast::Node* Celeste::ir::inputreconstruction::NameReference::GetNode()
 {
-	if (std::holds_alternative<ast::node::VARNAME*>(symbolReference))
+	auto& tmp = impl->symbolReference;
+	if (std::holds_alternative<std::monostate>(tmp))
 	{
-		return std::get<ast::node::VARNAME*>(symbolReference);
+		return nullptr;
 	}
-	else if (std::holds_alternative<ast::node::symbol_reference*>(symbolReference))
+	else if (std::holds_alternative<ast::node::VARNAME*>(tmp))
 	{
-		return std::get<ast::node::symbol_reference*>(symbolReference);
+		return std::get<ast::node::VARNAME*>(tmp);
+	}
+	else if (std::holds_alternative<ast::node::symbol_reference*>(tmp))
+	{
+		return std::get<ast::node::symbol_reference*>(tmp);
 	}
 
+	std::cout << "Internal Critical Compiler Error: NameReference::GetNode()\n";
 	return nullptr;
 }
 
@@ -1698,7 +1725,7 @@ std::string Celeste::ir::inputreconstruction::NameReference::GetResolvedName()
 
 	if (CanStaticallyBeResolved())
 	{
-		return linkedAstNode->GetText();
+		return impl->linkedAstNode->GetText();
 	}
 
 	// It is not statically resolvable, i.e. we need to interpreter code to find the name.
@@ -1707,7 +1734,7 @@ std::string Celeste::ir::inputreconstruction::NameReference::GetResolvedName()
 
 bool Celeste::ir::inputreconstruction::NameReference::CanStaticallyBeResolved()
 {
-	return staticallyResolvable;
+	return impl->staticallyResolvable;
 }
 
 std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
@@ -1719,7 +1746,7 @@ Celeste::ir::inputreconstruction::NameReference::GetFinalLinkedIr()
 		(impl->linkedIrViaAccess.size() == 1 &&
 		 (*std::rbegin(impl->linkedIrViaAccess))->IsFunctionAccess()))
 	{
-		return linkedIr;
+		return impl->linkedIr;
 	}
 
 	return (*std::rbegin(impl->linkedIrViaAccess))->GetLinkedIr();
@@ -1755,10 +1782,10 @@ Celeste::ir::inputreconstruction::NameReference::GetResolvedLinkedIr()
 void Celeste::ir::inputreconstruction::NameReference::SetLinkedIr(
 	InputReconstructionObject* newLinkedIr_)
 {
-	linkedIr = newLinkedIr_;
+	impl->linkedIr = newLinkedIr_;
 }
 
 std::string Celeste::ir::inputreconstruction::NameReference::GetSymbolName()
 {
-	return symbolName;
+	return impl->symbolName;
 }

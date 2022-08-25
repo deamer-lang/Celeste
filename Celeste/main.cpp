@@ -31,56 +31,55 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 			std::cout << graph.GetGraph() << "\n";
 		}
 
-		for (auto unresolved : file->GetUnresolvedSymbolReferences())
-		{
-			if (unresolved->GetType() ==
-				Celeste::ir::inputreconstruction::Type::SymbolReferenceCall)
-			{
-				auto unresolved_ =
-					static_cast<Celeste::ir::inputreconstruction::SymbolReferenceCall*>(unresolved);
-				std::cout << "Unresolved Reference: " << unresolved_->GetNode()->GetText() << "("
-						  << (std::size_t)unresolved_ << ") Parent["
-						  << (std::size_t)unresolved_->GetParent() << "]"
-						  << "\n";
-				std::cout << "At Line: " << unresolved_->GetNode()->GetLineNumber() << ", "
-						  << unresolved_->GetNode()->GetColumnNumber() << "\n";
-
-				unresolved_->Resolve();
-				auto finalLinked = unresolved_->GetFinalLinkedIr();
-				auto resolved = unresolved_->GetResolvedLinkedIr();
-				std::cout << std::boolalpha << "Reference: "
-						  << (finalLinked.has_value() && finalLinked.value() != nullptr &&
-							  resolved.has_value() && resolved.value() != nullptr);
-				if (finalLinked.has_value() && finalLinked.value() != nullptr &&
-					resolved.has_value() && resolved.value() != nullptr)
+		file->ResolveReferences(
+			[&](Celeste::ir::inputreconstruction::InputReconstructionObject* object) {
+				if (object->GetType() ==
+					Celeste::ir::inputreconstruction::Type::SymbolReferenceCall)
 				{
-					auto finalLinkedValue = finalLinked.value();
-					std::cout << " Type: " << static_cast<std::size_t>(finalLinkedValue->GetType())
-							  << "(" << (std::size_t)(finalLinkedValue) << ")";
-					auto resolvedValue = resolved.value();
-					std::cout << " Full Resolve: "
-							  << static_cast<std::size_t>(resolvedValue->GetType()) << "("
-							  << (std::size_t)(resolvedValue) << ")";
-				}
-				std::cout << "\n";
+					auto unresolved_ =
+						static_cast<Celeste::ir::inputreconstruction::SymbolReferenceCall*>(object);
+					std::cout << "Unresolved Reference: " << unresolved_->GetNode()->GetText()
+							  << "(" << (std::size_t)unresolved_ << ") Parent["
+							  << (std::size_t)unresolved_->GetParent() << "]"
+							  << "\n";
+					std::cout << "At Line: " << unresolved_->GetNode()->GetLineNumber() << ", "
+							  << unresolved_->GetNode()->GetColumnNumber() << "\n";
 
-				std::cout << "\n";
-			}
-			else if (unresolved->GetType() == Celeste::ir::inputreconstruction::Type::NameReference)
-			{
-				auto unresolved_ =
-					static_cast<Celeste::ir::inputreconstruction::NameReference*>(unresolved);
-				std::cout << "Unresolved Reference: " << unresolved_->GetNode()->GetText() << "("
-						  << (std::size_t)unresolved_ << ") Parent["
-						  << (std::size_t)unresolved_->GetParent() << "]"
-						  << "\n";
-				std::cout << "At Line: " << unresolved_->GetNode()->GetLineNumber() << ", "
-						  << unresolved_->GetNode()->GetColumnNumber() << "\n";
-				unresolved_->Resolve();
-				std::cout << unresolved_->GetResolvedName() << "\n";
-				std::cout << "\n";
-			}
-		}
+					auto finalLinked = unresolved_->GetFinalLinkedIr();
+					auto resolved = unresolved_->GetResolvedLinkedIr();
+					std::cout << std::boolalpha << "Reference: "
+							  << (finalLinked.has_value() && finalLinked.value() != nullptr &&
+								  resolved.has_value() && resolved.value() != nullptr);
+					if (finalLinked.has_value() && finalLinked.value() != nullptr &&
+						resolved.has_value() && resolved.value() != nullptr)
+					{
+						auto finalLinkedValue = finalLinked.value();
+						std::cout << " Type: "
+								  << static_cast<std::size_t>(finalLinkedValue->GetType()) << "("
+								  << (std::size_t)(finalLinkedValue) << ")";
+						auto resolvedValue = resolved.value();
+						std::cout << " Full Resolve: "
+								  << static_cast<std::size_t>(resolvedValue->GetType()) << "("
+								  << (std::size_t)(resolvedValue) << ")";
+					}
+					std::cout << "\n";
+
+					std::cout << "\n";
+				}
+				else if (object->GetType() == Celeste::ir::inputreconstruction::Type::NameReference)
+				{
+					auto unresolved_ =
+						static_cast<Celeste::ir::inputreconstruction::NameReference*>(object);
+					std::cout << "Unresolved Reference: " << unresolved_->GetNode()->GetText()
+							  << "(" << (std::size_t)unresolved_ << ") Parent["
+							  << (std::size_t)unresolved_->GetParent() << "]"
+							  << "\n";
+					std::cout << "At Line: " << unresolved_->GetNode()->GetLineNumber() << ", "
+							  << unresolved_->GetNode()->GetColumnNumber() << "\n";
+					std::cout << unresolved_->GetResolvedName() << "\n";
+					std::cout << "\n";
+				}
+			});
 	}
 }
 

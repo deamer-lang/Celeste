@@ -16,7 +16,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		SymbolReferenceCall(ast::node::symbol_reference* symbolReference_);
 		SymbolReferenceCall(ast::node::VARNAME* varname_);
-		virtual ~SymbolReferenceCall() = default;
+		virtual ~SymbolReferenceCall();
 
 	public:
 	};

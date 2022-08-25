@@ -4,6 +4,7 @@
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include <Deamer/External/Cpp/Ast/Tree.h>
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -16,15 +17,12 @@ namespace Celeste::ir::inputreconstruction
 	class File
 	{
 	private:
-		std::unique_ptr<deamer::external::cpp::ast::Tree> ast;
-		std::vector<std::unique_ptr<InputReconstructionObject>> inputReconstructionObjects;
-		Project* project;
-		std::string fileName;
-		std::vector<InputReconstructionObject*> unresolvedSymbolReferenceCalls;
+		struct Impl;
+		std::unique_ptr<Impl> impl;
 
 	public:
 		File(std::string fileName_);
-		virtual ~File() = default;
+		virtual ~File();
 
 	public:
 		void SetProject(Project* project_);
@@ -42,6 +40,9 @@ namespace Celeste::ir::inputreconstruction
 		InputReconstructionObject* GetIrBottom();
 		InputReconstructionObject* GetRoot();
 		std::optional<Class*> GetClass(std::string className, bool expandImports = false);
+		void RemoveUnresolvedReference(SymbolReferenceCall* symbolReferenceCall);
+
+		void ResolveReferences(std::function<void(InputReconstructionObject*)> callback);
 	};
 }
 

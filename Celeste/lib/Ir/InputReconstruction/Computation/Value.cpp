@@ -7,36 +7,55 @@
 #include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
 #include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 
+struct Celeste::ir::inputreconstruction::Value::Impl
+{
+	ast::node::value* value;
+	std::variant<std::monostate, std::unique_ptr<CodeBlock>, std::unique_ptr<SymbolReferenceCall>,
+				 std::unique_ptr<Tuple>, std::unique_ptr<Integer>, std::unique_ptr<Decimal>,
+				 std::unique_ptr<Text>>
+		underlyingSpecialization;
+
+	Impl(ast::node::value* value_) : value(value_)
+	{
+	}
+
+	~Impl() = default;
+};
+
 Celeste::ir::inputreconstruction::Value::Value(ast::node::value* value_)
 	: InputReconstructionObject(Type::Value),
-	  value(value_)
+	  impl(std::make_unique<Impl>(value_))
+{
+}
+
+Celeste::ir::inputreconstruction::Value::~Value()
 {
 }
 
 void Celeste::ir::inputreconstruction::Value::Resolve()
 {
-	auto child = const_cast<deamer::external::cpp::ast::Node*>(value->GetIndex(0));
+	auto child = const_cast<deamer::external::cpp::ast::Node*>(impl->value->GetIndex(0));
 	switch (static_cast<ast::Type>(child->GetType()))
 	{
 	case ast::Type::NUMBER: {
 		auto newNumber = std::make_unique<Integer>(static_cast<ast::node::NUMBER*>(child));
 		newNumber->SetParent(this);
 		newNumber->SetFile(GetFile());
-		underlyingSpecialization = std::move(newNumber);
+		impl->underlyingSpecialization = std::move(newNumber);
 		break;
 	}
 	case ast::Type::DECIMAL: {
 		auto newDecimal = std::make_unique<Decimal>(static_cast<ast::node::DECIMAL*>(child));
 		newDecimal->SetParent(this);
 		newDecimal->SetFile(GetFile());
-		underlyingSpecialization = std::move(newDecimal);
+		impl->underlyingSpecialization = std::move(newDecimal);
 		break;
 	}
 	case ast::Type::TEXT: {
 		auto newText = std::make_unique<Text>(static_cast<ast::node::TEXT*>(child));
 		newText->SetParent(this);
 		newText->SetFile(GetFile());
-		underlyingSpecialization = std::move(newText);
+		impl->underlyingSpecialization = std::move(newText);
 		break;
 	}
 	case ast::Type::symbol_reference: {
@@ -46,7 +65,7 @@ void Celeste::ir::inputreconstruction::Value::Resolve()
 		newSymbolReferenceCall->SetFile(GetFile());
 		newSymbolReferenceCall->SetParent(this);
 		GetFile()->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
-		underlyingSpecialization = std::move(newSymbolReferenceCall);
+		impl->underlyingSpecialization = std::move(newSymbolReferenceCall);
 		break;
 	}
 	case ast::Type::code_block: {
@@ -55,7 +74,7 @@ void Celeste::ir::inputreconstruction::Value::Resolve()
 		newCodeBlock->SetFile(GetFile());
 		newCodeBlock->SetParent(this);
 		newCodeBlock->Resolve();
-		underlyingSpecialization = std::move(newCodeBlock);
+		impl->underlyingSpecialization = std::move(newCodeBlock);
 		break;
 	}
 	case ast::Type::tuple: {
@@ -64,7 +83,7 @@ void Celeste::ir::inputreconstruction::Value::Resolve()
 		newTuple->SetFile(GetFile());
 		newTuple->SetParent(this);
 		newTuple->Resolve();
-		underlyingSpecialization = std::move(newTuple);
+		impl->underlyingSpecialization = std::move(newTuple);
 		break;
 	}
 	}
@@ -73,17 +92,18 @@ void Celeste::ir::inputreconstruction::Value::Resolve()
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::Value::DeduceType()
 {
-	if (std::holds_alternative<std::monostate>(underlyingSpecialization))
+	if (std::holds_alternative<std::monostate>(impl->underlyingSpecialization))
 	{
 		return nullptr;
 	}
-	else if (std::holds_alternative<std::unique_ptr<CodeBlock>>(underlyingSpecialization))
+	else if (std::holds_alternative<std::unique_ptr<CodeBlock>>(impl->underlyingSpecialization))
 	{
-		return std::get<std::unique_ptr<CodeBlock>>(underlyingSpecialization).get();
+		return std::get<std::unique_ptr<CodeBlock>>(impl->underlyingSpecialization).get();
 	}
-	else if (std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(underlyingSpecialization))
+	else if (std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(
+				 impl->underlyingSpecialization))
 	{
-		auto result = std::get<std::unique_ptr<SymbolReferenceCall>>(underlyingSpecialization)
+		auto result = std::get<std::unique_ptr<SymbolReferenceCall>>(impl->underlyingSpecialization)
 						  ->GetResolvedLinkedIr();
 		if (!result.has_value())
 		{
@@ -93,7 +113,7 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 
 		return result.value();
 	}
-	else if (std::holds_alternative<std::unique_ptr<Decimal>>(underlyingSpecialization))
+	else if (std::holds_alternative<std::unique_ptr<Decimal>>(impl->underlyingSpecialization))
 	{
 		auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/standard_types.ce");
 		if (standardTypesFile == nullptr)
@@ -109,7 +129,7 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 
 		return nullptr;
 	}
-	else if (std::holds_alternative<std::unique_ptr<Integer>>(underlyingSpecialization))
+	else if (std::holds_alternative<std::unique_ptr<Integer>>(impl->underlyingSpecialization))
 	{
 		auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/standard_types.ce");
 		if (standardTypesFile == nullptr)
@@ -125,7 +145,7 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 
 		return nullptr;
 	}
-	else if (std::holds_alternative<std::unique_ptr<Text>>(underlyingSpecialization))
+	else if (std::holds_alternative<std::unique_ptr<Text>>(impl->underlyingSpecialization))
 	{
 		auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/standard_types.ce");
 		if (standardTypesFile == nullptr)
