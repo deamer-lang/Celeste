@@ -60,6 +60,7 @@ namespace Celeste::ir::inputreconstruction
 
 		//
 		Root,
+		CodeBlockRoot,
 		CodeBlock,
 		Tuple,
 

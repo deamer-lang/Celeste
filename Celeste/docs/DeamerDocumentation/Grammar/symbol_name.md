@@ -19,6 +19,7 @@ Overview of the nonterminal: **[symbol_name](./symbol_name.md)**
 | [VARNAME](./../Lexicon/VARNAME.md)  |
 | [FOR](./../Lexicon/FOR.md)  |
 | [OPERATORNAME](./../Lexicon/OPERATORNAME.md)  |
+| [CODE](./../Lexicon/CODE.md)  |
 
 
 

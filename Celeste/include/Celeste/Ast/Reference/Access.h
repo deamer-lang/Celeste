@@ -13900,6 +13900,7 @@ AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRAC
 
 	public:
 		AccessTemplateBase<::Celeste::ast::node::CLASS> CLASS();
+AccessTemplateBase<::Celeste::ast::node::CODE> CODE();
 AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> OPERATORNAME();
 AccessTemplateBase<::Celeste::ast::node::FOR> FOR();
 AccessTemplateBase<::Celeste::ast::node::IF> IF();
@@ -14012,7 +14013,8 @@ AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
 		}
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> OPERATORNAME();
+		AccessTemplateBase<::Celeste::ast::node::CODE> CODE();
+AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> OPERATORNAME();
 AccessTemplateBase<::Celeste::ast::node::FOR> FOR();
 AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
 
@@ -26835,6 +26837,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::CLASS>(Get<::Celeste::ast::Type::CLASS>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::CODE> AccessTemplateBase<::Celeste::ast::node::symbol_name_secondary>::CODE()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::CODE>(Get<::Celeste::ast::Type::CODE>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> AccessTemplateBase<::Celeste::ast::node::symbol_name_secondary>::OPERATORNAME()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -26881,6 +26891,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::VARNAME>(Get<::Celeste::ast::Type::VARNAME>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::CODE> AccessTemplateBase<::Celeste::ast::node::symbol_name>::CODE()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::CODE>(Get<::Celeste::ast::Type::CODE>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> AccessTemplateBase<::Celeste::ast::node::symbol_name>::OPERATORNAME()

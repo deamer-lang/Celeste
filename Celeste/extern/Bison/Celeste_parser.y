@@ -4478,6 +4478,12 @@ symbol_name_secondary:
 
 		// Ignored, Deleted, tokens are deleted
 	}
+	| CODE  {
+		auto* const newNode = new Celeste::ast::node::symbol_name_secondary({::Celeste::ast::Type::symbol_name_secondary, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::CODE({::Celeste::ast::Type::CODE, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
 ;
 
 
@@ -4496,6 +4502,12 @@ symbol_name:
 	}
 	| OPERATORNAME  {
 		auto* const newNode = new Celeste::ast::node::symbol_name({::Celeste::ast::Type::symbol_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::OPERATORNAME({::Celeste::ast::Type::OPERATORNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| CODE  {
+		auto* const newNode = new Celeste::ast::node::symbol_name({::Celeste::ast::Type::symbol_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::CODE({::Celeste::ast::Type::CODE, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted

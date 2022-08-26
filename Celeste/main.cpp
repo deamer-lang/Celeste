@@ -85,7 +85,8 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 
 int main(int argc, const char* argv[])
 {
-	std::vector<std::string> filenames = {"./Celeste/standard_types.ce", "./main.ce", "./Point.ce"};
+	std::vector<std::string> filenames = {"./Celeste/standard_types.ce", "./Celeste/CodeBlock.ce",
+										  "./Celeste/Boolean.ce", "./main.ce", "./Point.ce"};
 
 	for (auto i = 1; i < argc; i++)
 	{

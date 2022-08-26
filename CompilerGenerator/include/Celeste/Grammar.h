@@ -542,9 +542,11 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_secondary_ELSEIF;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_secondary_ELSE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_secondary_OPERATORNAME;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_secondary_CODE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_VARNAME;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_FOR;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_OPERATORNAME;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> symbol_name_CODE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__expression___expression_deamerreserved_star__COMMA__expression__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__expression___COMMA_expression_deamerreserved_star__COMMA__expression__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__expression___EMPTY;

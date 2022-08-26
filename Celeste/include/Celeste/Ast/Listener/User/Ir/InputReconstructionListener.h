@@ -78,7 +78,8 @@ namespace Celeste::ast::listener::user::ir
 			OpenScope();
 			auto root =
 				std::make_unique<Celeste::ir::inputreconstruction::InputReconstructionObject>(
-					Celeste::ir::inputreconstruction::Type::Root);
+					Celeste::ir::inputreconstruction::Type::CodeBlockRoot);
+			root->SetParent(codeBlock);
 			codeBlock->Add(root.get());
 			AddCurrentScope(std::move(root));
 			OpenScope();
@@ -93,7 +94,7 @@ namespace Celeste::ast::listener::user::ir
 		void ListenEntry(const Celeste::ast::node::expression* node) override
 		{
 			skipCounter++;
-			skip = skipCounter == 0;
+			skip = skipCounter != 0;
 		}
 
 		void ListenExit(const Celeste::ast::node::expression* node) override
@@ -105,7 +106,7 @@ namespace Celeste::ast::listener::user::ir
 		void ListenEntry(const Celeste::ast::node::type* node) override
 		{
 			skipCounter++;
-			skip = skipCounter == 0;
+			skip = skipCounter != 0;
 		}
 
 		void ListenExit(const Celeste::ast::node::type* node) override
@@ -132,7 +133,7 @@ namespace Celeste::ast::listener::user::ir
 			else
 			{
 				skipCounter++;
-				skip = skipCounter == 0;
+				skip = skipCounter != 0;
 			}
 		}
 
@@ -1133,22 +1134,18 @@ namespace Celeste::ast::listener::user::ir
 
 		void ListenEntry(const Celeste::ast::node::code_block* node) override
 		{
-			if (skip)
-			{
-				return;
-			}
-
-			OpenScope();
+			// Useless as syntactically skip is already managed.
+			// This is just for my sanity
+			skipCounter++;
+			skip = skipCounter != 0;
 		}
 
 		void ListenExit(const Celeste::ast::node::code_block* node) override
 		{
-			if (skip)
-			{
-				return;
-			}
-
-			inputReconstructionObjects.pop_back();
+			// Useless as syntactically skip is already managed.
+			// This is just for my sanity
+			skipCounter--;
+			skip = skipCounter != 0;
 		}
 
 		void ListenEntry(const Celeste::ast::node::conditional_if* node) override
@@ -1218,6 +1215,9 @@ namespace Celeste::ast::listener::user::ir
 
 			auto Access = reference::Access(node);
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::Else>();
+
+			newObject->SetParent(GetParent());
+			newObject->SetFile(file);
 
 			AddCurrentScope(std::move(newObject));
 			OpenScope();

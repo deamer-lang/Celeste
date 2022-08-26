@@ -102,11 +102,11 @@ Celeste::ir::inputreconstruction::File::GetClass(std::string className, bool exp
 			<< "Expanded Imports are not yet implemented yet. Defaulting to non import usage.\n";
 	}
 
-	for (auto& element : impl->inputReconstructionObjects)
+	for (auto& element : GetRoot()->GetScope())
 	{
 		if (element->GetType() == Type::Class)
 		{
-			auto classElement = static_cast<Class*>(element.get());
+			auto classElement = static_cast<Class*>(element);
 			if (classElement->GetClassName()->GetResolvedName() == className)
 			{
 				return classElement;
