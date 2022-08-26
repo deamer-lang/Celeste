@@ -1,4 +1,5 @@
 #include "Celeste/Ir/InputReconstruction/Computation/NameReferenceSecondary.h"
+#include "Celeste/Ast/Reference/Access.h"
 #include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
 #include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"

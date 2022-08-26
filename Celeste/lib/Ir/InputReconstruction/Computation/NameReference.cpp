@@ -2004,6 +2004,7 @@ void Celeste::ir::inputreconstruction::NameReference::SetLinkedIr(
 	InputReconstructionObject* newLinkedIr_)
 {
 	impl->linkedIr = newLinkedIr_;
+	newLinkedIr_->SetReferencingObject(this);
 }
 
 std::string Celeste::ir::inputreconstruction::NameReference::GetSymbolName()

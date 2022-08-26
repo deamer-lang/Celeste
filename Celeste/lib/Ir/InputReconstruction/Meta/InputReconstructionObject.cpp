@@ -1,48 +1,70 @@
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
+#include "Celeste/Ast/Reference/Access.h"
+#include "Celeste/Ir/InputReconstruction/Meta/File.h"
+
+struct Celeste::ir::inputreconstruction::InputReconstructionObject::Impl
+{
+	Type type;
+	File* file = nullptr;
+	std::optional<InputReconstructionObject*> parent;
+	std::vector<InputReconstructionObject*> scope;
+
+	std::vector<InputReconstructionObject*> objectThatReferenceThis;
+
+	Impl(Type type_) : type(type_)
+	{
+	}
+
+	~Impl() = default;
+};
 
 Celeste::ir::inputreconstruction::InputReconstructionObject::InputReconstructionObject(Type type_)
-	: type(type_)
+	: impl(std::make_unique<Impl>(type_))
+{
+}
+
+Celeste::ir::inputreconstruction::InputReconstructionObject::~InputReconstructionObject()
 {
 }
 
 void Celeste::ir::inputreconstruction::InputReconstructionObject::SetFile(File* file_)
 {
-	file = file_;
+	impl->file = file_;
 }
 
 Celeste::ir::inputreconstruction::File*
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetFile()
 {
-	return file;
+	return impl->file;
 }
 
 Celeste::ir::inputreconstruction::Type
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetType()
 {
-	return type;
+	return impl->type;
 }
 
 void Celeste::ir::inputreconstruction::InputReconstructionObject::SetParent(
 	InputReconstructionObject* parent_)
 {
-	parent = parent_;
+	impl->parent = parent_;
 }
 
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::InputReconstructionObject ::GetParent()
 {
-	if (!parent.has_value())
+	if (!impl->parent.has_value())
 	{
 		return nullptr;
 	}
 
-	return parent.value();
+	return impl->parent.value();
 }
 
 void Celeste::ir::inputreconstruction::InputReconstructionObject::Add(
 	InputReconstructionObject* innerObject)
 {
-	scope.push_back(innerObject);
+	impl->scope.push_back(innerObject);
 }
 
 void Celeste::ir::inputreconstruction::InputReconstructionObject::Add(
@@ -58,7 +80,7 @@ std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::itera
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetIterator(
 	InputReconstructionObject* irComponent)
 {
-	for (auto iter = std::begin(scope); iter != std::end(scope); ++iter)
+	for (auto iter = std::begin(impl->scope); iter != std::end(impl->scope); ++iter)
 	{
 		if (*iter == irComponent)
 		{
@@ -66,32 +88,32 @@ Celeste::ir::inputreconstruction::InputReconstructionObject::GetIterator(
 		}
 	}
 
-	return std::end(scope);
+	return std::end(impl->scope);
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::begin()
 {
-	return std::begin(scope);
+	return std::begin(impl->scope);
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::end()
 {
-	return std::end(scope);
+	return std::end(impl->scope);
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>&
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetScope()
 {
-	return scope;
+	return impl->scope;
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetReverseIterator(
 	InputReconstructionObject* irComponent)
 {
-	for (auto iter = std::rbegin(scope); iter != std::rend(scope); ++iter)
+	for (auto iter = std::rbegin(impl->scope); iter != std::rend(impl->scope); ++iter)
 	{
 		if (*iter == irComponent)
 		{
@@ -99,17 +121,23 @@ Celeste::ir::inputreconstruction::InputReconstructionObject::GetReverseIterator(
 		}
 	}
 
-	return std::rend(scope);
+	return std::rend(impl->scope);
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::rend()
 {
-	return std::rend(scope);
+	return std::rend(impl->scope);
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::rbegin()
 {
-	return std::rbegin(scope);
+	return std::rbegin(impl->scope);
+}
+
+void Celeste::ir::inputreconstruction::InputReconstructionObject::SetReferencingObject(
+	InputReconstructionObject* object)
+{
+	impl->objectThatReferenceThis.push_back(object);
 }

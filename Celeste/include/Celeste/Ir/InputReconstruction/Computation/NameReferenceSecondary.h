@@ -2,7 +2,9 @@
 #define CELESTE_INPUTRECONSTRUCTION_NAMEREFERENCESECONDARY_H
 
 #include "Celeste/Ast/Node/VARNAME.h"
+#include "Celeste/Ast/Node/symbol.h"
 #include "Celeste/Ast/Node/symbol_reference.h"
+#include "Celeste/Ast/Node/symbol_secondary.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include <optional>
 #include <variant>

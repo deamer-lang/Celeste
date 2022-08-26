@@ -3,6 +3,7 @@
 
 #include "Celeste/Ast/Reference/Access.h"
 #include "Celeste/Ir/InputReconstruction/Meta/Type.h"
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -13,14 +14,12 @@ namespace Celeste::ir::inputreconstruction
 	class InputReconstructionObject
 	{
 	private:
-		Type type;
-		File* file;
-		std::optional<InputReconstructionObject*> parent;
-		std::vector<InputReconstructionObject*> scope;
+		struct Impl;
+		std::unique_ptr<Impl> impl;
 
 	public:
 		InputReconstructionObject(Type type_);
-		virtual ~InputReconstructionObject() = default;
+		virtual ~InputReconstructionObject();
 
 	public:
 		void SetFile(File* file);
@@ -43,6 +42,8 @@ namespace Celeste::ir::inputreconstruction
 		GetReverseIterator(InputReconstructionObject* irComponent);
 		virtual std::vector<InputReconstructionObject*>::reverse_iterator rend();
 		virtual std::vector<InputReconstructionObject*>::reverse_iterator rbegin();
+
+		void SetReferencingObject(InputReconstructionObject* nameReference);
 	};
 }
 

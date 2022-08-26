@@ -98,7 +98,19 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 	}
 	else if (std::holds_alternative<std::unique_ptr<CodeBlock>>(impl->underlyingSpecialization))
 	{
-		return std::get<std::unique_ptr<CodeBlock>>(impl->underlyingSpecialization).get();
+		auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/CodeBlock.ce");
+		if (standardTypesFile == nullptr)
+		{
+			return nullptr;
+		}
+
+		auto result = standardTypesFile->GetClass("CodeBlock");
+		if (result.has_value())
+		{
+			return result.value();
+		}
+
+		return nullptr;
 	}
 	else if (std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(
 				 impl->underlyingSpecialization))
@@ -161,4 +173,6 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 
 		return nullptr;
 	}
+
+	return nullptr;
 }
