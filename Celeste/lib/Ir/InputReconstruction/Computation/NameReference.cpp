@@ -254,8 +254,9 @@ public:
 	{
 		if (uncheckedMember == argument.originObject)
 		{
-			std::cout
-				<< "Internal Non-Critical Compiler Error, UncheckedMember is already Checked\n";
+			// This in an internal issue, as this is avoidable.
+			// std::cout
+			//	<< "Internal Non-Critical Compiler Error, UncheckedMember is already Checked\n";
 			return;
 		}
 

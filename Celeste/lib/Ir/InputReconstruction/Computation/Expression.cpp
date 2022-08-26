@@ -9,6 +9,7 @@
 #include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
 #include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
 #include <iostream>
@@ -316,6 +317,11 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 		{
 			switch (deducedTypeLhs.value()->GetType())
 			{
+			case Type::Constructor: {
+				// The parent of the constructor is always the Class it belongs to
+				auto constructor = static_cast<Constructor*>(deducedTypeLhs.value());
+				return constructor->GetParent();
+			}
 			case Type::VariableDeclaration: {
 				auto variableDeclarationIr =
 					static_cast<VariableDeclaration*>(deducedTypeLhs.value());

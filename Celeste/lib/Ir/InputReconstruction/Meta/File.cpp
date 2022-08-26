@@ -1,4 +1,6 @@
 #include "Celeste/Ir/InputReconstruction/Meta/File.h"
+#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
+#include "Celeste/Ir/InputReconstruction/HigherOrder/SourceCodeBlockMutationSet.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Meta/Project.h"
 
@@ -9,6 +11,7 @@ struct Celeste::ir::inputreconstruction::File::Impl
 	Project* project = nullptr;
 	std::string fileName;
 	std::vector<InputReconstructionObject*> unresolvedSymbolReferenceCalls;
+	std::vector<std::unique_ptr<SourceCodeBlockMutationSet>> unresolvedCodeBlocks;
 
 	Impl(std::string fileName_) : fileName(fileName_)
 	{
@@ -173,4 +176,9 @@ void Celeste::ir::inputreconstruction::File::ResolveReferences(
 
 		callback(currentElement);
 	}
+}
+
+void Celeste::ir::inputreconstruction::File::AddCodeBlock(CodeBlock* codeBlock_)
+{
+	impl->unresolvedCodeBlocks.push_back(std::make_unique<SourceCodeBlockMutationSet>(codeBlock_));
 }

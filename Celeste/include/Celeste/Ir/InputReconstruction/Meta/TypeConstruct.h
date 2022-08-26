@@ -34,6 +34,8 @@ namespace Celeste::ir::inputreconstruction
 		bool CoreEqual(InputReconstructionObject* deduceType);
 		bool Equal(InputReconstructionObject* deduceType);
 
+		std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*> GetCoreType();
+
 		std::optional<std::unique_ptr<SymbolReferenceCall>>& GetSymbolReference();
 		InputReconstructionObject* GetIrLinkage(NameReferenceSecondary* nameReferenceSecondary);
 		InputReconstructionObject* GetIrLinkage(SymbolAccess* access);

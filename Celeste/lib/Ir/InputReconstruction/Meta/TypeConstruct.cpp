@@ -29,6 +29,7 @@ void Celeste::ir::inputreconstruction::TypeConstruct::Destructure()
 		_->SetParent(this);
 		_->SetFile(GetFile());
 		typeTarget = std::move(_);
+		GetFile()->AddUnresolvedSymbolReference(GetSymbolReference().value().get());
 	}
 
 	if (!access.array_declaration().GetContent().empty())
@@ -41,8 +42,6 @@ void Celeste::ir::inputreconstruction::TypeConstruct::Destructure()
 
 		arrayDeclarationExpression = std::move(_);
 	}
-
-	GetFile()->AddUnresolvedSymbolReference(GetSymbolReference().value().get());
 }
 
 bool Celeste::ir::inputreconstruction::TypeConstruct::IsAuto()
@@ -69,21 +68,16 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::CoreEqual(
 		return false;
 	}
 
+	std::optional<InputReconstructionObject*> ourType = GetCoreType();
+
 	switch (deduceType->GetType())
 	{
 	case Type::TypeConstruct: {
-		if (!static_cast<TypeConstruct*>(deduceType)->GetSymbolReference().has_value())
-		{
-			return false;
-		}
-
-		return typeTarget.value()->GetResolvedLinkedIr() == static_cast<TypeConstruct*>(deduceType)
-																->GetSymbolReference()
-																.value()
-																->GetResolvedLinkedIr();
+		auto rhsCoreType = static_cast<TypeConstruct*>(deduceType)->GetCoreType();
+		return ourType == rhsCoreType;
 	}
 	default: {
-		return typeTarget.value()->GetResolvedLinkedIr() == deduceType;
+		return ourType == deduceType;
 	}
 	}
 }
@@ -102,6 +96,42 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::Equal(InputReconstructionO
 	}
 
 	return CoreEqual(deduceType);
+}
+
+std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
+Celeste::ir::inputreconstruction::TypeConstruct::GetCoreType()
+{
+	if (IsAuto())
+	{
+		auto parent = GetParent();
+		switch (parent->GetType())
+		{
+		case Type::VariableDeclaration: {
+			auto varDecl = static_cast<VariableDeclaration*>(parent);
+			auto& values = varDecl->GetExpressions();
+			if (values.size() != 1)
+			{
+				// Invalid as we expected a non-array expression
+				// However, in later versions we may construct a TypeConstruct to capture the array
+				// type at this stage. This shouldnt break anything and make Celeste even more
+				// flexible.
+				return std::nullopt;
+			}
+
+			auto& value = values[0];
+			return value->DeduceType();
+		}
+		case Type::Function: {
+			// Even though allowed, this requires deep analysis to verify if the function return
+			// type can be deduced Statically or Dynamically. This is not yet supported
+			return std::nullopt;
+		}
+		}
+
+		return std::nullopt;
+	}
+
+	return typeTarget.value()->GetResolvedLinkedIr();
 }
 
 std::optional<std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>>&
@@ -142,6 +172,11 @@ Celeste::ir::inputreconstruction::TypeConstruct::GetIrLinkage(
 
 			auto& value = values[0];
 			auto deducedType = value->DeduceType();
+
+			if (deducedType == nullptr)
+			{
+				return nullptr;
+			}
 
 			// Retrieve the member located at symbol name
 			switch (deducedType->GetType())

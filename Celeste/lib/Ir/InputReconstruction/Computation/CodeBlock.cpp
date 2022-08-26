@@ -10,6 +10,8 @@ Celeste::ir::inputreconstruction::CodeBlock::CodeBlock(ast::node::code_block* va
 
 void Celeste::ir::inputreconstruction::CodeBlock::Resolve()
 {
+	GetFile()->AddCodeBlock(this);
+
 	auto listener = ast::listener::user::ir::InputReconstructionListener(GetFile()->GetProject(),
 																		 GetFile(), this);
 	listener.Dispatch(
