@@ -62,60 +62,61 @@ extern int Celestedebug;
     AUTOTYPE = 268,                /* AUTOTYPE  */
     TEMPLATE = 269,                /* TEMPLATE  */
     NAMESPACE = 270,               /* NAMESPACE  */
-    OVERRIDE = 271,                /* OVERRIDE  */
-    VIRTUAL = 272,                 /* VIRTUAL  */
-    PURE = 273,                    /* PURE  */
-    AS = 274,                      /* AS  */
-    IN = 275,                      /* IN  */
-    DISPLAY = 276,                 /* DISPLAY  */
-    RETURN = 277,                  /* RETURN  */
-    FOR = 278,                     /* FOR  */
-    IF = 279,                      /* IF  */
-    ELSEIF = 280,                  /* ELSEIF  */
-    ELSE = 281,                    /* ELSE  */
-    INLINE = 282,                  /* INLINE  */
-    CONSTRUCTOR = 283,             /* CONSTRUCTOR  */
-    FILE_ = 284,                   /* FILE_  */
-    PROGRAM_ = 285,                /* PROGRAM_  */
-    IMPORT = 286,                  /* IMPORT  */
-    PUBLIC = 287,                  /* PUBLIC  */
-    PROTECTED = 288,               /* PROTECTED  */
-    PRIVATE = 289,                 /* PRIVATE  */
-    INHERIT = 290,                 /* INHERIT  */
-    COMPOSITE = 291,               /* COMPOSITE  */
-    LEFT_BRACKET = 292,            /* LEFT_BRACKET  */
-    RIGHT_BRACKET = 293,           /* RIGHT_BRACKET  */
-    LEFT_SQUARE_BRACKET = 294,     /* LEFT_SQUARE_BRACKET  */
-    RIGHT_SQUARE_BRACKET = 295,    /* RIGHT_SQUARE_BRACKET  */
-    LEFT_PARANTHESIS = 296,        /* LEFT_PARANTHESIS  */
-    RIGHT_PARANTHESIS = 297,       /* RIGHT_PARANTHESIS  */
-    COLON = 298,                   /* COLON  */
-    SEMICOLON = 299,               /* SEMICOLON  */
-    COMMA = 300,                   /* COMMA  */
-    DOT = 301,                     /* DOT  */
-    LTEQ = 302,                    /* LTEQ  */
-    GTEQ = 303,                    /* GTEQ  */
-    LT = 304,                      /* LT  */
-    GT = 305,                      /* GT  */
-    PLUSEQ = 306,                  /* PLUSEQ  */
-    MINUSEQ = 307,                 /* MINUSEQ  */
-    MULTIPLYEQ = 308,              /* MULTIPLYEQ  */
-    DIVIDEEQ = 309,                /* DIVIDEEQ  */
-    EQEQ = 310,                    /* EQEQ  */
-    EQ = 311,                      /* EQ  */
-    NOTEQ = 312,                   /* NOTEQ  */
-    NOT = 313,                     /* NOT  */
-    PLUSPLUS = 314,                /* PLUSPLUS  */
-    PLUS = 315,                    /* PLUS  */
-    MINUSMINUS = 316,              /* MINUSMINUS  */
-    MINUS = 317,                   /* MINUS  */
-    DIVIDE = 318,                  /* DIVIDE  */
-    MULTIPLY = 319,                /* MULTIPLY  */
-    VARNAME = 320,                 /* VARNAME  */
-    NUMBER = 321,                  /* NUMBER  */
-    DECIMAL = 322,                 /* DECIMAL  */
-    TEXT = 323,                    /* TEXT  */
-    ESCAPE_CHARS = 324             /* ESCAPE_CHARS  */
+    OPERATORNAME = 271,            /* OPERATORNAME  */
+    OVERRIDE = 272,                /* OVERRIDE  */
+    VIRTUAL = 273,                 /* VIRTUAL  */
+    PURE = 274,                    /* PURE  */
+    AS = 275,                      /* AS  */
+    IN = 276,                      /* IN  */
+    DISPLAY = 277,                 /* DISPLAY  */
+    RETURN = 278,                  /* RETURN  */
+    FOR = 279,                     /* FOR  */
+    IF = 280,                      /* IF  */
+    ELSEIF = 281,                  /* ELSEIF  */
+    ELSE = 282,                    /* ELSE  */
+    INLINE = 283,                  /* INLINE  */
+    CONSTRUCTOR = 284,             /* CONSTRUCTOR  */
+    FILE_ = 285,                   /* FILE_  */
+    PROGRAM_ = 286,                /* PROGRAM_  */
+    IMPORT = 287,                  /* IMPORT  */
+    PUBLIC = 288,                  /* PUBLIC  */
+    PROTECTED = 289,               /* PROTECTED  */
+    PRIVATE = 290,                 /* PRIVATE  */
+    INHERIT = 291,                 /* INHERIT  */
+    COMPOSITE = 292,               /* COMPOSITE  */
+    LEFT_BRACKET = 293,            /* LEFT_BRACKET  */
+    RIGHT_BRACKET = 294,           /* RIGHT_BRACKET  */
+    LEFT_SQUARE_BRACKET = 295,     /* LEFT_SQUARE_BRACKET  */
+    RIGHT_SQUARE_BRACKET = 296,    /* RIGHT_SQUARE_BRACKET  */
+    LEFT_PARANTHESIS = 297,        /* LEFT_PARANTHESIS  */
+    RIGHT_PARANTHESIS = 298,       /* RIGHT_PARANTHESIS  */
+    COLON = 299,                   /* COLON  */
+    SEMICOLON = 300,               /* SEMICOLON  */
+    COMMA = 301,                   /* COMMA  */
+    DOT = 302,                     /* DOT  */
+    LTEQ = 303,                    /* LTEQ  */
+    GTEQ = 304,                    /* GTEQ  */
+    LT = 305,                      /* LT  */
+    GT = 306,                      /* GT  */
+    PLUSEQ = 307,                  /* PLUSEQ  */
+    MINUSEQ = 308,                 /* MINUSEQ  */
+    MULTIPLYEQ = 309,              /* MULTIPLYEQ  */
+    DIVIDEEQ = 310,                /* DIVIDEEQ  */
+    EQEQ = 311,                    /* EQEQ  */
+    EQ = 312,                      /* EQ  */
+    NOTEQ = 313,                   /* NOTEQ  */
+    NOT = 314,                     /* NOT  */
+    PLUSPLUS = 315,                /* PLUSPLUS  */
+    PLUS = 316,                    /* PLUS  */
+    MINUSMINUS = 317,              /* MINUSMINUS  */
+    MINUS = 318,                   /* MINUS  */
+    DIVIDE = 319,                  /* DIVIDE  */
+    MULTIPLY = 320,                /* MULTIPLY  */
+    VARNAME = 321,                 /* VARNAME  */
+    NUMBER = 322,                  /* NUMBER  */
+    DECIMAL = 323,                 /* DECIMAL  */
+    TEXT = 324,                    /* TEXT  */
+    ESCAPE_CHARS = 325             /* ESCAPE_CHARS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -124,7 +125,7 @@ extern int Celestedebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 450 "./Celeste_parser.y"
+#line 452 "./Celeste_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::Celeste::ast::node::SINGLE_COMMENT* Celeste_SINGLE_COMMENT;
@@ -140,6 +141,7 @@ union YYSTYPE
 	::Celeste::ast::node::AUTOTYPE* Celeste_AUTOTYPE;
 	::Celeste::ast::node::TEMPLATE* Celeste_TEMPLATE;
 	::Celeste::ast::node::NAMESPACE* Celeste_NAMESPACE;
+	::Celeste::ast::node::OPERATORNAME* Celeste_OPERATORNAME;
 	::Celeste::ast::node::OVERRIDE* Celeste_OVERRIDE;
 	::Celeste::ast::node::VIRTUAL* Celeste_VIRTUAL;
 	::Celeste::ast::node::PURE* Celeste_PURE;
@@ -331,7 +333,7 @@ union YYSTYPE
 	::Celeste::ast::node::tuple* Celeste_tuple;
 
 
-#line 335 "Celeste_parser.tab.h"
+#line 337 "Celeste_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

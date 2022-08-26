@@ -15,6 +15,7 @@
 #include "Celeste/Ast/Node/AUTOTYPE.h"
 #include "Celeste/Ast/Node/TEMPLATE.h"
 #include "Celeste/Ast/Node/NAMESPACE.h"
+#include "Celeste/Ast/Node/OPERATORNAME.h"
 #include "Celeste/Ast/Node/OVERRIDE.h"
 #include "Celeste/Ast/Node/VIRTUAL.h"
 #include "Celeste/Ast/Node/PURE.h"
@@ -325,6 +326,9 @@ namespace Celeste { namespace ast { namespace utility {
 			}
 			case ::Celeste::ast::Type::NAMESPACE: {
 				return new ::Celeste::ast::node::NAMESPACE({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
+			}
+			case ::Celeste::ast::Type::OPERATORNAME: {
+				return new ::Celeste::ast::node::OPERATORNAME({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
 			}
 			case ::Celeste::ast::Type::OVERRIDE: {
 				return new ::Celeste::ast::node::OVERRIDE({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});

@@ -30,6 +30,7 @@ namespace Celeste::ir::inputreconstruction
 
 		void AddInputReconstructionObject(
 			std::unique_ptr<InputReconstructionObject> inputReconstructionObject_);
+
 		std::string GetFileName();
 
 		void SetAst(std::unique_ptr<deamer::external::cpp::ast::Tree> ast_);

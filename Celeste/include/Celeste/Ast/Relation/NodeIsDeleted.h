@@ -73,6 +73,11 @@ namespace Celeste { namespace ast { namespace relation {
 			return false;
 		}
 
+		if (t == ::Celeste::ast::Type::OPERATORNAME)
+		{
+			return false;
+		}
+
 		if (t == ::Celeste::ast::Type::OVERRIDE)
 		{
 			return false;

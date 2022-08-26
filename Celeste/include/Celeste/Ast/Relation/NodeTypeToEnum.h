@@ -153,6 +153,7 @@ class AUTO;
 class AUTOTYPE;
 class TEMPLATE;
 class NAMESPACE;
+class OPERATORNAME;
 class OVERRIDE;
 class VIRTUAL;
 class PURE;
@@ -1254,6 +1255,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::NAMESPACE;
 		using type = ::Celeste::ast::node::NAMESPACE;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::OPERATORNAME>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::OPERATORNAME;
+		using type = ::Celeste::ast::node::OPERATORNAME;
 	};
 
 	template<>

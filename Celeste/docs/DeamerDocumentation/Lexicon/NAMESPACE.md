@@ -10,7 +10,7 @@ Overview of the terminal: **[NAMESPACE](./NAMESPACE.md)**.
 | ----------------- | --------------------------------------------- |
 | Above             | [TEMPLATE](./TEMPLATE.md) |
 | This              | **[NAMESPACE](./NAMESPACE.md)** |
-| Below             | [OVERRIDE](./OVERRIDE.md) |
+| Below             | [OPERATORNAME](./OPERATORNAME.md) |
 
 
 

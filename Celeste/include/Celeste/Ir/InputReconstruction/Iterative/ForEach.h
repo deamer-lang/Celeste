@@ -22,6 +22,7 @@ namespace Celeste::ir::inputreconstruction
 				std::unique_ptr<Expression> expression_);
 		virtual ~ForEach() = default;
 		void Complete();
+		NameReference* GetVariable();
 
 	public:
 	};

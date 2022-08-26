@@ -701,7 +701,7 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 392 "./Celeste_lexer.l"
+#line 395 "./Celeste_lexer.l"
 
 
 #line 708 "./Celeste_lexer.h"

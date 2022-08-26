@@ -456,6 +456,9 @@ namespace Celeste { namespace ast { namespace relation {
 		{ "NAMESPACE", ::Celeste::ast::Type::NAMESPACE },
 	
 
+		{ "OPERATORNAME", ::Celeste::ast::Type::OPERATORNAME },
+	
+
 		{ "OVERRIDE", ::Celeste::ast::Type::OVERRIDE },
 	
 

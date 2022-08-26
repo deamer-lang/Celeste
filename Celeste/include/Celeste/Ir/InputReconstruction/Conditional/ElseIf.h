@@ -16,6 +16,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		ElseIf(std::unique_ptr<Expression> expression_);
 		virtual ~ElseIf() = default;
+		void Complete();
 
 	public:
 	};

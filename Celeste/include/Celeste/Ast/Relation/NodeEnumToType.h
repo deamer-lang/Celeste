@@ -151,6 +151,7 @@
 #include "Celeste/Ast/Node/AUTOTYPE.h"
 #include "Celeste/Ast/Node/TEMPLATE.h"
 #include "Celeste/Ast/Node/NAMESPACE.h"
+#include "Celeste/Ast/Node/OPERATORNAME.h"
 #include "Celeste/Ast/Node/OVERRIDE.h"
 #include "Celeste/Ast/Node/VIRTUAL.h"
 #include "Celeste/Ast/Node/PURE.h"
@@ -1251,6 +1252,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::NAMESPACE;
 		using type = ::Celeste::ast::node::NAMESPACE;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::OPERATORNAME>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::OPERATORNAME;
+		using type = ::Celeste::ast::node::OPERATORNAME;
 	};
 
 	template<>

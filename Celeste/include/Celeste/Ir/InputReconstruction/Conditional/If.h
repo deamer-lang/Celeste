@@ -16,6 +16,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		If(std::unique_ptr<Expression> expression_);
 		virtual ~If() = default;
+		void Complete();
 
 	public:
 	};

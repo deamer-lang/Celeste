@@ -12,3 +12,8 @@ Celeste::ir::inputreconstruction::ElseIf::ElseIf(std::unique_ptr<Expression> exp
 	  expression(std::move(expression_))
 {
 }
+
+void Celeste::ir::inputreconstruction::ElseIf::Complete()
+{
+	expression->SetParent(this);
+}

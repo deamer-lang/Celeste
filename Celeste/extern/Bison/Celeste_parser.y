@@ -28,6 +28,7 @@
 #include "Celeste/Ast/Node/AUTOTYPE.h"
 #include "Celeste/Ast/Node/TEMPLATE.h"
 #include "Celeste/Ast/Node/NAMESPACE.h"
+#include "Celeste/Ast/Node/OPERATORNAME.h"
 #include "Celeste/Ast/Node/OVERRIDE.h"
 #include "Celeste/Ast/Node/VIRTUAL.h"
 #include "Celeste/Ast/Node/PURE.h"
@@ -254,6 +255,7 @@ static const std::string* Celeste_input_text = nullptr;
 %token<Terminal> AUTOTYPE
 %token<Terminal> TEMPLATE
 %token<Terminal> NAMESPACE
+%token<Terminal> OPERATORNAME
 %token<Terminal> OVERRIDE
 %token<Terminal> VIRTUAL
 %token<Terminal> PURE
@@ -462,6 +464,7 @@ static const std::string* Celeste_input_text = nullptr;
 	::Celeste::ast::node::AUTOTYPE* Celeste_AUTOTYPE;
 	::Celeste::ast::node::TEMPLATE* Celeste_TEMPLATE;
 	::Celeste::ast::node::NAMESPACE* Celeste_NAMESPACE;
+	::Celeste::ast::node::OPERATORNAME* Celeste_OPERATORNAME;
 	::Celeste::ast::node::OVERRIDE* Celeste_OVERRIDE;
 	::Celeste::ast::node::VIRTUAL* Celeste_VIRTUAL;
 	::Celeste::ast::node::PURE* Celeste_PURE;
@@ -4469,6 +4472,12 @@ symbol_name_secondary:
 
 		// Ignored, Deleted, tokens are deleted
 	}
+	| OPERATORNAME  {
+		auto* const newNode = new Celeste::ast::node::symbol_name_secondary({::Celeste::ast::Type::symbol_name_secondary, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::OPERATORNAME({::Celeste::ast::Type::OPERATORNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
 ;
 
 
@@ -4481,6 +4490,12 @@ symbol_name:
 	}
 	| FOR  {
 		auto* const newNode = new Celeste::ast::node::symbol_name({::Celeste::ast::Type::symbol_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::FOR({::Celeste::ast::Type::FOR, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| OPERATORNAME  {
+		auto* const newNode = new Celeste::ast::node::symbol_name({::Celeste::ast::Type::symbol_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::OPERATORNAME({::Celeste::ast::Type::OPERATORNAME, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted

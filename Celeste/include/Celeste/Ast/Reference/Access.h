@@ -154,6 +154,7 @@
 #include "Celeste/Ast/Node/AUTOTYPE.h"
 #include "Celeste/Ast/Node/TEMPLATE.h"
 #include "Celeste/Ast/Node/NAMESPACE.h"
+#include "Celeste/Ast/Node/OPERATORNAME.h"
 #include "Celeste/Ast/Node/OVERRIDE.h"
 #include "Celeste/Ast/Node/VIRTUAL.h"
 #include "Celeste/Ast/Node/PURE.h"
@@ -595,6 +596,8 @@ namespace Celeste { namespace ast { namespace reference {
 	struct AccessTemplateBase<::Celeste::ast::node::TEMPLATE>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::NAMESPACE>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::OPERATORNAME>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::OVERRIDE>;
 	template<>
@@ -13897,6 +13900,7 @@ AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRAC
 
 	public:
 		AccessTemplateBase<::Celeste::ast::node::CLASS> CLASS();
+AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> OPERATORNAME();
 AccessTemplateBase<::Celeste::ast::node::FOR> FOR();
 AccessTemplateBase<::Celeste::ast::node::IF> IF();
 AccessTemplateBase<::Celeste::ast::node::ELSEIF> ELSEIF();
@@ -14008,7 +14012,8 @@ AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
 		}
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::FOR> FOR();
+		AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> OPERATORNAME();
+AccessTemplateBase<::Celeste::ast::node::FOR> FOR();
 AccessTemplateBase<::Celeste::ast::node::VARNAME> VARNAME();
 
 
@@ -16928,6 +16933,112 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 		template<typename FunctionType>
 		AccessTemplateBase<::Celeste::ast::node::NAMESPACE>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::OPERATORNAME*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::OPERATORNAME*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::OPERATORNAME& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::OPERATORNAME* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::OPERATORNAME>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::OPERATORNAME>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::OPERATORNAME*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::OPERATORNAME*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::OPERATORNAME>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -26724,6 +26835,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::CLASS>(Get<::Celeste::ast::Type::CLASS>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> AccessTemplateBase<::Celeste::ast::node::symbol_name_secondary>::OPERATORNAME()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::OPERATORNAME>(Get<::Celeste::ast::Type::OPERATORNAME>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::FOR> AccessTemplateBase<::Celeste::ast::node::symbol_name_secondary>::FOR()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -26762,6 +26881,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::VARNAME>(Get<::Celeste::ast::Type::VARNAME>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::OPERATORNAME> AccessTemplateBase<::Celeste::ast::node::symbol_name>::OPERATORNAME()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::OPERATORNAME>(Get<::Celeste::ast::Type::OPERATORNAME>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::FOR> AccessTemplateBase<::Celeste::ast::node::symbol_name>::FOR()

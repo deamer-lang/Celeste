@@ -11,9 +11,13 @@ Celeste::ir::inputreconstruction::EnumerationMember::EnumerationMember(
 void Celeste::ir::inputreconstruction::EnumerationMember::Complete()
 {
 	enumerationName->SetParent(this);
-	enumerationValue->SetParent(this);
 	enumerationName->SetFile(GetFile());
-	enumerationValue->SetFile(GetFile());
+
+	if (enumerationValue != nullptr)
+	{
+		enumerationValue->SetParent(this);
+		enumerationValue->SetFile(GetFile());
+	}
 }
 
 std::unique_ptr<Celeste::ir::inputreconstruction::NameReference>&

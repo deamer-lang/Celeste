@@ -336,6 +336,8 @@ Celeste::ir::inputreconstruction::Class::GetConstructor(NameReference* nameRefer
 		}
 		}
 	}
+
+	return std::nullopt;
 }
 
 void Celeste::ir::inputreconstruction::Class::AddTemplateParameter(

@@ -14,6 +14,9 @@
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Conditional/ConditionalFunction.h"
+#include "Celeste/Ir/InputReconstruction/Conditional/Else.h"
+#include "Celeste/Ir/InputReconstruction/Conditional/ElseIf.h"
+#include "Celeste/Ir/InputReconstruction/Conditional/If.h"
 #include "Celeste/Ir/InputReconstruction/Import.h"
 #include "Celeste/Ir/InputReconstruction/Iterative/ForEach.h"
 #include "Celeste/Ir/InputReconstruction/Iterative/ForIteration.h"
@@ -22,6 +25,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+#include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Namespace.h"
 #include <set>
 
@@ -1030,6 +1034,15 @@ public:
 		case Type::ForEach: {
 			auto irComponent = static_cast<ForEach*>(uncheckedMember);
 
+			if (irComponent->GetVariable()->GetResolvedName() == GetSymbolName())
+			{
+				SetEntryPoint(irComponent);
+				ContinueAccess();
+
+				Finalize();
+				return;
+			}
+
 			if (argument.addByNeighbour)
 			{
 				return;
@@ -1205,6 +1218,214 @@ public:
 						Finalize();
 						return;
 					}
+				}
+			}
+
+			if (argument.direction == Direction::Up && argument.addParent)
+			{
+				uncheckedList.insert(
+					std::begin(uncheckedList) + addedCounter++,
+					{irComponent->GetParent(), ResolveArgument{irComponent, Direction::Up, true}});
+			}
+			break;
+		}
+		case Type::MutationGroup: {
+			auto irComponent = static_cast<MutationGroup*>(uncheckedMember);
+
+			if (argument.addByNeighbour)
+			{
+				return;
+			}
+
+			std::size_t addedCounter = 0;
+			if (argument.direction == Direction::Up)
+			{
+				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
+					 iter != irComponent->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				(irComponent->GetParent()->GetType() == Type::Function ||
+				 irComponent->GetParent()->GetType() == Type::Constructor))
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+			}
+
+			if (argument.direction == Direction::Up && argument.addParent)
+			{
+				uncheckedList.insert(
+					std::begin(uncheckedList) + addedCounter++,
+					{irComponent->GetParent(), ResolveArgument{irComponent, Direction::Up, true}});
+			}
+			break;
+		}
+		case Type::If: {
+			auto irComponent = static_cast<If*>(uncheckedMember);
+
+			if (argument.addByNeighbour)
+			{
+				return;
+			}
+
+			std::size_t addedCounter = 0;
+			if (argument.direction == Direction::Up)
+			{
+				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
+					 iter != irComponent->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				(irComponent->GetParent()->GetType() == Type::Function ||
+				 irComponent->GetParent()->GetType() == Type::Constructor))
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+			}
+
+			if (argument.direction == Direction::Up && argument.addParent)
+			{
+				uncheckedList.insert(
+					std::begin(uncheckedList) + addedCounter++,
+					{irComponent->GetParent(), ResolveArgument{irComponent, Direction::Up, true}});
+			}
+			break;
+		}
+		case Type::ElseIf: {
+			auto irComponent = static_cast<ElseIf*>(uncheckedMember);
+
+			if (argument.addByNeighbour)
+			{
+				return;
+			}
+
+			std::size_t addedCounter = 0;
+			if (argument.direction == Direction::Up)
+			{
+				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
+					 iter != irComponent->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				(irComponent->GetParent()->GetType() == Type::Function ||
+				 irComponent->GetParent()->GetType() == Type::Constructor))
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+			}
+
+			if (argument.direction == Direction::Up && argument.addParent)
+			{
+				uncheckedList.insert(
+					std::begin(uncheckedList) + addedCounter++,
+					{irComponent->GetParent(), ResolveArgument{irComponent, Direction::Up, true}});
+			}
+			break;
+		}
+		case Type::Else: {
+			auto irComponent = static_cast<Else*>(uncheckedMember);
+
+			if (argument.addByNeighbour)
+			{
+				return;
+			}
+
+			std::size_t addedCounter = 0;
+			if (argument.direction == Direction::Up)
+			{
+				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
+					 iter != irComponent->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				(irComponent->GetParent()->GetType() == Type::Function ||
+				 irComponent->GetParent()->GetType() == Type::Constructor))
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 			}
 
@@ -1402,7 +1623,6 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(
 	SetSymbolName(ast::reference::Access<ast::node::symbol_reference>(symbolReference_)
 					  .symbol()
 					  .symbol_name()
-					  .VARNAME()
 					  .GetContent()[0]
 					  ->GetText());
 }

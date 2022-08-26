@@ -8,7 +8,7 @@ Overview of the terminal: **[OVERRIDE](./OVERRIDE.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [NAMESPACE](./NAMESPACE.md) |
+| Above             | [OPERATORNAME](./OPERATORNAME.md) |
 | This              | **[OVERRIDE](./OVERRIDE.md)** |
 | Below             | [VIRTUAL](./VIRTUAL.md) |
 

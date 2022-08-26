@@ -17,6 +17,7 @@
 #include "Celeste/Ast/Node/AUTOTYPE.h"
 #include "Celeste/Ast/Node/TEMPLATE.h"
 #include "Celeste/Ast/Node/NAMESPACE.h"
+#include "Celeste/Ast/Node/OPERATORNAME.h"
 #include "Celeste/Ast/Node/OVERRIDE.h"
 #include "Celeste/Ast/Node/VIRTUAL.h"
 #include "Celeste/Ast/Node/PURE.h"
@@ -353,6 +354,15 @@ namespace Celeste { namespace ast { namespace listener {
 				EnterAnything(node);
 				EnterTerminal(node);
 				ListenEntry(static_cast<const Celeste::ast::node::NAMESPACE*>(node));
+				break;
+			}
+
+			case Celeste::ast::Type::OPERATORNAME:
+			{
+				// Entry terminal
+				EnterAnything(node);
+				EnterTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::OPERATORNAME*>(node));
 				break;
 			}
 
@@ -2187,6 +2197,15 @@ namespace Celeste { namespace ast { namespace listener {
 				break;
 			}
 
+			case Celeste::ast::Type::OPERATORNAME:
+			{
+				// Exit terminal
+				ListenExit(static_cast<const Celeste::ast::node::OPERATORNAME*>(node));
+				ExitTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
 			case Celeste::ast::Type::OVERRIDE:
 			{
 				// Exit terminal
@@ -3947,6 +3966,10 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
+		virtual void ListenEntry(const Celeste::ast::node::OPERATORNAME* node) 
+		{
+		}
+
 		virtual void ListenEntry(const Celeste::ast::node::OVERRIDE* node) 
 		{
 		}
@@ -4213,6 +4236,10 @@ namespace Celeste { namespace ast { namespace listener {
 		}
 
 		virtual void ListenExit(const Celeste::ast::node::NAMESPACE* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::OPERATORNAME* node) 
 		{
 		}
 

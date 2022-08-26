@@ -33,6 +33,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> AUTOTYPE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> TEMPLATE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> NAMESPACE;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> OPERATORNAME;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> OVERRIDE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> VIRTUAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> PURE;
@@ -112,6 +113,7 @@ AUTO.Set(deamer::language::type::definition::object::main::Terminal("AUTO", "[Aa
 AUTOTYPE.Set(deamer::language::type::definition::object::main::Terminal("AUTOTYPE", "[Aa][Uu][Tt][Oo][Tt][Yy][Pp][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 TEMPLATE.Set(deamer::language::type::definition::object::main::Terminal("TEMPLATE", "[Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 NAMESPACE.Set(deamer::language::type::definition::object::main::Terminal("NAMESPACE", "[Nn][Aa][Mm][Ee][Ss][Pp][Aa][Cc][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+OPERATORNAME.Set(deamer::language::type::definition::object::main::Terminal("OPERATORNAME", "[Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\\\+\\-?!*^%@#$^<>=:|]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 OVERRIDE.Set(deamer::language::type::definition::object::main::Terminal("OVERRIDE", "[Oo][Vv][Ee][Rr][Rr][Ii][Dd][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 VIRTUAL.Set(deamer::language::type::definition::object::main::Terminal("VIRTUAL", "[Vv][Ii][Rr][Tt][Uu][Aa][Ll]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 PURE.Set(deamer::language::type::definition::object::main::Terminal("PURE", "(([Pp][Uu][Rr][Ee])|([Aa][Bb][Ss][Tt][Rr][Aa][Cc][Tt]))", ::deamer::language::type::definition::object::main::SpecialType::Standard));
@@ -183,6 +185,7 @@ AddObject(AUTO);
 AddObject(AUTOTYPE);
 AddObject(TEMPLATE);
 AddObject(NAMESPACE);
+AddObject(OPERATORNAME);
 AddObject(OVERRIDE);
 AddObject(VIRTUAL);
 AddObject(PURE);

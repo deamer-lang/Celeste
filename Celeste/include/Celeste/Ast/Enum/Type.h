@@ -24,6 +24,7 @@ namespace Celeste { namespace ast {
 		AUTOTYPE,
 		TEMPLATE,
 		NAMESPACE,
+		OPERATORNAME,
 		OVERRIDE,
 		VIRTUAL,
 		PURE,

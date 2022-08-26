@@ -12,3 +12,8 @@ Celeste::ir::inputreconstruction::If::If(std::unique_ptr<Expression> expression_
 	  expression(std::move(expression_))
 {
 }
+
+void Celeste::ir::inputreconstruction::If::Complete()
+{
+	expression->SetParent(this);
+}

@@ -16,15 +16,28 @@ void Celeste::ir::inputreconstruction::Enumeration::Complete()
 	enumerationName->SetFile(GetFile());
 
 	enumeration.enumeration().for_all([&](ast::reference::Access<ast::node::enumeration> access) {
-		auto newMember = std::make_unique<EnumerationMember>(
-			std::make_unique<NameReference>(const_cast<ast::node::symbol_reference*>(
-				access.enumeration_name().symbol_reference().GetContent()[0])),
-			std::make_unique<Expression>(const_cast<ast::node::expression*>(
-				access.enumeration_value().full_value().expression().GetContent()[0])));
-		newMember->SetParent(this);
-		newMember->SetFile(GetFile());
-		newMember->Complete();
-		enumerationMembers.push_back(std::move(newMember));
+		if (access.enumeration_value().full_value().expression().GetContent().empty())
+		{
+			auto newMember = std::make_unique<EnumerationMember>(
+				std::make_unique<NameReference>(const_cast<ast::node::symbol_reference*>(
+					access.enumeration_name().symbol_reference().GetContent()[0])));
+			newMember->SetParent(this);
+			newMember->SetFile(GetFile());
+			newMember->Complete();
+			enumerationMembers.push_back(std::move(newMember));
+		}
+		else
+		{
+			auto newMember = std::make_unique<EnumerationMember>(
+				std::make_unique<NameReference>(const_cast<ast::node::symbol_reference*>(
+					access.enumeration_name().symbol_reference().GetContent()[0])),
+				std::make_unique<Expression>(const_cast<ast::node::expression*>(
+					access.enumeration_value().full_value().expression().GetContent()[0])));
+			newMember->SetParent(this);
+			newMember->SetFile(GetFile());
+			newMember->Complete();
+			enumerationMembers.push_back(std::move(newMember));
+		}
 	});
 }
 

@@ -18,6 +18,7 @@ Terminal: AUTO         [Aa][Uu][Tt][Oo]
 Terminal: AUTOTYPE     [Aa][Uu][Tt][Oo][Tt][Yy][Pp][Ee]
 Terminal: TEMPLATE     [Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee]
 Terminal: NAMESPACE    [Nn][Aa][Mm][Ee][Ss][Pp][Aa][Cc][Ee]
+Terminal: OPERATORNAME [Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\+\-?!*^%@#$^<>=:|]+
 
 Terminal: OVERRIDE     [Oo][Vv][Ee][Rr][Rr][Ii][Dd][Ee]
 Terminal: VIRTUAL      [Vv][Ii][Rr][Tt][Uu][Aa][Ll]

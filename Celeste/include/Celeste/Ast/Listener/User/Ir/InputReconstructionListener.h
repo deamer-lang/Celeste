@@ -375,6 +375,9 @@ namespace Celeste::ast::listener::user::ir
 			auto MutationGroup =
 				std::make_unique<Celeste::ir::inputreconstruction::MutationGroup>();
 
+			MutationGroup->SetParent(GetParent());
+			MutationGroup->SetFile(file);
+
 			// Implement Inheritance Relations
 			Access.symbol_reference().for_all(
 				[&](reference::Access<Celeste::ast::node::symbol_reference> access) {
@@ -1159,6 +1162,10 @@ namespace Celeste::ast::listener::user::ir
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::If>(
 				GetExpression(Access.expression().GetContent()[0]));
 
+			newObject->SetParent(GetParent());
+			newObject->SetFile(file);
+			newObject->Complete();
+
 			AddCurrentScope(std::move(newObject));
 			OpenScope();
 		}
@@ -1183,6 +1190,10 @@ namespace Celeste::ast::listener::user::ir
 			auto Access = reference::Access(node);
 			auto newObject = std::make_unique<Celeste::ir::inputreconstruction::ElseIf>(
 				GetExpression(Access.expression().GetContent()[0]));
+
+			newObject->SetParent(GetParent());
+			newObject->SetFile(file);
+			newObject->Complete();
 
 			AddCurrentScope(std::move(newObject));
 			OpenScope();

@@ -32,3 +32,9 @@ void Celeste::ir::inputreconstruction::ForEach::Complete()
 	variableName->SetParent(this);
 	variableName->SetFile(GetFile());
 }
+
+Celeste::ir::inputreconstruction::NameReference*
+Celeste::ir::inputreconstruction::ForEach::GetVariable()
+{
+	return variableName.get();
+}

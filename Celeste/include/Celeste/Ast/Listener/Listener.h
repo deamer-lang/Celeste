@@ -17,6 +17,7 @@
 #include "Celeste/Ast/Node/AUTOTYPE.h"
 #include "Celeste/Ast/Node/TEMPLATE.h"
 #include "Celeste/Ast/Node/NAMESPACE.h"
+#include "Celeste/Ast/Node/OPERATORNAME.h"
 #include "Celeste/Ast/Node/OVERRIDE.h"
 #include "Celeste/Ast/Node/VIRTUAL.h"
 #include "Celeste/Ast/Node/PURE.h"
@@ -285,6 +286,11 @@ namespace Celeste { namespace ast { namespace listener {
 			case Celeste::ast::Type::NAMESPACE:
 			{
 				Listen(static_cast<const Celeste::ast::node::NAMESPACE*>(node));
+				break;
+			}
+			case Celeste::ast::Type::OPERATORNAME:
+			{
+				Listen(static_cast<const Celeste::ast::node::OPERATORNAME*>(node));
 				break;
 			}
 			case Celeste::ast::Type::OVERRIDE:
@@ -1407,6 +1413,9 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::NAMESPACE* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::OPERATORNAME* node)
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::OVERRIDE* node)

@@ -17,7 +17,7 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		MutationGroup();
-		virtual ~MutationGroup() override = default;
+		virtual ~MutationGroup() override;
 
 	public:
 		void AddSetting(std::unique_ptr<SymbolReferenceCall> setting);

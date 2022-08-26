@@ -373,10 +373,12 @@ symbol_name_secondary
 	IF
 	ELSEIF
 	ELSE
+	OPERATORNAME
 
 symbol_name
 	VARNAME
 	FOR
+	OPERATORNAME
 
 function_access
 	LEFT_PARANTHESIS [expression -> (COMMA expression)] [COMMA] RIGHT_PARANTHESIS

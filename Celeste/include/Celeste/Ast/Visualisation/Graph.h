@@ -1506,6 +1506,16 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"NAMESPACE\"];\n";
 		}
 
+		void ListenEntry(const ::Celeste::ast::node::OPERATORNAME* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"OPERATORNAME\"];\n";
+		}
+
 		void ListenEntry(const ::Celeste::ast::node::OVERRIDE* node) override
 		{
 			for (const auto* child : node->GetNodes())

@@ -22,6 +22,7 @@ Overview of the nonterminal: **[symbol_name_secondary](./symbol_name_secondary.m
 | [IF](./../Lexicon/IF.md)  |
 | [ELSEIF](./../Lexicon/ELSEIF.md)  |
 | [ELSE](./../Lexicon/ELSE.md)  |
+| [OPERATORNAME](./../Lexicon/OPERATORNAME.md)  |
 
 
 

@@ -750,6 +750,11 @@ namespace Celeste { namespace ast { namespace relation {
 	}
 	
 
+	case ::Celeste::ast::Type::OPERATORNAME: {
+		return "OPERATORNAME";
+	}
+	
+
 	case ::Celeste::ast::Type::OVERRIDE: {
 		return "OVERRIDE";
 	}

@@ -17,7 +17,7 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		EnumerationMember(std::unique_ptr<NameReference> enumerationName_,
-						  std::unique_ptr<Expression> enumerationValue_);
+						  std::unique_ptr<Expression> enumerationValue_ = nullptr);
 		virtual ~EnumerationMember() = default;
 		void Complete();
 
