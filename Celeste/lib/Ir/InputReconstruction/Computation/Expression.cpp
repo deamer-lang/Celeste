@@ -437,3 +437,17 @@ std::optional<std::string> Celeste::ir::inputreconstruction::Expression::GetOper
 
 	return "operatorUnimplemented";
 }
+
+std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::Expression>,
+			 std::unique_ptr<Celeste::ir ::inputreconstruction::Value>>&
+Celeste::ir::inputreconstruction::Expression::GetLhs()
+{
+	return impl->lhs;
+}
+
+std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::Expression>,
+			 std::unique_ptr<Celeste::ir ::inputreconstruction::Value>>&
+Celeste::ir::inputreconstruction::Expression::GetRhs()
+{
+	return impl->rhs;
+}

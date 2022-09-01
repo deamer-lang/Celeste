@@ -39,6 +39,7 @@ namespace Celeste::ir::inputreconstruction
 
 		std::vector<std::unique_ptr<CompoundBase>>& GetCompoundBases();
 		std::vector<std::unique_ptr<InheritBase>>& GetInheritedBases();
+		std::vector<std::pair<Accessibility, InputReconstructionObject*>>& GetMembers();
 
 		InputReconstructionObject* GetMember(NameReference* nameReference,
 											 Accessibility accessibility = Accessibility::Public);

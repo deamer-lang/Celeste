@@ -1,6 +1,8 @@
 #include "Celeste/Ast/Listener/User/Ir/InputReconstructionListener.h"
 #include "Celeste/Ast/Visualisation/Graph.h"
 #include "Celeste/Bison/Parser.h"
+#include "Celeste/Ir/InputReconstruction/HigherOrder/SourceCodeBlockMutationSet.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Interpreter.h"
 #include "Celeste/Ir/InputReconstruction/Meta/Project.h"
 #include <fstream>
 #include <iostream>
@@ -80,6 +82,16 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 					std::cout << "\n";
 				}
 			});
+
+		file->IdentifyUpperCodeBlockScopes(
+			[&](Celeste::ir::inputreconstruction::SourceCodeBlockMutationSet* object) {
+
+			});
+
+		auto root = file->GetRoot();
+		auto interpreter = Celeste::ir::inputreconstruction::Interpreter(
+			Celeste::ir::inputreconstruction::GroupType::CodeBlock);
+		interpreter.Interpret(root);
 	}
 }
 

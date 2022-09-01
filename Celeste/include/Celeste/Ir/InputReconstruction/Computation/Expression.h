@@ -4,9 +4,12 @@
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include <Deamer/External/Cpp/Ast/Node.h>
 #include <memory>
+#include <variant>
 
 namespace Celeste::ir::inputreconstruction
 {
+	class Value;
+
 	class Expression : public InputReconstructionObject
 	{
 	private:
@@ -27,6 +30,9 @@ namespace Celeste::ir::inputreconstruction
 		InputReconstructionObject* DeduceType();
 
 		std::optional<std::string> GetOperatorFunctionName();
+
+		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>& GetLhs();
+		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>& GetRhs();
 	};
 }
 

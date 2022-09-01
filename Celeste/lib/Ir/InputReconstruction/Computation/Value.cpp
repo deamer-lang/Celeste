@@ -176,3 +176,14 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 
 	return nullptr;
 }
+
+std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::CodeBlock>,
+			 std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>,
+			 std::unique_ptr<Celeste::ir::inputreconstruction::Tuple>,
+			 std::unique_ptr<Celeste::ir::inputreconstruction::Integer>,
+			 std::unique_ptr<Celeste::ir::inputreconstruction::Decimal>,
+			 std::unique_ptr<Celeste::ir::inputreconstruction::Text>>&
+Celeste::ir::inputreconstruction::Value::GetValue()
+{
+	return impl->underlyingSpecialization;
+}

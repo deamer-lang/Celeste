@@ -2,6 +2,7 @@
 #define CELESTE_INPUTRECONSTRUCTION_META_INPUTRECONSTRUCTIONOBJECT_H
 
 #include "Celeste/Ast/Reference/Access.h"
+#include "Celeste/Ir/InputReconstruction/Meta/GroupType.h"
 #include "Celeste/Ir/InputReconstruction/Meta/Type.h"
 #include <memory>
 #include <optional>
@@ -44,6 +45,10 @@ namespace Celeste::ir::inputreconstruction
 		virtual std::vector<InputReconstructionObject*>::reverse_iterator rbegin();
 
 		void SetReferencingObject(InputReconstructionObject* nameReference);
+		std::vector<InputReconstructionObject*> GetReferencesToThisObject();
+
+		void SetGroupType(GroupType groupType_);
+		GroupType GetGroupType();
 	};
 }
 

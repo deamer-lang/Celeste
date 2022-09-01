@@ -8,6 +8,13 @@
 
 namespace Celeste::ir::inputreconstruction
 {
+	class CodeBlock;
+	class SymbolReferenceCall;
+	class Tuple;
+	class Integer;
+	class Decimal;
+	class Text;
+
 	class Value : public InputReconstructionObject
 	{
 	private:
@@ -21,6 +28,11 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		void Resolve();
 		InputReconstructionObject* DeduceType();
+
+		std::variant<std::monostate, std::unique_ptr<CodeBlock>,
+					 std::unique_ptr<SymbolReferenceCall>, std::unique_ptr<Tuple>,
+					 std::unique_ptr<Integer>, std::unique_ptr<Decimal>, std::unique_ptr<Text>>&
+		GetValue();
 	};
 }
 

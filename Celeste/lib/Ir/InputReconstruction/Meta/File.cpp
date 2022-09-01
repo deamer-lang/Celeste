@@ -11,6 +11,7 @@ struct Celeste::ir::inputreconstruction::File::Impl
 	Project* project = nullptr;
 	std::string fileName;
 	std::vector<InputReconstructionObject*> unresolvedSymbolReferenceCalls;
+	std::vector<std::unique_ptr<SourceCodeBlockMutationSet>> resolvedCodeBlocks;
 	std::vector<std::unique_ptr<SourceCodeBlockMutationSet>> unresolvedCodeBlocks;
 
 	Impl(std::string fileName_) : fileName(fileName_)
@@ -175,6 +176,20 @@ void Celeste::ir::inputreconstruction::File::ResolveReferences(
 		}
 
 		callback(currentElement);
+	}
+}
+
+void Celeste::ir::inputreconstruction::File::IdentifyUpperCodeBlockScopes(
+	std::function<void(SourceCodeBlockMutationSet*)> callback)
+{
+	while (!impl->unresolvedCodeBlocks.empty())
+	{
+		auto& currentCodeBlock = impl->unresolvedCodeBlocks[0];
+		currentCodeBlock->ConstructCodeBlock();
+		impl->resolvedCodeBlocks.push_back(std::move(currentCodeBlock));
+		impl->unresolvedCodeBlocks.erase(std::cbegin(impl->unresolvedCodeBlocks));
+
+		callback(currentCodeBlock.get());
 	}
 }
 

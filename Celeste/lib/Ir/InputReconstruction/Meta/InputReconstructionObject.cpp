@@ -11,6 +11,8 @@ struct Celeste::ir::inputreconstruction::InputReconstructionObject::Impl
 
 	std::vector<InputReconstructionObject*> objectThatReferenceThis;
 
+	GroupType groupType = GroupType::Standard;
+
 	Impl(Type type_) : type(type_)
 	{
 	}
@@ -140,4 +142,21 @@ void Celeste::ir::inputreconstruction::InputReconstructionObject::SetReferencing
 	InputReconstructionObject* object)
 {
 	impl->objectThatReferenceThis.push_back(object);
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>
+Celeste::ir::inputreconstruction::InputReconstructionObject::GetReferencesToThisObject()
+{
+	return impl->objectThatReferenceThis;
+}
+
+void Celeste::ir::inputreconstruction::InputReconstructionObject::SetGroupType(GroupType groupType_)
+{
+	impl->groupType = groupType_;
+}
+
+Celeste::ir::inputreconstruction::GroupType
+Celeste::ir::inputreconstruction::InputReconstructionObject::GetGroupType()
+{
+	return impl->groupType;
 }

@@ -14,6 +14,7 @@ namespace Celeste::ir::inputreconstruction
 	class Project;
 	class InputReconstructionObject;
 	class CodeBlock;
+	class SourceCodeBlockMutationSet;
 
 	class File
 	{
@@ -45,6 +46,9 @@ namespace Celeste::ir::inputreconstruction
 		void RemoveUnresolvedReference(SymbolReferenceCall* symbolReferenceCall);
 
 		void ResolveReferences(std::function<void(InputReconstructionObject*)> callback);
+
+		void
+		IdentifyUpperCodeBlockScopes(std::function<void(SourceCodeBlockMutationSet*)> callback);
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock_);

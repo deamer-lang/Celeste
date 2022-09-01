@@ -67,6 +67,13 @@ Celeste::ir::inputreconstruction::Class::GetInheritedBases()
 	return inheritedBases;
 }
 
+std::vector<std::pair<Celeste::ir::inputreconstruction::Accessibility,
+					  Celeste::ir::inputreconstruction::InputReconstructionObject*>>&
+Celeste::ir::inputreconstruction::Class::GetMembers()
+{
+	return block;
+}
+
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::Class::GetMember(NameReference* nameReference,
 												   Accessibility accessibility)
