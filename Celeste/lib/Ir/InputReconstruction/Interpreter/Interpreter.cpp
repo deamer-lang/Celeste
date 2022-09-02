@@ -25,38 +25,38 @@ void Celeste::ir::inputreconstruction::Interpreter::Name::AddName(NameReference*
 	names.insert(name_->GetResolvedName());
 }
 
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable::SymbolTable(Interpreter* interpreter_)
+Celeste::ir::inputreconstruction::Interpreter::Stack::Stack(Interpreter* interpreter_)
 	: interpreter(interpreter_)
 {
 }
 
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable*
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable::OpenScope()
+Celeste::ir::inputreconstruction::Interpreter::Stack*
+Celeste::ir::inputreconstruction::Interpreter::Stack::OpenScope()
 {
-	nextDepthScope = SymbolTable(interpreter);
+	nextDepthScope = Stack(interpreter);
 	currentScope = &nextDepthScope.value();
 	currentScope->parent = this;
 
 	return currentScope;
 }
 
-void Celeste::ir::inputreconstruction::Interpreter::SymbolTable::CloseScope()
+void Celeste::ir::inputreconstruction::Interpreter::Stack::CloseScope()
 {
 	nextDepthScope = std::nullopt;
 	currentScope = this;
 }
 
-void Celeste::ir::inputreconstruction::Interpreter::SymbolTable::AddVariable(
-	VariableDeclaration* object)
+void Celeste::ir::inputreconstruction::Interpreter::Stack::AddVariable(VariableDeclaration* object)
 {
 	auto name = Name(object->GetName());
 	auto type = GetType(object->GetVariableType());
 	auto value = Evaluate(object, object->GetExpressions());
-	auto newSymbolMember = SymbolMember(name, type, value);
+	auto newSymbol = std::make_unique<Symbol>(name, type, value);
+	symbols.push_back(std::move(newSymbol));
 }
 
 Celeste::ir::inputreconstruction::Interpreter::TypeId
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable::GetType(TypeConstruct* typeConstruct)
+Celeste::ir::inputreconstruction::Interpreter::Stack::GetType(TypeConstruct* typeConstruct)
 {
 	auto coreType = typeConstruct->GetCoreType();
 	if (!coreType.has_value())
@@ -96,15 +96,14 @@ Celeste::ir::inputreconstruction::Interpreter::SymbolTable::GetType(TypeConstruc
 	}
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::SymbolTable::PolymorphismEquality(
+bool Celeste::ir::inputreconstruction::Interpreter::Stack::PolymorphismEquality(
 	InputReconstructionObject* lhsType, InputReconstructionObject* rhsType)
 {
 }
 
 std::variant<int, double, std::string,
 			 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue>
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable::ZeroValue(
-	InputReconstructionObject* type)
+Celeste::ir::inputreconstruction::Interpreter::Stack::ZeroValue(InputReconstructionObject* type)
 {
 	if (type->GetType() == inputreconstruction::Type::Integer)
 	{
@@ -188,33 +187,33 @@ Celeste::ir::inputreconstruction::Interpreter::SymbolTable::ZeroValue(
 	throw std::logic_error("Critical Error");
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::SymbolTable::CopyByValue(
+bool Celeste::ir::inputreconstruction::Interpreter::Stack::CopyByValue(
 	InputReconstructionObject* object)
 {
 	// Copy by reference is not yet supported
 	return true;
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::SymbolTable::MatchingConstructor(
+bool Celeste::ir::inputreconstruction::Interpreter::Stack::MatchingConstructor(
 	InputReconstructionObject* lhs, const std::vector<std::unique_ptr<Expression>>& expressions)
 {
 	return false;
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::SymbolTable::MatchingImplicitlyConstructor(
+bool Celeste::ir::inputreconstruction::Interpreter::Stack::MatchingImplicitlyConstructor(
 	InputReconstructionObject* lhs, const std::vector<std::unique_ptr<Expression>>& expressions)
 {
 	return false;
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable::GetSymbolMember(Name name)
+Celeste::ir::inputreconstruction::Interpreter::Stack::GetSymbolMember(Name name)
 {
-	for (auto symbol : symbols)
+	for (auto& symbol : symbols)
 	{
-		if (symbol.name == name)
+		if (symbol->name == name)
 		{
-			return &symbol;
+			return symbol.get();
 		}
 	}
 
@@ -235,7 +234,7 @@ Celeste::ir::inputreconstruction::Interpreter::Type::Type(TypeId type_, Name nam
 }
 
 Celeste::ir::inputreconstruction::Interpreter::Value
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable::Evaluate(
+Celeste::ir::inputreconstruction::Interpreter::Stack::Evaluate(
 	VariableDeclaration* object, const std::vector<std::unique_ptr<Expression>>& expressions)
 {
 	auto lhsType = object->GetVariableType()->GetCoreType();
@@ -293,7 +292,7 @@ Celeste::ir::inputreconstruction::Interpreter::SymbolTable::Evaluate(
 }
 
 Celeste::ir::inputreconstruction::Interpreter::Value
-Celeste::ir::inputreconstruction::Interpreter::SymbolTable::Evaluate(
+Celeste::ir::inputreconstruction::Interpreter::Stack::Evaluate(
 	const std::unique_ptr<Expression>& rhs)
 {
 	auto extractValue = [&](std::variant<std::monostate, std::unique_ptr<Expression>,

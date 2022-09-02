@@ -122,29 +122,79 @@ namespace Celeste::ir::inputreconstruction
 		struct Symbol
 		{
 			Name name;
-			TypeId displayedType;
-			TypeId coreType;
+			TypeId type;
 
-			std::vector<SymbolMember> symbolMembers;
+			std::optional<Value> value;
 
-			// This is only possible for Core Types.
+			Symbol(Name name_, TypeId type_) : name(name_), type(type_)
+			{
+			}
+
+			Symbol(Name name_, TypeId type_, Value value_) : name(name_), type(type_), value(value_)
+			{
+			}
+		};
+
+		struct GlobalVariableMember
+		{
+			InputReconstructionObject* irObject;
+			Name name;
+			TypeId type;
+
 			std::optional<Value> symbolValue;
 		};
 
-		struct SymbolTable
+		// Important Note:
+		// First add globals
+		// Then set the File inheritance relations as encountered
+		struct GlobalVariableTable
+		{
+			// Contains a mapping between referenced Object and Global Variable
+			std::map<InputReconstructionObject*, std::unique_ptr<GlobalVariableMember>>
+				globalVariableTable;
+
+			// Contains a mapping between File and Accessible Global Variables
+			std::map<File*, std::set<InputReconstructionObject*>> globalFileAccessibilityTable;
+
+			// Due to a Circular Global Scope Policy, it can occur that global variables
+			// Are not evaluated as they depend on not yet declared variables.
+			// Thus all Globals are first declared and then evaluated.
+			std::vector<GlobalVariableMember*> unEvaluatedGlobalVariables;
+
+			std::optional<GlobalVariableMember*>
+			GetGlobal(File* file, InputReconstructionObject* requestedGlobal);
+
+			// Note File is deduced from the given Object
+			void AddVariable(VariableDeclaration* variableDeclaration);
+
+			// If File A imports File B
+			// Then File A has access to all Globals in File B
+			void FileInheritsFile(File* sub, File* base);
+
+			// As File Inheritance is non trivial
+			// This function is used to evaluate the inheritance relations
+			void EvaluateFileInheritance();
+
+			void EvaluateUnEvaluatedGlobals();
+
+			GlobalVariableTable() = default;
+			~GlobalVariableTable() = default;
+		};
+
+		struct Stack
 		{
 			Interpreter* interpreter = nullptr;
 
-			std::vector<Symbol> symbols;
+			std::vector<std::unique_ptr<Symbol>> symbols;
 
-			std::optional<SymbolTable*> parent;
-			std::optional<SymbolTable> nextDepthScope;
-			SymbolTable* currentScope = this;
+			std::optional<Stack*> parent;
+			std::optional<Stack> nextDepthScope;
+			Stack* currentScope = this;
 
-			SymbolTable(Interpreter* interpreter_);
-			~SymbolTable() = default;
+			Stack(Interpreter* interpreter_);
+			~Stack() = default;
 
-			SymbolTable* OpenScope();
+			Stack* OpenScope();
 
 			void CloseScope();
 
@@ -193,12 +243,72 @@ namespace Celeste::ir::inputreconstruction
 			void AddEnumeration(Enumeration* enumeration);
 		};
 
+		enum struct FunctionType
+		{
+			Unknown,
+
+			Function,
+			MemberFunction,
+			Constructor,
+		};
+
+		struct FunctionArgument
+		{
+			TypeId type;
+			Name name;
+		};
+
+		struct Function
+		{
+			InputReconstructionObject* irObject;
+
+			FunctionType functionType = FunctionType::Unknown;
+
+			std::vector<FunctionArgument> functionArguments;
+
+			Function(InputReconstructionObject* irObject_, FunctionType functionType_);
+		};
+		using Constructor = Function;
+		using MemberFunction = Function;
+
+		struct FunctionTable
+		{
+			std::map<InputReconstructionObject*, std::unique_ptr<Function>> globalFunctionTable;
+			std::map<InputReconstructionObject*, std::unique_ptr<Constructor>> constructorTable;
+			std::map<InputReconstructionObject*, std::unique_ptr<MemberFunction>>
+				memberFunctionTable;
+
+			// For any Function this mapping links the Function in combination with the Value to the
+			// appropiate Member Function. E.g. you have two member functions A and B that are part
+			// of class 'One' Suppose we have a subtype that overrides function A lets alias it as
+			// A', this override is part of class 'Two'.
+			// Also suppose we have a subtype for class 'Two' named 'Three'
+			// Then the following mapping will be
+			// constructed:
+			//
+			// mapping(A, 'One')   -> A
+			// mapping(A, 'Two')   -> A'
+			// mapping(A, 'Three') -> A'
+			// mapping(B, 'One')   -> B
+			// mapping(B, 'Two')   -> B
+			// mapping(B, 'Three') -> B
+			//
+			std::map<std::pair<InputReconstructionObject*, TypeId>, InputReconstructionObject*>
+				memberFunctionMapping;
+
+			std::map<TypeId, std::set<InputReconstructionObject*>> mappingTypeWithMemberFunctions;
+
+			void AddFunction(InputReconstructionObject* functionObject);
+
+			std::optional<Function*> GetFunction(InputReconstructionObject* functionObject);
+		};
+
 		std::vector<File*> processedFiles;
 
 	private:
 		GroupType groupType;
 		// Contains The Stack of Variables
-		SymbolTable symbolTable;
+		Stack symbolTable;
 
 		// Contains A List of Reachable Types.
 		TypeTable typeTable;
