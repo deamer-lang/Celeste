@@ -8,9 +8,11 @@ namespace Celeste::ir::inputreconstruction
 		// Unknown is invalid, however, for simplicity it is used as an all accessing variant
 		Unknown = 0,
 
-		Private = 1,
-		Protected = 2,
-		Public = 3,
+		// Have Private access to all the Class and Its Inherited Bases
+		UniversalPrivate = 1,
+		Private = 2,
+		Protected = 3,
+		Public = 4,
 	};
 }
 

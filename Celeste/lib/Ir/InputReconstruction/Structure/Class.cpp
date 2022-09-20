@@ -145,7 +145,7 @@ Celeste::ir::inputreconstruction::Class::GetMember(NameReference* nameReference,
 	}
 
 	// Then we may only have Protected level access
-	if (accessibility <= Accessibility::Private)
+	if (accessibility <= Accessibility::Private && accessibility != Accessibility::UniversalPrivate)
 	{
 		accessibility = Accessibility::Protected;
 	}
