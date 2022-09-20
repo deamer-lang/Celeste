@@ -92,7 +92,7 @@ Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetFileVerte
 	{
 		auto newFileVertex = std::make_unique<FileVertex>();
 		auto newFileVertexPtr = newFileVertex.get();
-
+		newFileVertex->fileName = sub->GetFileName();
 		mapFileWithInitialVertex.insert({sub, newFileVertex.get()});
 		vertices.push_back(std::move(newFileVertex));
 
@@ -132,12 +132,75 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileInh
 
 void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::EvaluateFileInheritance()
 {
+	index = 0;
+	vertexStack.clear();
+	for (auto& vertex : vertices)
+	{
+		if (vertex->index.has_value())
+		{
+			continue;
+		}
+
+		strongconnect(vertex.get());
+	}
+
+	std::cout << "Done Strong Connecting\n";
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::strongconnect(
+	FileVertex* value)
+{
+	value->index = index;
+	value->lowLink = index;
+	index += 1;
+	vertexStack.push_back(value);
+	value->onStack = true;
+
+	for (auto [lhs, rhs] : edges)
+	{
+		if (!rhs->index.has_value())
+		{
+			strongconnect(rhs);
+			lhs->lowLink = std::min(lhs->lowLink, rhs->lowLink);
+		}
+		else if (rhs->onStack)
+		{
+			lhs->lowLink = std::min(lhs->lowLink, rhs->lowLink);
+		}
+	}
+
+	if (value->lowLink == value->index)
+	{
+		std::set<FileVertex*> newStrongConnectedSet;
+		FileVertex* current = nullptr;
+		std::size_t skipIndex = 0;
+		do
+		{
+			auto currentIter = (std::crbegin(vertexStack) + skipIndex);
+			current = *currentIter;
+			if (current->lowLink != value->lowLink)
+			{
+				skipIndex += 1;
+				continue;
+			}
+
+			vertexStack.erase(std::end(vertexStack) - skipIndex - 1);
+			current->onStack = false;
+			newStrongConnectedSet.insert(current);
+
+		} while (current != value && (vertexStack.size() - skipIndex) != 0);
+
+		if (!newStrongConnectedSet.empty())
+		{
+			strongConnectedSets.push_back(newStrongConnectedSet);
+		}
+	}
 }
 
 void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::
 	EvaluateUnEvaluatedGlobals()
 {
-	while (unEvaluatedGlobalVariables.empty())
+	while (!unEvaluatedGlobalVariables.empty())
 	{
 		auto currentElement = unEvaluatedGlobalVariables[0];
 		unEvaluatedGlobalVariables.erase(std::cbegin(unEvaluatedGlobalVariables));
@@ -830,6 +893,9 @@ void Celeste::ir::inputreconstruction::Interpreter::Interpret(InputReconstructio
 	// Set up Global Variables and Class Table
 	SetUpGlobalInformation(entryPoint);
 
+	globalTable.EvaluateFileInheritance();
+	globalTable.EvaluateUnEvaluatedGlobals();
+
 	// Reset Processed Files
 	processedFiles.clear();
 }
@@ -855,6 +921,8 @@ void Celeste::ir::inputreconstruction::Interpreter::SetUpGlobalInformation(
 			// We must first complete Imports before continuing.
 			auto importObject = static_cast<Import*>(object);
 			auto targetFile = importObject->GetTarget();
+			globalTable.FileInheritsFile(file, targetFile);
+
 			SetUpGlobalInformation(targetFile->GetRoot());
 			break;
 		}

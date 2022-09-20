@@ -274,6 +274,13 @@ namespace Celeste::ir::inputreconstruction
 
 			struct FileVertex
 			{
+				std::string fileName;
+				std::optional<std::size_t> index;
+				std::optional<std::size_t> lowLink;
+				bool onStack = false;
+
+				// Data
+
 				std::set<FileSymbolPool*> internalPools;
 				std::set<FileVertex*> linkedPools;
 			};
@@ -283,6 +290,12 @@ namespace Celeste::ir::inputreconstruction
 			std::map<File*, FileSymbolPool*> mapFileWithPool;
 			std::map<File*, FileVertex*> mapFileWithInitialVertex;
 			std::set<std::pair<FileVertex*, FileVertex*>> edges;
+
+			std::size_t index = 0;
+			std::vector<FileVertex*> vertexStack;
+			std::vector<std::set<FileVertex*>> strongConnectedSets;
+
+			void strongconnect(FileVertex* value);
 		};
 
 		struct Stack
