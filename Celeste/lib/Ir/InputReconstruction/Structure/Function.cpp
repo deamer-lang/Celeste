@@ -1,5 +1,6 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolAccess.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include <string>
 
 Celeste::ir::inputreconstruction::Function::Function(std::unique_ptr<NameReference> functionName_,
@@ -47,6 +48,29 @@ void Celeste::ir::inputreconstruction::Function::AddTemplateParameter(
 {
 	templateParameter->SetParent(this);
 	templateParameters.push_back(std::move(templateParameter));
+}
+
+Celeste::ir::inputreconstruction::Function*
+Celeste::ir::inputreconstruction::Function::GetVirtualFunctionParent()
+{
+	if (GetParent()->GetType() != Type::Class)
+	{
+		return nullptr;
+	}
+
+	auto classObject = static_cast<Class*>(GetParent());
+	auto result = classObject->GetMember(functionName.get(), Accessibility::UniversalPrivate);
+	if (result == nullptr)
+	{
+		return nullptr;
+	}
+
+	if (result->GetType() == Type::Function)
+	{
+		return static_cast<Function*>(result);
+	}
+
+	return nullptr;
 }
 
 Celeste::ir::inputreconstruction::NameReference*

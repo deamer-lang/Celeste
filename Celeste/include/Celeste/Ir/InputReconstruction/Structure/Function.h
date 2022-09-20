@@ -33,6 +33,8 @@ namespace Celeste::ir::inputreconstruction
 		void AddTemplateParameter(std::unique_ptr<TemplateParameter> templateParameter);
 
 	public:
+		Function* GetVirtualFunctionParent();
+
 		NameReference* GetFunctionName();
 		bool Accepts(NameReference* symbol);
 		InputReconstructionObject* GetReturnType();
