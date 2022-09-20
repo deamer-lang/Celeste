@@ -221,6 +221,7 @@ namespace Celeste::ir::inputreconstruction
 		struct GlobalVariableTable
 		{
 			struct FileVertex;
+			struct FileSymbolPool;
 
 			// Contains a mapping between referenced Object and Global Variable
 			std::map<InputReconstructionObject*, std::unique_ptr<GlobalVariableMember>>
@@ -241,6 +242,8 @@ namespace Celeste::ir::inputreconstruction
 			void AddVariable(VariableDeclaration* variableDeclaration);
 
 			FileVertex* GetFileVertex(File* sub);
+			FileSymbolPool* GetFilePool(File* file);
+
 			// If File A imports File B
 			// Then File A has access to all Globals in File B
 			void FileInheritsFile(File* sub, File* base);
@@ -277,6 +280,7 @@ namespace Celeste::ir::inputreconstruction
 
 			std::vector<std::unique_ptr<FileVertex>> vertices;
 			std::vector<std::unique_ptr<FileSymbolPool>> pools;
+			std::map<File*, FileSymbolPool*> mapFileWithPool;
 			std::map<File*, FileVertex*> mapFileWithInitialVertex;
 			std::set<std::pair<FileVertex*, FileVertex*>> edges;
 		};

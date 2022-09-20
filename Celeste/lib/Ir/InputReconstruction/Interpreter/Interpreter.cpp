@@ -78,7 +78,10 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::AddVari
 
 	unEvaluatedGlobalVariables.push_back(newSymbol.get());
 	globalVariableTable.insert({variableDeclaration, std::move(newSymbol)});
-	globalFileAccessibilityTable[variableDeclaration->GetFile()].insert(variableDeclaration);
+
+	auto file = variableDeclaration->GetFile();
+	auto pool = GetFilePool(file);
+	pool->fileLocalSymbols.insert(variableDeclaration);
 }
 
 Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileVertex*
@@ -99,6 +102,24 @@ Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetFileVerte
 	return iter->second;
 }
 
+Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileSymbolPool*
+Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetFilePool(File* file)
+{
+	auto vertex = GetFileVertex(file);
+	if (vertex->internalPools.empty())
+	{
+		auto newPool = std::make_unique<FileSymbolPool>();
+		auto newPoolPtr = newPool.get();
+
+		mapFileWithPool.insert({file, newPool.get()});
+		pools.push_back(std::move(newPool));
+
+		return newPoolPtr;
+	}
+
+	return mapFileWithPool.find(file)->second;
+}
+
 void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileInheritsFile(
 	File* sub, File* base)
 {
@@ -106,6 +127,7 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileInh
 	auto iterRhs = GetFileVertex(base);
 
 	edges.insert({iterLhs, iterRhs});
+	iterLhs->linkedPools.insert(iterRhs);
 }
 
 void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::EvaluateFileInheritance()
