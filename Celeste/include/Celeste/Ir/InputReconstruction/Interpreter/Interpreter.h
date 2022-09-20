@@ -220,6 +220,8 @@ namespace Celeste::ir::inputreconstruction
 		// Then set the File inheritance relations as encountered
 		struct GlobalVariableTable
 		{
+			struct FileVertex;
+
 			// Contains a mapping between referenced Object and Global Variable
 			std::map<InputReconstructionObject*, std::unique_ptr<GlobalVariableMember>>
 				globalVariableTable;
@@ -238,6 +240,7 @@ namespace Celeste::ir::inputreconstruction
 			// Note File is deduced from the given Object
 			void AddVariable(VariableDeclaration* variableDeclaration);
 
+			FileVertex* GetFileVertex(File* sub);
 			// If File A imports File B
 			// Then File A has access to all Globals in File B
 			void FileInheritsFile(File* sub, File* base);

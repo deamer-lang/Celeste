@@ -81,19 +81,31 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::AddVari
 	globalFileAccessibilityTable[variableDeclaration->GetFile()].insert(variableDeclaration);
 }
 
+Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileVertex*
+Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetFileVertex(File* sub)
+{
+	auto iter = mapFileWithInitialVertex.find(sub);
+	if (iter == mapFileWithInitialVertex.end())
+	{
+		auto newFileVertex = std::make_unique<FileVertex>();
+		auto newFileVertexPtr = newFileVertex.get();
+
+		mapFileWithInitialVertex.insert({sub, newFileVertex.get()});
+		vertices.push_back(std::move(newFileVertex));
+
+		return newFileVertexPtr;
+	}
+
+	return iter->second;
+}
+
 void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileInheritsFile(
 	File* sub, File* base)
 {
-	auto iterLhs = mapFileWithInitialVertex.find(sub);
-	auto iterRhs = mapFileWithInitialVertex.find(base);
+	auto iterLhs = GetFileVertex(sub);
+	auto iterRhs = GetFileVertex(base);
 
-	if (iterLhs == mapFileWithInitialVertex.end())
-	{
-	}
-
-	if (iterRhs == mapFileWithInitialVertex.end())
-	{
-	}
+	edges.insert({iterLhs, iterRhs});
 }
 
 void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::EvaluateFileInheritance()
