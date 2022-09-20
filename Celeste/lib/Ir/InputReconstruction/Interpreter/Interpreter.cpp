@@ -1,4 +1,5 @@
 #include "Celeste/Ir/InputReconstruction/Interpreter/Interpreter.h"
+#include "Celeste/Ir/InputReconstruction/CodeGeneration/CodeFunction.h"
 #include "Celeste/Ir/InputReconstruction/Computation/Value.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Import.h"
@@ -8,8 +9,20 @@
 #include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
 #include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
 #include "Celeste/Ir/InputReconstruction/Standard/Text.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+
+namespace Celeste
+{
+	namespace ir
+	{
+		namespace inputreconstruction
+		{
+			class NameFunction;
+		}
+	}
+}
 
 Celeste::ir::inputreconstruction::Interpreter::TypeId::TypeId(std::size_t id_) : id(id_)
 {
@@ -25,6 +38,92 @@ void Celeste::ir::inputreconstruction::Interpreter::Name::AddName(NameReference*
 	names.insert(name_->GetResolvedName());
 }
 
+std::optional<Celeste::ir::inputreconstruction::Interpreter::GlobalVariableMember*>
+Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetGlobal(
+	File* file, InputReconstructionObject* requestedGlobal)
+{
+	// We first validate if the file has access to the global
+	// Then we return the global variable member.
+	// If some pass shows we may not access it, we return nothing.
+
+	auto iter = globalFileAccessibilityTable.find(file);
+	if (iter == globalFileAccessibilityTable.end())
+	{
+		return std::nullopt;
+	}
+
+	auto globalIter = iter->second.find(requestedGlobal);
+	if (globalIter == iter->second.end())
+	{
+		return std::nullopt;
+	}
+
+	auto globalSymbolIter = globalVariableTable.find(requestedGlobal);
+	if (globalSymbolIter == globalVariableTable.end())
+	{
+		return std::nullopt;
+	}
+
+	return globalSymbolIter->second.get();
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::AddVariable(
+	VariableDeclaration* variableDeclaration)
+{
+	// Construction of Global Symbol
+	auto name = Name(variableDeclaration->GetName());
+	auto type = interpreter->GetType(variableDeclaration->GetVariableType());
+	auto newSymbol = std::make_unique<GlobalVariableMember>(name, type);
+	newSymbol->irObject = variableDeclaration;
+
+	unEvaluatedGlobalVariables.push_back(newSymbol.get());
+	globalVariableTable.insert({variableDeclaration, std::move(newSymbol)});
+	globalFileAccessibilityTable[variableDeclaration->GetFile()].insert(variableDeclaration);
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::FileInheritsFile(
+	File* sub, File* base)
+{
+	auto iterLhs = mapFileWithInitialVertex.find(sub);
+	auto iterRhs = mapFileWithInitialVertex.find(base);
+
+	if (iterLhs == mapFileWithInitialVertex.end())
+	{
+	}
+
+	if (iterRhs == mapFileWithInitialVertex.end())
+	{
+	}
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::EvaluateFileInheritance()
+{
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::
+	EvaluateUnEvaluatedGlobals()
+{
+	while (unEvaluatedGlobalVariables.empty())
+	{
+		auto currentElement = unEvaluatedGlobalVariables[0];
+		unEvaluatedGlobalVariables.erase(std::cbegin(unEvaluatedGlobalVariables));
+
+		if (currentElement->value.has_value())
+		{
+			// Already resolved
+			continue;
+		}
+	}
+
+	// not yet completed
+}
+
+Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GlobalVariableTable(
+	Interpreter* interpreter_)
+	: interpreter(interpreter_)
+{
+}
+
 Celeste::ir::inputreconstruction::Interpreter::Stack::Stack(Interpreter* interpreter_)
 	: interpreter(interpreter_)
 {
@@ -33,8 +132,8 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::Stack(Interpreter* interpr
 Celeste::ir::inputreconstruction::Interpreter::Stack*
 Celeste::ir::inputreconstruction::Interpreter::Stack::OpenScope()
 {
-	nextDepthScope = Stack(interpreter);
-	currentScope = &nextDepthScope.value();
+	nextDepthScope = std::make_unique<Stack>(interpreter);
+	currentScope = nextDepthScope->get();
 	currentScope->parent = this;
 
 	return currentScope;
@@ -49,14 +148,14 @@ void Celeste::ir::inputreconstruction::Interpreter::Stack::CloseScope()
 void Celeste::ir::inputreconstruction::Interpreter::Stack::AddVariable(VariableDeclaration* object)
 {
 	auto name = Name(object->GetName());
-	auto type = GetType(object->GetVariableType());
-	auto value = Evaluate(object, object->GetExpressions());
+	auto type = interpreter->GetType(object->GetVariableType());
+	auto value = interpreter->Evaluate(object, object->GetExpressions());
 	auto newSymbol = std::make_unique<Symbol>(name, type, value);
 	symbols.push_back(std::move(newSymbol));
 }
 
 Celeste::ir::inputreconstruction::Interpreter::TypeId
-Celeste::ir::inputreconstruction::Interpreter::Stack::GetType(TypeConstruct* typeConstruct)
+Celeste::ir::inputreconstruction::Interpreter::GetType(TypeConstruct* typeConstruct)
 {
 	auto coreType = typeConstruct->GetCoreType();
 	if (!coreType.has_value())
@@ -65,29 +164,35 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::GetType(TypeConstruct* typ
 		return {std::numeric_limits<std::size_t>::max()};
 	}
 
+	if (coreType.value() == nullptr)
+	{
+		// Critical error
+		return {std::numeric_limits<std::size_t>::max()};
+	}
+
 	if (coreType.value()->GetType() == inputreconstruction::Type::Class)
 	{
 		auto classObject = static_cast<Class*>(coreType.value());
 
-		auto iter = interpreter->typeTable.typePointerMap.find(classObject);
-		if (iter == interpreter->typeTable.typePointerMap.end())
+		auto iter = typeTable.typePointerMap.find(classObject);
+		if (iter == typeTable.typePointerMap.end())
 		{
-			interpreter->typeTable.AddClass(classObject);
+			typeTable.AddClass(classObject);
 		}
 
-		return interpreter->typeTable.typePointerMap.find(classObject)->second.type;
+		return typeTable.typePointerMap.find(classObject)->second.type;
 	}
 	else if (coreType.value()->GetType() == inputreconstruction::Type::Enumeration)
 	{
 		auto enumerationObject = static_cast<Enumeration*>(coreType.value());
 
-		auto iter = interpreter->typeTable.typePointerMap.find(enumerationObject);
-		if (iter == interpreter->typeTable.typePointerMap.end())
+		auto iter = typeTable.typePointerMap.find(enumerationObject);
+		if (iter == typeTable.typePointerMap.end())
 		{
-			interpreter->typeTable.AddEnumeration(enumerationObject);
+			typeTable.AddEnumeration(enumerationObject);
 		}
 
-		return interpreter->typeTable.typePointerMap.find(enumerationObject)->second.type;
+		return typeTable.typePointerMap.find(enumerationObject)->second.type;
 	}
 	else
 	{
@@ -96,14 +201,15 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::GetType(TypeConstruct* typ
 	}
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::Stack::PolymorphismEquality(
+bool Celeste::ir::inputreconstruction::Interpreter::PolymorphismEquality(
 	InputReconstructionObject* lhsType, InputReconstructionObject* rhsType)
 {
+	return false;
 }
 
 std::variant<int, double, std::string,
 			 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue>
-Celeste::ir::inputreconstruction::Interpreter::Stack::ZeroValue(InputReconstructionObject* type)
+Celeste::ir::inputreconstruction::Interpreter::ZeroValue(InputReconstructionObject* type)
 {
 	if (type->GetType() == inputreconstruction::Type::Integer)
 	{
@@ -118,8 +224,8 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::ZeroValue(InputReconstruct
 		return std::string("");
 	}
 
-	auto iter = interpreter->typeTable.typePointerMap.find(type);
-	if (iter == interpreter->typeTable.typePointerMap.end())
+	auto iter = typeTable.typePointerMap.find(type);
+	if (iter == typeTable.typePointerMap.end())
 	{
 		// Critical Error
 	}
@@ -153,8 +259,7 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::ZeroValue(InputReconstruct
 			}
 
 			auto compoundTypeId =
-				interpreter->typeTable.typePointerMap.find(compoundBase->GetCompoundedBase())
-					->second.type;
+				typeTable.typePointerMap.find(compoundBase->GetCompoundedBase())->second.type;
 
 			auto newSymbolMember = SymbolMember(
 				compoundName, compoundTypeId, Value(ZeroValue(compoundBase->GetCompoundedBase())));
@@ -169,14 +274,13 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::ZeroValue(InputReconstruct
 				auto memberDecasted = static_cast<VariableDeclaration*>(member);
 				auto memberName = Name(memberDecasted->GetName());
 				auto memberTypeId =
-					interpreter->typeTable.typePointerMap.find(memberDecasted->GetVariableType())
-						->second.type;
+					typeTable.typePointerMap.find(memberDecasted->GetVariableType())->second.type;
 				auto newSymbolMember = SymbolMember(
 					memberName, memberTypeId, Value(ZeroValue(memberDecasted->GetVariableType())));
 			}
 			else if (member->GetType() == inputreconstruction::Type::Function)
 			{
-				auto memberDecasted = static_cast<Function*>(member);
+				auto memberDecasted = static_cast<inputreconstruction::Function*>(member);
 			}
 		}
 
@@ -187,20 +291,19 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::ZeroValue(InputReconstruct
 	throw std::logic_error("Critical Error");
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::Stack::CopyByValue(
-	InputReconstructionObject* object)
+bool Celeste::ir::inputreconstruction::Interpreter::CopyByValue(InputReconstructionObject* object)
 {
 	// Copy by reference is not yet supported
 	return true;
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::Stack::MatchingConstructor(
+bool Celeste::ir::inputreconstruction::Interpreter::MatchingConstructor(
 	InputReconstructionObject* lhs, const std::vector<std::unique_ptr<Expression>>& expressions)
 {
 	return false;
 }
 
-bool Celeste::ir::inputreconstruction::Interpreter::Stack::MatchingImplicitlyConstructor(
+bool Celeste::ir::inputreconstruction::Interpreter::MatchingImplicitlyConstructor(
 	InputReconstructionObject* lhs, const std::vector<std::unique_ptr<Expression>>& expressions)
 {
 	return false;
@@ -234,7 +337,7 @@ Celeste::ir::inputreconstruction::Interpreter::Type::Type(TypeId type_, Name nam
 }
 
 Celeste::ir::inputreconstruction::Interpreter::Value
-Celeste::ir::inputreconstruction::Interpreter::Stack::Evaluate(
+Celeste::ir::inputreconstruction::Interpreter::Evaluate(
 	VariableDeclaration* object, const std::vector<std::unique_ptr<Expression>>& expressions)
 {
 	auto lhsType = object->GetVariableType()->GetCoreType();
@@ -291,9 +394,16 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::Evaluate(
 	}
 }
 
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
+Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
+	const Celeste::ir::inputreconstruction::Interpreter::Name& name)
+{
+	// Not implemented
+	return std::nullopt;
+}
+
 Celeste::ir::inputreconstruction::Interpreter::Value
-Celeste::ir::inputreconstruction::Interpreter::Stack::Evaluate(
-	const std::unique_ptr<Expression>& rhs)
+Celeste::ir::inputreconstruction::Interpreter::Evaluate(const std::unique_ptr<Expression>& rhs)
 {
 	auto extractValue = [&](std::variant<std::monostate, std::unique_ptr<Expression>,
 										 std::unique_ptr<inputreconstruction::Value>>& someValue) {
@@ -331,7 +441,7 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::Evaluate(
 						// Error
 					}
 
-					return variable.value()->symbolValue.value();
+					return variable.value()->value.value();
 				}
 				else if (nameNotFinalized.value()->GetType() == inputreconstruction::Type::Function)
 
@@ -413,6 +523,12 @@ void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddClass(Class* c
 		return;
 	}
 
+	for (auto& inheritBase : class_->GetInheritedBases())
+	{
+		AddClass(static_cast<inputreconstruction::Class*>(
+			inheritBase->GetLinkedType()->GetResolvedLinkedIr().value()));
+	}
+
 	auto newTypeId = TypeId(typePointerMap.size());
 	auto newTypeName = Name(class_->GetClassName());
 	auto newType = Type(newTypeId, newTypeName, class_);
@@ -428,6 +544,17 @@ void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddClass(Class* c
 	typePointerMap.insert({class_, newType});
 	typeIdMap.insert({newTypeId, newType});
 	typeNameMap.insert({newTypeName, newType});
+
+	for (auto [accessibility, member] : class_->GetMembers())
+	{
+		if (member->GetType() == inputreconstruction::Type::Constructor ||
+			member->GetType() == inputreconstruction::Type::Function ||
+			member->GetType() == inputreconstruction::Type::CodeFunction ||
+			member->GetType() == inputreconstruction::Type::NameFunction)
+		{
+			interpreter->functionTable.AddFunction(member);
+		}
+	}
 }
 
 void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddEnumeration(
@@ -457,9 +584,206 @@ void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddEnumeration(
 	typeNameMap.insert({newTypeName, newType});
 }
 
+Celeste::ir::inputreconstruction::Interpreter::TypeId
+Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetType(InputReconstructionObject* parent)
+{
+	auto iter = typePointerMap.find(parent);
+	if (iter != typePointerMap.end())
+	{
+		return iter->second.type;
+	}
+
+	switch (parent->GetType())
+	{
+	case inputreconstruction::Type::Class: {
+		auto classObject = static_cast<inputreconstruction::Class*>(parent);
+		AddClass(classObject);
+		break;
+	}
+	}
+
+	throw std::runtime_error("Some error occured that failed the type recognition system.");
+}
+
+Celeste::ir::inputreconstruction::Interpreter::TypeTable::TypeTable(Interpreter* interpreter_)
+	: interpreter(interpreter_)
+{
+}
+
+Celeste::ir::inputreconstruction::Interpreter::Function::Function(
+	InputReconstructionObject* irObject_, FunctionType functionType_)
+	: irObject(irObject_),
+	  functionType(functionType_)
+{
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::FunctionTable::AddFunction(
+	InputReconstructionObject* functionObject)
+{
+	auto parent = functionObject->GetParent();
+	if (parent->GetType() == inputreconstruction::Type::Class)
+	{
+		auto classObject = static_cast<inputreconstruction::Class*>(parent);
+		RegisterType(classObject);
+	}
+
+	switch (functionObject->GetType())
+	{
+	case inputreconstruction::Type::Function: {
+		auto function = static_cast<inputreconstruction::Function*>(functionObject);
+		if (parent->GetType() == inputreconstruction::Type::Class)
+		{
+			auto newMemberFunctionObject =
+				std::make_unique<MemberFunction>(function, FunctionType::MemberFunction);
+			auto newMemberFunctionObjectPtr = newMemberFunctionObject.get();
+			memberFunctionTable.insert({function, std::move(newMemberFunctionObject)});
+			auto typeId = interpreter->typeTable.GetType(parent);
+			auto iter = mappingTypeWithMemberFunctions.find(typeId);
+			iter->second.insert(functionObject);
+
+			// Virtual logic
+			auto parentVirtualMemberFunction = function->GetVirtualFunctionParent();
+			while (parentVirtualMemberFunction != nullptr)
+			{
+				// Update Member Function Access
+				auto iter = memberFunctionMapping.find({parentVirtualMemberFunction, typeId});
+				if (iter != memberFunctionMapping.end())
+				{
+					iter->second = newMemberFunctionObjectPtr->irObject;
+				}
+
+				parentVirtualMemberFunction =
+					parentVirtualMemberFunction->GetVirtualFunctionParent();
+			}
+		}
+		else
+		{
+			auto newFunctionObject = std::make_unique<Function>(function, FunctionType::Function);
+			globalFunctionTable.insert({function, std::move(newFunctionObject)});
+		}
+		break;
+	}
+	case inputreconstruction::Type::Constructor: {
+		auto constructor = static_cast<inputreconstruction::Constructor*>(functionObject);
+		auto newConstructorObject =
+			std::make_unique<Constructor>(constructor, FunctionType::Constructor);
+		constructorTable.insert({functionObject, std::move(newConstructorObject)});
+		auto typeId = interpreter->typeTable.GetType(parent);
+		auto iter = mappingTypeWithMemberFunctions.find(typeId);
+		iter->second.insert(functionObject);
+		break;
+	}
+	}
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::FunctionTable::RegisterType(
+	inputreconstruction::Class* classObject)
+{
+	auto typeId = interpreter->typeTable.GetType(classObject);
+	auto iterTestAlreadyRegister = mappingTypeWithMemberFunctions.find(typeId);
+	if (iterTestAlreadyRegister != mappingTypeWithMemberFunctions.end())
+	{
+		return;
+	}
+
+	auto UnionizeMemberFunctionsFromBases = [&](inputreconstruction::Class* type_) {
+		std::set<InputReconstructionObject*> result;
+
+		for (auto& inheritBase : type_->GetInheritedBases())
+		{
+			auto base = static_cast<inputreconstruction::Class*>(
+				inheritBase->GetLinkedType()->GetResolvedLinkedIr().value());
+			auto iter = mappingTypeWithMemberFunctions.find(interpreter->typeTable.GetType(base));
+
+			for (auto _ : iter->second)
+			{
+				if (_->GetType() == inputreconstruction::Type::Constructor)
+				{
+					continue;
+				}
+				result.insert(_);
+			}
+		}
+
+		return result;
+	};
+
+	// This takes the virtual override logic
+	// And properly orders all calls.
+	auto UnionizeMemberFunctionsFromBasesVirtualSetup = [&](inputreconstruction::Class* type_) {
+		std::map<std::pair<InputReconstructionObject*, TypeId>, InputReconstructionObject*> result;
+		auto typeId = interpreter->typeTable.GetType(type_);
+
+		for (auto& inheritBase : type_->GetInheritedBases())
+		{
+			auto base = static_cast<inputreconstruction::Class*>(
+				inheritBase->GetLinkedType()->GetResolvedLinkedIr().value());
+			auto iter = mappingTypeWithMemberFunctions.find(interpreter->typeTable.GetType(base));
+
+			for (auto _ : iter->second)
+			{
+				if (_->GetType() == inputreconstruction::Type::Constructor)
+				{
+					continue;
+				}
+				result.insert({{_, typeId}, _});
+			}
+		}
+
+		return result;
+	};
+
+	for (auto& inheritBase : classObject->GetInheritedBases())
+	{
+		auto typeOpt = inheritBase->GetLinkedType()->GetResolvedLinkedIr();
+		if (!typeOpt.has_value())
+		{
+			// Critical issue, referenced base is not type resolvable.
+			continue;
+		}
+
+		auto baseDowncasted = static_cast<inputreconstruction::Class*>(typeOpt.value());
+		RegisterType(baseDowncasted);
+	}
+
+	auto functionList = UnionizeMemberFunctionsFromBases(classObject);
+	mappingTypeWithMemberFunctions[typeId] = functionList;
+
+	UnionizeMemberFunctionsFromBasesVirtualSetup(classObject);
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Function*>
+Celeste::ir::inputreconstruction::Interpreter::FunctionTable::GetFunction(
+	InputReconstructionObject* functionObject, std::optional<TypeId> typeId)
+{
+	if (typeId.has_value())
+	{
+		auto iter = memberFunctionMapping.find({functionObject, typeId.value()});
+		if (iter == memberFunctionMapping.end())
+		{
+			return std::nullopt;
+		}
+
+		return GetFunction(iter->second);
+	}
+	else
+	{
+		auto iter = globalFunctionTable.find(functionObject);
+		if (iter == globalFunctionTable.end())
+		{
+			return std::nullopt;
+		}
+
+		return iter->second.get();
+	}
+}
+
 Celeste::ir::inputreconstruction::Interpreter::Interpreter(GroupType groupType_)
 	: groupType(groupType_),
-	  symbolTable(this)
+	  globalTable(this),
+	  functionTable(this),
+	  symbolTable(this),
+	  typeTable(this)
 {
 }
 
@@ -512,13 +836,17 @@ void Celeste::ir::inputreconstruction::Interpreter::SetUpGlobalInformation(
 		}
 		case inputreconstruction::Type::VariableDeclaration: {
 			auto variable = static_cast<VariableDeclaration*>(object);
-			symbolTable.AddVariable(variable);
+			globalTable.AddVariable(variable);
 			break;
 		}
 		case inputreconstruction::Type::Function: {
+			auto functionObject = static_cast<inputreconstruction::Function*>(object);
+			functionTable.AddFunction(functionObject);
 			break;
 		}
 		case inputreconstruction::Type::CodeFunction: {
+			auto functionObject = static_cast<inputreconstruction::CodeFunction*>(object);
+			functionTable.AddFunction(functionObject);
 			break;
 		}
 		case inputreconstruction::Type::NameFunction: {
@@ -530,4 +858,10 @@ void Celeste::ir::inputreconstruction::Interpreter::SetUpGlobalInformation(
 		}
 		}
 	}
+}
+
+Celeste::ir::inputreconstruction::Interpreter::FunctionTable::FunctionTable(
+	Interpreter* interpreter_)
+	: interpreter(interpreter_)
+{
 }

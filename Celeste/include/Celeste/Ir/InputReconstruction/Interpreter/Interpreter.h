@@ -31,6 +31,41 @@ namespace Celeste::ir::inputreconstruction
 
 			TypeId(std::size_t id_);
 			~TypeId() = default;
+
+			bool operator==(const TypeId& rhs) const
+			{
+				if (this == &rhs)
+				{
+					return true;
+				}
+
+				return id == rhs.id;
+			}
+
+			bool operator!=(const TypeId& rhs) const
+			{
+				return !operator==(rhs);
+			}
+
+			bool operator<(const TypeId& rhs) const
+			{
+				return id < rhs.id;
+			}
+
+			bool operator>(const TypeId& rhs) const
+			{
+				return id > rhs.id;
+			}
+
+			bool operator<=(const TypeId& rhs) const
+			{
+				return id <= rhs.id;
+			}
+
+			bool operator>=(const TypeId& rhs) const
+			{
+				return id >= rhs.id;
+			}
 		};
 
 		struct AlgebraicValue
@@ -91,7 +126,7 @@ namespace Celeste::ir::inputreconstruction
 
 			std::set<std::string> names;
 
-			bool operator==(const Name& rhs)
+			bool operator==(const Name& rhs) const
 			{
 				if (this == &rhs)
 				{
@@ -99,6 +134,31 @@ namespace Celeste::ir::inputreconstruction
 				}
 
 				return names == rhs.names;
+			}
+
+			bool operator!=(const Name& rhs) const
+			{
+				return !operator==(rhs);
+			}
+
+			bool operator<(const Name& rhs) const
+			{
+				return names < rhs.names;
+			}
+
+			bool operator>(const Name& rhs) const
+			{
+				return names > rhs.names;
+			}
+
+			bool operator<=(const Name& rhs) const
+			{
+				return names <= rhs.names;
+			}
+
+			bool operator>=(const Name& rhs) const
+			{
+				return names >= rhs.names;
 			}
 		};
 
@@ -137,11 +197,22 @@ namespace Celeste::ir::inputreconstruction
 
 		struct GlobalVariableMember
 		{
-			InputReconstructionObject* irObject;
+			InputReconstructionObject* irObject = nullptr;
 			Name name;
 			TypeId type;
 
-			std::optional<Value> symbolValue;
+			std::optional<Value> value;
+
+			GlobalVariableMember(Name name_, TypeId type_) : name(name_), type(type_)
+			{
+			}
+
+			GlobalVariableMember(Name name_, TypeId type_, Value value_)
+				: name(name_),
+				  type(type_),
+				  value(value_)
+			{
+			}
 		};
 
 		// Important Note:
@@ -177,8 +248,34 @@ namespace Celeste::ir::inputreconstruction
 
 			void EvaluateUnEvaluatedGlobals();
 
-			GlobalVariableTable() = default;
+			Interpreter* interpreter = nullptr;
+
+			GlobalVariableTable(Interpreter* interpreter_);
 			~GlobalVariableTable() = default;
+
+		private:
+			// These member fields are utilized for controlling file cyclic imports.
+			// The logic utilizes graphs for detecting cycles of vertices and combines those
+			// vertices into a single vertex
+			//
+			// This procedure results in a graph with no cycles, meaning that the file structure can
+			// be Parsed in linear time.
+
+			struct FileSymbolPool
+			{
+				std::set<InputReconstructionObject*> fileLocalSymbols;
+			};
+
+			struct FileVertex
+			{
+				std::set<FileSymbolPool*> internalPools;
+				std::set<FileVertex*> linkedPools;
+			};
+
+			std::vector<std::unique_ptr<FileVertex>> vertices;
+			std::vector<std::unique_ptr<FileSymbolPool>> pools;
+			std::map<File*, FileVertex*> mapFileWithInitialVertex;
+			std::set<std::pair<FileVertex*, FileVertex*>> edges;
 		};
 
 		struct Stack
@@ -187,9 +284,9 @@ namespace Celeste::ir::inputreconstruction
 
 			std::vector<std::unique_ptr<Symbol>> symbols;
 
-			std::optional<Stack*> parent;
-			std::optional<Stack> nextDepthScope;
-			Stack* currentScope = this;
+			std::optional<Interpreter::Stack*> parent;
+			std::optional<std::unique_ptr<Interpreter::Stack>> nextDepthScope;
+			Interpreter::Stack* currentScope = this;
 
 			Stack(Interpreter* interpreter_);
 			~Stack() = default;
@@ -199,26 +296,6 @@ namespace Celeste::ir::inputreconstruction
 			void CloseScope();
 
 			void AddVariable(VariableDeclaration* object);
-
-			Celeste::ir::inputreconstruction::Interpreter::TypeId
-			GetType(TypeConstruct* typeConstruct);
-
-			bool PolymorphismEquality(InputReconstructionObject* lhsType,
-									  InputReconstructionObject* rhsType);
-			std::variant<int, double, std::string,
-						 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue>
-			ZeroValue(InputReconstructionObject* type);
-
-			bool CopyByValue(InputReconstructionObject* object);
-			bool MatchingConstructor(InputReconstructionObject* lhs,
-									 const std::vector<std::unique_ptr<Expression>>& expressions);
-			bool MatchingImplicitlyConstructor(
-				InputReconstructionObject* lhs,
-				const std::vector<std::unique_ptr<Expression>>& expressions);
-
-			Value Evaluate(VariableDeclaration* object,
-						   const std::vector<std::unique_ptr<Expression>>& expressions);
-			Value Evaluate(const std::unique_ptr<Expression>& rhs);
 
 			std::optional<Symbol*> GetSymbolMember(Name name);
 		};
@@ -241,6 +318,11 @@ namespace Celeste::ir::inputreconstruction
 
 			void AddClass(Class* class_);
 			void AddEnumeration(Enumeration* enumeration);
+			TypeId GetType(InputReconstructionObject* parent);
+
+			Interpreter* interpreter;
+
+			TypeTable(Interpreter* interpreter_);
 		};
 
 		enum struct FunctionType
@@ -300,13 +382,26 @@ namespace Celeste::ir::inputreconstruction
 
 			void AddFunction(InputReconstructionObject* functionObject);
 
-			std::optional<Function*> GetFunction(InputReconstructionObject* functionObject);
+			void RegisterType(Class* classObject);
+
+			std::optional<Function*> GetFunction(InputReconstructionObject* functionObject,
+												 std::optional<TypeId> typeId = std::nullopt);
+
+			Interpreter* interpreter;
+
+			FunctionTable(Interpreter* interpreter_);
 		};
 
 		std::vector<File*> processedFiles;
 
 	private:
 		GroupType groupType;
+		// Global Variables Table
+		GlobalVariableTable globalTable;
+
+		// Function Table
+		FunctionTable functionTable;
+
 		// Contains The Stack of Variables
 		Stack symbolTable;
 
@@ -320,6 +415,28 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		void Interpret(InputReconstructionObject* entryPoint);
 		void SetUpGlobalInformation(InputReconstructionObject* entryPoint);
+
+	public:
+		TypeId GetType(TypeConstruct* typeConstruct);
+
+		std::variant<int, double, std::string, AlgebraicValue>
+		ZeroValue(InputReconstructionObject* type);
+
+		Value Evaluate(VariableDeclaration* object,
+					   const std::vector<std::unique_ptr<Expression>>& expressions);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
+		GetSymbolMember(const Name& name);
+		Value Evaluate(const std::unique_ptr<Expression>& rhs);
+
+		bool PolymorphismEquality(InputReconstructionObject* lhsType,
+								  InputReconstructionObject* rhsType);
+
+		bool CopyByValue(InputReconstructionObject* object);
+		bool MatchingConstructor(InputReconstructionObject* lhs,
+								 const std::vector<std::unique_ptr<Expression>>& expressions);
+		bool
+		MatchingImplicitlyConstructor(InputReconstructionObject* lhs,
+									  const std::vector<std::unique_ptr<Expression>>& expressions);
 	};
 }
 
