@@ -12,6 +12,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+#include <limits>
 
 namespace Celeste
 {
@@ -46,14 +47,14 @@ Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetGlobal(
 	// Then we return the global variable member.
 	// If some pass shows we may not access it, we return nothing.
 
-	auto iter = globalFileAccessibilityTable.find(file);
-	if (iter == globalFileAccessibilityTable.end())
+	auto iter = mapFileWithInitialVertex.find(file);
+	if (iter == mapFileWithInitialVertex.end())
 	{
 		return std::nullopt;
 	}
 
-	auto globalIter = iter->second.find(requestedGlobal);
-	if (globalIter == iter->second.end())
+	auto globalIter = iter->second->accessibleObjects.find(requestedGlobal);
+	if (globalIter == iter->second->accessibleObjects.end())
 	{
 		return std::nullopt;
 	}
@@ -92,7 +93,7 @@ Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetFileVerte
 	{
 		auto newFileVertex = std::make_unique<FileVertex>();
 		auto newFileVertexPtr = newFileVertex.get();
-		newFileVertex->fileName = sub->GetFileName();
+		newFileVertex->file = sub;
 		mapFileWithInitialVertex.insert({sub, newFileVertex.get()});
 		vertices.push_back(std::move(newFileVertex));
 
@@ -111,7 +112,8 @@ Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GetFilePool(
 		auto newPool = std::make_unique<FileSymbolPool>();
 		auto newPoolPtr = newPool.get();
 
-		mapFileWithPool.insert({file, newPool.get()});
+		mapFileWithPool.insert({file, newPoolPtr});
+		vertex->internalPools.insert(newPoolPtr);
 		pools.push_back(std::move(newPool));
 
 		return newPoolPtr;
@@ -144,7 +146,7 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::Evaluat
 		strongconnect(vertex.get());
 	}
 
-	std::cout << "Done Strong Connecting\n";
+	OptimizeFilePoolsUsingStrongConnectedSets();
 }
 
 void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::strongconnect(
@@ -156,7 +158,8 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::strongc
 	vertexStack.push_back(value);
 	value->onStack = true;
 
-	for (auto [lhs, rhs] : edges)
+	auto& lhs = value;
+	for (auto rhs : lhs->linkedPools)
 	{
 		if (!rhs->index.has_value())
 		{
@@ -165,7 +168,7 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::strongc
 		}
 		else if (rhs->onStack)
 		{
-			lhs->lowLink = std::min(lhs->lowLink, rhs->lowLink);
+			lhs->lowLink = std::min(lhs->lowLink, rhs->index);
 		}
 	}
 
@@ -176,24 +179,90 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::strongc
 		std::size_t skipIndex = 0;
 		do
 		{
-			auto currentIter = (std::crbegin(vertexStack) + skipIndex);
-			current = *currentIter;
-			if (current->lowLink != value->lowLink)
-			{
-				skipIndex += 1;
-				continue;
-			}
-
+			current = *std::crbegin(vertexStack);
 			vertexStack.erase(std::end(vertexStack) - skipIndex - 1);
 			current->onStack = false;
 			newStrongConnectedSet.insert(current);
 
-		} while (current != value && (vertexStack.size() - skipIndex) != 0);
+		} while (current != value);
 
 		if (!newStrongConnectedSet.empty())
 		{
 			strongConnectedSets.push_back(newStrongConnectedSet);
 		}
+	}
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::
+	OptimizeFilePoolsUsingStrongConnectedSets()
+{
+	std::vector<std::unique_ptr<FileVertex>> singleFileVertices;
+	std::map<FileVertex*, FileVertex*> mapOldVertexWithUnionizedVertex;
+	for (auto& set : strongConnectedSets)
+	{
+		auto newVertex = std::make_unique<FileVertex>();
+		for (auto& vertex : set)
+		{
+			newVertex->internalPools.insert(vertex->internalPools.begin(),
+											vertex->internalPools.end());
+
+			mapFileWithInitialVertex[vertex->file] = newVertex.get();
+			mapOldVertexWithUnionizedVertex.insert({vertex, newVertex.get()});
+		}
+		singleFileVertices.push_back(std::move(newVertex));
+	}
+
+	for (auto i = 0; i < strongConnectedSets.size(); i++)
+	{
+		auto& currentVertex = singleFileVertices[i];
+		auto& currentSet = strongConnectedSets[i];
+
+		for (auto& vertex : currentSet)
+		{
+			for (auto linkedPool : vertex->linkedPools)
+			{
+				currentVertex->linkedPools.insert(
+					mapOldVertexWithUnionizedVertex.find(linkedPool)->second);
+			}
+		}
+	}
+
+	// Update the vertices with the new unionized vertices
+	for (auto& vertex : singleFileVertices)
+	{
+		if (vertex->index.has_value())
+		{
+			continue;
+		}
+
+		ProcessVertex(vertex.get());
+	}
+
+	vertices = std::move(singleFileVertices);
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::ProcessVertex(
+	FileVertex* value)
+{
+	// Process direct members;
+	for (auto internalPool : value->internalPools)
+	{
+		value->accessibleObjects.insert(internalPool->fileLocalSymbols.begin(),
+										internalPool->fileLocalSymbols.end());
+	}
+
+	// Indicate that the vertex is processed;
+	value->index = 0;
+
+	for (auto linkedPool : value->linkedPools)
+	{
+		if (!linkedPool->index.has_value())
+		{
+			ProcessVertex(linkedPool);
+		}
+
+		value->accessibleObjects.insert(linkedPool->accessibleObjects.begin(),
+										linkedPool->accessibleObjects.end());
 	}
 }
 
@@ -210,6 +279,11 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::
 			// Already resolved
 			continue;
 		}
+
+		auto variable = static_cast<VariableDeclaration*>(currentElement->irObject);
+
+		auto newValue = interpreter->Evaluate(variable, variable->GetExpressions());
+		currentElement->value = newValue;
 	}
 
 	// not yet completed
@@ -308,6 +382,10 @@ std::variant<int, double, std::string,
 			 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue>
 Celeste::ir::inputreconstruction::Interpreter::ZeroValue(InputReconstructionObject* type)
 {
+	if (type == nullptr)
+	{
+		return int(0);
+	}
 	if (type->GetType() == inputreconstruction::Type::Integer)
 	{
 		return int(0);
@@ -329,6 +407,9 @@ Celeste::ir::inputreconstruction::Interpreter::ZeroValue(InputReconstructionObje
 
 	if (type->GetType() == inputreconstruction::Type::Enumeration)
 	{
+		auto enumerationObject = static_cast<Enumeration*>(type);
+
+		// Not yet implemented
 	}
 	if (type->GetType() == inputreconstruction::Type::Class)
 	{
@@ -397,6 +478,48 @@ bool Celeste::ir::inputreconstruction::Interpreter::CopyByValue(InputReconstruct
 bool Celeste::ir::inputreconstruction::Interpreter::MatchingConstructor(
 	InputReconstructionObject* lhs, const std::vector<std::unique_ptr<Expression>>& expressions)
 {
+	if (lhs == nullptr)
+	{
+		throw std::logic_error(
+			"Type evaluation was incomplete, or malformed input was given by accident by some "
+			"logic error.");
+	}
+
+	if (lhs->GetType() == inputreconstruction::Type::Class)
+	{
+		auto classObject = static_cast<inputreconstruction::Class*>(lhs);
+		for (auto constructor : classObject->GetConstructors())
+		{
+			if (constructor->Accepts(expressions))
+			{
+				return true;
+			}
+		}
+	}
+	else if (lhs->GetType() == inputreconstruction::Type::Enumeration)
+	{
+		auto enumerationObject = static_cast<inputreconstruction::Enumeration*>(lhs);
+		if (expressions.size() == 1)
+		{
+			if (expressions[0]->DeduceType() == enumerationObject)
+			{
+				// We can just assign the value
+				return true;
+			}
+		}
+		else
+		{
+			// Special case, as this is not formally defined.
+			return false;
+		}
+	}
+	else if (lhs->GetType() == inputreconstruction::Type::InlineClass)
+	{
+		// Not yet implemented
+		std::cout
+			<< "Tried matching the constructor of an inlined class, this is not yet supported.\n";
+	}
+
 	return false;
 }
 
@@ -441,6 +564,8 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(
 	if (!lhsType.has_value())
 	{
 		// Critical Error
+		std::cout << "Critical Internal Error, could not deduce core type of given variable\n";
+		return ZeroValue(nullptr);
 	}
 
 	// If it is empty, the variable must get a Value that is default initialized as "zero"
@@ -485,10 +610,10 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(
 	else if (MatchingImplicitlyConstructor(lhsType.value(), expressions))
 	{
 	}
-	else
-	{
-		// We got issue
-	}
+
+	// We got issue
+	std::cout << "Wtf went wrong\n";
+	throw std::logic_error("Kill this beast");
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>

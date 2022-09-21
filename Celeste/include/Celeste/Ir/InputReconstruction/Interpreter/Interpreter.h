@@ -220,15 +220,14 @@ namespace Celeste::ir::inputreconstruction
 		// Then set the File inheritance relations as encountered
 		struct GlobalVariableTable
 		{
+		private:
 			struct FileVertex;
 			struct FileSymbolPool;
 
+		public:
 			// Contains a mapping between referenced Object and Global Variable
 			std::map<InputReconstructionObject*, std::unique_ptr<GlobalVariableMember>>
 				globalVariableTable;
-
-			// Contains a mapping between File and Accessible Global Variables
-			std::map<File*, std::set<InputReconstructionObject*>> globalFileAccessibilityTable;
 
 			// Due to a Circular Global Scope Policy, it can occur that global variables
 			// Are not evaluated as they depend on not yet declared variables.
@@ -274,7 +273,7 @@ namespace Celeste::ir::inputreconstruction
 
 			struct FileVertex
 			{
-				std::string fileName;
+				File* file;
 				std::optional<std::size_t> index;
 				std::optional<std::size_t> lowLink;
 				bool onStack = false;
@@ -283,12 +282,16 @@ namespace Celeste::ir::inputreconstruction
 
 				std::set<FileSymbolPool*> internalPools;
 				std::set<FileVertex*> linkedPools;
+				std::set<InputReconstructionObject*> accessibleObjects;
 			};
 
 			std::vector<std::unique_ptr<FileVertex>> vertices;
 			std::vector<std::unique_ptr<FileSymbolPool>> pools;
 			std::map<File*, FileSymbolPool*> mapFileWithPool;
+
+			// Contains a mapping between File and Accessible Global Variables
 			std::map<File*, FileVertex*> mapFileWithInitialVertex;
+
 			std::set<std::pair<FileVertex*, FileVertex*>> edges;
 
 			std::size_t index = 0;
@@ -296,6 +299,9 @@ namespace Celeste::ir::inputreconstruction
 			std::vector<std::set<FileVertex*>> strongConnectedSets;
 
 			void strongconnect(FileVertex* value);
+			void ProcessVertex(FileVertex* value);
+
+			void OptimizeFilePoolsUsingStrongConnectedSets();
 		};
 
 		struct Stack

@@ -10,6 +10,8 @@
 #include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
+#include "Celeste/Ir/InputReconstruction/Structure/EnumerationMember.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
 #include <iostream>
@@ -335,8 +337,17 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 				auto functionIr = static_cast<Function*>(deducedTypeLhs.value());
 				return functionIr->GetReturnType();
 			}
-			case Type::TypeConstruct:
-			case Type::Enumeration:
+			case Type::TypeConstruct: {
+				return deducedTypeLhs.value();
+			}
+			case Type::Enumeration: {
+				return deducedTypeLhs.value();
+			}
+			case Type::EnumerationMember: {
+				auto enumerationMember = static_cast<EnumerationMember*>(deducedTypeLhs.value());
+				auto targetEnumeration = enumerationMember->GetEnumeration();
+				return targetEnumeration;
+			}
 			case Type::Class: {
 				return deducedTypeLhs.value();
 			}

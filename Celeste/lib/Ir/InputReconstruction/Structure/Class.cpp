@@ -347,6 +347,31 @@ Celeste::ir::inputreconstruction::Class::GetConstructor(NameReference* nameRefer
 	return std::nullopt;
 }
 
+std::vector<Celeste::ir::inputreconstruction::Constructor*>
+Celeste::ir::inputreconstruction::Class::GetConstructors(Accessibility accessibility)
+{
+	std::vector<Celeste::ir::inputreconstruction::Constructor*> constructors;
+	for (auto& [access, member] : block)
+	{
+		if (access < accessibility)
+		{
+			continue;
+		}
+
+		// We have access to the type
+		// Verify if the resolved name is the symbol name we require for propagation
+		switch (member->GetType())
+		{
+		case Type::Constructor: {
+			auto constructor = static_cast<Constructor*>(member);
+			constructors.push_back(constructor);
+		}
+		}
+	}
+
+	return constructors;
+}
+
 void Celeste::ir::inputreconstruction::Class::AddTemplateParameter(
 	std::unique_ptr<TemplateParameter> templateParameter)
 {

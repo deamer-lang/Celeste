@@ -37,6 +37,7 @@ namespace Celeste::ir::inputreconstruction
 
 		NameReference* GetFunctionName();
 		bool Accepts(NameReference* symbol);
+		bool Accepts(const std::vector<std::unique_ptr<Expression>>& expressions);
 		InputReconstructionObject* GetReturnType();
 		bool
 		Accepts(const std::string& functionName,

@@ -9,6 +9,8 @@
 
 namespace Celeste::ir::inputreconstruction
 {
+	class Enumeration;
+
 	class EnumerationMember : public InputReconstructionObject
 	{
 	private:
@@ -24,6 +26,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		std::unique_ptr<NameReference>& GetName();
 		std::unique_ptr<Expression>& GetExpression();
+		Enumeration* GetEnumeration();
 	};
 }
 

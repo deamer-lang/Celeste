@@ -109,6 +109,28 @@ bool Celeste::ir::inputreconstruction::Function::Accepts(NameReference* symbol)
 	return true;
 }
 
+bool Celeste::ir::inputreconstruction::Function::Accepts(
+	const std::vector<std::unique_ptr<Expression>>& expressions)
+{
+	if (expressions.size() != functionArguments.size())
+	{
+		return false;
+	}
+
+	for (std::size_t i = 0; i < expressions.size(); i++)
+	{
+		auto& functionAccessMember = expressions[i];
+		auto functionArgument = functionArguments[i].get();
+
+		if (!functionArgument->Accepts(functionAccessMember))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::Function::GetReturnType()
 {

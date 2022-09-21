@@ -4,9 +4,10 @@
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Accessibility.h"
+#include "Celeste/Ir/InputReconstruction/Structure/CompoundBase.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/InheritBase.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
-#include "CompoundBase.h"
 #include <memory>
 
 namespace Celeste::ir::inputreconstruction
@@ -53,6 +54,10 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<InputReconstructionObject*>
 		GetConstructor(NameReference* nameReference,
 					   Accessibility accessibility = Accessibility::Public);
+
+		// Gets all constructors of this class.
+		std::vector<Constructor*>
+		GetConstructors(Accessibility accessibility = Accessibility::Public);
 	};
 }
 

@@ -1,4 +1,5 @@
 #include "Celeste/Ir/InputReconstruction/Structure/EnumerationMember.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 
 Celeste::ir::inputreconstruction::EnumerationMember::EnumerationMember(
 	std::unique_ptr<NameReference> enumerationName_, std::unique_ptr<Expression> enumerationValue_)
@@ -30,4 +31,10 @@ std::unique_ptr<Celeste::ir::inputreconstruction::Expression>&
 Celeste::ir::inputreconstruction::EnumerationMember::GetExpression()
 {
 	return enumerationValue;
+}
+
+Celeste::ir::inputreconstruction::Enumeration*
+Celeste::ir::inputreconstruction::EnumerationMember::GetEnumeration()
+{
+	return static_cast<Enumeration*>(GetParent());
 }
