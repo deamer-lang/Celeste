@@ -1,5 +1,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Expression.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
+#include "Celeste/Ir/InputReconstruction/Computation/Value.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
@@ -275,6 +277,116 @@ Celeste::ir::inputreconstruction::Class::GetMember(
 
 		auto result = static_cast<Class*>(resolvedIr.value())
 						  ->GetMember(memberName_, functionArguments, accessibility);
+		if (result == nullptr)
+		{
+			continue;
+		}
+
+		return result;
+	}
+
+	return nullptr;
+}
+
+Celeste::ir::inputreconstruction::InputReconstructionObject*
+Celeste::ir::inputreconstruction::Class::GetMember(
+	const std::string& memberName_,
+	std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>&
+		functionArgument,
+	Accessibility accessibility)
+{
+	std::optional<std::vector<InputReconstructionObject*>> functionArgument_;
+	if (std::holds_alternative<std::unique_ptr<Expression>>(functionArgument))
+	{
+		functionArgument_ = std::vector<InputReconstructionObject*>{
+			std::get<std::unique_ptr<Expression>>(functionArgument).get()};
+	}
+	else if (std::holds_alternative<std::unique_ptr<Value>>(functionArgument))
+	{
+		functionArgument_ = std::vector<InputReconstructionObject*>{
+			std::get<std::unique_ptr<Value>>(functionArgument).get()};
+	}
+
+	for (auto& compoundBase : GetCompoundBases())
+	{
+		// Verify CompoundBases alias possibility
+		if (!compoundBase->HasAlias(memberName_))
+		{
+			continue;
+		}
+
+		// Alias is correct
+		auto result = compoundBase->GetCompoundedBase()->GetResolvedLinkedIr();
+		if (!result.has_value())
+		{
+			return nullptr;
+		}
+
+		return result.value();
+	}
+
+	for (auto& [access, member] : block)
+	{
+		if (access < accessibility)
+		{
+			continue;
+		}
+
+		// We have access to the type
+		// Verify if the resolved name is the symbol name we require for propagation
+		switch (member->GetType())
+		{
+		case Type::Function: {
+			auto function = static_cast<Function*>(member);
+			// Check if the function is accepting
+			if (function->Accepts(memberName_, functionArgument_))
+			{
+				return function;
+			}
+
+			// It is not the reference, thus continue
+			break;
+		}
+		case Type::Constructor: {
+			auto constructor = static_cast<Constructor*>(member);
+
+			// Check if the function is accepting
+			if (constructor->Accepts(memberName_, functionArgument_))
+			{
+				return constructor;
+			}
+
+			// It is not the reference, thus continue
+			break;
+		}
+		}
+	}
+
+	// Then we may only have Protected level access
+	if (accessibility <= Accessibility::Private)
+	{
+		accessibility = Accessibility::Protected;
+	}
+
+	for (auto& base : GetInheritedBases())
+	{
+		auto type = base->GetLinkedType();
+
+		auto resolvedIr = type->GetResolvedLinkedIr();
+		if (!resolvedIr.has_value())
+		{
+			// Invalid
+			continue;
+		}
+
+		if (resolvedIr.value()->GetType() != Type::Class)
+		{
+			// invalid resolve
+			continue;
+		}
+
+		auto result = static_cast<Class*>(resolvedIr.value())
+						  ->GetMember(memberName_, functionArgument_, accessibility);
 		if (result == nullptr)
 		{
 			continue;

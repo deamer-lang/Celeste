@@ -181,6 +181,7 @@ namespace Celeste::ir::inputreconstruction
 
 		struct Symbol
 		{
+			bool isGlobal = false;
 			Name name;
 			TypeId type;
 
@@ -193,24 +194,33 @@ namespace Celeste::ir::inputreconstruction
 			Symbol(Name name_, TypeId type_, Value value_) : name(name_), type(type_), value(value_)
 			{
 			}
+
+			Symbol(bool isGlobal_, Name name_, TypeId type_)
+				: isGlobal(isGlobal_),
+				  name(name_),
+				  type(type_)
+			{
+			}
+
+			Symbol(bool isGlobal_, Name name_, TypeId type_, Value value_)
+				: isGlobal(isGlobal_),
+				  name(name_),
+				  type(type_),
+				  value(value_)
+			{
+			}
 		};
 
-		struct GlobalVariableMember
+		struct GlobalVariableMember : public Symbol
 		{
 			InputReconstructionObject* irObject = nullptr;
-			Name name;
-			TypeId type;
 
-			std::optional<Value> value;
-
-			GlobalVariableMember(Name name_, TypeId type_) : name(name_), type(type_)
+			GlobalVariableMember(Name name_, TypeId type_) : Symbol(true, name_, type_)
 			{
 			}
 
 			GlobalVariableMember(Name name_, TypeId type_, Value value_)
-				: name(name_),
-				  type(type_),
-				  value(value_)
+				: Symbol(true, name_, type_, value_)
 			{
 			}
 		};
@@ -451,7 +461,7 @@ namespace Celeste::ir::inputreconstruction
 		Value Evaluate(VariableDeclaration* object,
 					   const std::vector<std::unique_ptr<Expression>>& expressions);
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
-		GetSymbolMember(const Name& name);
+		GetSymbolMember(VariableDeclaration* variableDeclaration);
 		Value Evaluate(const std::unique_ptr<Expression>& rhs);
 
 		bool PolymorphismEquality(InputReconstructionObject* lhsType,
@@ -463,6 +473,10 @@ namespace Celeste::ir::inputreconstruction
 		bool
 		MatchingImplicitlyConstructor(InputReconstructionObject* lhs,
 									  const std::vector<std::unique_ptr<Expression>>& expressions);
+
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		EvaluateMemberFunctionOnValue(Value& value, inputreconstruction::Function* function,
+									  std::vector<Value*> functionArguments);
 	};
 }
 

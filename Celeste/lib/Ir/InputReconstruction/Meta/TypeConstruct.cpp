@@ -232,3 +232,8 @@ Celeste::ir::inputreconstruction::TypeConstruct::GetIrLinkage(SymbolAccess* acce
 	// This returns the appropiate linkage given the access symbol.
 	return nullptr;
 }
+
+bool Celeste::ir::inputreconstruction::TypeConstruct::Trivial()
+{
+	return !IsArrayDeclaration();
+}

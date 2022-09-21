@@ -49,6 +49,11 @@ namespace Celeste::ir::inputreconstruction
 			std::string memberName_,
 			std::optional<std::vector<InputReconstructionObject*>> functionArguments = std::nullopt,
 			Accessibility accessibility = Accessibility::Public);
+		InputReconstructionObject*
+		GetMember(const std::string& memberName_,
+				  std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>&
+					  functionArgument,
+				  Accessibility accessibility = Accessibility::Public);
 
 		NameReference* GetClassName();
 		std::optional<InputReconstructionObject*>

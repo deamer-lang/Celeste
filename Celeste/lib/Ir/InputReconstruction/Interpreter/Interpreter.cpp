@@ -285,8 +285,6 @@ void Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::
 		auto newValue = interpreter->Evaluate(variable, variable->GetExpressions());
 		currentElement->value = newValue;
 	}
-
-	// not yet completed
 }
 
 Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GlobalVariableTable(
@@ -529,6 +527,206 @@ bool Celeste::ir::inputreconstruction::Interpreter::MatchingImplicitlyConstructo
 	return false;
 }
 
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
+	Value& value, inputreconstruction::Function* function, std::vector<Value*> functionArguments)
+{
+	// This implementation depends on Value list as function arguments
+	// This assumption holds that the function arguments are fully resolved
+	if (std::holds_alternative<int>(value.value))
+	{
+		if (function->GetFunctionName()->GetResolvedName() == "operator+")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<int>(value.value) += std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator+) for "
+					"'int'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator-")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<int>(value.value) -= std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator-) for "
+					"'int'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator*")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<int>(value.value) *= std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator*) for "
+					"'int'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator\\")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<int>(value.value) /= std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator\\) "
+					"for "
+					"'int'");
+			}
+		}
+		else
+		{
+			// Unsupported
+			throw std::logic_error(
+				"Tried utilizing non-existing Compiler Provided Member Function for "
+				"'int'");
+		}
+
+		return std::get<int>(value.value);
+	}
+	else if (std::holds_alternative<double>(value.value))
+	{
+		if (function->GetFunctionName()->GetResolvedName() == "operator+")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<double>(value.value) += std::get<double>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator+) for "
+					"'double'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator-")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<double>(value.value) -= std::get<double>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator-) for "
+					"'double'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator*")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<double>(value.value) *= std::get<double>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator*) for "
+					"'double'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator\\")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<double>(value.value) /= std::get<double>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator\\) "
+					"for "
+					"'double'");
+			}
+		}
+		else
+		{
+			// Unsupported
+			throw std::logic_error(
+				"Tried utilizing non-existing Compiler Provided Member Function for "
+				"'double'");
+		}
+
+		return std::get<double>(value.value);
+	}
+	else if (std::holds_alternative<std::string>(value.value))
+	{
+		if (function->GetFunctionName()->GetResolvedName() == "operator+")
+		{
+			if (functionArguments.size() == 1)
+			{
+				std::get<std::string>(value.value) +=
+					std::get<std::string>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator+) for "
+					"'text'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "pop")
+		{
+			if (functionArguments.empty())
+			{
+				std::get<std::string>(value.value).pop_back();
+			}
+			else if (functionArguments.size() == 1 &&
+					 std::holds_alternative<int>(functionArguments[0]->value))
+			{
+				for (auto i = 0; i < std::get<int>(functionArguments[0]->value); i++)
+				{
+					std::get<std::string>(value.value).pop_back();
+				}
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator+) for "
+					"'text'");
+			}
+		}
+		else
+		{
+			// Unsupported
+			throw std::logic_error(
+				"Tried utilizing non-existing Compiler Provided Member Function for "
+				"'text'");
+		}
+
+		return std::get<std::string>(value.value);
+	}
+	else if (std::holds_alternative<AlgebraicValue>(value.value))
+	{
+		throw std::logic_error("Algebraic Types are not yet supported!");
+	}
+	return std::nullopt;
+}
+
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
 Celeste::ir::inputreconstruction::Interpreter::Stack::GetSymbolMember(Name name)
 {
@@ -578,8 +776,9 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(
 	{
 		const auto& rhs = expressions[0];
 		auto rhsType = rhs->DeduceType();
-
-		if (rhs->DeduceType() == lhsType.value())
+		if (rhsType == lhsType.value() ||
+			(rhsType->GetType() == inputreconstruction::Type::TypeConstruct &&
+			 static_cast<TypeConstruct*>(rhsType)->Equal(lhsType.value())))
 		{
 			if (CopyByValue(lhsType.value()))
 			{
@@ -602,6 +801,8 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(
 				}
 			}
 		}
+
+		throw std::logic_error("Could not resolve single expression, critical error.");
 	}
 
 	if (MatchingConstructor(lhsType.value(), expressions))
@@ -612,15 +813,19 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(
 	}
 
 	// We got issue
-	std::cout << "Wtf went wrong\n";
-	throw std::logic_error("Kill this beast");
+	std::cout << "Something went wrong\n";
+	throw std::logic_error("Kill this thing");
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
 Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
-	const Celeste::ir::inputreconstruction::Interpreter::Name& name)
+	VariableDeclaration* variableDeclaration)
 {
-	// Not implemented
+	auto foundGlobal = globalTable.GetGlobal(variableDeclaration->GetFile(), variableDeclaration);
+	if (foundGlobal.has_value())
+	{
+		return foundGlobal.value();
+	}
 	return std::nullopt;
 }
 
@@ -657,13 +862,32 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(const std::unique_ptr<Ex
 					auto linkedVariable =
 						static_cast<VariableDeclaration*>(nameNotFinalized.value());
 					auto variableName = linkedVariable->GetName();
-					auto variable = GetSymbolMember(Name{variableName});
+					auto variable = GetSymbolMember(linkedVariable);
 					if (!variable.has_value())
 					{
 						// Error
+						return Value(0);
 					}
 
-					return variable.value()->value.value();
+					auto& variableValue = variable.value()->value;
+					if (variableValue.has_value())
+					{
+						return variableValue.value();
+					}
+					else if (variable.value()->isGlobal)
+					{
+						// We must first initialize this variable in case it is a global
+						auto global = static_cast<GlobalVariableMember*>(variable.value());
+						auto globalIrObject = static_cast<VariableDeclaration*>(global->irObject);
+						auto globalEvaluation =
+							Evaluate(globalIrObject, globalIrObject->GetExpressions());
+						global->value = globalEvaluation;
+						return globalEvaluation;
+					}
+					else
+					{
+						// It is not a global, so something went wrong in the type checker.
+					}
 				}
 				else if (nameNotFinalized.value()->GetType() == inputreconstruction::Type::Function)
 
@@ -732,8 +956,48 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(const std::unique_ptr<Ex
 		Value lhsValue = getValue(rhs->GetLhs());
 		Value rhsValue = getValue(rhs->GetRhs());
 
-		// Not yet completed
+		auto type = rhs->DeduceType();
+		Class* classObject = nullptr;
+		if (type->GetType() == inputreconstruction::Type::Class)
+		{
+			classObject = static_cast<Class*>(type);
+		}
+		else if (type->GetType() == inputreconstruction::Type::TypeConstruct)
+		{
+			auto typeConstruct = static_cast<TypeConstruct*>(type);
+			if (typeConstruct->Trivial())
+			{
+				classObject = static_cast<Class*>(typeConstruct->GetCoreType().value());
+			}
+			else
+			{
+				throw std::logic_error("Unimplemented feature, critical error");
+			}
+		}
+		if (classObject != nullptr)
+		{
+			auto function =
+				classObject->GetMember(rhs->GetOperatorFunctionName().value(), rhs->GetRhs());
+			if (function->GetType() == inputreconstruction::Type::Function)
+			{
+				auto returnValue = EvaluateMemberFunctionOnValue(
+					lhsValue, static_cast<inputreconstruction::Function*>(function), {&rhsValue});
+				if (returnValue.has_value())
+				{
+					return returnValue.value();
+				}
+
+				// If it does not return anything (the operator overload), return a zero value
+				return ZeroValue(rhs.get());
+			}
+			else
+			{
+				// Error
+			}
+		}
 	}
+
+	throw std::logic_error("Could not evaluate value, critical error!");
 }
 
 void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddClass(Class* class_)

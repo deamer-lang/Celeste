@@ -338,7 +338,13 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 				return functionIr->GetReturnType();
 			}
 			case Type::TypeConstruct: {
-				return deducedTypeLhs.value();
+				auto typeConstruct = static_cast<TypeConstruct*>(deducedTypeLhs.value());
+				if (typeConstruct->Trivial())
+				{
+					return typeConstruct->GetCoreType().value();
+				}
+
+				return typeConstruct;
 			}
 			case Type::Enumeration: {
 				return deducedTypeLhs.value();
@@ -376,16 +382,16 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 	else
 	{
 		auto operatorFunctionName = GetOperatorFunctionName();
-		switch (deducedTypeLhs.value()->GetType())
-		{
-		case Type::Class: {
-			auto classIr = static_cast<Class*>(deducedTypeLhs.value());
+
+		auto evaluateClass = [&](Class* classIr) {
 			if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
 			{
-				return classIr->GetMember(
-					operatorFunctionName.value(),
-					std::vector<InputReconstructionObject*>{
-						std::get<std::unique_ptr<Expression>>(impl->rhs).get()});
+				auto member =
+					classIr->GetMember(operatorFunctionName.value(),
+									   std::vector<InputReconstructionObject*>{
+										   std::get<std::unique_ptr<Expression>>(impl->rhs).get()});
+				// It must be function otherwise it is ill-formed.
+				return static_cast<Function*>(member)->GetReturnType();
 			}
 			else if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
 			{
@@ -394,7 +400,30 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 											  std::get<std::unique_ptr<Value>>(impl->rhs).get()});
 			}
 
-			return nullptr;
+			return static_cast<InputReconstructionObject*>(nullptr);
+		};
+		switch (deducedTypeLhs.value()->GetType())
+		{
+		case Type::TypeConstruct: {
+			auto typeConstruct = static_cast<TypeConstruct*>(deducedTypeLhs.value());
+			if (typeConstruct->Trivial())
+			{
+				auto coreType = typeConstruct->GetCoreType();
+				if (coreType.value()->GetType() == Type::Class)
+				{
+					return evaluateClass(static_cast<Class*>(coreType.value()));
+				}
+			}
+			else
+			{
+				// We may only utilize non-trivial operators.
+				// Which is not yet implemented.
+				throw std::logic_error("Non-Trivial operators are not yet implemented");
+			}
+		}
+		case Type::Class: {
+			auto classIr = static_cast<Class*>(deducedTypeLhs.value());
+			return evaluateClass(classIr);
 		}
 		case Type::Integer: {
 		}

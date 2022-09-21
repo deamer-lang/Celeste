@@ -39,6 +39,10 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<std::unique_ptr<SymbolReferenceCall>>& GetSymbolReference();
 		InputReconstructionObject* GetIrLinkage(NameReferenceSecondary* nameReferenceSecondary);
 		InputReconstructionObject* GetIrLinkage(SymbolAccess* access);
+
+		// A type construct is trivial if it exists of a direct type link.
+		// I.e. no array declarations
+		bool Trivial();
 	};
 }
 
