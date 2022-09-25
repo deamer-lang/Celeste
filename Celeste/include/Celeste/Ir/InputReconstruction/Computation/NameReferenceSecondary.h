@@ -34,6 +34,8 @@ namespace Celeste::ir::inputreconstruction
 
 		std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
 		GetSymbolReferenceAst();
+
+		std::optional<NameReferenceSecondary*> GetNameSecondaryReference();
 	};
 }
 

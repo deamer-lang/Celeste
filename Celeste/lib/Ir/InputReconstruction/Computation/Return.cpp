@@ -19,3 +19,9 @@ void Celeste::ir::inputreconstruction::Return::Resolve()
 	expression->SetParent(this);
 	expression->SetFile(GetFile());
 }
+
+std::unique_ptr<Celeste::ir::inputreconstruction::Expression>&
+Celeste::ir::inputreconstruction::Return::GetExpression()
+{
+	return expression;
+}

@@ -1661,6 +1661,11 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(
 	: InputReconstructionObject(forward_),
 	  impl(std::make_unique<Impl>(symbolReference_))
 {
+	SetSymbolName(ast::reference::Access<ast::node::symbol_reference>(symbolReference_)
+					  .symbol()
+					  .symbol_name()
+					  .GetContent()[0]
+					  ->GetText());
 }
 
 Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_,
@@ -1668,6 +1673,7 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_,
 	: InputReconstructionObject(forward_),
 	  impl(std::make_unique<Impl>(symbolReference_, true))
 {
+	SetSymbolName(symbolReference_->GetText());
 }
 
 void Celeste::ir::inputreconstruction::NameReference::CreateAccess(
@@ -1777,6 +1783,40 @@ Celeste::ir::inputreconstruction::NameReference::GetSymbolReferenceAst()
 		// Internal compiler error
 		throw std::logic_error("Internal Compiler Error this should not occur.");
 	}
+}
+
+std::optional<Celeste::ir::inputreconstruction::NameReferenceSecondary*>
+Celeste::ir::inputreconstruction::NameReference ::GetNameSecondaryReference()
+{
+	if (!impl->nameReferenceSecondary.has_value())
+	{
+		return std::nullopt;
+	}
+
+	return impl->nameReferenceSecondary.value().get();
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::SymbolAccess>>&
+Celeste::ir::inputreconstruction::NameReference::GetHiddenAccessSymbols()
+{
+	return impl->hiddenAccess;
+}
+
+std::vector<Celeste::ir::inputreconstruction::SymbolAccess*>
+Celeste::ir::inputreconstruction::NameReference::GetSymbolAccessesIncludingHidden()
+{
+	std::vector<Celeste::ir::inputreconstruction::SymbolAccess*> result;
+	for (auto& access : impl->hiddenAccess)
+	{
+		result.push_back(access.get());
+	}
+
+	for (auto& access : impl->linkedIrViaAccess)
+	{
+		result.push_back(access.get());
+	}
+
+	return result;
 }
 
 void Celeste::ir::inputreconstruction::NameReference::ContinueResolve(

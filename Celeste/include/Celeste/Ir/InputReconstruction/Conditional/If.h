@@ -19,6 +19,7 @@ namespace Celeste::ir::inputreconstruction
 		void Complete();
 
 	public:
+		std::unique_ptr<Expression>& GetCondition();
 	};
 }
 

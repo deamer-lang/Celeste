@@ -43,6 +43,7 @@ namespace Celeste::ir::inputreconstruction
 		Accepts(const std::string& functionName,
 				const std::optional<std::vector<InputReconstructionObject*>>& functionArguments);
 		std::vector<std::unique_ptr<FunctionArgument>>& GetFunctionArguments();
+		std::vector<InputReconstructionObject*> GetBlock();
 	};
 }
 

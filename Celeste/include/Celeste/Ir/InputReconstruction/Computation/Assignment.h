@@ -24,6 +24,8 @@ namespace Celeste::ir::inputreconstruction
 		void Complete();
 
 	public:
+		std::unique_ptr<SymbolReferenceCall>& GetLhs();
+		std::unique_ptr<Expression>& GetRhs();
 	};
 }
 

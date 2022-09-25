@@ -170,3 +170,9 @@ Celeste::ir::inputreconstruction::Function::GetFunctionArguments()
 {
 	return functionArguments;
 }
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>
+Celeste::ir::inputreconstruction::Function::GetBlock()
+{
+	return GetScope();
+}

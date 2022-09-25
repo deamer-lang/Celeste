@@ -20,3 +20,9 @@ void Celeste::ir::inputreconstruction::ForIteration::Complete()
 	expression->SetFile(GetFile());
 	expression->Resolve();
 }
+
+std::unique_ptr<Celeste::ir::inputreconstruction::Expression>&
+Celeste::ir::inputreconstruction::ForIteration::GetExpression()
+{
+	return expression;
+}

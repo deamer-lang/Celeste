@@ -42,3 +42,15 @@ void Celeste::ir::inputreconstruction::Assignment::Complete()
 	impl->symbolReference->SetParent(this);
 	impl->symbolReference->SetFile(GetFile());
 }
+
+std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>&
+Celeste::ir::inputreconstruction::Assignment::GetLhs()
+{
+	return impl->symbolReference;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::Expression>&
+Celeste::ir::inputreconstruction::Assignment::GetRhs()
+{
+	return impl->expression;
+}

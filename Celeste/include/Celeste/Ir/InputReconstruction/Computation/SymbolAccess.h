@@ -46,6 +46,10 @@ namespace Celeste::ir::inputreconstruction
 		bool IsFunctionAccess();
 		ast::reference::Access<ast::node::symbol_access> GetAst();
 		std::vector<std::unique_ptr<Expression>>& GetExpressions();
+
+		SymbolAccessType GetSymbolAccessType();
+		std::size_t GetAnonymousIndex();
+		std::vector<std::unique_ptr<Expression>>& GetFunctionArguments();
 	};
 }
 

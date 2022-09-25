@@ -179,7 +179,7 @@ namespace Celeste::ast::listener::user::ir
 
 		std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>
 		GetSymbolReference(const node::symbol_reference* symbolReference)
-		{
+ 		{
 			auto newSymbolReferenceCall =
 				std::make_unique<Celeste::ir::inputreconstruction::SymbolReferenceCall>(
 					const_cast<node::symbol_reference*>(symbolReference));

@@ -108,6 +108,13 @@ namespace Celeste::ir::inputreconstruction
 
 		std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
 		GetSymbolReferenceAst();
+
+		std::optional<NameReferenceSecondary*> GetNameSecondaryReference();
+
+		std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::SymbolAccess>>&
+		GetHiddenAccessSymbols();
+		std::vector<Celeste::ir::inputreconstruction::SymbolAccess*>
+		GetSymbolAccessesIncludingHidden();
 	};
 }
 

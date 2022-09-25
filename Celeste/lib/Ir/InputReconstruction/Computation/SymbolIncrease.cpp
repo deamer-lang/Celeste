@@ -13,3 +13,9 @@ void Celeste::ir::inputreconstruction::SymbolIncrease::Complete()
 	symbolReference->SetParent(this);
 	symbolReference->SetFile(GetFile());
 }
+
+std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>&
+Celeste::ir::inputreconstruction::SymbolIncrease ::GetSymbolReference()
+{
+	return symbolReference;
+}

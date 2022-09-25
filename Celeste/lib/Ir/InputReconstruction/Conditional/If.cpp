@@ -17,3 +17,9 @@ void Celeste::ir::inputreconstruction::If::Complete()
 {
 	expression->SetParent(this);
 }
+
+std::unique_ptr<Celeste::ir::inputreconstruction::Expression>&
+Celeste::ir::inputreconstruction::If::GetCondition()
+{
+	return expression;
+}

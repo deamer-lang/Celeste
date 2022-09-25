@@ -245,3 +245,14 @@ Celeste::ir::inputreconstruction::NameReferenceSecondary::GetSymbolReferenceAst(
 {
 	return symbolReference;
 }
+
+std::optional<Celeste::ir::inputreconstruction::NameReferenceSecondary*>
+Celeste::ir::inputreconstruction::NameReferenceSecondary::GetNameSecondaryReference()
+{
+	if (!nameReferenceNext.has_value())
+	{
+		return std::nullopt;
+	}
+
+	return nameReferenceNext.value().get();
+}

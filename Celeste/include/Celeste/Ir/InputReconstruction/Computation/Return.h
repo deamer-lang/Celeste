@@ -21,6 +21,7 @@ namespace Celeste::ir::inputreconstruction
 		void Resolve();
 
 	public:
+		std::unique_ptr<Celeste::ir::inputreconstruction::Expression>& GetExpression();
 	};
 }
 

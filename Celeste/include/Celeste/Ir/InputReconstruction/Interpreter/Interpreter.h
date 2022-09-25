@@ -20,6 +20,10 @@ namespace Celeste::ir::inputreconstruction
 	class Interpreter
 	{
 	private:
+		// Used to manage lifetimes of stacks by bounding them to the evaluation context.
+		struct StackLifetime;
+
+	private:
 		struct Symbol;
 		struct SymbolMember;
 		struct Name;
@@ -89,13 +93,17 @@ namespace Celeste::ir::inputreconstruction
 			{
 				symbolMembers.push_back(symbolMember_);
 			}
+
+			std::optional<SymbolMember*> GetSymbol(const std::string& nameReference);
+			void Print(std::size_t depth = 0);
 		};
 
 		struct Value
 		{
-			std::variant<int, double, std::string, AlgebraicValue> value;
+			std::variant<int, double, std::string, AlgebraicValue, Value*> value;
 
-			Value(std::variant<int, double, std::string, AlgebraicValue> value_) : value(value_)
+			Value(std::variant<int, double, std::string, AlgebraicValue, Value*> value_)
+				: value(value_)
 			{
 			}
 
@@ -114,14 +122,32 @@ namespace Celeste::ir::inputreconstruction
 			Value(AlgebraicValue value_) : value(value_)
 			{
 			}
+
+			Value(Value* referenceValue_) : value(referenceValue_)
+			{
+			}
+
+			bool operator==(bool rhs)
+			{
+				if (std::holds_alternative<int>(value))
+				{
+					return (std::get<int>(value) >= 1) == rhs;
+				}
+
+				return false == rhs;
+			}
+
+			std::optional<Celeste::ir::inputreconstruction::Interpreter::TypeId> GetType();
 		};
 
 		struct Name
 		{
 			Name() = default;
 
+			Name(std::string name_);
 			Name(NameReference* name_);
 
+			void AddName(std::string name_);
 			void AddName(NameReference* name_);
 
 			std::set<std::string> names;
@@ -325,13 +351,18 @@ namespace Celeste::ir::inputreconstruction
 			Interpreter::Stack* currentScope = this;
 
 			Stack(Interpreter* interpreter_);
-			~Stack() = default;
+			~Stack();
+
+			Stack(Stack&& rhs) noexcept;
+			Stack(const Stack&) = delete;
 
 			Stack* OpenScope();
 
 			void CloseScope();
 
 			void AddVariable(VariableDeclaration* object);
+			void AddVariable(std::unique_ptr<Symbol> symbol);
+			void AddVariable(const SymbolMember& value);
 
 			std::optional<Symbol*> GetSymbolMember(Name name);
 		};
@@ -355,6 +386,7 @@ namespace Celeste::ir::inputreconstruction
 			void AddClass(Class* class_);
 			void AddEnumeration(Enumeration* enumeration);
 			TypeId GetType(InputReconstructionObject* parent);
+			TypeId GetTypeFromConstructor(inputreconstruction::Constructor* parent);
 
 			Interpreter* interpreter;
 
@@ -438,8 +470,10 @@ namespace Celeste::ir::inputreconstruction
 		// Function Table
 		FunctionTable functionTable;
 
-		// Contains The Stack of Variables
-		Stack symbolTable;
+		// Contains a stack of Operation Stacks
+		// The latest stack represents the current Operation Stack
+		// All other stacks should be seen as not reachable in the current context
+		std::vector<Stack> stackOfOperationStacks;
 
 		// Contains A List of Reachable Types.
 		TypeTable typeTable;
@@ -455,14 +489,32 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		TypeId GetType(TypeConstruct* typeConstruct);
 
-		std::variant<int, double, std::string, AlgebraicValue>
+		std::variant<int, double, std::string,
+					 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue,
+					 Celeste::ir::inputreconstruction::Interpreter::Value*>
 		ZeroValue(InputReconstructionObject* type);
 
 		Value Evaluate(VariableDeclaration* object,
 					   const std::vector<std::unique_ptr<Expression>>& expressions);
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
-		GetSymbolMember(VariableDeclaration* variableDeclaration);
-		Value Evaluate(const std::unique_ptr<Expression>& rhs);
+		GetGlobal(Celeste::ir::inputreconstruction::VariableDeclaration* variableDeclaration);
+
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
+		GetSymbolMember(VariableDeclaration* variableDeclaration,
+						std::optional<Value*> valueReference = std::nullopt);
+
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
+		GetSymbolMember(const std::string& symbolName,
+						std::optional<Value*> valueReference = std::nullopt);
+
+		std::optional<std::variant<Celeste::ir::inputreconstruction::Interpreter::Symbol*,
+								   Celeste::ir::inputreconstruction::Interpreter::SymbolMember*,
+								   Celeste::ir::inputreconstruction::Interpreter::SymbolMember,
+								   Celeste::ir::inputreconstruction::Interpreter::Value>>
+		GetSymbolMember(NameReference* lhs, std::optional<Value*> valueReference = std::nullopt);
+
+		Value Evaluate(const std::unique_ptr<Expression>& rhs,
+					   std::optional<Value*> valueReference = std::nullopt);
 
 		bool PolymorphismEquality(InputReconstructionObject* lhsType,
 								  InputReconstructionObject* rhsType);
@@ -477,6 +529,22 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 		EvaluateMemberFunctionOnValue(Value& value, inputreconstruction::Function* function,
 									  std::vector<Value*> functionArguments);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		EvaluateConstructor(inputreconstruction::Constructor* function,
+							std::vector<Value*> functionArguments);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		EvaluateFunction(inputreconstruction::Function* function,
+						 std::vector<Value*> functionArguments);
+
+	private:
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		EvaluateSomeFunction(inputreconstruction::Function* function,
+							 std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
+							 std::optional<Value*> valueReference = std::nullopt);
+
+		std::vector<Value>
+		GetValueListFromExpressionList(std::vector<std::unique_ptr<Expression>>& expressionList,
+									   std::optional<Value*> valueReference = std::nullopt);
 	};
 }
 

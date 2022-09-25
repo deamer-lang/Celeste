@@ -69,3 +69,21 @@ Celeste::ir::inputreconstruction::SymbolAccess::GetExpressions()
 {
 	return expressions;
 }
+
+Celeste::ir::inputreconstruction::SymbolAccessType
+Celeste::ir::inputreconstruction::SymbolAccess::GetSymbolAccessType()
+{
+	return AccessType;
+}
+
+std::size_t Celeste::ir::inputreconstruction::SymbolAccess::GetAnonymousIndex()
+{
+	auto text = symbolAccessAst.GetContent()[0]->GetText();
+	return std::atol(text.c_str());
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::Expression>>&
+Celeste::ir::inputreconstruction::SymbolAccess::GetFunctionArguments()
+{
+	return expressions;
+}

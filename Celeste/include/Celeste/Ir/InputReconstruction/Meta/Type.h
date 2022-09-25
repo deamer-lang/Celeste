@@ -39,6 +39,7 @@ namespace Celeste::ir::inputreconstruction
 		// Iteration
 		ForEach,
 		ForIteration,
+		WhileIteration,
 
 		// Conditional
 		ConditionalFunction,
