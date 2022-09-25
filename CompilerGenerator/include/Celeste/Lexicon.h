@@ -164,8 +164,8 @@ MINUS.Set(deamer::language::type::definition::object::main::Terminal("MINUS", "[
 DIVIDE.Set(deamer::language::type::definition::object::main::Terminal("DIVIDE", "[\\\\]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
 MULTIPLY.Set(deamer::language::type::definition::object::main::Terminal("MULTIPLY", "[*]", ::deamer::language::type::definition::object::main::SpecialType::NoValue));
 VARNAME.Set(deamer::language::type::definition::object::main::Terminal("VARNAME", "[a-zA-Z_][a-zA-Z_0-9]*", ::deamer::language::type::definition::object::main::SpecialType::Standard));
-NUMBER.Set(deamer::language::type::definition::object::main::Terminal("NUMBER", "[0-9]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
-DECIMAL.Set(deamer::language::type::definition::object::main::Terminal("DECIMAL", "[0-9]+[\\.][0-9]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+NUMBER.Set(deamer::language::type::definition::object::main::Terminal("NUMBER", "[-]{0,1}[0-9]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+DECIMAL.Set(deamer::language::type::definition::object::main::Terminal("DECIMAL", "[-]{0,1}[0-9]+[\\.][0-9]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 TEXT.Set(deamer::language::type::definition::object::main::Terminal("TEXT", "[\"]([\\\\][\"]|[\\\\][\\\\]|[^\"])*[\"]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 ESCAPE_CHARS.Set(deamer::language::type::definition::object::main::Terminal("ESCAPE_CHARS", "[\\n\\r\\t ]+", ::deamer::language::type::definition::object::main::SpecialType::Delete));
 

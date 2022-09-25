@@ -18,7 +18,7 @@ Overview of the terminal: **[DECIMAL](./DECIMAL.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[DECIMAL](./DECIMAL.md)** | [0-9]+[\.][0-9]+ | Standard |
+| **[DECIMAL](./DECIMAL.md)** | [-]{0,1}[0-9]+[\.][0-9]+ | Standard |
 
 
 

@@ -499,8 +499,17 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
 		GetGlobal(Celeste::ir::inputreconstruction::VariableDeclaration* variableDeclaration);
 
-		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
+		std::optional<std::variant<Celeste::ir::inputreconstruction::Interpreter::Symbol*,
+								   Celeste::ir::inputreconstruction::Interpreter::SymbolMember*,
+								   Celeste::ir::inputreconstruction::Interpreter::SymbolMember,
+								   Celeste::ir::inputreconstruction::Interpreter::Value>>
 		GetSymbolMember(VariableDeclaration* variableDeclaration,
+						std::optional<Value*> valueReference = std::nullopt);
+		std::optional<std::variant<Celeste::ir::inputreconstruction::Interpreter::Symbol*,
+								   Celeste::ir::inputreconstruction::Interpreter::SymbolMember*,
+								   Celeste::ir::inputreconstruction::Interpreter::SymbolMember,
+								   Celeste::ir::inputreconstruction::Interpreter::Value>>
+		GetSymbolMember(inputreconstruction::FunctionArgument* functionArgument,
 						std::optional<Value*> valueReference = std::nullopt);
 
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>

@@ -446,9 +446,9 @@ void Celeste::ir::inputreconstruction::Interpreter::Stack::CloseScope()
 	{
 		if (parent.has_value())
 		{
-			parent.value()->nextDepthScope = std::nullopt;
 			parent.value()->currentScope = parent.value()->currentScope;
 			(*std::rbegin(interpreter->stackOfOperationStacks)).currentScope = parent.value();
+			parent.value()->nextDepthScope = std::nullopt;
 		}
 	}
 	else
@@ -716,7 +716,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<int>(value.value) += std::get<int>(functionArguments[0]->value);
+				return std::get<int>(value.value) + std::get<int>(functionArguments[0]->value);
 			}
 			else
 			{
@@ -730,7 +730,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<int>(value.value) -= std::get<int>(functionArguments[0]->value);
+				return std::get<int>(value.value) - std::get<int>(functionArguments[0]->value);
 			}
 			else
 			{
@@ -744,14 +744,73 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<int>(value.value) =
-					std::get<int>(value.value) == std::get<int>(functionArguments[0]->value);
+				return std::get<int>(value.value) == std::get<int>(functionArguments[0]->value);
 			}
 			else
 			{
 				// Unsupported
 				throw std::logic_error(
 					"Tried utilizing non-existing Compiler Provided Member Function(operator==) "
+					"for "
+					"'int'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator>=")
+		{
+			if (functionArguments.size() == 1)
+			{
+				return std::get<int>(value.value) >= std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator>=) "
+					"for "
+					"'int'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator<=")
+		{
+			if (functionArguments.size() == 1)
+			{
+				return std::get<int>(value.value) <= std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator<=) "
+					"for "
+					"'int'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator>")
+		{
+			if (functionArguments.size() == 1)
+			{
+				return std::get<int>(value.value) > std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator>) "
+					"for "
+					"'int'");
+			}
+		}
+		else if (function->GetFunctionName()->GetResolvedName() == "operator<")
+		{
+			if (functionArguments.size() == 1)
+			{
+				return std::get<int>(value.value) < std::get<int>(functionArguments[0]->value);
+			}
+			else
+			{
+				// Unsupported
+				throw std::logic_error(
+					"Tried utilizing non-existing Compiler Provided Member Function(operator<) "
 					"for "
 					"'int'");
 			}
@@ -776,7 +835,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<int>(value.value) *= std::get<int>(functionArguments[0]->value);
+				return std::get<int>(value.value) * std::get<int>(functionArguments[0]->value);
 			}
 			else
 			{
@@ -790,7 +849,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<int>(value.value) /= std::get<int>(functionArguments[0]->value);
+				return std::get<int>(value.value) / std::get<int>(functionArguments[0]->value);
 			}
 			else
 			{
@@ -918,8 +977,8 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<std::string>(value.value) +=
-					std::get<std::string>(functionArguments[0]->value);
+				return std::get<std::string>(value.value) +
+					   std::get<std::string>(functionArguments[0]->value);
 			}
 			else
 			{
@@ -933,9 +992,8 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<std::string>(value.value) =
-					std::get<std::string>(value.value) ==
-					std::get<std::string>(functionArguments[0]->value);
+				return std::get<std::string>(value.value) ==
+					   std::get<std::string>(functionArguments[0]->value);
 			}
 			else
 			{
@@ -950,9 +1008,8 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 		{
 			if (functionArguments.size() == 1)
 			{
-				std::get<std::string>(value.value) =
-					std::get<std::string>(value.value) !=
-					std::get<std::string>(functionArguments[0]->value);
+				return std::get<std::string>(value.value) !=
+					   std::get<std::string>(functionArguments[0]->value);
 			}
 			else
 			{
@@ -999,6 +1056,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 	{
 		auto resultingValue =
 			EvaluateSomeFunction(function, functionArguments, stackLifetime, &value);
+		return resultingValue;
 	}
 	return std::nullopt;
 }
@@ -1254,7 +1312,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 		{
 		case inputreconstruction::Type::Return: {
 			auto returnObject = static_cast<inputreconstruction::Return*>(current);
-			return Evaluate(returnObject->GetExpression());
+			return Evaluate(returnObject->GetExpression(), valueReference);
 		}
 		case inputreconstruction::Type::VariableDeclaration: {
 			auto variableDeclaration =
@@ -1273,7 +1331,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 				break;
 			}
 			auto symbolValue = symbol.value();
-			auto rhsValue = Evaluate(assignment->GetRhs());
+			auto rhsValue = Evaluate(assignment->GetRhs(), valueReference);
 
 			// We assume that right hand side is assignable to the left hand side
 			assignToSymbol(symbol, rhsValue);
@@ -1304,11 +1362,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 		}
 		case inputreconstruction::Type::If: {
 			auto ifObject = static_cast<inputreconstruction::If*>(current);
-			if (Evaluate(ifObject->GetCondition()) == true)
+			if (Evaluate(ifObject->GetCondition(), valueReference) == true)
 			{
 				stackLifetime.Stack().currentScope->OpenScope();
 
-				blocks.emplace_back(Block::BlockType::ConditionalBlock, ifObject);
 				// As we need to skip all other branches
 				while (currentStatement() != nullptr &&
 					   (currentStatement()->GetType() == inputreconstruction::Type::If ||
@@ -1317,15 +1374,15 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 				{
 					currentBlock()->CurrentStatementIsProcessed();
 				}
+				blocks.emplace_back(Block::BlockType::ConditionalBlock, ifObject);
 			}
 			break;
 		}
 		case inputreconstruction::Type::ElseIf: {
 			auto elseIfObject = static_cast<inputreconstruction::ElseIf*>(current);
-			if (Evaluate(elseIfObject->GetCondition()) == true)
+			if (Evaluate(elseIfObject->GetCondition(), valueReference) == true)
 			{
 				stackLifetime.Stack().currentScope->OpenScope();
-				blocks.emplace_back(Block::BlockType::ConditionalBlock, elseIfObject);
 				// As we need to skip all other branches
 				while (currentStatement() != nullptr &&
 					   (currentStatement()->GetType() == inputreconstruction::Type::If ||
@@ -1334,6 +1391,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 				{
 					currentBlock()->CurrentStatementIsProcessed();
 				}
+				blocks.emplace_back(Block::BlockType::ConditionalBlock, elseIfObject);
 			}
 			break;
 		}
@@ -1377,6 +1435,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 				{
 					break;
 				}
+			}
+			else
+			{
+				break;
 			}
 		}
 	}
@@ -1499,7 +1561,10 @@ Celeste::ir::inputreconstruction::Interpreter::GetGlobal(
 	return std::nullopt;
 }
 
-std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
+std::optional<std::variant<Celeste::ir::inputreconstruction::Interpreter::Symbol*,
+						   Celeste::ir::inputreconstruction::Interpreter::SymbolMember*,
+						   Celeste::ir::inputreconstruction::Interpreter::SymbolMember,
+						   Celeste::ir::inputreconstruction::Interpreter::Value>>
 Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
 	VariableDeclaration* variableDeclaration, std::optional<Value*> valueReference)
 {
@@ -1528,8 +1593,7 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
 	auto thisAnalysisResult = getVariableIfPartOfThis();
 	if (thisAnalysisResult.has_value())
 	{
-		throw std::logic_error("This dependency in expressions are not yet supported");
-		// return thisAnalysisResult.value();
+		return thisAnalysisResult.value();
 	}
 
 	if (!stackOfOperationStacks.empty())
@@ -1544,6 +1608,47 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
 	}
 
 	return GetGlobal(variableDeclaration);
+}
+
+std::optional<std::variant<Celeste::ir::inputreconstruction::Interpreter::Symbol*,
+						   Celeste::ir::inputreconstruction::Interpreter::SymbolMember*,
+						   Celeste::ir::inputreconstruction::Interpreter::SymbolMember,
+						   Celeste::ir::inputreconstruction::Interpreter::Value>>
+Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
+	inputreconstruction::FunctionArgument* functionArgument, std::optional<Value*> valueReference)
+{
+	auto getVariableIfPartOfThis = [&]() {
+		std::optional<std::variant<Symbol*, SymbolMember*, SymbolMember, Value>> result;
+		auto startVariableName = functionArgument->GetName();
+		if (valueReference.has_value())
+		{
+			if (std::holds_alternative<AlgebraicValue>(valueReference.value()->value))
+			{
+				auto& algebraicValue = std::get<AlgebraicValue>(valueReference.value()->value);
+				for (auto& symbolMember : algebraicValue.symbolMembers)
+				{
+					if (symbolMember.name == startVariableName)
+					{
+						result = &symbolMember;
+						return result;
+					}
+				}
+			}
+		}
+
+		return result;
+	};
+
+	if (!stackOfOperationStacks.empty())
+	{
+		auto& currentStack = *std::rbegin(stackOfOperationStacks);
+		auto result = currentStack.currentScope->GetSymbolMember(functionArgument->GetName());
+
+		if (result.has_value())
+		{
+			return result.value();
+		}
+	}
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
@@ -1581,8 +1686,8 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 			functionArgumentsPtr.push_back(&functionArgument);
 		}
 
-		return std::pair<std::vector<Value>, std::vector<Value*>>(functionArguments,
-																  functionArgumentsPtr);
+		return std::move(std::pair<std::vector<Value>, std::vector<Value*>>(
+			std::move(functionArguments), std::move(functionArgumentsPtr)));
 	};
 
 	auto getVariableIfPartOfThis = [&]() {
@@ -1681,10 +1786,22 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 
 		val = newValue.value();
 	}
+	else if (resolvedIrValue->GetType() == inputreconstruction::Type::FunctionArgument)
+	{
+		auto startFunctionArgument =
+			static_cast<inputreconstruction::FunctionArgument*>(resolvedIrValue);
+		auto tmp = GetSymbolMember(startFunctionArgument);
+		if (!tmp.has_value())
+		{
+			return std::nullopt;
+		}
+
+		val = tmp.value();
+	}
 	else if (resolvedIrValue->GetType() == inputreconstruction::Type::VariableDeclaration)
 	{
 		auto getStartVariable = [&]() {
-			std::optional<std::variant<Symbol*, SymbolMember*>> result;
+			std::optional<std::variant<Symbol*, SymbolMember*, SymbolMember, Value>> result;
 			auto startVariableDeclaration =
 				static_cast<inputreconstruction::VariableDeclaration*>(resolvedIrValue);
 			if (valueReference.has_value())
@@ -1893,7 +2010,30 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 				static_cast<inputreconstruction::VariableDeclaration*>(resolvedIrValue)
 					->GetName()
 					->GetResolvedName();
-			if (std::holds_alternative<SymbolMember*>(val))
+			if (std::holds_alternative<Symbol*>(val))
+			{
+				auto symbolDeref = std::get<Symbol*>(val);
+				auto& valVariant = symbolDeref->value.value().value;
+				if (std::holds_alternative<AlgebraicValue>(valVariant))
+				{
+					auto& valDeref = std::get<AlgebraicValue>(valVariant);
+					auto tmp = valDeref.GetSymbol(resolvedIrValueName);
+					if (!tmp.has_value())
+					{
+						return std::nullopt;
+					}
+					else
+					{
+						val = tmp.value();
+					}
+				}
+				else
+				{
+					// Error, Unsupported
+					return std::nullopt;
+				}
+			}
+			else if (std::holds_alternative<SymbolMember*>(val))
 			{
 				auto symbolDeref = std::get<SymbolMember*>(val);
 				auto& valVariant = symbolDeref->value.value;
@@ -1948,7 +2088,41 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 		{
 			auto resolvedIrValueFunction =
 				static_cast<inputreconstruction::Function*>(resolvedIrValue);
-			if (std::holds_alternative<SymbolMember*>(val))
+			if (std::holds_alternative<Symbol*>(val))
+			{
+				auto valDeref = std::get<Symbol*>(val);
+				auto [functionArguments, functionArgumentsPtr] =
+					getFunctionArguments(currentNextNameResolve.value()
+											 ->GetSymbolAccessesIncludingHidden()[0]
+											 ->GetFunctionArguments());
+
+				if (!valDeref->value.has_value())
+				{
+					// Error
+					throw std::logic_error(
+						"Variable was not initialized while this was a requirement at the given "
+						"context.");
+				}
+				auto valDerefValue = valDeref->value.value();
+				auto memberFunction =
+					functionTable.GetFunction(resolvedIrValueFunction, valDeref->type);
+				if (!memberFunction.has_value())
+				{
+					throw std::logic_error("Referenced Function does not exists.");
+				}
+				auto memberFunctionValue = memberFunction.value();
+				auto memberFunctionDeref =
+					static_cast<inputreconstruction::Function*>(memberFunctionValue->irObject);
+				auto newValue = EvaluateMemberFunctionOnValue(valDerefValue, memberFunctionDeref,
+															  functionArgumentsPtr);
+				if (!newValue.has_value())
+				{
+					return std::nullopt;
+				}
+
+				val = newValue.value();
+			}
+			else if (std::holds_alternative<SymbolMember*>(val))
 			{
 				auto valDeref = std::get<SymbolMember*>(val);
 				auto [functionArguments, functionArgumentsPtr] =
@@ -2062,130 +2236,212 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(const std::unique_ptr<Ex
 			}
 			else if (std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(lhsValue))
 			{
-				auto nameNotFinalized =
-					std::get<std::unique_ptr<SymbolReferenceCall>>(lhsValue)->GetResolvedLinkedIr();
-				if (!nameNotFinalized.has_value())
+				auto& lhsValueDeref = std::get<std::unique_ptr<SymbolReferenceCall>>(lhsValue);
+				lhsValueDeref->GetResolvedLinkedIr();
+				if ((lhsValueDeref->GetSymbolAccesses().empty() ||
+					 (lhsValueDeref->GetSymbolAccesses().size() == 1 &&
+					  lhsValueDeref->GetSymbolAccesses()[0]->GetSymbolAccessType() ==
+						  SymbolAccessType::FunctionAccess)) &&
+					!lhsValueDeref->GetNameSecondaryReference().has_value())
 				{
-					// Error
-				}
-
-				if (nameNotFinalized.value()->GetType() ==
-					inputreconstruction::Type::VariableDeclaration)
-				{
-					auto linkedVariable =
-						static_cast<VariableDeclaration*>(nameNotFinalized.value());
-					auto variableName = linkedVariable->GetName();
-					auto variable = GetSymbolMember(linkedVariable, valueReference);
-					if (!variable.has_value())
+					auto nameNotFinalized = lhsValueDeref->GetResolvedLinkedIr();
+					if (!nameNotFinalized.has_value())
 					{
 						// Error
-						return Value(0);
 					}
 
-					auto& variableValue = variable.value()->value;
-					if (variableValue.has_value())
+					if (nameNotFinalized.value()->GetType() ==
+						inputreconstruction::Type::VariableDeclaration)
 					{
-						return variableValue.value();
+						auto linkedVariable =
+							static_cast<VariableDeclaration*>(nameNotFinalized.value());
+						auto variableName = linkedVariable->GetName();
+						auto variable = GetSymbolMember(linkedVariable, valueReference);
+						if (!variable.has_value())
+						{
+							// Error
+							return Value(0);
+						}
+
+						auto& variableValue = variable.value();
+						if (std::holds_alternative<Symbol*>(variableValue))
+						{
+							auto symbol = std::get<Symbol*>(variableValue);
+							auto variableValueDeref = symbol->value;
+							if (variableValueDeref.has_value())
+							{
+								return variableValueDeref.value();
+							}
+							else if (symbol->isGlobal)
+							{
+								// We must first initialize this variable in case it is a global
+								auto global = static_cast<GlobalVariableMember*>(symbol);
+								auto globalIrObject =
+									static_cast<VariableDeclaration*>(global->irObject);
+								auto globalEvaluation =
+									Evaluate(globalIrObject, globalIrObject->GetExpressions());
+								global->value = globalEvaluation;
+								return globalEvaluation;
+							}
+							else
+							{
+								// It is not a global, so something went wrong in the type checker.
+							}
+						}
+						else if (std::holds_alternative<SymbolMember*>(variableValue))
+						{
+							auto symbol = std::get<SymbolMember*>(variableValue);
+							return symbol->value;
+						}
+						else if (std::holds_alternative<SymbolMember>(variableValue))
+						{
+							auto symbol = std::get<SymbolMember>(variableValue);
+							return symbol.value;
+						}
+						else if (std::holds_alternative<Value>(variableValue))
+						{
+							auto symbol = std::get<Value>(variableValue);
+							return symbol;
+						}
 					}
-					else if (variable.value()->isGlobal)
+					else if (nameNotFinalized.value()->GetType() ==
+							 inputreconstruction::Type::Function)
+
 					{
-						// We must first initialize this variable in case it is a global
-						auto global = static_cast<GlobalVariableMember*>(variable.value());
-						auto globalIrObject = static_cast<VariableDeclaration*>(global->irObject);
-						auto globalEvaluation =
-							Evaluate(globalIrObject, globalIrObject->GetExpressions());
-						global->value = globalEvaluation;
-						return globalEvaluation;
+						auto& lhsDeref = std::get<std::unique_ptr<SymbolReferenceCall>>(lhsValue);
+						auto hiddenAccess = lhsDeref->GetSymbolAccessesIncludingHidden();
+						auto valueList = GetValueListFromExpressionList(
+							hiddenAccess[0]->GetExpressions(), valueReference);
+						std::vector<Value*> valueListPtr;
+						for (auto& value : valueList)
+						{
+							valueListPtr.emplace_back(&value);
+						}
+
+						std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+							newValue;
+
+						if (valueReference.has_value())
+						{
+							newValue = EvaluateMemberFunctionOnValue(
+								*valueReference.value(),
+								static_cast<inputreconstruction::Function*>(
+									nameNotFinalized.value()),
+								valueListPtr);
+						}
+						else
+						{
+							newValue = EvaluateFunction(static_cast<inputreconstruction::Function*>(
+															nameNotFinalized.value()),
+														valueListPtr);
+						}
+						if (newValue.has_value())
+						{
+							return newValue.value();
+						}
+					}
+					else if (nameNotFinalized.value()->GetType() ==
+							 inputreconstruction::Type::Constructor)
+
+					{
+						auto& lhsDeref = std::get<std::unique_ptr<SymbolReferenceCall>>(lhsValue);
+						auto hiddenAccess = lhsDeref->GetSymbolAccessesIncludingHidden();
+						auto valueList = GetValueListFromExpressionList(
+							hiddenAccess[0]->GetExpressions(), valueReference);
+						std::vector<Value*> valueListPtr;
+						for (auto& value : valueList)
+						{
+							valueListPtr.emplace_back(&value);
+						}
+
+						auto newValue =
+							EvaluateConstructor(static_cast<inputreconstruction::Constructor*>(
+													nameNotFinalized.value()),
+												valueListPtr);
+						if (newValue.has_value())
+						{
+							return newValue.value();
+						}
+					}
+					else if (nameNotFinalized.value()->GetType() ==
+							 inputreconstruction::Type::FunctionArgument)
+					{
+						auto linkedFunctionArgument =
+							static_cast<inputreconstruction::FunctionArgument*>(
+								nameNotFinalized.value());
+						auto symbol =
+							GetSymbolMember(linkedFunctionArgument->GetName(), valueReference);
+						if (!symbol.has_value())
+						{
+							// Error
+							throw std::logic_error(
+								"Could not resolve function argument!, Interpreter phase");
+						}
+
+						auto symbolValue = symbol.value();
+						if (symbolValue->value.has_value())
+						{
+							return symbolValue->value.value();
+						}
+						else
+						{
+							// Error
+							throw std::logic_error(
+								"Could not resolve function argument!, Interpreter phase");
+						}
 					}
 					else
 					{
-						// It is not a global, so something went wrong in the type checker.
-					}
-				}
-				else if (nameNotFinalized.value()->GetType() == inputreconstruction::Type::Function)
-
-				{
-					auto& lhsDeref = std::get<std::unique_ptr<SymbolReferenceCall>>(lhsValue);
-					auto hiddenAccess = lhsDeref->GetSymbolAccessesIncludingHidden();
-					auto valueList = GetValueListFromExpressionList(
-						hiddenAccess[0]->GetExpressions(), valueReference);
-					std::vector<Value*> valueListPtr;
-					for (auto& value : valueList)
-					{
-						valueListPtr.emplace_back(&value);
-					}
-
-					std::optional<Celeste::ir::inputreconstruction::Interpreter::Value> newValue;
-
-					if (valueReference.has_value())
-					{
-						newValue = EvaluateMemberFunctionOnValue(
-							*valueReference.value(),
-							static_cast<inputreconstruction::Function*>(nameNotFinalized.value()),
-							valueListPtr);
-					}
-					else
-					{
-						newValue = EvaluateFunction(
-							static_cast<inputreconstruction::Function*>(nameNotFinalized.value()),
-							valueListPtr);
-					}
-					if (newValue.has_value())
-					{
-						return newValue.value();
-					}
-				}
-				else if (nameNotFinalized.value()->GetType() ==
-						 inputreconstruction::Type::Constructor)
-
-				{
-					auto& lhsDeref = std::get<std::unique_ptr<SymbolReferenceCall>>(lhsValue);
-					auto hiddenAccess = lhsDeref->GetSymbolAccessesIncludingHidden();
-					auto valueList = GetValueListFromExpressionList(
-						hiddenAccess[0]->GetExpressions(), valueReference);
-					std::vector<Value*> valueListPtr;
-					for (auto& value : valueList)
-					{
-						valueListPtr.emplace_back(&value);
-					}
-
-					auto newValue = EvaluateConstructor(
-						static_cast<inputreconstruction::Constructor*>(nameNotFinalized.value()),
-						valueListPtr);
-					if (newValue.has_value())
-					{
-						return newValue.value();
-					}
-				}
-				else if (nameNotFinalized.value()->GetType() ==
-						 inputreconstruction::Type::FunctionArgument)
-				{
-					auto linkedFunctionArgument =
-						static_cast<inputreconstruction::FunctionArgument*>(
-							nameNotFinalized.value());
-					auto symbol = GetSymbolMember(linkedFunctionArgument->GetName());
-					if (!symbol.has_value())
-					{
 						// Error
-						throw std::logic_error(
-							"Could not resolve function argument!, Interpreter phase");
-					}
-
-					auto symbolValue = symbol.value();
-					if (symbolValue->value.has_value())
-					{
-						return symbolValue->value.value();
-					}
-					else
-					{
-						// Error
-						throw std::logic_error(
-							"Could not resolve function argument!, Interpreter phase");
 					}
 				}
 				else
 				{
-					// Error
+					auto symbol = GetSymbolMember(lhsValueDeref.get(), valueReference);
+					if (!symbol.has_value())
+					{
+						// Error
+						throw std::logic_error("Evaluated Symbol is invalid.");
+					}
+					auto symbolValue = symbol.value();
+					if (std::holds_alternative<Symbol*>(symbolValue))
+					{
+						auto symbol = std::get<Symbol*>(symbolValue);
+						auto variableValueDeref = symbol->value;
+						if (variableValueDeref.has_value())
+						{
+							return variableValueDeref.value();
+						}
+						else if (symbol->isGlobal)
+						{
+							// We must first initialize this variable in case it is a global
+							auto global = static_cast<GlobalVariableMember*>(symbol);
+							auto globalIrObject =
+								static_cast<VariableDeclaration*>(global->irObject);
+							auto globalEvaluation =
+								Evaluate(globalIrObject, globalIrObject->GetExpressions());
+							global->value = globalEvaluation;
+							return globalEvaluation;
+						}
+						else
+						{
+							// It is not a global, so something went wrong in the type checker.
+						}
+					}
+					else if (std::holds_alternative<SymbolMember*>(symbolValue))
+					{
+						return std::get<SymbolMember*>(symbolValue)->value;
+					}
+					else if (std::holds_alternative<SymbolMember>(symbolValue))
+					{
+						return std::get<SymbolMember>(symbolValue).value;
+					}
+					else if (std::holds_alternative<Value>(symbolValue))
+					{
+						return std::get<Value>(symbolValue);
+					}
+
+					throw std::logic_error("Evaluated Symbol is invalid.");
 				}
 			}
 			else if (std::holds_alternative<std::unique_ptr<Tuple>>(lhsValue))
@@ -2207,7 +2463,7 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(const std::unique_ptr<Ex
 		}
 		else if (std::holds_alternative<std::unique_ptr<Expression>>(someValue))
 		{
-			return Evaluate(std::get<std::unique_ptr<Expression>>(someValue));
+			return Evaluate(std::get<std::unique_ptr<Expression>>(someValue), valueReference);
 		}
 
 		// Error
@@ -2230,7 +2486,7 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(const std::unique_ptr<Ex
 			}
 			else if (std::holds_alternative<std::unique_ptr<Expression>>(someValue))
 			{
-				return Evaluate(std::get<std::unique_ptr<Expression>>(someValue));
+				return Evaluate(std::get<std::unique_ptr<Expression>>(someValue), valueReference);
 			}
 			else if (std::holds_alternative<std::unique_ptr<inputreconstruction::Value>>(someValue))
 			{
@@ -2431,6 +2687,7 @@ void Celeste::ir::inputreconstruction::Interpreter::FunctionTable::AddFunction(
 			auto newMemberFunctionObjectPtr = newMemberFunctionObject.get();
 			memberFunctionTable.insert({function, std::move(newMemberFunctionObject)});
 			auto typeId = interpreter->typeTable.GetType(parent);
+			memberFunctionMapping.insert({{function, typeId}, function});
 			auto iter = mappingTypeWithMemberFunctions.find(typeId);
 			iter->second.insert(functionObject);
 
@@ -2443,6 +2700,11 @@ void Celeste::ir::inputreconstruction::Interpreter::FunctionTable::AddFunction(
 				if (iter != memberFunctionMapping.end())
 				{
 					iter->second = newMemberFunctionObjectPtr->irObject;
+				}
+				else
+				{
+					memberFunctionMapping.insert({{parentVirtualMemberFunction, typeId},
+												  newMemberFunctionObjectPtr->irObject});
 				}
 
 				parentVirtualMemberFunction =
@@ -2557,7 +2819,7 @@ Celeste::ir::inputreconstruction::Interpreter::FunctionTable::GetFunction(
 			return std::nullopt;
 		}
 
-		return GetFunction(iter->second);
+		return memberFunctionTable.find(iter->second)->second.get();
 	}
 	else
 	{

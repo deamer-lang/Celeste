@@ -425,6 +425,12 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 			auto classIr = static_cast<Class*>(deducedTypeLhs.value());
 			return evaluateClass(classIr);
 		}
+		case Type::Function: {
+			return nullptr;
+		}
+		case Type::Constructor: {
+			return nullptr;
+		}
 		case Type::Integer: {
 		}
 		case Type::Decimal: {

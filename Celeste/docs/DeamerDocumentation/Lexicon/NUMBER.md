@@ -18,7 +18,7 @@ Overview of the terminal: **[NUMBER](./NUMBER.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[NUMBER](./NUMBER.md)** | [0-9]+ | Standard |
+| **[NUMBER](./NUMBER.md)** | [-]{0,1}[0-9]+ | Standard |
 
 
 
