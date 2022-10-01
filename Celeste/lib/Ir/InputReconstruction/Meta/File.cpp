@@ -152,10 +152,20 @@ void Celeste::ir::inputreconstruction::File::ResolveReferences(
 		impl->unresolvedSymbolReferenceCalls.erase(
 			std::cbegin(impl->unresolvedSymbolReferenceCalls));
 
+		auto nameReference =
+			static_cast<Celeste::ir::inputreconstruction::NameReference*>(currentElement);
+		if (nameReference->GetFinalLinkedIr().has_value())
+		{
+			// If it has a value then it is already resolved,
+			// This sometimes occurs more investigation required to optimize this.
+			continue;
+		}
+
 		if (currentElement->GetType() == Type::SymbolReferenceCall)
 		{
 			auto unresolved_ =
 				static_cast<Celeste::ir::inputreconstruction::SymbolReferenceCall*>(currentElement);
+
 			unresolved_->Resolve();
 
 			if (!unresolved_->GetResolvedLinkedIr().has_value())
@@ -165,8 +175,7 @@ void Celeste::ir::inputreconstruction::File::ResolveReferences(
 		}
 		else if (currentElement->GetType() == Type::NameReference)
 		{
-			auto unresolved_ =
-				static_cast<Celeste::ir::inputreconstruction::NameReference*>(currentElement);
+			auto unresolved_ = nameReference;
 			unresolved_->Resolve();
 
 			if (!unresolved_->GetResolvedLinkedIr().has_value())

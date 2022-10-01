@@ -1647,6 +1647,7 @@ Celeste::ir::inputreconstruction::NameReference::GetSymbolAccesses()
 	{
 		result.push_back(access.get());
 	}
+
 	return result;
 }
 

@@ -2390,9 +2390,14 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(const std::unique_ptr<Ex
 								"Could not resolve function argument!, Interpreter phase");
 						}
 					}
+					else if (nameNotFinalized.value()->GetType() ==
+							 inputreconstruction::Type::Class)
+					{
+						throw std::logic_error("Reference logic is flawed");
+					}
 					else
 					{
-						// Error
+						throw std::logic_error("Reference logic is flawed");
 					}
 				}
 				else
