@@ -101,6 +101,7 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 			nameReferenceNext = std::make_unique<NameReferenceSecondary>(getNextSymbol());
 			nameReferenceNext.value()->SetParent(this);
 			nameReferenceNext.value()->SetFile(GetFile());
+			nameReferenceNext.value()->Complete();
 
 			nextSymbols.erase(std::cbegin(nextSymbols));
 			nameReferenceNext.value()->StartResolve(nextSymbols);
@@ -137,6 +138,25 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 
 	switch (finalIr.value()->GetType())
 	{
+	case Type::Constructor: {
+		auto constructor = static_cast<Constructor*>(finalIr.value());
+		auto classObject = static_cast<Class*>(constructor->GetReturnType());
+
+		if (classObject == nullptr)
+		{
+			// Invalid
+			return;
+		}
+
+		// TODO: implement for properly supporting accessibility.
+		auto linkedIr = classObject->GetMember(this, Accessibility::Public);
+
+		// Valid if return type is not nullptr
+		SetLinkedIr(linkedIr);
+		continueAccessResolve(0);
+		continueThisResolve();
+		break;
+	}
 	case Type::Function: {
 		auto function = static_cast<Function*>(finalIr.value());
 		auto returnType = static_cast<TypeConstruct*>(function->GetReturnType());

@@ -449,7 +449,7 @@ public:
 				if (constructor.has_value())
 				{
 					SetEntryPoint(constructor.value());
-					ContinueAccess();
+					ContinueAccess(1);
 
 					Finalize();
 					return;

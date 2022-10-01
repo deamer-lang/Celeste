@@ -1875,7 +1875,7 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 			break;
 		}
 		case inputreconstruction::SymbolAccessType::FunctionAccess: {
-			std::cout << "Tried function accessing, not supported in this context\n";
+			// std::cout << "Tried function accessing, not supported in this context\n";
 			return std::nullopt;
 			break;
 		}

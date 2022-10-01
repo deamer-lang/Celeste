@@ -82,6 +82,8 @@ Celeste::ir::inputreconstruction::Function::GetFunctionName()
 bool Celeste::ir::inputreconstruction::Function::Accepts(NameReference* symbol)
 {
 	auto accesses = symbol->GetSymbolAccesses();
+	// This checks if the symmbol has a function access, if not then it cannot be used to reference
+	// functions.
 	if (accesses.empty() || !accesses[0]->IsFunctionAccess())
 	{
 		return false;
@@ -134,6 +136,10 @@ bool Celeste::ir::inputreconstruction::Function::Accepts(
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::Function::GetReturnType()
 {
+	if (GetType() == Type::Constructor)
+	{
+		return GetParent();
+	}
 	return returnType.get();
 }
 
