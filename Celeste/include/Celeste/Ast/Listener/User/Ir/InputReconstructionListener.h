@@ -93,14 +93,41 @@ namespace Celeste::ast::listener::user::ir
 	public:
 		void ListenEntry(const Celeste::ast::node::expression* node) override
 		{
-			skipCounter++;
-			skip = skipCounter != 0;
+			if (node->GetParent()->GetType() == Type::stmt)
+			{
+				if (skip)
+				{
+					return;
+				}
+
+				auto Access = reference::Access(node);
+
+				auto newExpression = GetExpression(node);
+				newExpression->SetParent(GetParent());
+				newExpression->SetFile(file);
+				AddCurrentScope(std::move(newExpression));
+			}
+			else
+			{
+				skipCounter++;
+				skip = skipCounter != 0;
+			}
 		}
 
 		void ListenExit(const Celeste::ast::node::expression* node) override
 		{
-			skipCounter--;
-			skip = skipCounter != 0;
+			if (node->GetParent()->GetType() == Type::stmt)
+			{
+				if (skip)
+				{
+					return;
+				}
+			}
+			else
+			{
+				skipCounter--;
+				skip = skipCounter != 0;
+			}
 		}
 
 		void ListenEntry(const Celeste::ast::node::type* node) override
@@ -128,6 +155,7 @@ namespace Celeste::ast::listener::user::ir
 
 				auto newSymbolReference = GetSymbolReference(node);
 				newSymbolReference->SetParent(GetParent());
+
 				AddCurrentScope(std::move(newSymbolReference));
 			}
 			else
@@ -179,7 +207,7 @@ namespace Celeste::ast::listener::user::ir
 
 		std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>
 		GetSymbolReference(const node::symbol_reference* symbolReference)
- 		{
+		{
 			auto newSymbolReferenceCall =
 				std::make_unique<Celeste::ir::inputreconstruction::SymbolReferenceCall>(
 					const_cast<node::symbol_reference*>(symbolReference));

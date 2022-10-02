@@ -10,11 +10,12 @@ namespace Celeste::ir::inputreconstruction
 	class Integer : public InputReconstructionObject
 	{
 	private:
-		ast::node::NUMBER* integer;
+		ast::node::NUMBER* integer = nullptr;
 		int constexprEvaluation = 0;
 
 	public:
 		Integer(ast::node::NUMBER* integer_);
+		Integer(int integer_);
 		virtual ~Integer() = default;
 
 	public:

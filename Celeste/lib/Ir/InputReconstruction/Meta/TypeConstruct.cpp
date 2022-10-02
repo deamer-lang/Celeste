@@ -1,6 +1,7 @@
 #include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Meta/File.h"
+#include "Celeste/Ir/InputReconstruction/Meta/Project.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 
 Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(ast::node::type* type_)
@@ -92,6 +93,12 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::Equal(InputReconstructionO
 
 	if (deduceType == this)
 	{
+		return true;
+	}
+
+	if (GetParent()->GetType() == Type::FunctionArgument && (IsAuto() || IsAutoType()))
+	{
+		// Auto is always equal to whatever we assign it to.
 		return true;
 	}
 
@@ -192,6 +199,33 @@ Celeste::ir::inputreconstruction::TypeConstruct::GetIrLinkage(
 		case Type::Function: {
 			// Even though allowed, this requires deep analysis to verify if the function return
 			// type can be deduced Statically or Dynamically. This is not yet supported
+			return nullptr;
+		}
+		case Type::FunctionArgument: {
+			// Auto function arguments are templates. And thus require monomorphization.
+			auto standardTypesFile = GetFile()->GetProject()->GetFile("Celeste/any_type.ce");
+			if (standardTypesFile == nullptr)
+			{
+				return nullptr;
+			}
+
+			if (IsAuto())
+			{
+				auto result = standardTypesFile->GetClass("any");
+				if (result.has_value())
+				{
+					return result.value();
+				}
+			}
+			else if (IsAutoType())
+			{
+				auto result = standardTypesFile->GetClass("anytype");
+				if (result.has_value())
+				{
+					return result.value();
+				}
+			}
+
 			return nullptr;
 		}
 		}

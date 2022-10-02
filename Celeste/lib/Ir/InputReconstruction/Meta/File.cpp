@@ -78,7 +78,13 @@ Celeste::ir::inputreconstruction::File::GetUnresolvedSymbolReferences()
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::File::GetIrBottom()
 {
-	auto targetScope = GetRoot()->GetScope();
+	auto root = GetRoot();
+	if (root == nullptr)
+	{
+		return nullptr;
+	}
+
+	auto targetScope = root->GetScope();
 	if (targetScope.empty())
 	{
 		return nullptr;
@@ -91,6 +97,12 @@ Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::File::GetRoot()
 {
 	// Root
+	if (impl->inputReconstructionObjects.empty())
+	{
+		// File has no root
+		return nullptr;
+	}
+
 	return std::begin(impl->inputReconstructionObjects)->get();
 }
 
@@ -120,6 +132,32 @@ Celeste::ir::inputreconstruction::File::GetClass(std::string className, bool exp
 	}
 
 	// Failed to find a class name
+	return std::nullopt;
+}
+
+std::optional<Celeste::ir::inputreconstruction::Function*>
+Celeste::ir::inputreconstruction::File::GetFunction(const std::string& functionName,
+													bool expandImports)
+{
+	if (expandImports)
+	{
+		std::cout
+			<< "Expanded Imports are not yet implemented yet. Defaulting to non import usage.\n";
+	}
+
+	for (auto& element : GetRoot()->GetScope())
+	{
+		if (element->GetType() == Type::Function)
+		{
+			auto functionElement = static_cast<Function*>(element);
+			if (functionElement->GetFunctionName()->GetResolvedName() == functionName)
+			{
+				return functionElement;
+			}
+		}
+	}
+
+	// Failed to find a function name
 	return std::nullopt;
 }
 

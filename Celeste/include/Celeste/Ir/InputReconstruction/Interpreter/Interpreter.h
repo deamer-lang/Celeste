@@ -473,7 +473,7 @@ namespace Celeste::ir::inputreconstruction
 		// Contains a stack of Operation Stacks
 		// The latest stack represents the current Operation Stack
 		// All other stacks should be seen as not reachable in the current context
-		std::vector<Stack> stackOfOperationStacks;
+		std::vector<std::unique_ptr<Stack>> stackOfOperationStacks;
 
 		// Contains A List of Reachable Types.
 		TypeTable typeTable;
@@ -494,8 +494,9 @@ namespace Celeste::ir::inputreconstruction
 					 Celeste::ir::inputreconstruction::Interpreter::Value*>
 		ZeroValue(InputReconstructionObject* type);
 
-		Value Evaluate(VariableDeclaration* object,
-					   const std::vector<std::unique_ptr<Expression>>& expressions);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		Evaluate(VariableDeclaration* object,
+				 const std::vector<std::unique_ptr<Expression>>& expressions);
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
 		GetGlobal(Celeste::ir::inputreconstruction::VariableDeclaration* variableDeclaration);
 
@@ -522,8 +523,11 @@ namespace Celeste::ir::inputreconstruction
 								   Celeste::ir::inputreconstruction::Interpreter::Value>>
 		GetSymbolMember(NameReference* lhs, std::optional<Value*> valueReference = std::nullopt);
 
-		Value Evaluate(const std::unique_ptr<Expression>& rhs,
-					   std::optional<Value*> valueReference = std::nullopt);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		Evaluate(const std::unique_ptr<Expression>& rhs,
+				 std::optional<Value*> valueReference = std::nullopt);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		Evaluate(Expression* rhs, std::optional<Value*> valueReference = std::nullopt);
 
 		bool PolymorphismEquality(InputReconstructionObject* lhsType,
 								  InputReconstructionObject* rhsType);
@@ -544,6 +548,9 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 		EvaluateFunction(inputreconstruction::Function* function,
 						 std::vector<Value*> functionArguments);
+		std::optional<Value>
+		EvaluateSymbolReferenceCall(SymbolReferenceCall* symbolReferenceCall,
+									std::optional<Value*> valueReference = std::nullopt);
 
 	private:
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>

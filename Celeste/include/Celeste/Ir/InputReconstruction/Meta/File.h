@@ -43,12 +43,16 @@ namespace Celeste::ir::inputreconstruction
 		InputReconstructionObject* GetIrBottom();
 		InputReconstructionObject* GetRoot();
 		std::optional<Class*> GetClass(std::string className, bool expandImports = false);
+		std::optional<Function*> GetFunction(const std::string& functionName,
+											 bool expandImports = false);
 		void RemoveUnresolvedReference(SymbolReferenceCall* symbolReferenceCall);
 
-		void ResolveReferences(std::function<void(InputReconstructionObject*)> callback);
+		void ResolveReferences(std::function<void(InputReconstructionObject*)> callback =
+								   [](InputReconstructionObject*) {});
 
 		void
-		IdentifyUpperCodeBlockScopes(std::function<void(SourceCodeBlockMutationSet*)> callback);
+		IdentifyUpperCodeBlockScopes(std::function<void(SourceCodeBlockMutationSet*)> callback =
+										 [](SourceCodeBlockMutationSet*) {});
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock_);
