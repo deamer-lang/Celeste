@@ -11,6 +11,7 @@
 #include "Celeste/Ast/Node/ENUM.h"
 #include "Celeste/Ast/Node/CONDITIONAL.h"
 #include "Celeste/Ast/Node/CODE.h"
+#include "Celeste/Ast/Node/ATTRIBUTETOK.h"
 #include "Celeste/Ast/Node/RUNTIME.h"
 #include "Celeste/Ast/Node/STATIC.h"
 #include "Celeste/Ast/Node/AUTO.h"
@@ -178,6 +179,21 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__compound_base_alias__.h"
 #include "Celeste/Ast/Node/compound_base_name.h"
 #include "Celeste/Ast/Node/compound_base_alias.h"
+#include "Celeste/Ast/Node/attribute_section.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_optional__COMMA____attribute__.h"
+#include "Celeste/Ast/Node/attribute.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/attribute_argument.h"
+#include "Celeste/Ast/Node/attribute_template_argument.h"
+#include "Celeste/Ast/Node/attribute_declaration.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/attribute_function_argument.h"
+#include "Celeste/Ast/Node/attribute_name.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -256,6 +272,11 @@ namespace Celeste { namespace ast { namespace listener {
 			case Celeste::ast::Type::CODE:
 			{
 				Listen(static_cast<const Celeste::ast::node::CODE*>(node));
+				break;
+			}
+			case Celeste::ast::Type::ATTRIBUTETOK:
+			{
+				Listen(static_cast<const Celeste::ast::node::ATTRIBUTETOK*>(node));
 				break;
 			}
 			case Celeste::ast::Type::RUNTIME:
@@ -1194,6 +1215,96 @@ namespace Celeste { namespace ast { namespace listener {
 				DefaultAction(node);
 				break;
 			}
+			case Celeste::ast::Type::attribute_section:
+			{
+				Listen(static_cast<const Celeste::ast::node::attribute_section*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::attribute:
+			{
+				Listen(static_cast<const Celeste::ast::node::attribute*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute_argument__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute_argument__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::attribute_argument:
+			{
+				Listen(static_cast<const Celeste::ast::node::attribute_argument*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::attribute_template_argument:
+			{
+				Listen(static_cast<const Celeste::ast::node::attribute_template_argument*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::attribute_declaration:
+			{
+				Listen(static_cast<const Celeste::ast::node::attribute_declaration*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__:
+			{
+				Listen(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::attribute_function_argument:
+			{
+				Listen(static_cast<const Celeste::ast::node::attribute_function_argument*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::attribute_name:
+			{
+				Listen(static_cast<const Celeste::ast::node::attribute_name*>(node));
+				DefaultAction(node);
+				break;
+			}
 			case Celeste::ast::Type::enum_declaration:
 			{
 				Listen(static_cast<const Celeste::ast::node::enum_declaration*>(node));
@@ -1395,6 +1506,9 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::CODE* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::ATTRIBUTETOK* node)
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::RUNTIME* node)
@@ -1894,6 +2008,51 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::compound_base_alias* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::attribute_section* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_arrow__attribute__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::attribute* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_arrow__attribute_argument__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::attribute_argument* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::attribute_template_argument* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::attribute_declaration* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::attribute_function_argument* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::attribute_name* node)
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::enum_declaration* node)

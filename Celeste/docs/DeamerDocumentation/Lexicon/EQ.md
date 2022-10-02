@@ -38,6 +38,7 @@ Overview of the terminal: **[EQ](./EQ.md)**.
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
+| [attribute_section](./../Grammar/attribute_section.md) [type](./../Grammar/type.md) [variable_name](./../Grammar/variable_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md)  |
 | [type](./../Grammar/type.md) [variable_name](./../Grammar/variable_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md)  |
 
 
@@ -53,8 +54,11 @@ Overview of the terminal: **[EQ](./EQ.md)**.
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
+| [attribute_section](./../Grammar/attribute_section.md) [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md) [COMMA](./COMMA.md)  |
 | [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md) [COMMA](./COMMA.md)  |
+| [attribute_section](./../Grammar/attribute_section.md) [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md) [SEMICOLON](./SEMICOLON.md)  |
 | [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md) [SEMICOLON](./SEMICOLON.md)  |
+| [attribute_section](./../Grammar/attribute_section.md) [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md)  |
 | [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md)  |
 
 

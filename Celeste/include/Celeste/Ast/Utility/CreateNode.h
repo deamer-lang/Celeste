@@ -9,6 +9,7 @@
 #include "Celeste/Ast/Node/ENUM.h"
 #include "Celeste/Ast/Node/CONDITIONAL.h"
 #include "Celeste/Ast/Node/CODE.h"
+#include "Celeste/Ast/Node/ATTRIBUTETOK.h"
 #include "Celeste/Ast/Node/RUNTIME.h"
 #include "Celeste/Ast/Node/STATIC.h"
 #include "Celeste/Ast/Node/AUTO.h"
@@ -175,6 +176,21 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__compound_base_alias__.h"
 #include "Celeste/Ast/Node/compound_base_name.h"
 #include "Celeste/Ast/Node/compound_base_alias.h"
+#include "Celeste/Ast/Node/attribute_section.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_optional__COMMA____attribute__.h"
+#include "Celeste/Ast/Node/attribute.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/attribute_argument.h"
+#include "Celeste/Ast/Node/attribute_template_argument.h"
+#include "Celeste/Ast/Node/attribute_declaration.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/attribute_function_argument.h"
+#include "Celeste/Ast/Node/attribute_name.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -308,6 +324,9 @@ namespace Celeste { namespace ast { namespace utility {
 			}
 			case ::Celeste::ast::Type::CODE: {
 				return new ::Celeste::ast::node::CODE({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
+			}
+			case ::Celeste::ast::Type::ATTRIBUTETOK: {
+				return new ::Celeste::ast::node::ATTRIBUTETOK({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
 			}
 			case ::Celeste::ast::Type::RUNTIME: {
 				return new ::Celeste::ast::node::RUNTIME({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
@@ -806,6 +825,51 @@ namespace Celeste { namespace ast { namespace utility {
 			}
 			case ::Celeste::ast::Type::compound_base_alias: {
 				return new ::Celeste::ast::node::compound_base_alias({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::attribute_section: {
+				return new ::Celeste::ast::node::attribute_section({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_arrow__attribute__: {
+				return new ::Celeste::ast::node::deamerreserved_arrow__attribute__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__: {
+				return new ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::attribute: {
+				return new ::Celeste::ast::node::attribute({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_arrow__attribute_argument__: {
+				return new ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__: {
+				return new ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__: {
+				return new ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__: {
+				return new ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::attribute_argument: {
+				return new ::Celeste::ast::node::attribute_argument({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::attribute_template_argument: {
+				return new ::Celeste::ast::node::attribute_template_argument({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::attribute_declaration: {
+				return new ::Celeste::ast::node::attribute_declaration({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__: {
+				return new ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__: {
+				return new ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::attribute_function_argument: {
+				return new ::Celeste::ast::node::attribute_function_argument({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::attribute_name: {
+				return new ::Celeste::ast::node::attribute_name({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
 			}
 			case ::Celeste::ast::Type::enum_declaration: {
 				return new ::Celeste::ast::node::enum_declaration({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);

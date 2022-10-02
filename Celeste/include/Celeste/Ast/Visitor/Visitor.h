@@ -11,6 +11,7 @@
 #include "Celeste/Ast/Node/ENUM.h"
 #include "Celeste/Ast/Node/CONDITIONAL.h"
 #include "Celeste/Ast/Node/CODE.h"
+#include "Celeste/Ast/Node/ATTRIBUTETOK.h"
 #include "Celeste/Ast/Node/RUNTIME.h"
 #include "Celeste/Ast/Node/STATIC.h"
 #include "Celeste/Ast/Node/AUTO.h"
@@ -178,6 +179,21 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__compound_base_alias__.h"
 #include "Celeste/Ast/Node/compound_base_name.h"
 #include "Celeste/Ast/Node/compound_base_alias.h"
+#include "Celeste/Ast/Node/attribute_section.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_optional__COMMA____attribute__.h"
+#include "Celeste/Ast/Node/attribute.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/attribute_argument.h"
+#include "Celeste/Ast/Node/attribute_template_argument.h"
+#include "Celeste/Ast/Node/attribute_declaration.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/attribute_function_argument.h"
+#include "Celeste/Ast/Node/attribute_name.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -256,6 +272,11 @@ namespace Celeste { namespace ast { namespace Visitor {
 			case Celeste::ast::Type::CODE:
 			{
 				Visit(static_cast<const Celeste::ast::node::CODE*>(node));
+				break;
+			}
+			case Celeste::ast::Type::ATTRIBUTETOK:
+			{
+				Visit(static_cast<const Celeste::ast::node::ATTRIBUTETOK*>(node));
 				break;
 			}
 			case Celeste::ast::Type::RUNTIME:
@@ -1089,6 +1110,81 @@ namespace Celeste { namespace ast { namespace Visitor {
 				Visit(static_cast<const Celeste::ast::node::compound_base_alias*>(node));
 				break;
 			}
+			case Celeste::ast::Type::attribute_section:
+			{
+				Visit(static_cast<const Celeste::ast::node::attribute_section*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::attribute:
+			{
+				Visit(static_cast<const Celeste::ast::node::attribute*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute_argument__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute_argument__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::attribute_argument:
+			{
+				Visit(static_cast<const Celeste::ast::node::attribute_argument*>(node));
+				break;
+			}
+			case Celeste::ast::Type::attribute_template_argument:
+			{
+				Visit(static_cast<const Celeste::ast::node::attribute_template_argument*>(node));
+				break;
+			}
+			case Celeste::ast::Type::attribute_declaration:
+			{
+				Visit(static_cast<const Celeste::ast::node::attribute_declaration*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__:
+			{
+				Visit(static_cast<const Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__*>(node));
+				break;
+			}
+			case Celeste::ast::Type::attribute_function_argument:
+			{
+				Visit(static_cast<const Celeste::ast::node::attribute_function_argument*>(node));
+				break;
+			}
+			case Celeste::ast::Type::attribute_name:
+			{
+				Visit(static_cast<const Celeste::ast::node::attribute_name*>(node));
+				break;
+			}
 			case Celeste::ast::Type::enum_declaration:
 			{
 				Visit(static_cast<const Celeste::ast::node::enum_declaration*>(node));
@@ -1260,6 +1356,9 @@ namespace Celeste { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::CODE* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::ATTRIBUTETOK* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::RUNTIME* node)
@@ -1759,6 +1858,51 @@ namespace Celeste { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::compound_base_alias* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::attribute_section* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_arrow__attribute__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::attribute* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_arrow__attribute_argument__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::attribute_argument* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::attribute_template_argument* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::attribute_declaration* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::attribute_function_argument* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::attribute_name* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::enum_declaration* node)

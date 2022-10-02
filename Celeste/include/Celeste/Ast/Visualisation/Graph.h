@@ -1076,6 +1076,156 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"compound_base_alias\"];\n";
 		}
 
+		void ListenEntry(const ::Celeste::ast::node::attribute_section* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute_section\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_arrow__attribute__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_arrow__attribute__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__deamerreserved_optional__COMMA____attribute__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::attribute* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_arrow__attribute_argument__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__COMMA__attribute_argument__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_arrow__attribute_template_argument__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__COMMA__attribute_template_argument__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::attribute_argument* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute_argument\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::attribute_template_argument* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute_template_argument\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::attribute_declaration* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute_declaration\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_arrow__attribute_function_argument__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__COMMA__attribute_function_argument__\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::attribute_function_argument* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute_function_argument\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::attribute_name* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute_name\"];\n";
+		}
+
 		void ListenEntry(const ::Celeste::ast::node::enum_declaration* node) override
 		{
 			for (const auto* child : node->GetNodes())
@@ -1444,6 +1594,16 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			}
 
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"CODE\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::ATTRIBUTETOK* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"ATTRIBUTETOK\"];\n";
 		}
 
 		void ListenEntry(const ::Celeste::ast::node::RUNTIME* node) override
@@ -2474,6 +2634,66 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 		}
 
 		void ListenExit(const ::Celeste::ast::node::compound_base_alias* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::attribute_section* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_arrow__attribute__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::attribute* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::attribute_argument* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::attribute_template_argument* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::attribute_declaration* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::attribute_function_argument* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::attribute_name* node) override
 		{
 		}
 

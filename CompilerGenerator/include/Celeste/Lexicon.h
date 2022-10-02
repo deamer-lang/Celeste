@@ -27,6 +27,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> ENUM;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> CONDITIONAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> CODE;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> ATTRIBUTETOK;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> RUNTIME;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> STATIC;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> AUTO;
@@ -107,6 +108,7 @@ CLASS.Set(deamer::language::type::definition::object::main::Terminal("CLASS", "[
 ENUM.Set(deamer::language::type::definition::object::main::Terminal("ENUM", "[Ee][Nn][Uu][Mm]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 CONDITIONAL.Set(deamer::language::type::definition::object::main::Terminal("CONDITIONAL", "[Cc][Oo][Nn][Dd][Ii][Tt][Ii][Oo][Nn][Aa][Ll]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 CODE.Set(deamer::language::type::definition::object::main::Terminal("CODE", "[Cc][Oo][Dd][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+ATTRIBUTETOK.Set(deamer::language::type::definition::object::main::Terminal("ATTRIBUTETOK", "[Aa][Tt][Tt][Rr][Ii][Bb][Uu][Tt][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 RUNTIME.Set(deamer::language::type::definition::object::main::Terminal("RUNTIME", "[Rr][Uu][Nn][Tt][Ii][Mm][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 STATIC.Set(deamer::language::type::definition::object::main::Terminal("STATIC", "[Ss][Tt][Aa][Tt][Ii][Cc]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 AUTO.Set(deamer::language::type::definition::object::main::Terminal("AUTO", "[Aa][Uu][Tt][Oo]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
@@ -179,6 +181,7 @@ AddObject(CLASS);
 AddObject(ENUM);
 AddObject(CONDITIONAL);
 AddObject(CODE);
+AddObject(ATTRIBUTETOK);
 AddObject(RUNTIME);
 AddObject(STATIC);
 AddObject(AUTO);

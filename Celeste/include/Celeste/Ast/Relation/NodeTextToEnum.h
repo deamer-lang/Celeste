@@ -327,6 +327,51 @@ namespace Celeste { namespace ast { namespace relation {
 		{ "compound_base_alias", ::Celeste::ast::Type::compound_base_alias },
 	
 
+		{ "attribute_section", ::Celeste::ast::Type::attribute_section },
+	
+
+		{ "deamerreserved_arrow__attribute__", ::Celeste::ast::Type::deamerreserved_arrow__attribute__ },
+	
+
+		{ "deamerreserved_star__deamerreserved_optional__COMMA____attribute__", ::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__ },
+	
+
+		{ "attribute", ::Celeste::ast::Type::attribute },
+	
+
+		{ "deamerreserved_arrow__attribute_argument__", ::Celeste::ast::Type::deamerreserved_arrow__attribute_argument__ },
+	
+
+		{ "deamerreserved_star__COMMA__attribute_argument__", ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__ },
+	
+
+		{ "deamerreserved_arrow__attribute_template_argument__", ::Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__ },
+	
+
+		{ "deamerreserved_star__COMMA__attribute_template_argument__", ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__ },
+	
+
+		{ "attribute_argument", ::Celeste::ast::Type::attribute_argument },
+	
+
+		{ "attribute_template_argument", ::Celeste::ast::Type::attribute_template_argument },
+	
+
+		{ "attribute_declaration", ::Celeste::ast::Type::attribute_declaration },
+	
+
+		{ "deamerreserved_arrow__attribute_function_argument__", ::Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__ },
+	
+
+		{ "deamerreserved_star__COMMA__attribute_function_argument__", ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__ },
+	
+
+		{ "attribute_function_argument", ::Celeste::ast::Type::attribute_function_argument },
+	
+
+		{ "attribute_name", ::Celeste::ast::Type::attribute_name },
+	
+
 		{ "enum_declaration", ::Celeste::ast::Type::enum_declaration },
 	
 
@@ -436,6 +481,9 @@ namespace Celeste { namespace ast { namespace relation {
 	
 
 		{ "CODE", ::Celeste::ast::Type::CODE },
+	
+
+		{ "ATTRIBUTETOK", ::Celeste::ast::Type::ATTRIBUTETOK },
 	
 
 		{ "RUNTIME", ::Celeste::ast::Type::RUNTIME },

@@ -43,6 +43,11 @@ namespace Celeste { namespace ast { namespace relation {
 			return false;
 		}
 
+		if (t == ::Celeste::ast::Type::ATTRIBUTETOK)
+		{
+			return false;
+		}
+
 		if (t == ::Celeste::ast::Type::RUNTIME)
 		{
 			return false;

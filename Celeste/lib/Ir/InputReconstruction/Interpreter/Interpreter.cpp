@@ -1421,6 +1421,8 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 
 		throw std::logic_error("Evaluated Symbol is invalid.");
 	}
+
+	return std::nullopt;
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
@@ -2086,6 +2088,8 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
 			return result.value();
 		}
 	}
+
+	return std::nullopt;
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
@@ -2741,6 +2745,10 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(Expression* rhs,
 			else if (std::holds_alternative<std::unique_ptr<inputreconstruction::Value>>(someValue))
 			{
 				return extractValue(someValue);
+			}
+			else
+			{
+				return std::optional<Value>(std::nullopt);
 			}
 		};
 

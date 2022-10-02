@@ -30,6 +30,8 @@ Overview of the nonterminal: **[variable_name](./variable_name.md)**
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
+| [attribute_section](./attribute_section.md) [type](./type.md) [variable_name](./variable_name.md) [EQ](./../Lexicon/EQ.md) [value_list](./value_list.md)  |
+| [attribute_section](./attribute_section.md) [type](./type.md) [variable_name](./variable_name.md)  |
 | [type](./type.md) [variable_name](./variable_name.md) [EQ](./../Lexicon/EQ.md) [value_list](./value_list.md)  |
 | [type](./type.md) [variable_name](./variable_name.md)  |
 

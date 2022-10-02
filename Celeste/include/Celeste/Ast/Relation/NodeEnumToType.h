@@ -108,6 +108,21 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__compound_base_alias__.h"
 #include "Celeste/Ast/Node/compound_base_name.h"
 #include "Celeste/Ast/Node/compound_base_alias.h"
+#include "Celeste/Ast/Node/attribute_section.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_optional__COMMA____attribute__.h"
+#include "Celeste/Ast/Node/attribute.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/attribute_argument.h"
+#include "Celeste/Ast/Node/attribute_template_argument.h"
+#include "Celeste/Ast/Node/attribute_declaration.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/attribute_function_argument.h"
+#include "Celeste/Ast/Node/attribute_name.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -145,6 +160,7 @@
 #include "Celeste/Ast/Node/ENUM.h"
 #include "Celeste/Ast/Node/CONDITIONAL.h"
 #include "Celeste/Ast/Node/CODE.h"
+#include "Celeste/Ast/Node/ATTRIBUTETOK.h"
 #include "Celeste/Ast/Node/RUNTIME.h"
 #include "Celeste/Ast/Node/STATIC.h"
 #include "Celeste/Ast/Node/AUTO.h"
@@ -954,6 +970,111 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::attribute_section>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::attribute_section;
+		using type = ::Celeste::ast::node::attribute_section;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_arrow__attribute__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_arrow__attribute__;
+		using type = ::Celeste::ast::node::deamerreserved_arrow__attribute__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__;
+		using type = ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::attribute>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::attribute;
+		using type = ::Celeste::ast::node::attribute;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_arrow__attribute_argument__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_arrow__attribute_argument__;
+		using type = ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__;
+		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__;
+		using type = ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__;
+		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::attribute_argument>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::attribute_argument;
+		using type = ::Celeste::ast::node::attribute_argument;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::attribute_template_argument>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::attribute_template_argument;
+		using type = ::Celeste::ast::node::attribute_template_argument;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::attribute_declaration>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::attribute_declaration;
+		using type = ::Celeste::ast::node::attribute_declaration;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__;
+		using type = ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__;
+		using type = ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::attribute_function_argument>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::attribute_function_argument;
+		using type = ::Celeste::ast::node::attribute_function_argument;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::attribute_name>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::attribute_name;
+		using type = ::Celeste::ast::node::attribute_name;
+	};
+
+	template<>
 	struct NodeEnumToType<::Celeste::ast::Type::enum_declaration>
 	{
 		constexpr static auto value = ::Celeste::ast::Type::enum_declaration;
@@ -1210,6 +1331,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::CODE;
 		using type = ::Celeste::ast::node::CODE;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::ATTRIBUTETOK>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::ATTRIBUTETOK;
+		using type = ::Celeste::ast::node::ATTRIBUTETOK;
 	};
 
 	template<>

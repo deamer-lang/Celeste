@@ -37,6 +37,7 @@ stmt
 	template_function_declaration
 	template_class_declaration
 	function_declaration
+	attribute_declaration
 	class_declaration
 	enum_declaration
 	variable_declaration
@@ -205,7 +206,7 @@ code_block_program
 	standard_block
 	
 variable_declaration
-	type variable_name [EQ value_list]
+	[attribute_section] type variable_name [EQ value_list]
 
 array_declaration
 	LEFT_SQUARE_BRACKET expression RIGHT_SQUARE_BRACKET
@@ -214,10 +215,10 @@ variable_name
 	symbol_reference
 	
 template_function_declaration
-	execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET execution_keyword_permutation FUNCTION return_type function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS [trailing_return_type] LEFT_BRACKET function_body RIGHT_BRACKET
-
+	[attribute_section] execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET [attribute_section] execution_keyword_permutation FUNCTION return_type function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS [trailing_return_type] LEFT_BRACKET function_body RIGHT_BRACKET
+	
 function_declaration
-	execution_keyword_permutation FUNCTION return_type function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS [trailing_return_type] LEFT_BRACKET function_body RIGHT_BRACKET
+	[attribute_section] execution_keyword_permutation FUNCTION return_type function_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS [trailing_return_type] LEFT_BRACKET function_body RIGHT_BRACKET
 
 trailing_return_type
 	return_type
@@ -253,7 +254,7 @@ function_name
 	symbol_reference
 
 template_class_declaration
-	execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET execution_keyword_permutation CLASS class_name [class_inherit_base] LEFT_BRACKET class_body RIGHT_BRACKET
+	[attribute_section] execution_keyword_permutation TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET [attribute_section] execution_keyword_permutation CLASS class_name [class_inherit_base] LEFT_BRACKET class_body RIGHT_BRACKET
 
 template_parameter
 	type template_parameter_name
@@ -262,7 +263,7 @@ template_parameter_name
 	VARNAME
 
 class_declaration
-	execution_keyword_permutation CLASS class_name [class_inherit_base -> (COMMA class_inherit_base)] LEFT_BRACKET class_body RIGHT_BRACKET
+	[attribute_section] execution_keyword_permutation CLASS class_name [class_inherit_base -> (COMMA class_inherit_base)] LEFT_BRACKET class_body RIGHT_BRACKET
 	
 class_name
 	symbol_reference
@@ -286,9 +287,9 @@ class_stmt
 	template_class_stmt_constructor
 	
 class_stmt_member_field_declaration
-	type member_field_name [EQ value_list] COMMA
-	type member_field_name [EQ value_list] SEMICOLON
-	type member_field_name [EQ value_list] 
+	[attribute_section] type member_field_name [EQ value_list] COMMA
+	[attribute_section] type member_field_name [EQ value_list] SEMICOLON
+	[attribute_section] type member_field_name [EQ value_list] 
 
 member_field_name
 	symbol_reference
@@ -300,12 +301,12 @@ class_stmt_member_template_function
 	[VIRTUAL|PURE] template_function_declaration [OVERRIDE]
 	
 template_class_stmt_constructor
-	TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET class_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
-	TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET CONSTRUCTOR [class_name] LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	[attribute_section] TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET [attribute_section] class_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	[attribute_section] TEMPLATE LEFT_SQUARE_BRACKET [template_parameter -> (COMMA template_parameter)] RIGHT_SQUARE_BRACKET [attribute_section] CONSTRUCTOR [class_name] LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
 	
 class_stmt_constructor
-	class_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
-	CONSTRUCTOR [class_name] LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	[attribute_section] class_name LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
+	[attribute_section] CONSTRUCTOR [class_name] LEFT_PARANTHESIS [function_argument -> (COMMA function_argument)] [COMMA] RIGHT_PARANTHESIS LEFT_BRACKET function_body RIGHT_BRACKET
 
 accessibility
 	PUBLIC
@@ -333,8 +334,31 @@ compound_base_name
 compound_base_alias
 	VARNAME
 
+attribute_section
+	LEFT_SQUARE_BRACKET LEFT_SQUARE_BRACKET [attribute -> ([COMMA] attribute)] RIGHT_SQUARE_BRACKET RIGHT_SQUARE_BRACKET
+
+attribute
+	symbol_name
+	symbol_name LEFT_PARANTHESIS [attribute_argument -> (COMMA attribute_argument)] RIGHT_PARANTHESIS
+	symbol_name LEFT_SQUARE_BRACKET [attribute_template_argument -> (COMMA attribute_template_argument)] RIGHT_SQUARE_BRACKET LEFT_PARANTHESIS [attribute_argument -> (COMMA attribute_argument)] RIGHT_PARANTHESIS
+
+attribute_argument
+	expression
+	
+attribute_template_argument
+	expression
+	
+attribute_declaration
+	[attribute_section] execution_keyword_permutation ATTRIBUTETOK attribute_name LEFT_PARANTHESIS [attribute_function_argument -> (COMMA attribute_function_argument)] [COMMA] RIGHT_PARANTHESIS [trailing_return_type] LEFT_BRACKET function_body RIGHT_BRACKET
+
+attribute_function_argument
+	function_argument
+	
+attribute_name
+	symbol_name
+
 enum_declaration
-	ENUM enum_name LEFT_BRACKET enumeration* RIGHT_BRACKET
+	attribute_section ENUM enum_name LEFT_BRACKET enumeration* RIGHT_BRACKET
 
 enum_name
 	symbol_reference

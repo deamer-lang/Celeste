@@ -533,6 +533,81 @@ namespace Celeste { namespace ast { namespace relation {
 			return true;
 		}
 
+		if (t == ::Celeste::ast::Type::attribute_section)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_arrow__attribute__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::attribute)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_arrow__attribute_argument__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::attribute_argument)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::attribute_template_argument)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::attribute_declaration)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::attribute_function_argument)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::attribute_name)
+		{
+			return true;
+		}
+
 		if (t == ::Celeste::ast::Type::enum_declaration)
 		{
 			return true;

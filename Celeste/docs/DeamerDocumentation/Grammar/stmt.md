@@ -19,6 +19,7 @@ Overview of the nonterminal: **[stmt](./stmt.md)**
 | [template_function_declaration](./template_function_declaration.md)  |
 | [template_class_declaration](./template_class_declaration.md)  |
 | [function_declaration](./function_declaration.md)  |
+| [attribute_declaration](./attribute_declaration.md)  |
 | [class_declaration](./class_declaration.md)  |
 | [enum_declaration](./enum_declaration.md)  |
 | [variable_declaration](./variable_declaration.md)  |

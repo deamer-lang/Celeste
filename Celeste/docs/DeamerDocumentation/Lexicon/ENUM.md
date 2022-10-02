@@ -31,7 +31,7 @@ Overview of the terminal: **[ENUM](./ENUM.md)**.
 
 | Productionrule referencing this                      |
 | ---------------------------------------------------- |
-| [ENUM](./ENUM.md) [enum_name](./../Grammar/enum_name.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [deamerreserved_star__enumeration__](./../Grammar/deamerreserved_star__enumeration__.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
+| [attribute_section](./../Grammar/attribute_section.md) [ENUM](./ENUM.md) [enum_name](./../Grammar/enum_name.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [deamerreserved_star__enumeration__](./../Grammar/deamerreserved_star__enumeration__.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
 
 
 

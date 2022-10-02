@@ -111,6 +111,21 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__compound_base_alias__.h"
 #include "Celeste/Ast/Node/compound_base_name.h"
 #include "Celeste/Ast/Node/compound_base_alias.h"
+#include "Celeste/Ast/Node/attribute_section.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__deamerreserved_optional__COMMA____attribute__.h"
+#include "Celeste/Ast/Node/attribute.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_template_argument__.h"
+#include "Celeste/Ast/Node/attribute_argument.h"
+#include "Celeste/Ast/Node/attribute_template_argument.h"
+#include "Celeste/Ast/Node/attribute_declaration.h"
+#include "Celeste/Ast/Node/deamerreserved_arrow__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
+#include "Celeste/Ast/Node/attribute_function_argument.h"
+#include "Celeste/Ast/Node/attribute_name.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -148,6 +163,7 @@
 #include "Celeste/Ast/Node/ENUM.h"
 #include "Celeste/Ast/Node/CONDITIONAL.h"
 #include "Celeste/Ast/Node/CODE.h"
+#include "Celeste/Ast/Node/ATTRIBUTETOK.h"
 #include "Celeste/Ast/Node/RUNTIME.h"
 #include "Celeste/Ast/Node/STATIC.h"
 #include "Celeste/Ast/Node/AUTO.h"
@@ -511,6 +527,36 @@ namespace Celeste { namespace ast { namespace reference {
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::compound_base_alias>;
 	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_section>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_argument>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_declaration>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_name>;
+	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::enum_declaration>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__enumeration__>;
@@ -584,6 +630,8 @@ namespace Celeste { namespace ast { namespace reference {
 	struct AccessTemplateBase<::Celeste::ast::node::CONDITIONAL>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::CODE>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::RUNTIME>;
 	template<>
@@ -1233,6 +1281,7 @@ AccessTemplateBase<::Celeste::ast::node::template_function_declaration> template
 AccessTemplateBase<::Celeste::ast::node::function_declaration> function_declaration();
 AccessTemplateBase<::Celeste::ast::node::template_class_declaration> template_class_declaration();
 AccessTemplateBase<::Celeste::ast::node::class_declaration> class_declaration();
+AccessTemplateBase<::Celeste::ast::node::attribute_declaration> attribute_declaration();
 AccessTemplateBase<::Celeste::ast::node::enum_declaration> enum_declaration();
 AccessTemplateBase<::Celeste::ast::node::symbol_reference> symbol_reference();
 AccessTemplateBase<::Celeste::ast::node::SEMICOLON> SEMICOLON();
@@ -7526,6 +7575,7 @@ AccessTemplateBase<::Celeste::ast::node::type> type();
 
 	public:
 		AccessTemplateBase<::Celeste::ast::node::variable_name> variable_name();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::type> type();
 AccessTemplateBase<::Celeste::ast::node::value_list> value_list();
 AccessTemplateBase<::Celeste::ast::node::EQ> EQ();
@@ -7862,6 +7912,7 @@ AccessTemplateBase<::Celeste::ast::node::function_body> function_body();
 AccessTemplateBase<::Celeste::ast::node::function_name> function_name();
 AccessTemplateBase<::Celeste::ast::node::template_parameter> template_parameter();
 AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> execution_keyword_permutation();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::FUNCTION> FUNCTION();
 AccessTemplateBase<::Celeste::ast::node::TEMPLATE> TEMPLATE();
 AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> LEFT_BRACKET();
@@ -7985,6 +8036,7 @@ AccessTemplateBase<::Celeste::ast::node::function_argument> function_argument();
 AccessTemplateBase<::Celeste::ast::node::function_body> function_body();
 AccessTemplateBase<::Celeste::ast::node::function_name> function_name();
 AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> execution_keyword_permutation();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::FUNCTION> FUNCTION();
 AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> LEFT_BRACKET();
 AccessTemplateBase<::Celeste::ast::node::RIGHT_BRACKET> RIGHT_BRACKET();
@@ -9511,6 +9563,7 @@ AccessTemplateBase<::Celeste::ast::node::class_name> class_name();
 AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> execution_keyword_permutation();
 AccessTemplateBase<::Celeste::ast::node::class_body> class_body();
 AccessTemplateBase<::Celeste::ast::node::class_inherit_base> class_inherit_base();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::CLASS> CLASS();
 AccessTemplateBase<::Celeste::ast::node::TEMPLATE> TEMPLATE();
 AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> LEFT_BRACKET();
@@ -9845,6 +9898,7 @@ AccessTemplateBase<::Celeste::ast::node::class_name> class_name();
 AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> execution_keyword_permutation();
 AccessTemplateBase<::Celeste::ast::node::class_body> class_body();
 AccessTemplateBase<::Celeste::ast::node::class_inherit_base> class_inherit_base();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::CLASS> CLASS();
 AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> LEFT_BRACKET();
 AccessTemplateBase<::Celeste::ast::node::RIGHT_BRACKET> RIGHT_BRACKET();
@@ -10717,6 +10771,7 @@ AccessTemplateBase<::Celeste::ast::node::accessibility> accessibility();
 
 	public:
 		AccessTemplateBase<::Celeste::ast::node::member_field_name> member_field_name();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::type> type();
 AccessTemplateBase<::Celeste::ast::node::value_list> value_list();
 AccessTemplateBase<::Celeste::ast::node::SEMICOLON> SEMICOLON();
@@ -11163,6 +11218,7 @@ AccessTemplateBase<::Celeste::ast::node::function_argument> function_argument();
 AccessTemplateBase<::Celeste::ast::node::function_body> function_body();
 AccessTemplateBase<::Celeste::ast::node::template_parameter> template_parameter();
 AccessTemplateBase<::Celeste::ast::node::class_name> class_name();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::TEMPLATE> TEMPLATE();
 AccessTemplateBase<::Celeste::ast::node::CONSTRUCTOR> CONSTRUCTOR();
 AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> LEFT_BRACKET();
@@ -11283,6 +11339,7 @@ AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__function_ar
 AccessTemplateBase<::Celeste::ast::node::function_argument> function_argument();
 AccessTemplateBase<::Celeste::ast::node::function_body> function_body();
 AccessTemplateBase<::Celeste::ast::node::class_name> class_name();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
 AccessTemplateBase<::Celeste::ast::node::CONSTRUCTOR> CONSTRUCTOR();
 AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> LEFT_BRACKET();
 AccessTemplateBase<::Celeste::ast::node::RIGHT_BRACKET> RIGHT_BRACKET();
@@ -12303,6 +12360,1656 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 	};
 
 	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_section> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::attribute_section*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::attribute_section*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_section& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_section* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::attribute_section>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::attribute_section>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::attribute_section*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::attribute_section*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__> deamerreserved_arrow__attribute__();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__> deamerreserved_star__deamerreserved_optional__COMMA____attribute__();
+AccessTemplateBase<::Celeste::ast::node::attribute> attribute();
+AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET> LEFT_SQUARE_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::attribute_section>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__> deamerreserved_star__deamerreserved_optional__COMMA____attribute__();
+AccessTemplateBase<::Celeste::ast::node::attribute> attribute();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__> deamerreserved_star__deamerreserved_optional__COMMA____attribute__();
+AccessTemplateBase<::Celeste::ast::node::attribute> attribute();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::attribute*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::attribute*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::attribute>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::attribute>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::attribute*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::attribute*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__> deamerreserved_arrow__attribute_argument__();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__> deamerreserved_star__COMMA__attribute_argument__();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__> deamerreserved_arrow__attribute_template_argument__();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__> deamerreserved_star__COMMA__attribute_template_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_argument> attribute_argument();
+AccessTemplateBase<::Celeste::ast::node::attribute_template_argument> attribute_template_argument();
+AccessTemplateBase<::Celeste::ast::node::symbol_name> symbol_name();
+AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET> LEFT_SQUARE_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS> LEFT_PARANTHESIS();
+AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS> RIGHT_PARANTHESIS();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::attribute>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_argument__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__> deamerreserved_star__COMMA__attribute_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_argument> attribute_argument();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__> deamerreserved_star__COMMA__attribute_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_argument> attribute_argument();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__> deamerreserved_star__COMMA__attribute_template_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_template_argument> attribute_template_argument();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__> deamerreserved_star__COMMA__attribute_template_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_template_argument> attribute_template_argument();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_argument> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::attribute_argument*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::attribute_argument*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_argument& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_argument* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::attribute_argument>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::attribute_argument>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::attribute_argument*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::attribute_argument*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::expression> expression();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::attribute_argument>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_template_argument> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::attribute_template_argument*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::attribute_template_argument*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_template_argument& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_template_argument* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::attribute_template_argument*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::attribute_template_argument*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::expression> expression();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_declaration> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::attribute_declaration*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::attribute_declaration*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_declaration& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_declaration* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::attribute_declaration>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::attribute_declaration>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::attribute_declaration*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::attribute_declaration*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::trailing_return_type> trailing_return_type();
+AccessTemplateBase<::Celeste::ast::node::function_body> function_body();
+AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> execution_keyword_permutation();
+AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__> deamerreserved_arrow__attribute_function_argument__();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__> deamerreserved_star__COMMA__attribute_function_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_function_argument> attribute_function_argument();
+AccessTemplateBase<::Celeste::ast::node::attribute_name> attribute_name();
+AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK> ATTRIBUTETOK();
+AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> LEFT_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::RIGHT_BRACKET> RIGHT_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS> LEFT_PARANTHESIS();
+AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS> RIGHT_PARANTHESIS();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::attribute_declaration>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__> deamerreserved_star__COMMA__attribute_function_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_function_argument> attribute_function_argument();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__> deamerreserved_star__COMMA__attribute_function_argument__();
+AccessTemplateBase<::Celeste::ast::node::attribute_function_argument> attribute_function_argument();
+AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_function_argument> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::attribute_function_argument*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::attribute_function_argument*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_function_argument& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_function_argument* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::attribute_function_argument*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::attribute_function_argument*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::function_argument> function_argument();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::attribute_name> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::attribute_name*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::attribute_name*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_name& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::attribute_name* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::attribute_name>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::attribute_name>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::attribute_name*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::attribute_name*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::symbol_name> symbol_name();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::attribute_name>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::enum_declaration> : public AccessBase
 	{
 	protected:
@@ -12374,7 +14081,8 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 		}
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__enumeration__> deamerreserved_star__enumeration__();
+		AccessTemplateBase<::Celeste::ast::node::attribute_section> attribute_section();
+AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__enumeration__> deamerreserved_star__enumeration__();
 AccessTemplateBase<::Celeste::ast::node::enum_name> enum_name();
 AccessTemplateBase<::Celeste::ast::node::enumeration> enumeration();
 AccessTemplateBase<::Celeste::ast::node::ENUM> ENUM();
@@ -16299,6 +18007,112 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 		template<typename FunctionType>
 		AccessTemplateBase<::Celeste::ast::node::CODE>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::ATTRIBUTETOK*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::ATTRIBUTETOK*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::ATTRIBUTETOK& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::ATTRIBUTETOK* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::ATTRIBUTETOK*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::ATTRIBUTETOK*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -23021,6 +24835,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::class_declaration>(Get<::Celeste::ast::Type::class_declaration>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_declaration> AccessTemplateBase<::Celeste::ast::node::stmt>::attribute_declaration()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_declaration>(Get<::Celeste::ast::Type::attribute_declaration>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::enum_declaration> AccessTemplateBase<::Celeste::ast::node::stmt>::enum_declaration()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -25029,6 +26851,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::variable_name>(Get<::Celeste::ast::Type::variable_name>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::variable_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::type> AccessTemplateBase<::Celeste::ast::node::variable_declaration>::type()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -25173,6 +27003,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation>(Get<::Celeste::ast::Type::execution_keyword_permutation>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::template_function_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::FUNCTION> AccessTemplateBase<::Celeste::ast::node::template_function_declaration>::FUNCTION()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -25307,6 +27145,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation>(Get<::Celeste::ast::Type::execution_keyword_permutation>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::function_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::FUNCTION> AccessTemplateBase<::Celeste::ast::node::function_declaration>::FUNCTION()
@@ -25645,6 +27491,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::class_inherit_base>(Get<::Celeste::ast::Type::class_inherit_base>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::template_class_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::CLASS> AccessTemplateBase<::Celeste::ast::node::template_class_declaration>::CLASS()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -25771,6 +27625,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::class_inherit_base>(Get<::Celeste::ast::Type::class_inherit_base>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::class_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::CLASS> AccessTemplateBase<::Celeste::ast::node::class_declaration>::CLASS()
@@ -25965,6 +27827,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::member_field_name>(Get<::Celeste::ast::Type::member_field_name>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::class_stmt_member_field_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::type> AccessTemplateBase<::Celeste::ast::node::class_stmt_member_field_declaration>::type()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -26141,6 +28011,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::class_name>(Get<::Celeste::ast::Type::class_name>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::template_class_stmt_constructor>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::TEMPLATE> AccessTemplateBase<::Celeste::ast::node::template_class_stmt_constructor>::TEMPLATE()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -26251,6 +28129,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::class_name>(Get<::Celeste::ast::Type::class_name>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::class_stmt_constructor>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::CONSTRUCTOR> AccessTemplateBase<::Celeste::ast::node::class_stmt_constructor>::CONSTRUCTOR()
@@ -26499,6 +28385,494 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::VARNAME>(Get<::Celeste::ast::Type::VARNAME>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__> AccessTemplateBase<::Celeste::ast::node::attribute_section>::deamerreserved_arrow__attribute__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>(Get<::Celeste::ast::Type::deamerreserved_arrow__attribute__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__> AccessTemplateBase<::Celeste::ast::node::attribute_section>::deamerreserved_star__deamerreserved_optional__COMMA____attribute__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>(Get<::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute> AccessTemplateBase<::Celeste::ast::node::attribute_section>::attribute()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute>(Get<::Celeste::ast::Type::attribute>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET> AccessTemplateBase<::Celeste::ast::node::attribute_section>::LEFT_SQUARE_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET>(Get<::Celeste::ast::Type::LEFT_SQUARE_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> AccessTemplateBase<::Celeste::ast::node::attribute_section>::RIGHT_SQUARE_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET>(Get<::Celeste::ast::Type::RIGHT_SQUARE_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::attribute_section>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>::deamerreserved_star__deamerreserved_optional__COMMA____attribute__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>(Get<::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>::attribute()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute>(Get<::Celeste::ast::Type::attribute>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>::deamerreserved_star__deamerreserved_optional__COMMA____attribute__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>(Get<::Celeste::ast::Type::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>::attribute()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute>(Get<::Celeste::ast::Type::attribute>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__> AccessTemplateBase<::Celeste::ast::node::attribute>::deamerreserved_arrow__attribute_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>(Get<::Celeste::ast::Type::deamerreserved_arrow__attribute_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__> AccessTemplateBase<::Celeste::ast::node::attribute>::deamerreserved_star__COMMA__attribute_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__> AccessTemplateBase<::Celeste::ast::node::attribute>::deamerreserved_arrow__attribute_template_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>(Get<::Celeste::ast::Type::deamerreserved_arrow__attribute_template_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__> AccessTemplateBase<::Celeste::ast::node::attribute>::deamerreserved_star__COMMA__attribute_template_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_argument> AccessTemplateBase<::Celeste::ast::node::attribute>::attribute_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_argument>(Get<::Celeste::ast::Type::attribute_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_template_argument> AccessTemplateBase<::Celeste::ast::node::attribute>::attribute_template_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>(Get<::Celeste::ast::Type::attribute_template_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::symbol_name> AccessTemplateBase<::Celeste::ast::node::attribute>::symbol_name()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::symbol_name>(Get<::Celeste::ast::Type::symbol_name>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET> AccessTemplateBase<::Celeste::ast::node::attribute>::LEFT_SQUARE_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET>(Get<::Celeste::ast::Type::LEFT_SQUARE_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> AccessTemplateBase<::Celeste::ast::node::attribute>::RIGHT_SQUARE_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET>(Get<::Celeste::ast::Type::RIGHT_SQUARE_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS> AccessTemplateBase<::Celeste::ast::node::attribute>::LEFT_PARANTHESIS()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS>(Get<::Celeste::ast::Type::LEFT_PARANTHESIS>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS> AccessTemplateBase<::Celeste::ast::node::attribute>::RIGHT_PARANTHESIS()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS>(Get<::Celeste::ast::Type::RIGHT_PARANTHESIS>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::attribute>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>::deamerreserved_star__COMMA__attribute_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_argument> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>::attribute_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_argument>(Get<::Celeste::ast::Type::attribute_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_argument__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>::deamerreserved_star__COMMA__attribute_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_argument> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>::attribute_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_argument>(Get<::Celeste::ast::Type::attribute_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>::deamerreserved_star__COMMA__attribute_template_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_template_argument> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>::attribute_template_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>(Get<::Celeste::ast::Type::attribute_template_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>::deamerreserved_star__COMMA__attribute_template_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_template_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_template_argument> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>::attribute_template_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>(Get<::Celeste::ast::Type::attribute_template_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::expression> AccessTemplateBase<::Celeste::ast::node::attribute_argument>::expression()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::expression>(Get<::Celeste::ast::Type::expression>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::expression> AccessTemplateBase<::Celeste::ast::node::attribute_template_argument>::expression()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::expression>(Get<::Celeste::ast::Type::expression>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::trailing_return_type> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::trailing_return_type()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::trailing_return_type>(Get<::Celeste::ast::Type::trailing_return_type>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::function_body> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::function_body()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::function_body>(Get<::Celeste::ast::Type::function_body>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::execution_keyword_permutation()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation>(Get<::Celeste::ast::Type::execution_keyword_permutation>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::deamerreserved_arrow__attribute_function_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>(Get<::Celeste::ast::Type::deamerreserved_arrow__attribute_function_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::deamerreserved_star__COMMA__attribute_function_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_function_argument> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::attribute_function_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>(Get<::Celeste::ast::Type::attribute_function_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_name> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::attribute_name()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_name>(Get<::Celeste::ast::Type::attribute_name>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::ATTRIBUTETOK()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::ATTRIBUTETOK>(Get<::Celeste::ast::Type::ATTRIBUTETOK>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::LEFT_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LEFT_BRACKET>(Get<::Celeste::ast::Type::LEFT_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::RIGHT_BRACKET> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::RIGHT_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::RIGHT_BRACKET>(Get<::Celeste::ast::Type::RIGHT_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::LEFT_PARANTHESIS()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS>(Get<::Celeste::ast::Type::LEFT_PARANTHESIS>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::RIGHT_PARANTHESIS()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS>(Get<::Celeste::ast::Type::RIGHT_PARANTHESIS>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::attribute_declaration>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>::deamerreserved_star__COMMA__attribute_function_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_function_argument> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>::attribute_function_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>(Get<::Celeste::ast::Type::attribute_function_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>::deamerreserved_star__COMMA__attribute_function_argument__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>(Get<::Celeste::ast::Type::deamerreserved_star__COMMA__attribute_function_argument__>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_function_argument> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>::attribute_function_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>(Get<::Celeste::ast::Type::attribute_function_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::COMMA> AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__>::COMMA()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::COMMA>(Get<::Celeste::ast::Type::COMMA>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::function_argument> AccessTemplateBase<::Celeste::ast::node::attribute_function_argument>::function_argument()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::function_argument>(Get<::Celeste::ast::Type::function_argument>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::symbol_name> AccessTemplateBase<::Celeste::ast::node::attribute_name>::symbol_name()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::symbol_name>(Get<::Celeste::ast::Type::symbol_name>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::enum_declaration>::attribute_section()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::attribute_section>(Get<::Celeste::ast::Type::attribute_section>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__enumeration__> AccessTemplateBase<::Celeste::ast::node::enum_declaration>::deamerreserved_star__enumeration__()

@@ -56,67 +56,68 @@ extern int Celestedebug;
     ENUM = 262,                    /* ENUM  */
     CONDITIONAL = 263,             /* CONDITIONAL  */
     CODE = 264,                    /* CODE  */
-    RUNTIME = 265,                 /* RUNTIME  */
-    STATIC = 266,                  /* STATIC  */
-    AUTO = 267,                    /* AUTO  */
-    AUTOTYPE = 268,                /* AUTOTYPE  */
-    TEMPLATE = 269,                /* TEMPLATE  */
-    NAMESPACE = 270,               /* NAMESPACE  */
-    OPERATORNAME = 271,            /* OPERATORNAME  */
-    OVERRIDE = 272,                /* OVERRIDE  */
-    VIRTUAL = 273,                 /* VIRTUAL  */
-    PURE = 274,                    /* PURE  */
-    AS = 275,                      /* AS  */
-    IN = 276,                      /* IN  */
-    DISPLAY = 277,                 /* DISPLAY  */
-    RETURN = 278,                  /* RETURN  */
-    FOR = 279,                     /* FOR  */
-    IF = 280,                      /* IF  */
-    ELSEIF = 281,                  /* ELSEIF  */
-    ELSE = 282,                    /* ELSE  */
-    INLINE = 283,                  /* INLINE  */
-    CONSTRUCTOR = 284,             /* CONSTRUCTOR  */
-    FILE_ = 285,                   /* FILE_  */
-    PROGRAM_ = 286,                /* PROGRAM_  */
-    IMPORT = 287,                  /* IMPORT  */
-    PUBLIC = 288,                  /* PUBLIC  */
-    PROTECTED = 289,               /* PROTECTED  */
-    PRIVATE = 290,                 /* PRIVATE  */
-    INHERIT = 291,                 /* INHERIT  */
-    COMPOSITE = 292,               /* COMPOSITE  */
-    LEFT_BRACKET = 293,            /* LEFT_BRACKET  */
-    RIGHT_BRACKET = 294,           /* RIGHT_BRACKET  */
-    LEFT_SQUARE_BRACKET = 295,     /* LEFT_SQUARE_BRACKET  */
-    RIGHT_SQUARE_BRACKET = 296,    /* RIGHT_SQUARE_BRACKET  */
-    LEFT_PARANTHESIS = 297,        /* LEFT_PARANTHESIS  */
-    RIGHT_PARANTHESIS = 298,       /* RIGHT_PARANTHESIS  */
-    COLON = 299,                   /* COLON  */
-    SEMICOLON = 300,               /* SEMICOLON  */
-    COMMA = 301,                   /* COMMA  */
-    DOT = 302,                     /* DOT  */
-    LTEQ = 303,                    /* LTEQ  */
-    GTEQ = 304,                    /* GTEQ  */
-    LT = 305,                      /* LT  */
-    GT = 306,                      /* GT  */
-    PLUSEQ = 307,                  /* PLUSEQ  */
-    MINUSEQ = 308,                 /* MINUSEQ  */
-    MULTIPLYEQ = 309,              /* MULTIPLYEQ  */
-    DIVIDEEQ = 310,                /* DIVIDEEQ  */
-    EQEQ = 311,                    /* EQEQ  */
-    EQ = 312,                      /* EQ  */
-    NOTEQ = 313,                   /* NOTEQ  */
-    NOT = 314,                     /* NOT  */
-    PLUSPLUS = 315,                /* PLUSPLUS  */
-    PLUS = 316,                    /* PLUS  */
-    MINUSMINUS = 317,              /* MINUSMINUS  */
-    MINUS = 318,                   /* MINUS  */
-    DIVIDE = 319,                  /* DIVIDE  */
-    MULTIPLY = 320,                /* MULTIPLY  */
-    VARNAME = 321,                 /* VARNAME  */
-    NUMBER = 322,                  /* NUMBER  */
-    DECIMAL = 323,                 /* DECIMAL  */
-    TEXT = 324,                    /* TEXT  */
-    ESCAPE_CHARS = 325             /* ESCAPE_CHARS  */
+    ATTRIBUTETOK = 265,            /* ATTRIBUTETOK  */
+    RUNTIME = 266,                 /* RUNTIME  */
+    STATIC = 267,                  /* STATIC  */
+    AUTO = 268,                    /* AUTO  */
+    AUTOTYPE = 269,                /* AUTOTYPE  */
+    TEMPLATE = 270,                /* TEMPLATE  */
+    NAMESPACE = 271,               /* NAMESPACE  */
+    OPERATORNAME = 272,            /* OPERATORNAME  */
+    OVERRIDE = 273,                /* OVERRIDE  */
+    VIRTUAL = 274,                 /* VIRTUAL  */
+    PURE = 275,                    /* PURE  */
+    AS = 276,                      /* AS  */
+    IN = 277,                      /* IN  */
+    DISPLAY = 278,                 /* DISPLAY  */
+    RETURN = 279,                  /* RETURN  */
+    FOR = 280,                     /* FOR  */
+    IF = 281,                      /* IF  */
+    ELSEIF = 282,                  /* ELSEIF  */
+    ELSE = 283,                    /* ELSE  */
+    INLINE = 284,                  /* INLINE  */
+    CONSTRUCTOR = 285,             /* CONSTRUCTOR  */
+    FILE_ = 286,                   /* FILE_  */
+    PROGRAM_ = 287,                /* PROGRAM_  */
+    IMPORT = 288,                  /* IMPORT  */
+    PUBLIC = 289,                  /* PUBLIC  */
+    PROTECTED = 290,               /* PROTECTED  */
+    PRIVATE = 291,                 /* PRIVATE  */
+    INHERIT = 292,                 /* INHERIT  */
+    COMPOSITE = 293,               /* COMPOSITE  */
+    LEFT_BRACKET = 294,            /* LEFT_BRACKET  */
+    RIGHT_BRACKET = 295,           /* RIGHT_BRACKET  */
+    LEFT_SQUARE_BRACKET = 296,     /* LEFT_SQUARE_BRACKET  */
+    RIGHT_SQUARE_BRACKET = 297,    /* RIGHT_SQUARE_BRACKET  */
+    LEFT_PARANTHESIS = 298,        /* LEFT_PARANTHESIS  */
+    RIGHT_PARANTHESIS = 299,       /* RIGHT_PARANTHESIS  */
+    COLON = 300,                   /* COLON  */
+    SEMICOLON = 301,               /* SEMICOLON  */
+    COMMA = 302,                   /* COMMA  */
+    DOT = 303,                     /* DOT  */
+    LTEQ = 304,                    /* LTEQ  */
+    GTEQ = 305,                    /* GTEQ  */
+    LT = 306,                      /* LT  */
+    GT = 307,                      /* GT  */
+    PLUSEQ = 308,                  /* PLUSEQ  */
+    MINUSEQ = 309,                 /* MINUSEQ  */
+    MULTIPLYEQ = 310,              /* MULTIPLYEQ  */
+    DIVIDEEQ = 311,                /* DIVIDEEQ  */
+    EQEQ = 312,                    /* EQEQ  */
+    EQ = 313,                      /* EQ  */
+    NOTEQ = 314,                   /* NOTEQ  */
+    NOT = 315,                     /* NOT  */
+    PLUSPLUS = 316,                /* PLUSPLUS  */
+    PLUS = 317,                    /* PLUS  */
+    MINUSMINUS = 318,              /* MINUSMINUS  */
+    MINUS = 319,                   /* MINUS  */
+    DIVIDE = 320,                  /* DIVIDE  */
+    MULTIPLY = 321,                /* MULTIPLY  */
+    VARNAME = 322,                 /* VARNAME  */
+    NUMBER = 323,                  /* NUMBER  */
+    DECIMAL = 324,                 /* DECIMAL  */
+    TEXT = 325,                    /* TEXT  */
+    ESCAPE_CHARS = 326             /* ESCAPE_CHARS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -125,7 +126,7 @@ extern int Celestedebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 452 "./Celeste_parser.y"
+#line 484 "./Celeste_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::Celeste::ast::node::SINGLE_COMMENT* Celeste_SINGLE_COMMENT;
@@ -135,6 +136,7 @@ union YYSTYPE
 	::Celeste::ast::node::ENUM* Celeste_ENUM;
 	::Celeste::ast::node::CONDITIONAL* Celeste_CONDITIONAL;
 	::Celeste::ast::node::CODE* Celeste_CODE;
+	::Celeste::ast::node::ATTRIBUTETOK* Celeste_ATTRIBUTETOK;
 	::Celeste::ast::node::RUNTIME* Celeste_RUNTIME;
 	::Celeste::ast::node::STATIC* Celeste_STATIC;
 	::Celeste::ast::node::AUTO* Celeste_AUTO;
@@ -301,6 +303,21 @@ union YYSTYPE
 	::Celeste::ast::node::deamerreserved_star__COMMA__compound_base_alias__* Celeste_deamerreserved_star__COMMA__compound_base_alias__;
 	::Celeste::ast::node::compound_base_name* Celeste_compound_base_name;
 	::Celeste::ast::node::compound_base_alias* Celeste_compound_base_alias;
+	::Celeste::ast::node::attribute_section* Celeste_attribute_section;
+	::Celeste::ast::node::deamerreserved_arrow__attribute__* Celeste_deamerreserved_arrow__attribute__;
+	::Celeste::ast::node::deamerreserved_star__deamerreserved_optional__COMMA____attribute__* Celeste_deamerreserved_star__deamerreserved_optional__COMMA____attribute__;
+	::Celeste::ast::node::attribute* Celeste_attribute;
+	::Celeste::ast::node::deamerreserved_arrow__attribute_argument__* Celeste_deamerreserved_arrow__attribute_argument__;
+	::Celeste::ast::node::deamerreserved_star__COMMA__attribute_argument__* Celeste_deamerreserved_star__COMMA__attribute_argument__;
+	::Celeste::ast::node::deamerreserved_arrow__attribute_template_argument__* Celeste_deamerreserved_arrow__attribute_template_argument__;
+	::Celeste::ast::node::deamerreserved_star__COMMA__attribute_template_argument__* Celeste_deamerreserved_star__COMMA__attribute_template_argument__;
+	::Celeste::ast::node::attribute_argument* Celeste_attribute_argument;
+	::Celeste::ast::node::attribute_template_argument* Celeste_attribute_template_argument;
+	::Celeste::ast::node::attribute_declaration* Celeste_attribute_declaration;
+	::Celeste::ast::node::deamerreserved_arrow__attribute_function_argument__* Celeste_deamerreserved_arrow__attribute_function_argument__;
+	::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__* Celeste_deamerreserved_star__COMMA__attribute_function_argument__;
+	::Celeste::ast::node::attribute_function_argument* Celeste_attribute_function_argument;
+	::Celeste::ast::node::attribute_name* Celeste_attribute_name;
 	::Celeste::ast::node::enum_declaration* Celeste_enum_declaration;
 	::Celeste::ast::node::deamerreserved_star__enumeration__* Celeste_deamerreserved_star__enumeration__;
 	::Celeste::ast::node::enum_name* Celeste_enum_name;
@@ -333,7 +350,7 @@ union YYSTYPE
 	::Celeste::ast::node::tuple* Celeste_tuple;
 
 
-#line 337 "Celeste_parser.tab.h"
+#line 354 "Celeste_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
