@@ -170,8 +170,12 @@ Celeste::ir::inputreconstruction::File::CreateClass(const std::string& className
 	auto nameReference = std::make_unique<NameReference>(className);
 	nameReference->SetFile(this);
 	auto newClass = std::make_unique<Class>(std::move(nameReference));
-	newClass->Complete();
 	newClass->SetParent(GetRoot());
+	newClass->SetFile(this);
+	newClass->Complete();
+
+	newClass->CreateDefaultConstructor();
+
 	auto newClassPtr = newClass.get();
 	GetRoot()->Add(newClassPtr);
 	AddInputReconstructionObject(std::move(newClass));
@@ -216,6 +220,14 @@ void Celeste::ir::inputreconstruction::File::ResetReferences()
 	impl->unresolvedSymbolReferenceCalls.clear();
 	for (auto _ : impl->unresolvedSymbolReferenceCallsPreReset)
 	{
+		if (_->GetType() == Type::NameReference)
+		{
+			// static_cast<NameReference*>(_)->Reset();
+		}
+		else if (_->GetType() == Type::SymbolReferenceCall)
+		{
+			// static_cast<NameReference*>(_)->Reset();
+		}
 		impl->unresolvedSymbolReferenceCalls.push_back(_);
 	}
 }

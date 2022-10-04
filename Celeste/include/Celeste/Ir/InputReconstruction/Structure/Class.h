@@ -68,6 +68,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		Function* CreateMemberFunction(const std::string& functionName,
 									   const std::string& returnType = "");
+		void CreateDefaultConstructor();
 	};
 }
 

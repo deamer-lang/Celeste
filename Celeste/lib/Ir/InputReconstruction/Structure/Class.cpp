@@ -489,25 +489,50 @@ Celeste::ir::inputreconstruction::Function*
 Celeste::ir::inputreconstruction::Class::CreateMemberFunction(const std::string& functionName,
 															  const std::string& returnType)
 {
-	std::unique_ptr<Function> newFunction;
+	std::unique_ptr<SymbolReferenceCall> symbolReference;
 	if (returnType.empty())
 	{
-		newFunction = std::make_unique<Function>(
-			std::make_unique<NameReference>(functionName),
-			std::make_unique<TypeConstruct>(std::make_unique<SymbolReferenceCall>("void")));
+		symbolReference = std::make_unique<SymbolReferenceCall>("void");
 	}
 	else
 	{
-		// Implement logic for finding the type
-		newFunction = std::make_unique<Function>(
-			std::make_unique<NameReference>(functionName),
-			std::make_unique<TypeConstruct>(std::make_unique<SymbolReferenceCall>(returnType)));
+		symbolReference = std::make_unique<SymbolReferenceCall>(returnType);
 	}
+	symbolReference->SetFile(GetFile());
+
+	auto nameReference = std::make_unique<NameReference>(functionName);
+	nameReference->SetFile(GetFile());
+
+	auto typeConstruct = std::make_unique<TypeConstruct>(std::move(symbolReference));
+	typeConstruct->SetFile(GetFile());
+
+	auto newFunction =
+		std::make_unique<Function>(std::move(nameReference), std::move(typeConstruct));
+	newFunction->SetFile(GetFile());
+	newFunction->SetParent(this);
+	newFunction->Complete();
+
 	auto newFunctionPtr = newFunction.get();
 	this->block.push_back(std::pair<Accessibility, InputReconstructionObject*>{
 		Accessibility::Public, newFunctionPtr});
 	GetFile()->AddInputReconstructionObject(std::move(newFunction));
 	return newFunctionPtr;
+}
+
+void Celeste::ir::inputreconstruction::Class::CreateDefaultConstructor()
+{
+	auto nameReference = std::make_unique<NameReference>(GetClassName()->GetResolvedName());
+	nameReference->SetFile(GetFile());
+
+	auto newFunction = std::make_unique<Constructor>(std::move(nameReference));
+	newFunction->SetFile(GetFile());
+	newFunction->SetParent(this);
+	newFunction->Complete();
+
+	auto newFunctionPtr = newFunction.get();
+	this->block.push_back(std::pair<Accessibility, InputReconstructionObject*>{
+		Accessibility::Public, newFunctionPtr});
+	GetFile()->AddInputReconstructionObject(std::move(newFunction));
 }
 
 void Celeste::ir::inputreconstruction::Class::AddTemplateParameter(
