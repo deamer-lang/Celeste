@@ -156,6 +156,7 @@ class full_value;
 class value;
 class tuple;
 class SINGLE_COMMENT;
+class MULTI_COMMENT;
 class CONSTANT;
 class FUNCTION;
 class CLASS;
@@ -1292,6 +1293,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::SINGLE_COMMENT;
 		using type = ::Celeste::ast::node::SINGLE_COMMENT;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::MULTI_COMMENT>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::MULTI_COMMENT;
+		using type = ::Celeste::ast::node::MULTI_COMMENT;
 	};
 
 	template<>

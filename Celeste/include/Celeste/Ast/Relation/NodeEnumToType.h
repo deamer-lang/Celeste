@@ -154,6 +154,7 @@
 #include "Celeste/Ast/Node/value.h"
 #include "Celeste/Ast/Node/tuple.h"
 #include "Celeste/Ast/Node/SINGLE_COMMENT.h"
+#include "Celeste/Ast/Node/MULTI_COMMENT.h"
 #include "Celeste/Ast/Node/CONSTANT.h"
 #include "Celeste/Ast/Node/FUNCTION.h"
 #include "Celeste/Ast/Node/CLASS.h"
@@ -1289,6 +1290,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::SINGLE_COMMENT;
 		using type = ::Celeste::ast::node::SINGLE_COMMENT;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::MULTI_COMMENT>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::MULTI_COMMENT;
+		using type = ::Celeste::ast::node::MULTI_COMMENT;
 	};
 
 	template<>

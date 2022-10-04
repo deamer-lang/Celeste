@@ -4,14 +4,38 @@
 #include "Celeste/Ir/InputReconstruction/Meta/Project.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 
+Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(
+	std::unique_ptr<SymbolReferenceCall> type)
+	: InputReconstructionObject(Type::TypeConstruct),
+	  typeTarget(std::move(type))
+{
+	typeTarget.value()->SetParent(this);
+}
+
 Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(ast::node::type* type_)
 	: InputReconstructionObject(Type::TypeConstruct),
 	  type(type_)
 {
 }
 
+Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct()
+	: InputReconstructionObject(Type::TypeConstruct)
+{
+}
+
 void Celeste::ir::inputreconstruction::TypeConstruct::Destructure()
 {
+	if (typeTarget.has_value())
+	{
+		GetFile()->AddUnresolvedSymbolReference(GetSymbolReference().value().get());
+	}
+
+	if (type == nullptr)
+	{
+		// It is initialized in a different way
+		return;
+	}
+
 	auto access = ast::reference::Access<ast::node::type>(type);
 	if (!access.AUTO().GetContent().empty())
 	{

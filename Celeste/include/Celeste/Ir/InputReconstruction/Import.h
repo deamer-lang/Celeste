@@ -11,13 +11,15 @@ namespace Celeste::ir::inputreconstruction
 	{
 	private:
 		File* targetFile;
+		bool availableAtCodeTime = false;
 
 	public:
-		Import(File* targetFile_);
+		Import(File* targetFile_, bool availableAtCodeTime_ = false);
 		virtual ~Import() = default;
 
 	public:
 		File* GetTarget();
+		bool AvailableAtCodeTime();
 	};
 }
 

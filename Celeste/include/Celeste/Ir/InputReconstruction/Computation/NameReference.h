@@ -25,8 +25,10 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		NameReference(ast::node::symbol_reference* symbolReference_);
 		NameReference(ast::node::VARNAME* varname_);
+		NameReference(const std::string& varname_);
 		virtual ~NameReference();
 		std::vector<SymbolAccess*> GetSymbolAccesses();
+		void Reset();
 
 	protected:
 		bool resolveIsRan = false;
@@ -35,6 +37,7 @@ namespace Celeste::ir::inputreconstruction
 		NameReference(Type forward_);
 		NameReference(Type forward_, ast::node::symbol_reference* symbolReference_);
 		NameReference(Type forward_, ast::node::VARNAME* symbolReference_);
+		NameReference(Type forward_, const std::string& symbolReference_);
 
 		void CreateAccess(
 			const Celeste::ast::reference::Access<Celeste::ast::node::symbol_access>& access);

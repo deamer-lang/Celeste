@@ -21,6 +21,7 @@ namespace Celeste
 	public:
 		// Terminal declarations
 		::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> SINGLE_COMMENT;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> MULTI_COMMENT;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> CONSTANT;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> FUNCTION;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> CLASS;
@@ -102,6 +103,7 @@ namespace Celeste
 		{
 			// Terminals
 			SINGLE_COMMENT.Set(deamer::language::type::definition::object::main::Terminal("SINGLE_COMMENT", "[/][^\\n\\r]*[\\n\\r]{0,1}", ::deamer::language::type::definition::object::main::SpecialType::Delete));
+MULTI_COMMENT.Set(deamer::language::type::definition::object::main::Terminal("MULTI_COMMENT", "[/][*][^*]*[*][/]{0,1}", ::deamer::language::type::definition::object::main::SpecialType::Delete));
 CONSTANT.Set(deamer::language::type::definition::object::main::Terminal("CONSTANT", "[Cc][Oo][Nn][Ss][Tt]([Aa][Nn][Tt]){0,1}", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 FUNCTION.Set(deamer::language::type::definition::object::main::Terminal("FUNCTION", "[Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 CLASS.Set(deamer::language::type::definition::object::main::Terminal("CLASS", "[Cc][Ll][Aa][Ss][Ss]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
@@ -115,7 +117,7 @@ AUTO.Set(deamer::language::type::definition::object::main::Terminal("AUTO", "[Aa
 AUTOTYPE.Set(deamer::language::type::definition::object::main::Terminal("AUTOTYPE", "[Aa][Uu][Tt][Oo][Tt][Yy][Pp][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 TEMPLATE.Set(deamer::language::type::definition::object::main::Terminal("TEMPLATE", "[Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 NAMESPACE.Set(deamer::language::type::definition::object::main::Terminal("NAMESPACE", "[Nn][Aa][Mm][Ee][Ss][Pp][Aa][Cc][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
-OPERATORNAME.Set(deamer::language::type::definition::object::main::Terminal("OPERATORNAME", "[Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\\\+\\-?!*^%@#$^<>=:|]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+OPERATORNAME.Set(deamer::language::type::definition::object::main::Terminal("OPERATORNAME", "[Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\\\+\\-?!*^%@#$^<>=:|\\[\\]]+", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 OVERRIDE.Set(deamer::language::type::definition::object::main::Terminal("OVERRIDE", "[Oo][Vv][Ee][Rr][Rr][Ii][Dd][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 VIRTUAL.Set(deamer::language::type::definition::object::main::Terminal("VIRTUAL", "[Vv][Ii][Rr][Tt][Uu][Aa][Ll]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 PURE.Set(deamer::language::type::definition::object::main::Terminal("PURE", "(([Pp][Uu][Rr][Ee])|([Aa][Bb][Ss][Tt][Rr][Aa][Cc][Tt]))", ::deamer::language::type::definition::object::main::SpecialType::Standard));
@@ -175,6 +177,7 @@ ESCAPE_CHARS.Set(deamer::language::type::definition::object::main::Terminal("ESC
 			// Add object calls
 			// AddObject(...)
 			AddObject(SINGLE_COMMENT);
+AddObject(MULTI_COMMENT);
 AddObject(CONSTANT);
 AddObject(FUNCTION);
 AddObject(CLASS);

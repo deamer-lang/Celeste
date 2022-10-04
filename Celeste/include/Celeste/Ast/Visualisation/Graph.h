@@ -1536,6 +1536,16 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"SINGLE_COMMENT\"];\n";
 		}
 
+		void ListenEntry(const ::Celeste::ast::node::MULTI_COMMENT* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"MULTI_COMMENT\"];\n";
+		}
+
 		void ListenEntry(const ::Celeste::ast::node::CONSTANT* node) override
 		{
 			for (const auto* child : node->GetNodes())

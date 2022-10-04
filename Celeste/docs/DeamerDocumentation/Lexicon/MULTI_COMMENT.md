@@ -1,6 +1,6 @@
-# Terminal: **[SINGLE_COMMENT](./SINGLE_COMMENT.md)**
+# Terminal: **[MULTI_COMMENT](./MULTI_COMMENT.md)**
 
-Overview of the terminal: **[SINGLE_COMMENT](./SINGLE_COMMENT.md)**.
+Overview of the terminal: **[MULTI_COMMENT](./MULTI_COMMENT.md)**.
 
 
 
@@ -8,8 +8,9 @@ Overview of the terminal: **[SINGLE_COMMENT](./SINGLE_COMMENT.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| This              | **[SINGLE_COMMENT](./SINGLE_COMMENT.md)** |
-| Below             | [MULTI_COMMENT](./MULTI_COMMENT.md) |
+| Above             | [SINGLE_COMMENT](./SINGLE_COMMENT.md) |
+| This              | **[MULTI_COMMENT](./MULTI_COMMENT.md)** |
+| Below             | [CONSTANT](./CONSTANT.md) |
 
 
 
@@ -17,7 +18,7 @@ Overview of the terminal: **[SINGLE_COMMENT](./SINGLE_COMMENT.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[SINGLE_COMMENT](./SINGLE_COMMENT.md)** | [/][^\n\r]*[\n\r]{0,1} | Delete |
+| **[MULTI_COMMENT](./MULTI_COMMENT.md)** | [/][*][^*]*[*][/]{0,1} | Delete |
 
 
 

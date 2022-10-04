@@ -212,7 +212,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_import_statement;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_SEMICOLON;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> import_statement_file_import;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> file_import_IMPORT_FILE__TEXT;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> file_import_execution_keyword_permutation_IMPORT_FILE__TEXT;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__symbol_reference___symbol_reference_deamerreserved_star__COMMA__symbol_reference__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__symbol_reference___COMMA_symbol_reference_deamerreserved_star__COMMA__symbol_reference__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__COMMA__symbol_reference___EMPTY;

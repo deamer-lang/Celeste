@@ -65,7 +65,7 @@ import_statement
 	file_import
 	
 file_import
-	IMPORT FILE_ TEXT
+	execution_keyword_permutation IMPORT FILE_ TEXT
 	
 mutation_group
 	[LEFT_PARANTHESIS [symbol_reference -> (COMMA symbol_reference)] [COMMA] RIGHT_PARANTHESIS] LEFT_BRACKET LEFT_SQUARE_BRACKET standard_block RIGHT_SQUARE_BRACKET RIGHT_BRACKET

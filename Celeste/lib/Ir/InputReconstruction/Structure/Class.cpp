@@ -3,6 +3,7 @@
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/Value.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
+#include "Celeste/Ir/InputReconstruction/Meta/File.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 
@@ -482,6 +483,31 @@ Celeste::ir::inputreconstruction::Class::GetConstructors(Accessibility accessibi
 	}
 
 	return constructors;
+}
+
+Celeste::ir::inputreconstruction::Function*
+Celeste::ir::inputreconstruction::Class::CreateMemberFunction(const std::string& functionName,
+															  const std::string& returnType)
+{
+	std::unique_ptr<Function> newFunction;
+	if (returnType.empty())
+	{
+		newFunction = std::make_unique<Function>(
+			std::make_unique<NameReference>(functionName),
+			std::make_unique<TypeConstruct>(std::make_unique<SymbolReferenceCall>("void")));
+	}
+	else
+	{
+		// Implement logic for finding the type
+		newFunction = std::make_unique<Function>(
+			std::make_unique<NameReference>(functionName),
+			std::make_unique<TypeConstruct>(std::make_unique<SymbolReferenceCall>(returnType)));
+	}
+	auto newFunctionPtr = newFunction.get();
+	this->block.push_back(std::pair<Accessibility, InputReconstructionObject*>{
+		Accessibility::Public, newFunctionPtr});
+	GetFile()->AddInputReconstructionObject(std::move(newFunction));
+	return newFunctionPtr;
 }
 
 void Celeste::ir::inputreconstruction::Class::AddTemplateParameter(

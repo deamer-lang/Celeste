@@ -5,6 +5,7 @@
 #include "Celeste/Ast/Enum/Type.h"
 
 #include "Celeste/Ast/Node/SINGLE_COMMENT.h"
+#include "Celeste/Ast/Node/MULTI_COMMENT.h"
 #include "Celeste/Ast/Node/CONSTANT.h"
 #include "Celeste/Ast/Node/FUNCTION.h"
 #include "Celeste/Ast/Node/CLASS.h"
@@ -262,6 +263,15 @@ namespace Celeste { namespace ast { namespace listener {
 				EnterAnything(node);
 				EnterTerminal(node);
 				ListenEntry(static_cast<const Celeste::ast::node::SINGLE_COMMENT*>(node));
+				break;
+			}
+
+			case Celeste::ast::Type::MULTI_COMMENT:
+			{
+				// Entry terminal
+				EnterAnything(node);
+				EnterTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::MULTI_COMMENT*>(node));
 				break;
 			}
 
@@ -2249,6 +2259,15 @@ namespace Celeste { namespace ast { namespace listener {
 				break;
 			}
 
+			case Celeste::ast::Type::MULTI_COMMENT:
+			{
+				// Exit terminal
+				ListenExit(static_cast<const Celeste::ast::node::MULTI_COMMENT*>(node));
+				ExitTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
 			case Celeste::ast::Type::CONSTANT:
 			{
 				// Exit terminal
@@ -4222,6 +4241,10 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
+		virtual void ListenEntry(const Celeste::ast::node::MULTI_COMMENT* node) 
+		{
+		}
+
 		virtual void ListenEntry(const Celeste::ast::node::CONSTANT* node) 
 		{
 		}
@@ -4496,6 +4519,10 @@ namespace Celeste { namespace ast { namespace listener {
 
 		
 		virtual void ListenExit(const Celeste::ast::node::SINGLE_COMMENT* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::MULTI_COMMENT* node) 
 		{
 		}
 

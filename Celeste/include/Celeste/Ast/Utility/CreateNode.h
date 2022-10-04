@@ -3,6 +3,7 @@
 
 #include "Celeste/Ast/Enum/Type.h"
 #include "Celeste/Ast/Node/SINGLE_COMMENT.h"
+#include "Celeste/Ast/Node/MULTI_COMMENT.h"
 #include "Celeste/Ast/Node/CONSTANT.h"
 #include "Celeste/Ast/Node/FUNCTION.h"
 #include "Celeste/Ast/Node/CLASS.h"
@@ -306,6 +307,9 @@ namespace Celeste { namespace ast { namespace utility {
 			}
 			case ::Celeste::ast::Type::SINGLE_COMMENT: {
 				return new ::Celeste::ast::node::SINGLE_COMMENT({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
+			}
+			case ::Celeste::ast::Type::MULTI_COMMENT: {
+				return new ::Celeste::ast::node::MULTI_COMMENT({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
 			}
 			case ::Celeste::ast::Type::CONSTANT: {
 				return new ::Celeste::ast::node::CONSTANT({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});

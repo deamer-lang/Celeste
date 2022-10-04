@@ -6,6 +6,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Accessibility.h"
 #include "Celeste/Ir/InputReconstruction/Structure/CompoundBase.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/InheritBase.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
 #include <memory>
@@ -63,6 +64,10 @@ namespace Celeste::ir::inputreconstruction
 		// Gets all constructors of this class.
 		std::vector<Constructor*>
 		GetConstructors(Accessibility accessibility = Accessibility::Public);
+
+	public:
+		Function* CreateMemberFunction(const std::string& functionName,
+									   const std::string& returnType = "");
 	};
 }
 

@@ -182,3 +182,13 @@ Celeste::ir::inputreconstruction::Function::GetBlock()
 {
 	return GetScope();
 }
+
+void Celeste::ir::inputreconstruction::Function::AddCodeBlock(CodeBlock* codeBlock)
+{
+	auto codeBlockRoot = codeBlock->GetScope()[0];
+
+	for (auto _ : codeBlockRoot->GetScope())
+	{
+		Add(_);
+	}
+}

@@ -15,14 +15,16 @@ namespace Celeste::ir::inputreconstruction
 	class TypeConstruct : public InputReconstructionObject
 	{
 	private:
-		ast::node::type* type;
+		ast::node::type* type = nullptr;
 		std::optional<std::unique_ptr<SymbolReferenceCall>> typeTarget;
 		std::optional<std::unique_ptr<Expression>> arrayDeclarationExpression;
 		bool isAuto = false;
 		bool isAutoType = false;
 
 	public:
+		TypeConstruct(std::unique_ptr<SymbolReferenceCall> type);
 		TypeConstruct(ast::node::type* type_);
+		TypeConstruct();
 		virtual ~TypeConstruct() = default;
 
 	public:

@@ -30,6 +30,13 @@ Overview of the nonterminal: **[execution_keyword_permutation](./execution_keywo
 ### NonTerminals
 
 
+#### [file_import](./../Grammar/file_import.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [execution_keyword_permutation](./execution_keyword_permutation.md) [IMPORT](./../Lexicon/IMPORT.md) [FILE_](./../Lexicon/FILE_.md) [TEXT](./../Lexicon/TEXT.md)  |
+
+
 #### [template_conditional_function_declaration](./../Grammar/template_conditional_function_declaration.md)
 
 | Productionrule referencing this                      |

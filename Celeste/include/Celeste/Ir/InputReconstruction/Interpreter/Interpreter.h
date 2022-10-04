@@ -5,6 +5,7 @@
 #include "Celeste/Ir/InputReconstruction/Meta/GroupType.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
+#include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
 #include <map>
 #include <optional>
 #include <set>
@@ -100,9 +101,12 @@ namespace Celeste::ir::inputreconstruction
 
 		struct Value
 		{
-			std::variant<int, double, std::string, AlgebraicValue, Value*> value;
+			std::variant<int, double, std::string, AlgebraicValue, Value*,
+						 InputReconstructionObject*, std::vector<Value>, File*>
+				value;
 
-			Value(std::variant<int, double, std::string, AlgebraicValue, Value*> value_)
+			Value(const std::variant<int, double, std::string, AlgebraicValue, Value*,
+									 InputReconstructionObject*, std::vector<Value>, File*>& value_)
 				: value(value_)
 			{
 			}
@@ -124,6 +128,18 @@ namespace Celeste::ir::inputreconstruction
 			}
 
 			Value(Value* referenceValue_) : value(referenceValue_)
+			{
+			}
+
+			Value(InputReconstructionObject* irReference) : value(irReference)
+			{
+			}
+
+			Value(const std::vector<Value>& vector) : value(vector)
+			{
+			}
+
+			Value(File* file_) : value(file_)
 			{
 			}
 
@@ -478,6 +494,8 @@ namespace Celeste::ir::inputreconstruction
 		// Contains A List of Reachable Types.
 		TypeTable typeTable;
 
+		std::optional<File*> evaluatedFile;
+
 	public:
 		Interpreter(GroupType groupType_);
 		~Interpreter();
@@ -491,7 +509,10 @@ namespace Celeste::ir::inputreconstruction
 
 		std::variant<int, double, std::string,
 					 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue,
-					 Celeste::ir::inputreconstruction::Interpreter::Value*>
+					 Celeste::ir::inputreconstruction::Interpreter::Value*,
+					 Celeste::ir::inputreconstruction::InputReconstructionObject*,
+					 std::vector<Celeste::ir::inputreconstruction::Interpreter::Value>,
+					 Celeste::ir::inputreconstruction::File*>
 		ZeroValue(InputReconstructionObject* type);
 
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
@@ -551,16 +572,34 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<Value>
 		EvaluateSymbolReferenceCall(SymbolReferenceCall* symbolReferenceCall,
 									std::optional<Value*> valueReference = std::nullopt);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		EvaluateMutationGroup(MutationGroup* mutationGroup);
 
 	private:
-		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
-		EvaluateSomeFunction(inputreconstruction::Function* function,
-							 std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
-							 std::optional<Value*> valueReference = std::nullopt);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value> EvaluateSomeFunction(
+			std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*>
+				function,
+			std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
+			std::optional<Value*> valueReference = std::nullopt);
 
 		std::vector<Value>
 		GetValueListFromExpressionList(std::vector<std::unique_ptr<Expression>>& expressionList,
 									   std::optional<Value*> valueReference = std::nullopt);
+
+	private:
+		std::optional<Value>
+		EvaluateMemberFunctionCompilerProvided_Mutate(const Value& value,
+													  inputreconstruction::Function* function,
+													  const std::vector<Value*>& functionArguments);
+		std::optional<Value> EvaluateMemberFunctionCompilerProvided_ClassObject(
+			const Value& value, inputreconstruction::Function* function,
+			const std::vector<Value*>& functionArguments);
+		std::optional<Value> EvaluateMemberFunctionCompilerProvided_MemberFunctionObject(
+			const Value& value, inputreconstruction::Function* function,
+			const std::vector<Value*>& functionArguments);
+		std::optional<Value> EvaluateMemberFunctionCompilerProvided_FunctionObject(
+			const Value& value, inputreconstruction::Function* function,
+			const std::vector<Value*>& functionArguments);
 	};
 }
 

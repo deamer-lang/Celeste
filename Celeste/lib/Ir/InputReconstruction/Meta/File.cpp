@@ -3,6 +3,7 @@
 #include "Celeste/Ir/InputReconstruction/HigherOrder/SourceCodeBlockMutationSet.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Meta/Project.h"
+#include <set>
 
 struct Celeste::ir::inputreconstruction::File::Impl
 {
@@ -11,6 +12,7 @@ struct Celeste::ir::inputreconstruction::File::Impl
 	Project* project = nullptr;
 	std::string fileName;
 	std::vector<InputReconstructionObject*> unresolvedSymbolReferenceCalls;
+	std::set<InputReconstructionObject*> unresolvedSymbolReferenceCallsPreReset;
 	std::vector<std::unique_ptr<SourceCodeBlockMutationSet>> resolvedCodeBlocks;
 	std::vector<std::unique_ptr<SourceCodeBlockMutationSet>> unresolvedCodeBlocks;
 
@@ -67,6 +69,7 @@ void Celeste::ir::inputreconstruction::File::AddUnresolvedSymbolReference(
 	InputReconstructionObject* unresolvedSymbolReferenceCall)
 {
 	impl->unresolvedSymbolReferenceCalls.push_back(unresolvedSymbolReferenceCall);
+	impl->unresolvedSymbolReferenceCallsPreReset.insert(unresolvedSymbolReferenceCall);
 }
 
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>
@@ -159,6 +162,62 @@ Celeste::ir::inputreconstruction::File::GetFunction(const std::string& functionN
 
 	// Failed to find a function name
 	return std::nullopt;
+}
+
+Celeste::ir::inputreconstruction::Class*
+Celeste::ir::inputreconstruction::File::CreateClass(const std::string& className)
+{
+	auto nameReference = std::make_unique<NameReference>(className);
+	nameReference->SetFile(this);
+	auto newClass = std::make_unique<Class>(std::move(nameReference));
+	newClass->Complete();
+	newClass->SetParent(GetRoot());
+	auto newClassPtr = newClass.get();
+	GetRoot()->Add(newClassPtr);
+	AddInputReconstructionObject(std::move(newClass));
+	return newClassPtr;
+}
+
+Celeste::ir::inputreconstruction::Function*
+Celeste::ir::inputreconstruction::File::CreateFunction(const std::string& className,
+													   const std::string& returnType)
+{
+	std::unique_ptr<SymbolReferenceCall> symbolReference;
+	if (returnType.empty())
+	{
+		symbolReference = std::make_unique<SymbolReferenceCall>("void");
+	}
+	else
+	{
+		symbolReference = std::make_unique<SymbolReferenceCall>(returnType);
+	}
+	symbolReference->SetFile(this);
+
+	auto nameReference = std::make_unique<NameReference>(className);
+	nameReference->SetFile(this);
+
+	auto typeConstruct = std::make_unique<TypeConstruct>(std::move(symbolReference));
+	typeConstruct->SetFile(this);
+
+	auto newFunction =
+		std::make_unique<Function>(std::move(nameReference), std::move(typeConstruct));
+	newFunction->SetFile(this);
+	newFunction->SetParent(GetRoot());
+	newFunction->Complete();
+
+	auto newFunctionPtr = newFunction.get();
+	GetRoot()->Add(newFunctionPtr);
+	AddInputReconstructionObject(std::move(newFunction));
+	return newFunctionPtr;
+}
+
+void Celeste::ir::inputreconstruction::File::ResetReferences()
+{
+	impl->unresolvedSymbolReferenceCalls.clear();
+	for (auto _ : impl->unresolvedSymbolReferenceCallsPreReset)
+	{
+		impl->unresolvedSymbolReferenceCalls.push_back(_);
+	}
 }
 
 void Celeste::ir::inputreconstruction::File::RemoveUnresolvedReference(

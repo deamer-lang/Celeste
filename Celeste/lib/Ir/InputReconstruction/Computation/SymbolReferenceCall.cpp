@@ -16,6 +16,11 @@ Celeste::ir::inputreconstruction::SymbolReferenceCall::SymbolReferenceCall(
 {
 }
 
+Celeste::ir::inputreconstruction::SymbolReferenceCall::SymbolReferenceCall(const std::string& varname_)
+	: NameReference(Type::SymbolReferenceCall, varname_)
+{
+}
+
 Celeste::ir::inputreconstruction::SymbolReferenceCall::~SymbolReferenceCall()
 {
 	// This should only be enabled when there are memory leaks.

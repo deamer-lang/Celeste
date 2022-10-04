@@ -18,7 +18,7 @@ Overview of the terminal: **[OPERATORNAME](./OPERATORNAME.md)**.
 
 | Name:                                       | Value:          | Abstraction:    |
 | ------------------------------------------- | --------------- | --------------- |
-| **[OPERATORNAME](./OPERATORNAME.md)** | [Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\+\-?!*^%@#$^<>=:|]+ | Standard |
+| **[OPERATORNAME](./OPERATORNAME.md)** | [Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\+\-?!*^%@#$^<>=:|\[\]]+ | Standard |
 
 
 

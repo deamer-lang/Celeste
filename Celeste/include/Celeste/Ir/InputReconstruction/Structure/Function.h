@@ -1,6 +1,7 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_FUNCTION
 #define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_FUNCTION
 
+#include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
@@ -44,6 +45,9 @@ namespace Celeste::ir::inputreconstruction
 				const std::optional<std::vector<InputReconstructionObject*>>& functionArguments);
 		std::vector<std::unique_ptr<FunctionArgument>>& GetFunctionArguments();
 		std::vector<InputReconstructionObject*> GetBlock();
+
+	public:
+		void AddCodeBlock(CodeBlock* codeBlock);
 	};
 }
 

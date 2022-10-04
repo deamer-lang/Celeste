@@ -765,6 +765,11 @@ namespace Celeste { namespace ast { namespace relation {
 	}
 	
 
+	case ::Celeste::ast::Type::MULTI_COMMENT: {
+		return "MULTI_COMMENT";
+	}
+	
+
 	case ::Celeste::ast::Type::CONSTANT: {
 		return "CONSTANT";
 	}

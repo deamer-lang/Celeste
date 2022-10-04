@@ -26,6 +26,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+#include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
 #include <limits>
 #include <memory>
 
@@ -538,7 +539,10 @@ bool Celeste::ir::inputreconstruction::Interpreter::PolymorphismEquality(
 
 std::variant<int, double, std::string,
 			 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue,
-			 Celeste::ir::inputreconstruction::Interpreter::Value*>
+			 Celeste::ir::inputreconstruction::Interpreter::Value*,
+			 Celeste::ir::inputreconstruction::InputReconstructionObject*,
+			 std::vector<Celeste::ir::inputreconstruction::Interpreter::Value>,
+			 Celeste::ir::inputreconstruction::File*>
 Celeste::ir::inputreconstruction::Interpreter::ZeroValue(InputReconstructionObject* type)
 {
 	auto typeLookup = typeTable.typePointerMap.find(type);
@@ -1176,6 +1180,29 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 				return value;
 			}
 		}
+		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name == Name("Mutate"))
+		{
+			return EvaluateMemberFunctionCompilerProvided_Mutate(value, function,
+																 functionArguments);
+		}
+		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name ==
+				 Name("ClassObject"))
+		{
+			return EvaluateMemberFunctionCompilerProvided_ClassObject(value, function,
+																	  functionArguments);
+		}
+		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name ==
+				 Name("MemberFunctionObject"))
+		{
+			return EvaluateMemberFunctionCompilerProvided_MemberFunctionObject(value, function,
+																			   functionArguments);
+		}
+		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name ==
+				 Name("FunctionObject"))
+		{
+			return EvaluateMemberFunctionCompilerProvided_FunctionObject(value, function,
+																		 functionArguments);
+		}
 		else
 		{
 			auto resultingValue =
@@ -1426,39 +1453,25 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
-Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
-	inputreconstruction::Function* function, std::vector<Value*> functionArguments,
-	StackLifetime& stackLifetime, std::optional<Value*> valueReference)
+Celeste::ir::inputreconstruction::Interpreter::EvaluateMutationGroup(MutationGroup* mutationGroup)
 {
-	auto InitializeStackTop = [&]() {
-		auto& functionArgumentsBase = function->GetFunctionArguments();
-		for (auto i = 0; i < functionArgumentsBase.size(); i++)
-		{
-			auto& currentFunctionArgumentBase = functionArgumentsBase[i];
-			auto currentFunctionArgumentValue = functionArguments[i];
+	auto stackLifetime = StackLifetime{this};
 
-			auto newSymbol =
-				std::make_unique<Symbol>(currentFunctionArgumentBase->GetName(),
-										 GetType(currentFunctionArgumentBase->GetArgumentType()));
-			newSymbol->value = *currentFunctionArgumentValue;
-			stackLifetime.Stack()->AddVariable(std::move(newSymbol));
-		}
-	};
+	return EvaluateSomeFunction(mutationGroup, {}, stackLifetime, {});
+}
 
-	InitializeStackTop();
-
-	auto block = function->GetBlock();
-	if (block.empty())
-	{
-		// Return default value for return type
-		return std::nullopt;
-	}
-
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
+	std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*> function,
+	std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
+	std::optional<Value*> valueReference)
+{
 	struct Block
 	{
 		enum class BlockType
 		{
 			FunctionBlock,
+			MutationBlock,
 			ForBlock,
 			ForEachBlock,
 			WhileBlock,
@@ -1483,6 +1496,12 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			case inputreconstruction::Type::Function: {
 				auto function = static_cast<inputreconstruction::Function*>(blockCreatingObject_);
 				statements = function->GetBlock();
+				break;
+			}
+			case inputreconstruction::Type::MutationGroup: {
+				auto mutation =
+					static_cast<inputreconstruction::MutationGroup*>(blockCreatingObject_);
+				statements = mutation->GetScope();
 				break;
 			}
 			case inputreconstruction::Type::Constructor: {
@@ -1636,9 +1655,55 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			return index >= statements.size();
 		}
 	};
-
 	std::vector<Block> blocks;
-	blocks.emplace_back(Block::BlockType::FunctionBlock, function, this);
+
+	if (std::holds_alternative<inputreconstruction::Function*>(function))
+	{
+		auto InitializeStackTop = [&]() {
+			auto& functionArgumentsBase =
+				std::get<inputreconstruction::Function*>(function)->GetFunctionArguments();
+			for (auto i = 0; i < functionArgumentsBase.size(); i++)
+			{
+				auto& currentFunctionArgumentBase = functionArgumentsBase[i];
+				auto currentFunctionArgumentValue = functionArguments[i];
+
+				auto newSymbol = std::make_unique<Symbol>(
+					currentFunctionArgumentBase->GetName(),
+					GetType(currentFunctionArgumentBase->GetArgumentType()));
+				newSymbol->value = *currentFunctionArgumentValue;
+				stackLifetime.Stack()->AddVariable(std::move(newSymbol));
+			}
+		};
+
+		InitializeStackTop();
+
+		auto block = std::get<inputreconstruction::Function*>(function)->GetBlock();
+		if (block.empty())
+		{
+			// Return default value for return type
+			return std::nullopt;
+		}
+
+		blocks.emplace_back(Block::BlockType::FunctionBlock,
+							std::get<inputreconstruction::Function*>(function), this);
+	}
+	else if (std::holds_alternative<inputreconstruction::MutationGroup*>(function))
+	{
+		auto block = std::get<inputreconstruction::MutationGroup*>(function)->GetScope();
+		if (block.empty())
+		{
+			// Return default value for return type
+			return std::nullopt;
+		}
+
+		blocks.emplace_back(Block::BlockType::MutationBlock,
+							std::get<inputreconstruction::MutationGroup*>(function), this);
+	}
+	else
+	{
+		// Uninplemented
+		return std::nullopt;
+	}
 
 	auto currentBlock = [&]() { return std::rbegin(blocks); };
 	auto currentStatement = [&]() { return currentBlock()->GetCurrentStatement(); };
@@ -1896,6 +1961,177 @@ Celeste::ir::inputreconstruction::Interpreter::GetValueListFromExpressionList(
 		}
 	}
 	return functionArguments;
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerProvided_Mutate(
+	const Value& value, inputreconstruction::Function* function,
+	const std::vector<Value*>& functionArguments)
+{
+	auto irObjectType = typeTable.GetType(evaluatedFile.value()
+											  ->GetProject()
+											  ->GetFile("Celeste/Object.ce")
+											  ->GetClass("Object")
+											  .value());
+
+	auto functionName = function->GetFunctionName()->GetResolvedName();
+	if (functionName == "GetClass")
+	{
+		auto classObject =
+			evaluatedFile.value()->GetClass(std::get<std::string>(functionArguments[0]->value));
+		if (!classObject.has_value())
+		{
+			return std::nullopt;
+		}
+		auto algebriacValue =
+			AlgebraicValue(typeTable.GetType(function->GetFile()->GetClass("ClassObject").value()),
+						   {SymbolMember({"object"}, irObjectType, Value(classObject.value()))});
+		return Value(algebriacValue);
+	}
+	else if (functionName == "GetEnumeration")
+	{
+	}
+	else if (functionName == "GetFunction")
+	{
+		auto functionObject =
+			evaluatedFile.value()->GetFunction(std::get<std::string>(functionArguments[0]->value));
+		if (!functionObject.has_value())
+		{
+			return std::nullopt;
+		}
+		auto algebriacValue = AlgebraicValue(
+			typeTable.GetType(function->GetFile()->GetClass("FunctionObject").value()),
+			{SymbolMember({"object"}, irObjectType, Value(functionObject.value()))});
+		return Value(algebriacValue);
+	}
+	else if (functionName == "GetVariable")
+	{
+	}
+	else if (functionName == "AddClass")
+	{
+		auto classObject =
+			evaluatedFile.value()->CreateClass(std::get<std::string>(functionArguments[0]->value));
+		auto algebriacValue =
+			AlgebraicValue(typeTable.GetType(function->GetFile()->GetClass("ClassObject").value()),
+						   {SymbolMember({"object"}, irObjectType, Value(classObject))});
+		return Value(algebriacValue);
+	}
+	else if (functionName == "AddEnumeration")
+	{
+	}
+	else if (functionName == "AddFunction")
+	{
+		inputreconstruction::Function* functionObject;
+		if (functionArguments.size() == 1)
+		{
+			functionObject = evaluatedFile.value()->CreateFunction(
+				std::get<std::string>(functionArguments[0]->value));
+		}
+		else
+		{
+			functionObject = evaluatedFile.value()->CreateFunction(
+				std::get<std::string>(functionArguments[0]->value),
+				std::get<std::string>(functionArguments[1]->value));
+		}
+		auto algebriacValue = AlgebraicValue(
+			typeTable.GetType(function->GetFile()->GetClass("FunctionObject").value()),
+			{SymbolMember({"object"}, irObjectType, Value(functionObject))});
+		return Value(algebriacValue);
+	}
+	else if (functionName == "AddVariable")
+	{
+	}
+
+	return std::nullopt;
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerProvided_ClassObject(
+	const Value& value, inputreconstruction::Function* function,
+	const std::vector<Value*>& functionArguments)
+{
+	auto irObjectType = typeTable.GetType(evaluatedFile.value()
+											  ->GetProject()
+											  ->GetFile("Celeste/Object.ce")
+											  ->GetClass("Object")
+											  .value());
+
+	auto classObject =
+		static_cast<inputreconstruction::Class*>(std::get<InputReconstructionObject*>(
+			std::get<AlgebraicValue>(value.value).symbolMembers[0].value.value));
+	auto functionName = function->GetFunctionName()->GetResolvedName();
+	if (functionName == "GetName")
+	{
+		return Value(classObject->GetClassName());
+	}
+	else if (functionName == "AddMemberFunction")
+	{
+		inputreconstruction::Function* functionObject;
+		if (functionArguments.size() == 1)
+		{
+			functionObject = classObject->CreateMemberFunction(
+				std::get<std::string>(functionArguments[0]->value));
+		}
+		else
+		{
+			functionObject = classObject->CreateMemberFunction(
+				std::get<std::string>(functionArguments[0]->value),
+				std::get<std::string>(functionArguments[1]->value));
+		}
+		auto algebriacValue = AlgebraicValue(
+			typeTable.GetType(function->GetFile()->GetClass("MemberFunctionObject").value()),
+			{SymbolMember({"object"}, irObjectType, Value(functionObject))});
+		return Value(algebriacValue);
+	}
+	return std::nullopt;
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value> Celeste::ir::
+	inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerProvided_MemberFunctionObject(
+		const Value& value, inputreconstruction::Function* function,
+		const std::vector<Value*>& functionArguments)
+{
+	auto functionObject =
+		static_cast<inputreconstruction::Function*>(std::get<InputReconstructionObject*>(
+			std::get<AlgebraicValue>(value.value).symbolMembers[0].value.value));
+	auto functionName = function->GetFunctionName()->GetResolvedName();
+	if (functionName == "GetName")
+	{
+		return Value(functionObject->GetFunctionName());
+	}
+	else if (functionName == "AddCodeBlock")
+	{
+		auto codeBlockObject = static_cast<CodeBlock*>(std::get<InputReconstructionObject*>(
+			std::get<AlgebraicValue>(functionArguments[0]->value).symbolMembers[0].value.value));
+		functionObject->AddCodeBlock(codeBlockObject);
+		return value;
+	}
+
+	return std::nullopt;
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value> Celeste::ir::
+	inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerProvided_FunctionObject(
+		const Value& value, inputreconstruction::Function* function,
+		const std::vector<Value*>& functionArguments)
+{
+	auto functionObject =
+		static_cast<inputreconstruction::Function*>(std::get<InputReconstructionObject*>(
+			std::get<AlgebraicValue>(value.value).symbolMembers[0].value.value));
+	auto functionName = function->GetFunctionName()->GetResolvedName();
+	if (functionName == "GetName")
+	{
+		return Value(functionObject->GetFunctionName());
+	}
+	else if (functionName == "AddCodeBlock")
+	{
+		auto codeBlockObject = static_cast<CodeBlock*>(std::get<InputReconstructionObject*>(
+			std::get<AlgebraicValue>(functionArguments[0]->value).symbolMembers[0].value.value));
+		functionObject->AddCodeBlock(codeBlockObject);
+		return value;
+	}
+
+	return std::nullopt;
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
@@ -2685,8 +2921,20 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(Expression* rhs,
 			}
 			else if (std::holds_alternative<std::unique_ptr<CodeBlock>>(lhsValue))
 			{
-				// Unsupported
-				return std::optional<Value>(std::nullopt);
+				auto& codeBlock = std::get<std::unique_ptr<CodeBlock>>(lhsValue);
+				auto codeBlockType = evaluatedFile.value()
+										 ->GetProject()
+										 ->GetFile("Celeste/CodeBlock.ce")
+										 ->GetClass("CodeBlock");
+				auto irObjectType = evaluatedFile.value()
+										->GetProject()
+										->GetFile("Celeste/Object.ce")
+										->GetClass("Object");
+				auto algebriacValue = AlgebraicValue(
+					typeTable.GetType(codeBlockType.value()),
+					{SymbolMember({"object"}, typeTable.GetType(irObjectType.value()),
+								  Value(codeBlock.get()))});
+				return std::optional<Value>(Value(algebriacValue));
 			}
 			else if (std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(lhsValue))
 			{
@@ -3127,6 +3375,8 @@ Celeste::ir::inputreconstruction::Interpreter::~Interpreter()
 
 void Celeste::ir::inputreconstruction::Interpreter::Interpret(InputReconstructionObject* entryPoint)
 {
+	evaluatedFile = entryPoint->GetFile();
+
 	// Set up Global Variables and Class Table
 	SetUpGlobalInformation(entryPoint);
 
@@ -3140,6 +3390,16 @@ void Celeste::ir::inputreconstruction::Interpreter::Interpret(InputReconstructio
 		if (groupType == GroupType::CodeBlock)
 		{
 			// Run Code Mutation Blocks
+			for (auto object : entryPoint->GetScope())
+			{
+				if (object->GetType() != inputreconstruction::Type::MutationGroup)
+				{
+					continue;
+				}
+
+				auto mutationGroup = static_cast<MutationGroup*>(object);
+				EvaluateMutationGroup(mutationGroup);
+			}
 		}
 	}
 	else if (entryPoint->GetType() == inputreconstruction::Type::Function)
@@ -3170,9 +3430,18 @@ void Celeste::ir::inputreconstruction::Interpreter::SetUpGlobalInformation(
 			// We must first complete Imports before continuing.
 			auto importObject = static_cast<Import*>(object);
 			auto targetFile = importObject->GetTarget();
-			globalTable.FileInheritsFile(file, targetFile);
+			if (groupType == GroupType::CodeBlock && importObject->AvailableAtCodeTime())
+			{
+				globalTable.FileInheritsFile(file, targetFile);
 
-			SetUpGlobalInformation(targetFile->GetRoot());
+				SetUpGlobalInformation(targetFile->GetRoot());
+			}
+			else if (groupType == GroupType::Standard && !importObject->AvailableAtCodeTime())
+			{
+				globalTable.FileInheritsFile(file, targetFile);
+
+				SetUpGlobalInformation(targetFile->GetRoot());
+			}
 			break;
 		}
 		case inputreconstruction::Type::Class: {

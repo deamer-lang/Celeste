@@ -4,6 +4,7 @@
 
 / Comments
 Delete: SINGLE_COMMENT [/][^\n\r]*[\n\r]{0,1}
+Delete: MULTI_COMMENT  [/][*][^*]*[*][/]{0,1}
 
 / Reserved Keywords
 Terminal: CONSTANT     [Cc][Oo][Nn][Ss][Tt]([Aa][Nn][Tt]){0,1}
@@ -19,7 +20,7 @@ Terminal: AUTO         [Aa][Uu][Tt][Oo]
 Terminal: AUTOTYPE     [Aa][Uu][Tt][Oo][Tt][Yy][Pp][Ee]
 Terminal: TEMPLATE     [Tt][Ee][Mm][Pp][Ll][Aa][Tt][Ee]
 Terminal: NAMESPACE    [Nn][Aa][Mm][Ee][Ss][Pp][Aa][Cc][Ee]
-Terminal: OPERATORNAME [Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\+\-?!*^%@#$^<>=:|]+
+Terminal: OPERATORNAME [Oo][Pp][Ee][Rr][Aa][Tt][Oo][Rr][\\+\-?!*^%@#$^<>=:|\[\]]+
 
 Terminal: OVERRIDE     [Oo][Vv][Ee][Rr][Rr][Ii][Dd][Ee]
 Terminal: VIRTUAL      [Vv][Ii][Rr][Tt][Uu][Aa][Ll]

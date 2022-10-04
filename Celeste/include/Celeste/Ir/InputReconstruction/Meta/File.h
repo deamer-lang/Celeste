@@ -42,9 +42,6 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<InputReconstructionObject*> GetUnresolvedSymbolReferences();
 		InputReconstructionObject* GetIrBottom();
 		InputReconstructionObject* GetRoot();
-		std::optional<Class*> GetClass(std::string className, bool expandImports = false);
-		std::optional<Function*> GetFunction(const std::string& functionName,
-											 bool expandImports = false);
 		void RemoveUnresolvedReference(SymbolReferenceCall* symbolReferenceCall);
 
 		void ResolveReferences(std::function<void(InputReconstructionObject*)> callback =
@@ -56,6 +53,18 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock_);
+
+	public:
+		std::optional<Class*> GetClass(std::string className, bool expandImports = false);
+		std::optional<Function*> GetFunction(const std::string& functionName,
+											 bool expandImports = false);
+
+	public:
+		Class* CreateClass(const std::string& className);
+		Function* CreateFunction(const std::string& className, const std::string& returnType = "");
+
+	public:
+		void ResetReferences();
 	};
 }
 

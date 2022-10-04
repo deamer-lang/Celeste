@@ -16,6 +16,7 @@
 #undef YY_NO_UNISTD_H
 #include "Celeste/Ast/Enum/Type.h"
 #include "Celeste/Ast/Node/SINGLE_COMMENT.h"
+#include "Celeste/Ast/Node/MULTI_COMMENT.h"
 #include "Celeste/Ast/Node/CONSTANT.h"
 #include "Celeste/Ast/Node/FUNCTION.h"
 #include "Celeste/Ast/Node/CLASS.h"
@@ -259,6 +260,7 @@ static const std::string* Celeste_input_text = nullptr;
 %}
 
 %token<Terminal> SINGLE_COMMENT
+%token<Terminal> MULTI_COMMENT
 %token<Terminal> CONSTANT
 %token<Terminal> FUNCTION
 %token<Terminal> CLASS
@@ -484,6 +486,7 @@ static const std::string* Celeste_input_text = nullptr;
 %union{
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::Celeste::ast::node::SINGLE_COMMENT* Celeste_SINGLE_COMMENT;
+	::Celeste::ast::node::MULTI_COMMENT* Celeste_MULTI_COMMENT;
 	::Celeste::ast::node::CONSTANT* Celeste_CONSTANT;
 	::Celeste::ast::node::FUNCTION* Celeste_FUNCTION;
 	::Celeste::ast::node::CLASS* Celeste_CLASS;
@@ -928,8 +931,8 @@ import_statement:
 
 
 file_import:
-	IMPORT FILE_ TEXT  {
-		auto* const newNode = new Celeste::ast::node::file_import({::Celeste::ast::Type::file_import, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::IMPORT({::Celeste::ast::Type::IMPORT, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), new Celeste::ast::node::FILE_({::Celeste::ast::Type::FILE_, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), new Celeste::ast::node::TEXT({::Celeste::ast::Type::TEXT, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }) });
+	execution_keyword_permutation IMPORT FILE_ TEXT  {
+		auto* const newNode = new Celeste::ast::node::file_import({::Celeste::ast::Type::file_import, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, new Celeste::ast::node::IMPORT({::Celeste::ast::Type::IMPORT, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), new Celeste::ast::node::FILE_({::Celeste::ast::Type::FILE_, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), new Celeste::ast::node::TEXT({::Celeste::ast::Type::TEXT, ::deamer::external::cpp::ast::NodeValue::terminal, $4 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted

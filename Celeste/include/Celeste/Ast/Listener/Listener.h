@@ -5,6 +5,7 @@
 #include "Celeste/Ast/Node/Celeste.h"
 #include "Celeste/Ast/Enum/Type.h"
 #include "Celeste/Ast/Node/SINGLE_COMMENT.h"
+#include "Celeste/Ast/Node/MULTI_COMMENT.h"
 #include "Celeste/Ast/Node/CONSTANT.h"
 #include "Celeste/Ast/Node/FUNCTION.h"
 #include "Celeste/Ast/Node/CLASS.h"
@@ -242,6 +243,11 @@ namespace Celeste { namespace ast { namespace listener {
 			case Celeste::ast::Type::SINGLE_COMMENT:
 			{
 				Listen(static_cast<const Celeste::ast::node::SINGLE_COMMENT*>(node));
+				break;
+			}
+			case Celeste::ast::Type::MULTI_COMMENT:
+			{
+				Listen(static_cast<const Celeste::ast::node::MULTI_COMMENT*>(node));
 				break;
 			}
 			case Celeste::ast::Type::CONSTANT:
@@ -1488,6 +1494,9 @@ namespace Celeste { namespace ast { namespace listener {
 			}
 		}
 		virtual void Listen(const Celeste::ast::node::SINGLE_COMMENT* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::MULTI_COMMENT* node)
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::CONSTANT* node)

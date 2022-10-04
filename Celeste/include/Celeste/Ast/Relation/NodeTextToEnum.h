@@ -465,6 +465,9 @@ namespace Celeste { namespace ast { namespace relation {
 		{ "SINGLE_COMMENT", ::Celeste::ast::Type::SINGLE_COMMENT },
 	
 
+		{ "MULTI_COMMENT", ::Celeste::ast::Type::MULTI_COMMENT },
+	
+
 		{ "CONSTANT", ::Celeste::ast::Type::CONSTANT },
 	
 

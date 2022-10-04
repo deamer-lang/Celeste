@@ -35,7 +35,8 @@ struct Celeste::ir::inputreconstruction::NameReference::Impl
 	std::vector<std::unique_ptr<SymbolAccess>> hiddenAccess;
 	std::optional<std::unique_ptr<NameReferenceSecondary>> nameReferenceSecondary;
 
-	std::variant<std::monostate, ast::node::symbol_reference*, ast::node::VARNAME*> symbolReference;
+	std::variant<std::monostate, ast::node::symbol_reference*, ast::node::VARNAME*, std::string>
+		symbolReference;
 	std::optional<InputReconstructionObject*> cacheReferencedObjects;
 	// The link in the syntax tree, this is not the referenced syntax part.
 	::deamer::external::cpp::ast::Node* linkedAstNode = nullptr;
@@ -51,15 +52,27 @@ struct Celeste::ir::inputreconstruction::NameReference::Impl
 	{
 	}
 
-	Impl(std::variant<std::monostate, ast::node::symbol_reference*, ast::node::VARNAME*>
-			 symbolReference_,
-		 bool staticallyResolvable_ = false)
+	Impl(
+		std::variant<std::monostate, ast::node::symbol_reference*, ast::node::VARNAME*, std::string>
+			symbolReference_,
+		bool staticallyResolvable_ = false)
 		: symbolReference(symbolReference_),
 		  staticallyResolvable(staticallyResolvable_)
 	{
 	}
 
 	~Impl() = default;
+
+	void Reset()
+	{
+		linkedIrViaAccess.clear();
+		hiddenAccess.clear();
+		nameReferenceSecondary = std::nullopt;
+		cacheReferencedObjects = std::nullopt;
+		linkedAstNode = nullptr;
+		linkedIr = std::nullopt;
+		staticallyResolvable = false;
+	}
 };
 
 struct Celeste::ir::inputreconstruction::NameReference::ResolveLogic
@@ -1635,6 +1648,13 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(ast::node::VARNAM
 	SetSymbolName(varname_->GetText());
 }
 
+Celeste::ir::inputreconstruction::NameReference::NameReference(const std::string& varname_)
+	: InputReconstructionObject(Type::NameReference),
+	  impl(std::make_unique<Impl>(varname_, true))
+{
+	SetSymbolName(varname_);
+}
+
 Celeste::ir::inputreconstruction::NameReference::~NameReference()
 {
 }
@@ -1649,6 +1669,12 @@ Celeste::ir::inputreconstruction::NameReference::GetSymbolAccesses()
 	}
 
 	return result;
+}
+
+void Celeste::ir::inputreconstruction::NameReference::Reset()
+{
+	resolveIsRan = false;
+	impl->Reset();
 }
 
 Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_)
@@ -1675,6 +1701,14 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_,
 	  impl(std::make_unique<Impl>(symbolReference_, true))
 {
 	SetSymbolName(symbolReference_->GetText());
+}
+
+Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_,
+															   const std::string& symbolReference_)
+	: InputReconstructionObject(forward_),
+	  impl(std::make_unique<Impl>(symbolReference_, true))
+{
+	SetSymbolName(symbolReference_);
 }
 
 void Celeste::ir::inputreconstruction::NameReference::CreateAccess(
@@ -1987,7 +2021,14 @@ std::string Celeste::ir::inputreconstruction::NameReference::GetResolvedName()
 
 	if (CanStaticallyBeResolved())
 	{
-		return impl->linkedAstNode->GetText();
+		if (impl->linkedAstNode != nullptr)
+		{
+			return impl->linkedAstNode->GetText();
+		}
+		else
+		{
+			return GetSymbolName();
+		}
 	}
 
 	// It is not statically resolvable, i.e. we need to interpreter code to find the name.

@@ -12,6 +12,7 @@ namespace Celeste { namespace ast {
 
 		// Terminal
 		SINGLE_COMMENT,
+		MULTI_COMMENT,
 		CONSTANT,
 		FUNCTION,
 		CLASS,

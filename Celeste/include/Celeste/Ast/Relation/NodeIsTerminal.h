@@ -13,6 +13,11 @@ namespace Celeste { namespace ast { namespace relation {
 			return true;
 		}
 
+		if (t == ::Celeste::ast::Type::MULTI_COMMENT)
+		{
+			return true;
+		}
+
 		if (t == ::Celeste::ast::Type::CONSTANT)
 		{
 			return true;

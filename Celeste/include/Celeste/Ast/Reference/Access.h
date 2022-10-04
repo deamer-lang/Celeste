@@ -157,6 +157,7 @@
 #include "Celeste/Ast/Node/value.h"
 #include "Celeste/Ast/Node/tuple.h"
 #include "Celeste/Ast/Node/SINGLE_COMMENT.h"
+#include "Celeste/Ast/Node/MULTI_COMMENT.h"
 #include "Celeste/Ast/Node/CONSTANT.h"
 #include "Celeste/Ast/Node/FUNCTION.h"
 #include "Celeste/Ast/Node/CLASS.h"
@@ -618,6 +619,8 @@ namespace Celeste { namespace ast { namespace reference {
 	struct AccessTemplateBase<::Celeste::ast::node::tuple>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::SINGLE_COMMENT>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::MULTI_COMMENT>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::CONSTANT>;
 	template<>
@@ -1498,7 +1501,8 @@ AccessTemplateBase<::Celeste::ast::node::SEMICOLON> SEMICOLON();
 		}
 
 	public:
-		AccessTemplateBase<::Celeste::ast::node::FILE_> FILE_();
+		AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> execution_keyword_permutation();
+AccessTemplateBase<::Celeste::ast::node::FILE_> FILE_();
 AccessTemplateBase<::Celeste::ast::node::IMPORT> IMPORT();
 AccessTemplateBase<::Celeste::ast::node::TEXT> TEXT();
 
@@ -17402,6 +17406,112 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 	};
 
 	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::MULTI_COMMENT> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::MULTI_COMMENT*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::MULTI_COMMENT*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::MULTI_COMMENT& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::MULTI_COMMENT* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::MULTI_COMMENT>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::MULTI_COMMENT>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::MULTI_COMMENT*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::MULTI_COMMENT*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::MULTI_COMMENT>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::CONSTANT> : public AccessBase
 	{
 	protected:
@@ -24873,6 +24983,14 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::file_import>(Get<::Celeste::ast::Type::file_import>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation> AccessTemplateBase<::Celeste::ast::node::file_import>::execution_keyword_permutation()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::execution_keyword_permutation>(Get<::Celeste::ast::Type::execution_keyword_permutation>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::FILE_> AccessTemplateBase<::Celeste::ast::node::file_import>::FILE_()

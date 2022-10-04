@@ -956,10 +956,12 @@ namespace Celeste::ast::listener::user::ir
 			}
 
 			auto Access = reference::Access(node);
+			auto fileName = GetText(Access.file_import().TEXT().GetContent()[0]->GetText());
 			// This only works for File Imports
 			// Also the Project GetFile must be upgraded to allow any location access.
 			auto Import = std::make_unique<Celeste::ir::inputreconstruction::Import>(
-				project->GetFile(GetText(Access.file_import().TEXT().GetContent()[0]->GetText())));
+				project->GetFile(fileName),
+				!Access.file_import().execution_keyword_permutation().CODE().GetContent().empty());
 			Import->SetParent(GetParent());
 			Import->SetFile(file);
 

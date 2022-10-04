@@ -8,7 +8,7 @@ Overview of the terminal: **[CONSTANT](./CONSTANT.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [SINGLE_COMMENT](./SINGLE_COMMENT.md) |
+| Above             | [MULTI_COMMENT](./MULTI_COMMENT.md) |
 | This              | **[CONSTANT](./CONSTANT.md)** |
 | Below             | [FUNCTION](./FUNCTION.md) |
 
