@@ -18,10 +18,15 @@ namespace Celeste::ir::inputreconstruction
 		Return(std::unique_ptr<Expression> expression_);
 		virtual ~Return() = default;
 
+		Return(const Return& rhs);
+
 		void Resolve();
 
 	public:
 		std::unique_ptr<Celeste::ir::inputreconstruction::Expression>& GetExpression();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

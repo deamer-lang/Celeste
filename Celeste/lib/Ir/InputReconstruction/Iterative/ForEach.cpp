@@ -33,8 +33,106 @@ void Celeste::ir::inputreconstruction::ForEach::Complete()
 	variableName->SetFile(GetFile());
 }
 
+Celeste::ir::inputreconstruction::ForEach::ForEach(const ForEach& rhs)
+	: InputReconstructionObject(rhs),
+	  variableType(static_cast<TypeConstruct*>(rhs.variableType->DeepCopy().release())),
+	  variableName(static_cast<NameReference*>(rhs.variableName->DeepCopy().release())),
+	  expression(static_cast<Expression*>(rhs.expression->DeepCopy().release()))
+{
+	this->variableType->SetParent(this);
+	this->variableName->SetParent(this);
+	this->expression->SetParent(this);
+
+	for (auto& rhsValue : rhs.block)
+	{
+		auto newRhs = std::unique_ptr<InputReconstructionObject>(
+			static_cast<InputReconstructionObject*>(rhsValue->DeepCopy().release()));
+		newRhs->SetParent(this);
+		this->block.push_back(std::move(newRhs));
+	}
+}
+
 Celeste::ir::inputreconstruction::NameReference*
 Celeste::ir::inputreconstruction::ForEach::GetVariable()
 {
 	return variableName.get();
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
+Celeste::ir::inputreconstruction::ForEach::begin()
+{
+	return std::begin(block);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
+Celeste::ir::inputreconstruction::ForEach::end()
+{
+	return std::end(block);
+}
+
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
+Celeste::ir ::inputreconstruction::ForEach::rbegin()
+{
+	return std::rbegin(block);
+}
+
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
+Celeste::ir ::inputreconstruction::ForEach::rend()
+{
+	return std::rend(block);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
+Celeste::ir::inputreconstruction::ForEach::GetIterator(InputReconstructionObject* irComponent)
+{
+	for (auto iter = begin(); iter != end(); ++iter)
+	{
+		if ((*iter).get() == irComponent)
+		{
+			return iter;
+		}
+	}
+
+	return end();
+}
+
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
+Celeste::ir ::inputreconstruction::ForEach::GetReverseIterator(
+	InputReconstructionObject* irComponent)
+{
+	for (auto iter = rbegin(); iter != rend(); ++iter)
+	{
+		if ((*iter).get() == irComponent)
+		{
+			return iter;
+		}
+	}
+
+	return rend();
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>
+Celeste::ir::inputreconstruction::ForEach::GetScope()
+{
+	std::vector<InputReconstructionObject*> scope;
+	for (auto& _ : block)
+	{
+		scope.push_back(_.get());
+	}
+	return scope;
+}
+
+void Celeste::ir::inputreconstruction::ForEach::Add(
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject> innerObject)
+{
+	block.push_back(std::move(innerObject));
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::ForEach::DeepCopy()
+{
+	return std::make_unique<ForEach>(*this);
 }

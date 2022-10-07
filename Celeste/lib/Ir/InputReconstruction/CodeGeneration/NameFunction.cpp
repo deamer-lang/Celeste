@@ -14,6 +14,15 @@ Celeste::ir::inputreconstruction::NameFunction::NameFunction(
 {
 }
 
+Celeste::ir::inputreconstruction::NameFunction::NameFunction(const NameFunction& rhs)
+	: InputReconstructionObject(rhs)
+{
+	auto newFunctionNameRhs = std::unique_ptr<SymbolReferenceCall>(
+		static_cast<SymbolReferenceCall*>(rhs.functionName->DeepCopy().release()));
+	newFunctionNameRhs->SetParent(this);
+	this->functionName = std::move(newFunctionNameRhs);
+}
+
 void Celeste::ir::inputreconstruction::NameFunction::Add(InputReconstructionObject* newObject)
 {
 	InputReconstructionObject::Add(newObject);
@@ -29,4 +38,10 @@ bool Celeste::ir::inputreconstruction::NameFunction::Accepts(
 	std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*> symbol)
 {
 	return false;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::NameFunction::DeepCopy()
+{
+	return std::make_unique<NameFunction>(*this);
 }

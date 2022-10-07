@@ -27,6 +27,8 @@ namespace Celeste::ir::inputreconstruction
 		TypeConstruct();
 		virtual ~TypeConstruct() = default;
 
+		TypeConstruct(const TypeConstruct& rhs);
+
 	public:
 		void Destructure();
 
@@ -45,6 +47,9 @@ namespace Celeste::ir::inputreconstruction
 		// A type construct is trivial if it exists of a direct type link.
 		// I.e. no array declarations
 		bool Trivial();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

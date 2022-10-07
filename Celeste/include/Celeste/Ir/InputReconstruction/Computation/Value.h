@@ -25,6 +25,8 @@ namespace Celeste::ir::inputreconstruction
 		Value(ast::node::value* value_);
 		virtual ~Value();
 
+		Value(const Value& rhs);
+
 	public:
 		void Resolve();
 		InputReconstructionObject* DeduceType();
@@ -33,6 +35,8 @@ namespace Celeste::ir::inputreconstruction
 					 std::unique_ptr<SymbolReferenceCall>, std::unique_ptr<Tuple>,
 					 std::unique_ptr<Integer>, std::unique_ptr<Decimal>, std::unique_ptr<Text>>&
 		GetValue();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

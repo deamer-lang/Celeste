@@ -21,9 +21,14 @@ namespace Celeste::ir::inputreconstruction
 		InlineClass(std::unique_ptr<NameReference> inlineClassName_);
 		virtual ~InlineClass() = default;
 
+		InlineClass(const InlineClass& rhs);
+
 	public:
 		void Add(InputReconstructionObject* newObject) override;
 		void Add(InputReconstructionObject* object, Accessibility accessibility);
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

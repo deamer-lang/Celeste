@@ -22,33 +22,39 @@ namespace Celeste::ir::inputreconstruction
 		InputReconstructionObject(Type type_);
 		virtual ~InputReconstructionObject();
 
+		InputReconstructionObject(const InputReconstructionObject& rhs);
+
 	public:
 		void SetFile(File* file);
 		File* GetFile();
 
-		Type GetType();
+		Type GetType() const;
 
 		void SetParent(InputReconstructionObject* parent_);
 		InputReconstructionObject* GetParent();
 
 		virtual void Add(InputReconstructionObject* innerObject);
 		virtual void Add(std::vector<InputReconstructionObject*> innerObjects);
-		virtual std::vector<InputReconstructionObject*>::iterator
+		virtual void
+		Add(std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+				innerObject);
+		virtual std::vector<std::unique_ptr<InputReconstructionObject>>::iterator
 		GetIterator(InputReconstructionObject* irComponent);
-		virtual std::vector<InputReconstructionObject*>::iterator begin();
-		virtual std::vector<InputReconstructionObject*>::iterator end();
-		virtual std::vector<InputReconstructionObject*>& GetScope();
+		virtual std::vector<std::unique_ptr<InputReconstructionObject>>::iterator begin();
+		virtual std::vector<std::unique_ptr<InputReconstructionObject>>::iterator end();
 
-		virtual std::vector<InputReconstructionObject*>::reverse_iterator
+		virtual std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator
 		GetReverseIterator(InputReconstructionObject* irComponent);
-		virtual std::vector<InputReconstructionObject*>::reverse_iterator rend();
-		virtual std::vector<InputReconstructionObject*>::reverse_iterator rbegin();
+		virtual std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rend();
+		virtual std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rbegin();
 
 		void SetReferencingObject(InputReconstructionObject* nameReference);
 		std::vector<InputReconstructionObject*> GetReferencesToThisObject();
 
 		void SetGroupType(GroupType groupType_);
 		GroupType GetGroupType();
+		virtual std::unique_ptr<InputReconstructionObject> DeepCopy() = 0;
+		virtual std::vector<InputReconstructionObject*> GetScope();
 	};
 }
 

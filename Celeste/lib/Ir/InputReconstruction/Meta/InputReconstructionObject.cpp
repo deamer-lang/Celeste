@@ -8,6 +8,7 @@ struct Celeste::ir::inputreconstruction::InputReconstructionObject::Impl
 	File* file = nullptr;
 	std::optional<InputReconstructionObject*> parent;
 	std::vector<InputReconstructionObject*> scope;
+	std::vector<std::unique_ptr<InputReconstructionObject>> scope2;
 
 	std::vector<InputReconstructionObject*> objectThatReferenceThis;
 
@@ -18,6 +19,17 @@ struct Celeste::ir::inputreconstruction::InputReconstructionObject::Impl
 	}
 
 	~Impl() = default;
+
+	std::unique_ptr<Impl> DeepCopy(InputReconstructionObject* inputReconstructionObject)
+	{
+		auto newImpl = std::make_unique<Impl>(type);
+		newImpl->file = file;
+		newImpl->parent =
+			std::nullopt; // Safety, this prevents accidental reads to non-related parents
+		newImpl->objectThatReferenceThis = {}; // Safety, ""
+		newImpl->groupType = groupType;
+		return std::move(newImpl);
+	}
 };
 
 Celeste::ir::inputreconstruction::InputReconstructionObject::InputReconstructionObject(Type type_)
@@ -26,6 +38,12 @@ Celeste::ir::inputreconstruction::InputReconstructionObject::InputReconstruction
 }
 
 Celeste::ir::inputreconstruction::InputReconstructionObject::~InputReconstructionObject()
+{
+}
+
+Celeste::ir::inputreconstruction::InputReconstructionObject::InputReconstructionObject(
+	const InputReconstructionObject& rhs)
+	: impl(rhs.impl->DeepCopy(this))
 {
 }
 
@@ -41,7 +59,7 @@ Celeste::ir::inputreconstruction::InputReconstructionObject::GetFile()
 }
 
 Celeste::ir::inputreconstruction::Type
-Celeste::ir::inputreconstruction::InputReconstructionObject::GetType()
+Celeste::ir::inputreconstruction::InputReconstructionObject::GetType() const
 {
 	return impl->type;
 }
@@ -78,64 +96,64 @@ void Celeste::ir::inputreconstruction::InputReconstructionObject::Add(
 	}
 }
 
-std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
+void Celeste::ir::inputreconstruction::InputReconstructionObject::Add(
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject> innerObject)
+{
+	throw std::logic_error("Unimplemented Member Function, Critical Error");
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetIterator(
 	InputReconstructionObject* irComponent)
 {
-	for (auto iter = std::begin(impl->scope); iter != std::end(impl->scope); ++iter)
-	{
-		if (*iter == irComponent)
-		{
-			return iter;
-		}
-	}
-
-	return std::end(impl->scope);
+	// throw std::logic_error("Critical Error, Member function (GetIterator) not implemented.");
+	return end();
 }
 
-std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::begin()
 {
-	return std::begin(impl->scope);
+	// throw std::logic_error("Critical Error, Member function (GetScope) not implemented.");
+	return std::begin(impl->scope2);
 }
 
-std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::iterator
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::end()
 {
-	return std::end(impl->scope);
+	// throw std::logic_error("Critical Error, Member function (GetScope) not implemented.");
+	return std::end(impl->scope2);
 }
 
-std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>&
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetScope()
 {
-	return impl->scope;
+	throw std::logic_error("Critical Error, Member function (GetScope) not implemented.");
 }
 
-std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::GetReverseIterator(
 	InputReconstructionObject* irComponent)
 {
-	for (auto iter = std::rbegin(impl->scope); iter != std::rend(impl->scope); ++iter)
-	{
-		if (*iter == irComponent)
-		{
-			return iter;
-		}
-	}
-
-	return std::rend(impl->scope);
+	// throw std::logic_error("Critical Error, Member function (GetReverseIterator) not
+	// implemented.");
+	return rend();
 }
 
-std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::rend()
 {
-	return std::rend(impl->scope);
+	// throw std::logic_error("Critical Error, Member function (rend) not implemented.");
+	return std::rend(impl->scope2);
 }
 
-std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>::reverse_iterator
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
 Celeste::ir::inputreconstruction::InputReconstructionObject::rbegin()
 {
-	return std::rbegin(impl->scope);
+	// throw std::logic_error("Critical Error, Member function (rbegin) not implemented.");
+	return std::rbegin(impl->scope2);
 }
 
 void Celeste::ir::inputreconstruction::InputReconstructionObject::SetReferencingObject(

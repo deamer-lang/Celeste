@@ -8,6 +8,19 @@ Celeste::ir::inputreconstruction::Tuple::Tuple(ast::node::tuple* value_)
 {
 }
 
+Celeste::ir::inputreconstruction::Tuple::Tuple(const Tuple& rhs)
+	: InputReconstructionObject(rhs),
+	  value(rhs.value)
+{
+	for (auto& rhsExpression : rhs.expressions)
+	{
+		auto newExpression = std::unique_ptr<Expression>(
+			static_cast<Expression*>(rhsExpression->DeepCopy().release()));
+		newExpression->SetParent(this);
+		expressions.push_back(std::move(newExpression));
+	}
+}
+
 void Celeste::ir::inputreconstruction::Tuple::Resolve()
 {
 	ast::reference::Access<ast::node::tuple>(value).full_value().expression().for_all(
@@ -18,4 +31,10 @@ void Celeste::ir::inputreconstruction::Tuple::Resolve()
 			newExpression->SetParent(this);
 			expressions.push_back(std::move(newExpression));
 		});
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Tuple::DeepCopy()
+{
+	return std::make_unique<Tuple>(*this);
 }

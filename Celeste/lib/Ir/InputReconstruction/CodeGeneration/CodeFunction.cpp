@@ -12,6 +12,31 @@ Celeste::ir::inputreconstruction::CodeFunction::CodeFunction(
 {
 }
 
+Celeste::ir::inputreconstruction::CodeFunction::CodeFunction(const CodeFunction& rhs)
+	: InputReconstructionObject(rhs)
+{
+	auto newFunctionNameRhs = std::unique_ptr<NameReference>(
+		static_cast<NameReference*>(rhs.functionName->DeepCopy().release()));
+	newFunctionNameRhs->SetParent(this);
+	this->functionName = std::move(newFunctionNameRhs);
+
+	for (auto& rhsValue : rhs.functionArguments)
+	{
+		auto newRhs = std::unique_ptr<FunctionArgument>(
+			static_cast<FunctionArgument*>(rhsValue->DeepCopy().release()));
+		newRhs->SetParent(this);
+		this->functionArguments.push_back(std::move(newRhs));
+	}
+
+	for (auto& rhsValue : rhs.templateParameters)
+	{
+		auto newRhs = std::unique_ptr<TemplateParameter>(
+			static_cast<TemplateParameter*>(rhsValue->DeepCopy().release()));
+		newRhs->SetParent(this);
+		this->templateParameters.push_back(std::move(newRhs));
+	}
+}
+
 void Celeste::ir::inputreconstruction::CodeFunction::Add(InputReconstructionObject* newObject)
 {
 	InputReconstructionObject::Add(newObject);
@@ -41,4 +66,10 @@ bool Celeste::ir::inputreconstruction::CodeFunction::Accepts(
 	std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*> symbol)
 {
 	return false;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::CodeFunction::DeepCopy()
+{
+	return std::make_unique<CodeFunction>(*this);
 }

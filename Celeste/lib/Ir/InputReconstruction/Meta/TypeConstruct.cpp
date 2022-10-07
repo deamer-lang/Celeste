@@ -23,6 +23,29 @@ Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct()
 {
 }
 
+Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(const TypeConstruct& rhs)
+	: InputReconstructionObject(rhs),
+	  type(rhs.type),
+	  isAuto(rhs.isAuto),
+	  isAutoType(rhs.isAutoType)
+{
+	if (rhs.arrayDeclarationExpression.has_value())
+	{
+		auto newRhsValue = std::unique_ptr<Expression>(
+			static_cast<Expression*>(rhs.arrayDeclarationExpression.value()->DeepCopy().release()));
+		newRhsValue->SetParent(this);
+		this->arrayDeclarationExpression = std::move(newRhsValue);
+	}
+
+	if (rhs.typeTarget.has_value())
+	{
+		auto newRhsValue = std::unique_ptr<SymbolReferenceCall>(
+			static_cast<SymbolReferenceCall*>(rhs.typeTarget.value()->DeepCopy().release()));
+		newRhsValue->SetParent(this);
+		this->typeTarget = std::move(newRhsValue);
+	}
+}
+
 void Celeste::ir::inputreconstruction::TypeConstruct::Destructure()
 {
 	if (typeTarget.has_value())
@@ -294,4 +317,10 @@ Celeste::ir::inputreconstruction::TypeConstruct::GetIrLinkage(SymbolAccess* acce
 bool Celeste::ir::inputreconstruction::TypeConstruct::Trivial()
 {
 	return !IsArrayDeclaration();
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::TypeConstruct::DeepCopy()
+{
+	return std::make_unique<TypeConstruct>(*this);
 }

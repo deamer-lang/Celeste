@@ -20,6 +20,32 @@ void Celeste::ir::inputreconstruction::FunctionArgument::Complete()
 	argumentType->Destructure();
 }
 
+Celeste::ir::inputreconstruction::FunctionArgument::FunctionArgument(const FunctionArgument& rhs)
+	: InputReconstructionObject(rhs),
+	  argumentName(static_cast<NameReference*>(rhs.argumentName->DeepCopy().release())),
+	  argumentType(static_cast<TypeConstruct*>(rhs.argumentType->DeepCopy().release()))
+{
+	this->argumentName->SetParent(this);
+	this->argumentType->SetParent(this);
+
+	for (auto& rhsValue : rhs.values)
+	{
+		auto newRhsValue =
+			std::unique_ptr<Expression>(static_cast<Expression*>(rhsValue->DeepCopy().release()));
+		newRhsValue->SetParent(this);
+		this->values.push_back(std::move(newRhsValue));
+	}
+
+	if (rhs.conditionModifierCall.has_value())
+	{
+		auto newRhsValue =
+			std::unique_ptr<ConditionModifierCall>(static_cast<ConditionModifierCall*>(
+				rhs.conditionModifierCall.value()->DeepCopy().release()));
+		newRhsValue->SetParent(this);
+		this->conditionModifierCall = std::move(newRhsValue);
+	}
+}
+
 void Celeste::ir::inputreconstruction::FunctionArgument::AddValue(std::unique_ptr<Expression> value)
 {
 	values.push_back(std::move(value));
@@ -64,4 +90,10 @@ Celeste::ir::inputreconstruction::TypeConstruct*
 Celeste::ir::inputreconstruction::FunctionArgument::GetArgumentType()
 {
 	return argumentType.get();
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::FunctionArgument::DeepCopy()
+{
+	return std::make_unique<FunctionArgument>(*this);
 }

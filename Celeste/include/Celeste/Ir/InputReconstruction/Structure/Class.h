@@ -21,19 +21,22 @@ namespace Celeste::ir::inputreconstruction
 		Accessibility lastAccessibility = Accessibility::Public;
 		std::unique_ptr<NameReference> className;
 		std::vector<std::pair<Accessibility, InputReconstructionObject*>> block;
+		std::vector<std::unique_ptr<InputReconstructionObject>> ownedBlock;
 		std::vector<std::unique_ptr<CompoundBase>> compoundBases;
 		std::vector<std::unique_ptr<InheritBase>> inheritedBases;
 		std::vector<std::unique_ptr<TemplateParameter>> templateParameters;
 
 	public:
 		Class(std::unique_ptr<NameReference> className_);
-		virtual ~Class() = default;
+		virtual ~Class() override = default;
 
 		void Complete();
 
+		Class(const Class& rhs);
+
 	public:
-		void Add(InputReconstructionObject* object) override;
-		void Add(InputReconstructionObject* object, Accessibility accessibility);
+		void Add(std::unique_ptr<InputReconstructionObject> object) override;
+		void Add(std::unique_ptr<InputReconstructionObject> object, Accessibility accessibility);
 
 		void AddCompoundBase(std::unique_ptr<CompoundBase> compoundBase);
 		void AddInheritedBase(std::unique_ptr<InheritBase> inheritBase);
@@ -41,7 +44,9 @@ namespace Celeste::ir::inputreconstruction
 
 		std::vector<std::unique_ptr<CompoundBase>>& GetCompoundBases();
 		std::vector<std::unique_ptr<InheritBase>>& GetInheritedBases();
-		std::vector<std::pair<Accessibility, InputReconstructionObject*>>& GetMembers();
+		std::vector<
+			std::pair<Celeste::ir::inputreconstruction::Accessibility, InputReconstructionObject*>>&
+		GetMembers();
 
 		InputReconstructionObject* GetMember(NameReference* nameReference,
 											 Accessibility accessibility = Accessibility::Public);
@@ -69,6 +74,19 @@ namespace Celeste::ir::inputreconstruction
 		Function* CreateMemberFunction(const std::string& functionName,
 									   const std::string& returnType = "");
 		void CreateDefaultConstructor();
+
+	public:
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator begin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator end() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rbegin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rend() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator
+		GetIterator(InputReconstructionObject* irComponent) override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator
+		GetReverseIterator(InputReconstructionObject* irComponent) override;
+
+		std::vector<InputReconstructionObject*> GetScope() override;
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

@@ -27,6 +27,24 @@ void Celeste::ir::inputreconstruction::VariableDeclaration::Complete()
 	variableName->SetFile(GetFile());
 }
 
+Celeste::ir::inputreconstruction::VariableDeclaration::VariableDeclaration(
+	const VariableDeclaration& rhs)
+	: InputReconstructionObject(rhs),
+	  type(static_cast<TypeConstruct*>(rhs.type->DeepCopy().release())),
+	  variableName(static_cast<NameReference*>(rhs.variableName->DeepCopy().release()))
+{
+	this->variableName->SetParent(this);
+	this->type->SetParent(this);
+
+	for (auto& rhsValue : rhs.values)
+	{
+		auto newRhsValue =
+			std::unique_ptr<Expression>(static_cast<Expression*>(rhsValue->DeepCopy().release()));
+		newRhsValue->SetParent(this);
+		this->values.push_back(std::move(newRhsValue));
+	}
+}
+
 void Celeste::ir::inputreconstruction::VariableDeclaration::AddValue(
 	std::unique_ptr<Expression> newExpression)
 {
@@ -51,4 +69,10 @@ std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::Expression>>&
 Celeste::ir::inputreconstruction::VariableDeclaration::GetExpressions()
 {
 	return values;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::VariableDeclaration::DeepCopy()
+{
+	return std::make_unique<VariableDeclaration>(*this);
 }

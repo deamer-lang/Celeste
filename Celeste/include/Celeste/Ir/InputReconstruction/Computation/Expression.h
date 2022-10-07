@@ -20,6 +20,8 @@ namespace Celeste::ir::inputreconstruction
 		Expression(::deamer::external::cpp::ast::Node* expression_);
 		virtual ~Expression();
 
+		Expression(const Expression& rhs);
+
 	public:
 		void Resolve();
 
@@ -33,6 +35,8 @@ namespace Celeste::ir::inputreconstruction
 
 		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>& GetLhs();
 		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>& GetRhs();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

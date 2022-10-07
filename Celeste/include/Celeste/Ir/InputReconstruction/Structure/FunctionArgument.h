@@ -27,6 +27,9 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~FunctionArgument() = default;
 		void Complete();
 
+		FunctionArgument(const FunctionArgument& rhs);
+
+	public:
 		void AddValue(std::unique_ptr<Expression> value);
 		void AddConditionalModifier(std::unique_ptr<ConditionModifierCall> unique);
 
@@ -35,6 +38,9 @@ namespace Celeste::ir::inputreconstruction
 		bool Accepts(const std::unique_ptr<Expression>& expression);
 		std::string GetName();
 		TypeConstruct* GetArgumentType();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

@@ -40,6 +40,8 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~SymbolAccess() = default;
 		void Complete();
 
+		SymbolAccess(const SymbolAccess& rhs);
+
 	public:
 		void Resolve();
 		std::optional<InputReconstructionObject*> GetLinkedIr();
@@ -50,6 +52,8 @@ namespace Celeste::ir::inputreconstruction
 		SymbolAccessType GetSymbolAccessType();
 		std::size_t GetAnonymousIndex();
 		std::vector<std::unique_ptr<Expression>>& GetFunctionArguments();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

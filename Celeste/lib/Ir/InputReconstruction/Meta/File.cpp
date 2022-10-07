@@ -16,20 +16,22 @@ struct Celeste::ir::inputreconstruction::File::Impl
 	std::vector<std::unique_ptr<SourceCodeBlockMutationSet>> resolvedCodeBlocks;
 	std::vector<std::unique_ptr<SourceCodeBlockMutationSet>> unresolvedCodeBlocks;
 
-	Impl(std::string fileName_) : fileName(fileName_)
+	Impl(const std::string& fileName_) : fileName(fileName_)
 	{
 	}
 
 	~Impl() = default;
 };
 
-Celeste::ir::inputreconstruction::File::File(std::string fileName_)
+Celeste::ir::inputreconstruction::File::File(const std::string& fileName_)
 	: impl(std::make_unique<Impl>(fileName_))
 {
 }
 
 Celeste::ir::inputreconstruction::File::~File()
 {
+	// This guarantees that the objects destruct before the file destructs.
+	impl->inputReconstructionObjects.clear();
 }
 
 void Celeste::ir::inputreconstruction::File::SetProject(Project* project_)
@@ -177,8 +179,7 @@ Celeste::ir::inputreconstruction::File::CreateClass(const std::string& className
 	newClass->CreateDefaultConstructor();
 
 	auto newClassPtr = newClass.get();
-	GetRoot()->Add(newClassPtr);
-	AddInputReconstructionObject(std::move(newClass));
+	GetRoot()->Add(std::move(newClass));
 	return newClassPtr;
 }
 
@@ -210,25 +211,81 @@ Celeste::ir::inputreconstruction::File::CreateFunction(const std::string& classN
 	newFunction->Complete();
 
 	auto newFunctionPtr = newFunction.get();
-	GetRoot()->Add(newFunctionPtr);
-	AddInputReconstructionObject(std::move(newFunction));
+	GetRoot()->Add(std::move(newFunction));
 	return newFunctionPtr;
 }
 
 void Celeste::ir::inputreconstruction::File::ResetReferences()
 {
 	impl->unresolvedSymbolReferenceCalls.clear();
-	for (auto _ : impl->unresolvedSymbolReferenceCallsPreReset)
+
+	while (!impl->unresolvedSymbolReferenceCallsPreReset.empty())
 	{
+		unregisterFlag = false;
+		auto _ = *std::begin(impl->unresolvedSymbolReferenceCallsPreReset);
+		impl->unresolvedSymbolReferenceCallsPreReset.erase(
+			std::begin(impl->unresolvedSymbolReferenceCallsPreReset));
+		impl->unresolvedSymbolReferenceCalls.push_back(_);
+
 		if (_->GetType() == Type::NameReference)
 		{
-			// static_cast<NameReference*>(_)->Reset();
+			static_cast<NameReference*>(_)->Reset();
 		}
 		else if (_->GetType() == Type::SymbolReferenceCall)
 		{
-			// static_cast<NameReference*>(_)->Reset();
+			static_cast<SymbolReferenceCall*>(_)->Reset();
 		}
-		impl->unresolvedSymbolReferenceCalls.push_back(_);
+	}
+
+	impl->unresolvedSymbolReferenceCallsPreReset.clear();
+	for (auto& _ : impl->unresolvedSymbolReferenceCalls)
+	{
+		impl->unresolvedSymbolReferenceCallsPreReset.insert(_);
+	}
+}
+
+void Celeste::ir::inputreconstruction::File::RemoveCodeBlock(CodeBlock* codeBlock)
+{
+	for (auto iter = std::begin(impl->unresolvedCodeBlocks);
+		 iter != std::end(impl->unresolvedCodeBlocks); ++iter)
+	{
+		if ((*iter)->GetCodeBlock() == codeBlock)
+		{
+			impl->unresolvedCodeBlocks.erase(iter);
+			return;
+		}
+	}
+
+	for (auto iter = std::begin(impl->resolvedCodeBlocks);
+		 iter != std::end(impl->resolvedCodeBlocks); ++iter)
+	{
+		if ((*iter)->GetCodeBlock() == codeBlock)
+		{
+			impl->resolvedCodeBlocks.erase(iter);
+			return;
+		}
+	}
+}
+
+void Celeste::ir::inputreconstruction::File::Unregister(NameReference* nameReference)
+{
+	if (nameReference->GetType() == Type::SymbolResolveSecondary)
+	{
+		return;
+	}
+
+	unregisterFlag = true;
+	auto iter = impl->unresolvedSymbolReferenceCallsPreReset.find(nameReference);
+	if (iter != impl->unresolvedSymbolReferenceCallsPreReset.end())
+	{
+		impl->unresolvedSymbolReferenceCallsPreReset.erase(iter);
+	}
+
+	auto iter2 = std::find(std::cbegin(impl->unresolvedSymbolReferenceCalls),
+						   std::cend(impl->unresolvedSymbolReferenceCalls), nameReference);
+	if (iter2 != impl->unresolvedSymbolReferenceCalls.end())
+	{
+		impl->unresolvedSymbolReferenceCalls.erase(iter2);
 	}
 }
 

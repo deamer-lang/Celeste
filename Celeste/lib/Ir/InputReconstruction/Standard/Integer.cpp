@@ -13,7 +13,20 @@ Celeste::ir::inputreconstruction::Integer::Integer(int integer_)
 	constexprEvaluation = integer_;
 }
 
+Celeste::ir::inputreconstruction::Integer::Integer(const Integer& rhs)
+	: InputReconstructionObject(rhs),
+	  integer(rhs.integer),
+	  constexprEvaluation(rhs.constexprEvaluation)
+{
+}
+
 int Celeste::ir::inputreconstruction::Integer::GetEvaluation()
 {
 	return constexprEvaluation;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Integer::DeepCopy()
+{
+	return std::make_unique<Integer>(*this);
 }

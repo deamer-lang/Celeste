@@ -61,6 +61,20 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::Complete()
 	initialized = true;
 }
 
+Celeste::ir::inputreconstruction::NameReferenceSecondary::NameReferenceSecondary(
+	const NameReferenceSecondary& rhs)
+	: NameReference(rhs),
+	  symbolReference(rhs.symbolReference)
+{
+	if (rhs.nameReferenceNext.has_value())
+	{
+		this->nameReferenceNext =
+			std::unique_ptr<NameReferenceSecondary>(static_cast<NameReferenceSecondary*>(
+				rhs.nameReferenceNext.value()->DeepCopy().release()));
+		this->nameReferenceNext.value()->SetParent(this);
+	}
+}
+
 void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 	std::vector<std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>>
 		nextSymbols)
@@ -150,6 +164,11 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 
 		// TODO: implement for properly supporting accessibility.
 		auto linkedIr = classObject->GetMember(this, Accessibility::Public);
+		if (linkedIr == nullptr)
+		{
+			// Invalid
+			return;
+		}
 
 		// Valid if return type is not nullptr
 		SetLinkedIr(linkedIr);
@@ -275,4 +294,10 @@ Celeste::ir::inputreconstruction::NameReferenceSecondary::GetNameSecondaryRefere
 	}
 
 	return nameReferenceNext.value().get();
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::NameReferenceSecondary::DeepCopy()
+{
+	return std::make_unique<NameReferenceSecondary>(*this);
 }

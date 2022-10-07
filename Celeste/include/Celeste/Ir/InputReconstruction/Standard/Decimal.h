@@ -17,8 +17,12 @@ namespace Celeste::ir::inputreconstruction
 		Decimal(ast::node::DECIMAL* decimal_);
 		virtual ~Decimal() = default;
 
+		Decimal(const Decimal& rhs);
+
 	public:
 		double GetEvaluation();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

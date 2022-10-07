@@ -19,12 +19,17 @@ namespace Celeste::ir::inputreconstruction
 		NameFunction(std::unique_ptr<SymbolReferenceCall> functionName_);
 		virtual ~NameFunction() = default;
 
+		NameFunction(const NameFunction& rhs);
+
 	public:
 		void Add(InputReconstructionObject* newObject) override;
 		NameReference* GetFunctionName();
 		bool
 		Accepts(std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
 					symbol);
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

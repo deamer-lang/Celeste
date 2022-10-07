@@ -7,7 +7,11 @@ struct Celeste::ir::inputreconstruction::Assignment::Impl
 {
 	std::unique_ptr<SymbolReferenceCall> symbolReference;
 	std::unique_ptr<Expression> expression;
-	ast::node::assignment_operator* assignmentOperator;
+	ast::node::assignment_operator* assignmentOperator = nullptr;
+
+	Impl()
+	{
+	}
 
 	Impl(std::unique_ptr<SymbolReferenceCall> symbolReference_,
 		 std::unique_ptr<Expression> expression_,
@@ -19,6 +23,22 @@ struct Celeste::ir::inputreconstruction::Assignment::Impl
 	}
 
 	~Impl() = default;
+
+	std::unique_ptr<Impl> DeepCopy(Assignment* newParent)
+	{
+		auto newImpl = std::make_unique<Impl>();
+		newImpl->assignmentOperator = assignmentOperator;
+
+		newImpl->symbolReference = std::unique_ptr<SymbolReferenceCall>(
+			static_cast<SymbolReferenceCall*>(symbolReference->DeepCopy().release()));
+		newImpl->symbolReference->SetParent(newParent);
+
+		newImpl->expression =
+			std::unique_ptr<Expression>(static_cast<Expression*>(expression->DeepCopy().release()));
+		newImpl->expression->SetParent(newParent);
+
+		return std::move(newImpl);
+	}
 };
 
 Celeste::ir::inputreconstruction::Assignment::Assignment(
@@ -43,6 +63,12 @@ void Celeste::ir::inputreconstruction::Assignment::Complete()
 	impl->symbolReference->SetFile(GetFile());
 }
 
+Celeste::ir::inputreconstruction::Assignment::Assignment(const Assignment& rhs)
+	: InputReconstructionObject(rhs),
+	  impl(rhs.impl->DeepCopy(this))
+{
+}
+
 std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>&
 Celeste::ir::inputreconstruction::Assignment::GetLhs()
 {
@@ -53,4 +79,10 @@ std::unique_ptr<Celeste::ir::inputreconstruction::Expression>&
 Celeste::ir::inputreconstruction::Assignment::GetRhs()
 {
 	return impl->expression;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Assignment::DeepCopy()
+{
+	return std::make_unique<Assignment>(*this);
 }

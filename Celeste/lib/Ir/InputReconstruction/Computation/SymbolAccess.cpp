@@ -33,6 +33,22 @@ Celeste::ir::inputreconstruction::SymbolAccess::SymbolAccess(
 	}
 }
 
+Celeste::ir::inputreconstruction::SymbolAccess::SymbolAccess(const SymbolAccess& rhs)
+	: InputReconstructionObject(rhs),
+	  symbolParent(rhs.symbolParent),
+	  linkedIr(rhs.linkedIr),
+	  symbolAccessAst(rhs.symbolAccessAst),
+	  AccessType(rhs.AccessType)
+{
+	for (auto& rhsExpression : rhs.expressions)
+	{
+		auto newExpression = std::unique_ptr<Expression>(
+			static_cast<Expression*>(rhsExpression->DeepCopy().release()));
+		newExpression->SetParent(this);
+		this->expressions.push_back(std::move(newExpression));
+	}
+}
+
 void Celeste::ir::inputreconstruction::SymbolAccess::Complete()
 {
 	for (auto& expression : expressions)
@@ -86,4 +102,10 @@ std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::Expression>>&
 Celeste::ir::inputreconstruction::SymbolAccess::GetFunctionArguments()
 {
 	return expressions;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::SymbolAccess::DeepCopy()
+{
+	return std::make_unique<SymbolAccess>(*this);
 }

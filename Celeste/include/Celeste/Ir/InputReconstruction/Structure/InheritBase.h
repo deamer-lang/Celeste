@@ -13,18 +13,16 @@ namespace Celeste::ir::inputreconstruction
 		std::unique_ptr<SymbolReferenceCall> inheritBaseTarget;
 
 	public:
-		InheritBase(std::unique_ptr<SymbolReferenceCall> inheritBaseTarget_)
-			: InputReconstructionObject(Type::InheritBase),
-			  inheritBaseTarget(std::move(inheritBaseTarget_))
-		{
-		}
-		virtual ~InheritBase() = default;
+		InheritBase(std::unique_ptr<SymbolReferenceCall> inheritBaseTarget_);
+		virtual ~InheritBase();
+
+		InheritBase(const InheritBase& rhs);
 
 	public:
-		SymbolReferenceCall* GetLinkedType()
-		{
-			return inheritBaseTarget.get();
-		}
+		SymbolReferenceCall* GetLinkedType();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

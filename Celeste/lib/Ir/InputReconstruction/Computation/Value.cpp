@@ -19,7 +19,70 @@ struct Celeste::ir::inputreconstruction::Value::Impl
 	{
 	}
 
-	~Impl() = default;
+	~Impl()
+	{
+	}
+
+	std::unique_ptr<Impl> DeepCopy(Value* newParent)
+	{
+		auto newImpl = std::make_unique<Impl>(value);
+		if (std::holds_alternative<std::monostate>(underlyingSpecialization))
+		{
+		}
+		else if (std::holds_alternative<std::unique_ptr<CodeBlock>>(underlyingSpecialization))
+		{
+			auto rhsValue = std::unique_ptr<CodeBlock>(static_cast<CodeBlock*>(
+				std::get<std::unique_ptr<CodeBlock>>(underlyingSpecialization)
+					->DeepCopy()
+					.release()));
+			rhsValue->SetParent(newParent);
+			newImpl->underlyingSpecialization = std::move(rhsValue);
+		}
+		else if (std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(
+					 underlyingSpecialization))
+		{
+			auto rhsValue = std::unique_ptr<SymbolReferenceCall>(static_cast<SymbolReferenceCall*>(
+				std::get<std::unique_ptr<SymbolReferenceCall>>(underlyingSpecialization)
+					->DeepCopy()
+					.release()));
+			rhsValue->SetParent(newParent);
+			newImpl->underlyingSpecialization = std::move(rhsValue);
+		}
+		else if (std::holds_alternative<std::unique_ptr<Tuple>>(underlyingSpecialization))
+		{
+			auto rhsValue = std::unique_ptr<Tuple>(static_cast<Tuple*>(
+				std::get<std::unique_ptr<Tuple>>(underlyingSpecialization)->DeepCopy().release()));
+			rhsValue->SetParent(newParent);
+			newImpl->underlyingSpecialization = std::move(rhsValue);
+		}
+		else if (std::holds_alternative<std::unique_ptr<Integer>>(underlyingSpecialization))
+		{
+			auto rhsValue = std::unique_ptr<Integer>(
+				static_cast<Integer*>(std::get<std::unique_ptr<Integer>>(underlyingSpecialization)
+										  ->DeepCopy()
+										  .release()));
+			rhsValue->SetParent(newParent);
+			newImpl->underlyingSpecialization = std::move(rhsValue);
+		}
+		else if (std::holds_alternative<std::unique_ptr<Decimal>>(underlyingSpecialization))
+		{
+			auto rhsValue = std::unique_ptr<Decimal>(
+				static_cast<Decimal*>(std::get<std::unique_ptr<Decimal>>(underlyingSpecialization)
+										  ->DeepCopy()
+										  .release()));
+			rhsValue->SetParent(newParent);
+			newImpl->underlyingSpecialization = std::move(rhsValue);
+		}
+		else if (std::holds_alternative<std::unique_ptr<Text>>(underlyingSpecialization))
+		{
+			auto rhsValue = std::unique_ptr<Text>(static_cast<Text*>(
+				std::get<std::unique_ptr<Text>>(underlyingSpecialization)->DeepCopy().release()));
+			rhsValue->SetParent(newParent);
+			newImpl->underlyingSpecialization = std::move(rhsValue);
+		}
+
+		return std::move(newImpl);
+	}
 };
 
 Celeste::ir::inputreconstruction::Value::Value(ast::node::value* value_)
@@ -29,6 +92,12 @@ Celeste::ir::inputreconstruction::Value::Value(ast::node::value* value_)
 }
 
 Celeste::ir::inputreconstruction::Value::~Value()
+{
+}
+
+Celeste::ir::inputreconstruction::Value::Value(const Value& rhs)
+	: InputReconstructionObject(rhs),
+	  impl(rhs.impl->DeepCopy(this))
 {
 }
 
@@ -186,4 +255,10 @@ std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::C
 Celeste::ir::inputreconstruction::Value::GetValue()
 {
 	return impl->underlyingSpecialization;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Value::DeepCopy()
+{
+	return std::make_unique<Value>(*this);
 }

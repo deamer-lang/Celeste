@@ -21,6 +21,9 @@ namespace Celeste::ir::inputreconstruction
 		~SourceCodeBlockMutationSet();
 
 		void ConstructCodeBlock();
+
+	public:
+		CodeBlock* GetCodeBlock();
 	};
 }
 

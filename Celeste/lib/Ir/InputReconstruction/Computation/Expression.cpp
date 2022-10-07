@@ -19,12 +19,16 @@
 
 struct Celeste::ir::inputreconstruction::Expression::Impl
 {
-	::deamer::external::cpp::ast::Node* expression;
+	::deamer::external::cpp::ast::Node* expression = nullptr;
 	std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>> lhs;
 	std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>> rhs;
 	Operator OperatorType = Operator::Unknown;
 
 	std::optional<InputReconstructionObject*> cachedDeducedType;
+
+	Impl()
+	{
+	}
 
 	Impl(::deamer::external::cpp::ast::Node* expression_) : expression(expression_)
 	{
@@ -32,6 +36,56 @@ struct Celeste::ir::inputreconstruction::Expression::Impl
 
 	~Impl()
 	{
+	}
+
+	std::unique_ptr<Impl> DeepCopy(Expression* newParent)
+	{
+		auto newImpl = std::make_unique<Impl>();
+		newImpl->expression = this->expression;
+		newImpl->OperatorType = this->OperatorType;
+		newImpl->cachedDeducedType = this->cachedDeducedType;
+
+		if (std::holds_alternative<std::monostate>(lhs))
+		{
+		}
+		else if (std::holds_alternative<std::unique_ptr<Expression>>(lhs))
+		{
+			auto& lhsValue = std::get<std::unique_ptr<Expression>>(lhs);
+			auto newLhsValue = std::unique_ptr<Expression>(
+				static_cast<Expression*>(lhsValue->DeepCopy().release()));
+			newLhsValue->SetParent(newParent);
+			newImpl->lhs = std::move(newLhsValue);
+		}
+		else if (std::holds_alternative<std::unique_ptr<Value>>(lhs))
+		{
+			auto& lhsValue = std::get<std::unique_ptr<Value>>(lhs);
+			auto newLhsValue =
+				std::unique_ptr<Value>(static_cast<Value*>(lhsValue->DeepCopy().release()));
+			newLhsValue->SetParent(newParent);
+			newImpl->lhs = std::move(newLhsValue);
+		}
+
+		if (std::holds_alternative<std::monostate>(rhs))
+		{
+		}
+		else if (std::holds_alternative<std::unique_ptr<Expression>>(rhs))
+		{
+			auto& rhsValue = std::get<std::unique_ptr<Expression>>(rhs);
+			auto newRhsValue = std::unique_ptr<Expression>(
+				static_cast<Expression*>(rhsValue->DeepCopy().release()));
+			newRhsValue->SetParent(newParent);
+			newImpl->rhs = std::move(newRhsValue);
+		}
+		else if (std::holds_alternative<std::unique_ptr<Value>>(rhs))
+		{
+			auto& rhsValue = std::get<std::unique_ptr<Value>>(rhs);
+			auto newRhsValue =
+				std::unique_ptr<Value>(static_cast<Value*>(rhsValue->DeepCopy().release()));
+			newRhsValue->SetParent(newParent);
+			newImpl->rhs = std::move(newRhsValue);
+		}
+
+		return std::move(newImpl);
 	}
 };
 
@@ -43,6 +97,12 @@ Celeste::ir::inputreconstruction::Expression::Expression(
 }
 
 Celeste::ir::inputreconstruction::Expression::~Expression()
+{
+}
+
+Celeste::ir::inputreconstruction::Expression::Expression(const Expression& rhs)
+	: InputReconstructionObject(rhs),
+	  impl(rhs.impl->DeepCopy(this))
 {
 }
 
@@ -496,4 +556,10 @@ std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::E
 Celeste::ir::inputreconstruction::Expression::GetRhs()
 {
 	return impl->rhs;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Expression::DeepCopy()
+{
+	return std::make_unique<Expression>(*this);
 }

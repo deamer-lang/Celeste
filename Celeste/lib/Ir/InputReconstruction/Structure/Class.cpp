@@ -19,7 +19,47 @@ void Celeste::ir::inputreconstruction::Class::Complete()
 	className->SetFile(GetFile());
 }
 
-void Celeste::ir::inputreconstruction::Class::Add(InputReconstructionObject* object)
+Celeste::ir::inputreconstruction::Class::Class(const Class& rhs)
+	: InputReconstructionObject(rhs),
+	  lastAccessibility(rhs.lastAccessibility),
+	  className(static_cast<NameReference*>(rhs.className->DeepCopy().release()))
+{
+	className->SetParent(this);
+
+	for (auto& rhsValue : rhs.compoundBases)
+	{
+		auto newRhsDownCast = std::unique_ptr<CompoundBase>(
+			static_cast<CompoundBase*>(rhsValue->DeepCopy().release()));
+		newRhsDownCast->SetParent(this);
+		this->compoundBases.push_back(std::move(newRhsDownCast));
+	}
+
+	for (auto& rhsValue : rhs.inheritedBases)
+	{
+		auto newRhsDownCast =
+			std::unique_ptr<InheritBase>(static_cast<InheritBase*>(rhsValue->DeepCopy().release()));
+		newRhsDownCast->SetParent(this);
+		this->inheritedBases.push_back(std::move(newRhsDownCast));
+	}
+
+	for (auto& rhsValue : rhs.templateParameters)
+	{
+		auto newRhsDownCast = std::unique_ptr<TemplateParameter>(
+			static_cast<TemplateParameter*>(rhsValue->DeepCopy().release()));
+		newRhsDownCast->SetParent(this);
+		this->templateParameters.push_back(std::move(newRhsDownCast));
+	}
+
+	for (auto& [accessibility, object] : rhs.block)
+	{
+		auto newRhsDownCast = object->DeepCopy();
+		newRhsDownCast->SetParent(this);
+		this->block.emplace_back(accessibility, newRhsDownCast.get());
+		this->ownedBlock.push_back(std::move(newRhsDownCast));
+	}
+}
+
+void Celeste::ir::inputreconstruction::Class::Add(std::unique_ptr<InputReconstructionObject> object)
 {
 	object->SetParent(this);
 	if (object->GetType() == Type::Private)
@@ -36,14 +76,16 @@ void Celeste::ir::inputreconstruction::Class::Add(InputReconstructionObject* obj
 	}
 	else
 	{
-		Add(object, lastAccessibility);
+		Add(std::move(object), lastAccessibility);
 	}
 }
 
-void Celeste::ir::inputreconstruction::Class::Add(InputReconstructionObject* object,
+void Celeste::ir::inputreconstruction::Class::Add(std::unique_ptr<InputReconstructionObject> object,
 												  Accessibility accessibility)
 {
-	block.emplace_back(std::pair<Accessibility, InputReconstructionObject*>{accessibility, object});
+	block.emplace_back(
+		std::pair<Accessibility, InputReconstructionObject*>(accessibility, object.get()));
+	ownedBlock.push_back(std::move(object));
 }
 
 void Celeste::ir::inputreconstruction::Class::AddCompoundBase(
@@ -71,7 +113,7 @@ Celeste::ir::inputreconstruction::Class::GetInheritedBases()
 }
 
 std::vector<std::pair<Celeste::ir::inputreconstruction::Accessibility,
-					  Celeste::ir::inputreconstruction::InputReconstructionObject*>>&
+					  Celeste::ir::inputreconstruction ::InputReconstructionObject*>>&
 Celeste::ir::inputreconstruction::Class::GetMembers()
 {
 	return block;
@@ -514,8 +556,8 @@ Celeste::ir::inputreconstruction::Class::CreateMemberFunction(const std::string&
 
 	auto newFunctionPtr = newFunction.get();
 	this->block.push_back(std::pair<Accessibility, InputReconstructionObject*>{
-		Accessibility::Public, newFunctionPtr});
-	GetFile()->AddInputReconstructionObject(std::move(newFunction));
+		Accessibility::Public, newFunction.get()});
+	this->ownedBlock.push_back(std::move(newFunction));
 	return newFunctionPtr;
 }
 
@@ -531,8 +573,80 @@ void Celeste::ir::inputreconstruction::Class::CreateDefaultConstructor()
 
 	auto newFunctionPtr = newFunction.get();
 	this->block.push_back(std::pair<Accessibility, InputReconstructionObject*>{
-		Accessibility::Public, newFunctionPtr});
-	GetFile()->AddInputReconstructionObject(std::move(newFunction));
+		Accessibility::Public, newFunction.get()});
+	this->ownedBlock.push_back(std::move(newFunction));
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
+Celeste::ir::inputreconstruction::Class::begin()
+{
+	return std::begin(ownedBlock);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
+Celeste::ir::inputreconstruction::Class::end()
+{
+	return std::end(ownedBlock);
+}
+
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
+Celeste::ir ::inputreconstruction::Class::rbegin()
+{
+	return std::rbegin(ownedBlock);
+}
+
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
+Celeste::ir ::inputreconstruction::Class::rend()
+{
+	return std::rend(ownedBlock);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator
+Celeste::ir::inputreconstruction::Class::GetIterator(InputReconstructionObject* irComponent)
+{
+	for (auto iter = begin(); iter != end(); ++iter)
+	{
+		if ((*iter).get() == irComponent)
+		{
+			return iter;
+		}
+	}
+
+	return end();
+}
+
+std::vector<
+	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator
+Celeste::ir ::inputreconstruction::Class::GetReverseIterator(InputReconstructionObject* irComponent)
+{
+	for (auto iter = rbegin(); iter != rend(); ++iter)
+	{
+		if ((*iter).get() == irComponent)
+		{
+			return iter;
+		}
+	}
+
+	return rend();
+}
+
+std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>
+Celeste::ir::inputreconstruction::Class::GetScope()
+{
+	std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*> scope;
+	for (auto& _ : ownedBlock)
+	{
+		scope.push_back(_.get());
+	}
+	return scope;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Class::DeepCopy()
+{
+	return std::make_unique<Class>(*this);
 }
 
 void Celeste::ir::inputreconstruction::Class::AddTemplateParameter(

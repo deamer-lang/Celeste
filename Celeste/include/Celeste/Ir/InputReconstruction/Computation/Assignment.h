@@ -23,9 +23,14 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~Assignment();
 		void Complete();
 
+		Assignment(const Assignment& rhs);
+
 	public:
 		std::unique_ptr<SymbolReferenceCall>& GetLhs();
 		std::unique_ptr<Expression>& GetRhs();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

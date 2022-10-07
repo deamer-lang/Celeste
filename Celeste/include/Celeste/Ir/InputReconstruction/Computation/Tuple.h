@@ -26,8 +26,12 @@ namespace Celeste::ir::inputreconstruction
 		Tuple(ast::node::tuple* value_);
 		virtual ~Tuple() = default;
 
+		Tuple(const Tuple& rhs);
+
 	public:
 		void Resolve();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

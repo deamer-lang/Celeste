@@ -23,7 +23,7 @@ namespace Celeste::ir::inputreconstruction
 		std::unique_ptr<Impl> impl;
 
 	public:
-		File(std::string fileName_);
+		File(const std::string& fileName_);
 		virtual ~File();
 
 	public:
@@ -65,6 +65,10 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		void ResetReferences();
+		void RemoveCodeBlock(CodeBlock* codeBlock);
+
+		bool unregisterFlag = false;
+		void Unregister(NameReference* nameReference);
 	};
 }
 

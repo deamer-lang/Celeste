@@ -24,9 +24,12 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~TemplateParameter() = default;
 		void Complete();
 
+		TemplateParameter(const TemplateParameter& rhs);
+
 		void AddValue(std::unique_ptr<Expression> value);
 
 	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

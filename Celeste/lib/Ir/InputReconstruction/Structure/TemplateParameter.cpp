@@ -17,8 +17,31 @@ void Celeste::ir::inputreconstruction::TemplateParameter::Complete()
 	argumentType->Destructure();
 }
 
+Celeste::ir::inputreconstruction::TemplateParameter::TemplateParameter(const TemplateParameter& rhs)
+	: InputReconstructionObject(rhs),
+	  argumentName(static_cast<NameReference*>(rhs.argumentName->DeepCopy().release())),
+	  argumentType(static_cast<TypeConstruct*>(rhs.argumentType->DeepCopy().release()))
+{
+	this->argumentName->SetParent(this);
+	this->argumentType->SetParent(this);
+
+	for (auto& rhsValue : rhs.values)
+	{
+		auto newRhsValue =
+			std::unique_ptr<Expression>(static_cast<Expression*>(rhsValue->DeepCopy().release()));
+		newRhsValue->SetParent(this);
+		this->values.push_back(std::move(newRhsValue));
+	}
+}
+
 void Celeste::ir::inputreconstruction::TemplateParameter::AddValue(
 	std::unique_ptr<Expression> value)
 {
 	values.push_back(std::move(value));
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::TemplateParameter::DeepCopy()
+{
+	return std::make_unique<TemplateParameter>(*this);
 }

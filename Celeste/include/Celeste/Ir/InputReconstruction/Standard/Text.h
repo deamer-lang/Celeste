@@ -19,8 +19,12 @@ namespace Celeste::ir::inputreconstruction
 		Text(const std::string& text_);
 		virtual ~Text() = default;
 
+		Text(const Text& rhs);
+
 	public:
 		std::string GetEvaluation();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

@@ -21,6 +21,8 @@ namespace Celeste::ir::inputreconstruction
 		ConditionalFunction(std::unique_ptr<NameReference> functionName_);
 		virtual ~ConditionalFunction() override;
 
+		ConditionalFunction(const ConditionalFunction& rhs);
+
 	public:
 		void Add(InputReconstructionObject* newObject) override;
 		void AddFunctionArgument(std::unique_ptr<FunctionArgument> functionArgument);
@@ -30,6 +32,9 @@ namespace Celeste::ir::inputreconstruction
 		bool
 		Accepts(std::variant<ast::node::symbol*, ast::node::symbol_secondary*, ast::node::VARNAME*>
 					symbol);
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

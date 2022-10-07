@@ -14,32 +14,18 @@ namespace Celeste::ir::inputreconstruction
 		// Aliases are NameReferences located in the Base Scope.
 
 	public:
-		CompoundBase(std::unique_ptr<SymbolReferenceCall> inheritBaseTarget_)
-			: InputReconstructionObject(Type::CompoundBase),
-			  inheritBaseTarget(std::move(inheritBaseTarget_))
-		{
-		}
+		CompoundBase(std::unique_ptr<SymbolReferenceCall> inheritBaseTarget_);
 		virtual ~CompoundBase() = default;
 
+		CompoundBase(const CompoundBase& rhs);
+
 	public:
-		SymbolReferenceCall* GetCompoundedBase()
-		{
-			return inheritBaseTarget.get();
-		}
+		SymbolReferenceCall* GetCompoundedBase();
 
-		bool HasAlias(const std::string& name)
-		{
-			for (auto member : GetScope())
-			{
-				auto member_ = static_cast<NameReference*>(member);
-				if (member_->GetSymbolName() == name)
-				{
-					return true;
-				}
-			}
+		bool HasAlias(const std::string& name);
 
-			return false;
-		}
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

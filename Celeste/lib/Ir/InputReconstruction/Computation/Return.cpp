@@ -14,6 +14,13 @@ Celeste::ir::inputreconstruction::Return::Return(std::unique_ptr<Expression> exp
 {
 }
 
+Celeste::ir::inputreconstruction::Return::Return(const Return& rhs)
+	: InputReconstructionObject(rhs),
+	  expression(static_cast<Expression*>(rhs.expression->DeepCopy().release()))
+{
+	this->expression->SetParent(this);
+}
+
 void Celeste::ir::inputreconstruction::Return::Resolve()
 {
 	expression->SetParent(this);
@@ -24,4 +31,10 @@ std::unique_ptr<Celeste::ir::inputreconstruction::Expression>&
 Celeste::ir::inputreconstruction::Return::GetExpression()
 {
 	return expression;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Return::DeepCopy()
+{
+	return std::make_unique<Return>(*this);
 }

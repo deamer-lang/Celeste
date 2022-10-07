@@ -12,6 +12,7 @@ namespace Celeste::ir::inputreconstruction
 {
 	class SymbolAccess;
 	class NameReferenceSecondary;
+	class SymbolReferenceCall;
 
 	class NameReference : public InputReconstructionObject
 	{
@@ -29,6 +30,10 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~NameReference();
 		std::vector<SymbolAccess*> GetSymbolAccesses();
 		void Reset();
+
+		NameReference(const NameReference& rhs);
+		NameReference(const NameReferenceSecondary& rhs);
+		NameReference(const SymbolReferenceCall& rhs);
 
 	protected:
 		bool resolveIsRan = false;
@@ -92,7 +97,7 @@ namespace Celeste::ir::inputreconstruction
 		 *
 		 *	\brief Returns the Symbol Name use to propagate the static resolving algorithm
 		 */
-		std::string GetSymbolName();
+		std::string GetSymbolName() const;
 
 	public:
 		std::string
@@ -118,6 +123,9 @@ namespace Celeste::ir::inputreconstruction
 		GetHiddenAccessSymbols();
 		std::vector<Celeste::ir::inputreconstruction::SymbolAccess*>
 		GetSymbolAccessesIncludingHidden();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

@@ -26,6 +26,7 @@
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Meta/Project.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
+#include "Celeste/Ir/InputReconstruction/Structure/CodeBlockRoot.h"
 #include "Celeste/Ir/InputReconstruction/Structure/CompoundBase.h"
 #include "Celeste/Ir/InputReconstruction/Structure/ConditionModifierCall.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
@@ -36,6 +37,10 @@
 #include "Celeste/Ir/InputReconstruction/Structure/InlineClass.h"
 #include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Namespace.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Private.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Protected.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Public.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Root.h"
 
 namespace Celeste::ast::listener::user::ir
 {
@@ -44,11 +49,14 @@ namespace Celeste::ast::listener::user::ir
 	private:
 		Celeste::ir::inputreconstruction::Project* project;
 		Celeste::ir::inputreconstruction::File* file;
+		Celeste::ir::inputreconstruction::CodeBlock* codeBlock;
 		std::vector<std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>>
 			inputReconstructionObjects;
 		std::vector<Celeste::ir::inputreconstruction::Class*> classes;
 		bool skip = false;
 		std::size_t skipCounter = 0;
+
+		bool codeBlockEvaluation = false;
 
 		Celeste::ir::inputreconstruction::Class* GetLastClass()
 		{
@@ -61,26 +69,26 @@ namespace Celeste::ast::listener::user::ir
 			: project(project_),
 			  file(file_)
 		{
+			codeBlockEvaluation = false;
+
 			OpenScope();
-			auto root =
-				std::make_unique<Celeste::ir::inputreconstruction::InputReconstructionObject>(
-					Celeste::ir::inputreconstruction::Type::Root);
+			auto root = std::make_unique<Celeste::ir::inputreconstruction::Root>();
 			AddCurrentScope(std::move(root));
 			OpenScope();
 		}
 
 		InputReconstructionListener(Celeste::ir::inputreconstruction::Project* project_,
 									Celeste::ir::inputreconstruction::File* file_,
-									Celeste::ir::inputreconstruction::CodeBlock* codeBlock)
+									Celeste::ir::inputreconstruction::CodeBlock* codeBlock_)
 			: project(project_),
-			  file(file_)
+			  file(file_),
+			  codeBlock(codeBlock_)
 		{
+			codeBlockEvaluation = true;
+
 			OpenScope();
-			auto root =
-				std::make_unique<Celeste::ir::inputreconstruction::InputReconstructionObject>(
-					Celeste::ir::inputreconstruction::Type::CodeBlockRoot);
-			root->SetParent(codeBlock);
-			codeBlock->Add(root.get());
+			auto root = std::make_unique<Celeste::ir::inputreconstruction::CodeBlockRoot>();
+			root->SetParent(codeBlock_);
 			AddCurrentScope(std::move(root));
 			OpenScope();
 		}
@@ -202,7 +210,24 @@ namespace Celeste::ast::listener::user::ir
 		{
 			newObject->SetFile(file);
 			(*std::rbegin(inputReconstructionObjects)).push_back(newObject.get());
-			file->AddInputReconstructionObject(std::move(newObject));
+
+			if (inputReconstructionObjects.empty() || inputReconstructionObjects.size() == 1)
+			{
+				if (codeBlockEvaluation)
+				{
+					codeBlock->Add(std::move(newObject));
+				}
+				else
+				{
+					file->AddInputReconstructionObject(std::move(newObject));
+				}
+			}
+			else
+			{
+				auto tmpObjects = *(++std::rbegin(inputReconstructionObjects));
+				auto tmpObject = *std::rbegin(tmpObjects);
+				tmpObject->Add(std::move(newObject));
+			}
 		}
 
 		std::unique_ptr<Celeste::ir::inputreconstruction::SymbolReferenceCall>
@@ -212,7 +237,11 @@ namespace Celeste::ast::listener::user::ir
 				std::make_unique<Celeste::ir::inputreconstruction::SymbolReferenceCall>(
 					const_cast<node::symbol_reference*>(symbolReference));
 			newSymbolReferenceCall->SetFile(file);
-			file->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
+
+			if (!codeBlockEvaluation)
+			{
+				file->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
+			}
 
 			return std::move(newSymbolReferenceCall);
 		}
@@ -225,6 +254,11 @@ namespace Celeste::ast::listener::user::ir
 					const_cast<node::VARNAME*>(symbolReference));
 			newSymbolReferenceCall->SetFile(file);
 
+			if (!codeBlockEvaluation)
+			{
+				file->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
+			}
+
 			return std::move(newSymbolReferenceCall);
 		}
 
@@ -236,7 +270,11 @@ namespace Celeste::ast::listener::user::ir
 				std::make_unique<Celeste::ir::inputreconstruction::NameReference>(
 					const_cast<node::symbol_reference*>(symbolReference));
 			newSymbolReferenceCall->SetFile(file);
-			file->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
+
+			if (!codeBlockEvaluation)
+			{
+				file->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
+			}
 
 			return std::move(newSymbolReferenceCall);
 		}
@@ -248,6 +286,11 @@ namespace Celeste::ast::listener::user::ir
 				std::make_unique<Celeste::ir::inputreconstruction::NameReference>(
 					const_cast<node::VARNAME*>(symbolReference));
 			newSymbolReferenceCall->SetFile(file);
+
+			if (!codeBlockEvaluation)
+			{
+				file->AddUnresolvedSymbolReference(newSymbolReferenceCall.get());
+			}
 
 			return std::move(newSymbolReferenceCall);
 		}
@@ -358,7 +401,14 @@ namespace Celeste::ast::listener::user::ir
 									compoundAccess) {
 								auto alias = GetName(compoundAccess.VARNAME().GetContent()[0]);
 								compoundBase->Add(alias.get());
-								file->AddInputReconstructionObject(std::move(alias));
+								if (codeBlockEvaluation)
+								{
+									codeBlock->AddInputReconstructionObject(std::move(alias));
+								}
+								else
+								{
+									file->AddInputReconstructionObject(std::move(alias));
+								}
 							});
 						Class->AddCompoundBase(std::move(compoundBase));
 					}
@@ -457,7 +507,14 @@ namespace Celeste::ast::listener::user::ir
 									compoundAccess) {
 								auto alias = GetName(compoundAccess.VARNAME().GetContent()[0]);
 								compoundBase->Add(alias.get());
-								file->AddInputReconstructionObject(std::move(alias));
+								if (codeBlockEvaluation)
+								{
+									codeBlock->AddInputReconstructionObject(std::move(alias));
+								}
+								else
+								{
+									file->AddInputReconstructionObject(std::move(alias));
+								}
 							});
 						Class->AddCompoundBase(std::move(compoundBase));
 					}
@@ -985,9 +1042,7 @@ namespace Celeste::ast::listener::user::ir
 				return;
 			}
 
-			AddCurrentScope(
-				std::make_unique<Celeste::ir::inputreconstruction::InputReconstructionObject>(
-					Celeste::ir::inputreconstruction::Type::Public));
+			AddCurrentScope(std::make_unique<Celeste::ir::inputreconstruction::Public>());
 		}
 
 		void ListenEntry(const Celeste::ast::node::PROTECTED* node) override
@@ -997,9 +1052,7 @@ namespace Celeste::ast::listener::user::ir
 				return;
 			}
 
-			AddCurrentScope(
-				std::make_unique<Celeste::ir::inputreconstruction::InputReconstructionObject>(
-					Celeste::ir::inputreconstruction::Type::Protected));
+			AddCurrentScope(std::make_unique<Celeste::ir::inputreconstruction::Protected>());
 		}
 
 		void ListenEntry(const Celeste::ast::node::PRIVATE* node) override
@@ -1009,9 +1062,7 @@ namespace Celeste::ast::listener::user::ir
 				return;
 			}
 
-			AddCurrentScope(
-				std::make_unique<Celeste::ir::inputreconstruction::InputReconstructionObject>(
-					Celeste::ir::inputreconstruction::Type::Private));
+			AddCurrentScope(std::make_unique<Celeste::ir::inputreconstruction::Private>());
 		}
 
 		void ListenEntry(const Celeste::ast::node::enum_declaration* node) override

@@ -13,6 +13,8 @@
 
 namespace Celeste::ir::inputreconstruction
 {
+	class Constructor;
+
 	class Function : public InputReconstructionObject
 	{
 	private:
@@ -21,6 +23,8 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<std::unique_ptr<FunctionArgument>> functionArguments;
 		std::vector<std::unique_ptr<TemplateParameter>> templateParameters;
 
+		std::vector<std::unique_ptr<InputReconstructionObject>> block;
+
 	public:
 		Function(std::unique_ptr<NameReference> functionName_,
 				 std::unique_ptr<TypeConstruct> returnType_);
@@ -28,8 +32,11 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~Function() override = default;
 		void Complete();
 
+		Function(const Function& rhs);
+		Function(const Function& rhs, const std::string& name);
+
 	public:
-		void Add(InputReconstructionObject* newObject) override;
+		void Add(std::unique_ptr<InputReconstructionObject> newObject) override;
 		void AddFunctionArgument(std::unique_ptr<FunctionArgument> functionArgument);
 		void AddTemplateParameter(std::unique_ptr<TemplateParameter> templateParameter);
 
@@ -44,10 +51,24 @@ namespace Celeste::ir::inputreconstruction
 		Accepts(const std::string& functionName,
 				const std::optional<std::vector<InputReconstructionObject*>>& functionArguments);
 		std::vector<std::unique_ptr<FunctionArgument>>& GetFunctionArguments();
-		std::vector<InputReconstructionObject*> GetBlock();
+		std::vector<InputReconstructionObject*> GetOwnedBlock();
+		std::vector<std::unique_ptr<InputReconstructionObject>>& GetBlock();
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock);
+
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator begin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator end() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rbegin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rend() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator
+		GetIterator(InputReconstructionObject* irComponent) override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator
+		GetReverseIterator(InputReconstructionObject* irComponent) override;
+
+		std::vector<InputReconstructionObject*> GetScope() override;
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
+		void AddToBlock(std::unique_ptr<InputReconstructionObject> newObject);
 	};
 }
 

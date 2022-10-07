@@ -41,6 +41,22 @@ void Celeste::ir::inputreconstruction::Enumeration::Complete()
 	});
 }
 
+Celeste::ir::inputreconstruction::Enumeration::Enumeration(const Enumeration& rhs)
+	: InputReconstructionObject(rhs),
+	  enumerationName(static_cast<NameReference*>(rhs.enumerationName->DeepCopy().release())),
+	  enumeration(rhs.enumeration)
+{
+	enumerationName->SetParent(this);
+
+	for (auto& rhsValue : rhs.enumerationMembers)
+	{
+		auto newRhsValue = std::unique_ptr<EnumerationMember>(
+			static_cast<EnumerationMember*>(rhsValue->DeepCopy().release()));
+		newRhsValue->SetParent(this);
+		this->enumerationMembers.push_back(std::move(newRhsValue));
+	}
+}
+
 Celeste::ir::inputreconstruction::InputReconstructionObject*
 Celeste::ir::inputreconstruction::Enumeration::GetMember(
 	NameReferenceSecondary* nameReferenceSecondary)
@@ -60,4 +76,10 @@ Celeste::ir::inputreconstruction::NameReference*
 Celeste::ir::inputreconstruction::Enumeration::GetName()
 {
 	return enumerationName.get();
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Enumeration::DeepCopy()
+{
+	return std::make_unique<Enumeration>(*this);
 }

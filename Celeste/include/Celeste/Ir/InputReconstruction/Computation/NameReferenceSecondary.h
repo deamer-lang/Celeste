@@ -26,6 +26,8 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~NameReferenceSecondary() = default;
 		void Complete();
 
+		NameReferenceSecondary(const NameReferenceSecondary& rhs);
+
 	public:
 		void StartResolve(
 			std::vector<
@@ -36,6 +38,8 @@ namespace Celeste::ir::inputreconstruction
 		GetSymbolReferenceAst();
 
 		std::optional<NameReferenceSecondary*> GetNameSecondaryReference();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

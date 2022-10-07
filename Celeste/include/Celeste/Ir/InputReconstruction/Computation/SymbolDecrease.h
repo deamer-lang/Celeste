@@ -18,8 +18,13 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~SymbolDecrease() = default;
 		void Complete();
 
+		SymbolDecrease(const SymbolDecrease& rhs);
+
 	public:
 		std::unique_ptr<SymbolReferenceCall>& GetSymbolReference();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

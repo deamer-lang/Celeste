@@ -19,7 +19,10 @@ namespace Celeste::ir::inputreconstruction
 		SymbolReferenceCall(const std::string& varname_);
 		virtual ~SymbolReferenceCall();
 
+		SymbolReferenceCall(const SymbolReferenceCall& rhs);
+
 	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

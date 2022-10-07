@@ -23,11 +23,16 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~VariableDeclaration() = default;
 		void Complete();
 
+		VariableDeclaration(const VariableDeclaration& rhs);
+
 	public:
 		void AddValue(std::unique_ptr<Expression> newExpression);
 		TypeConstruct* GetVariableType();
 		NameReference* GetName();
 		std::vector<std::unique_ptr<Expression>>& GetExpressions();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

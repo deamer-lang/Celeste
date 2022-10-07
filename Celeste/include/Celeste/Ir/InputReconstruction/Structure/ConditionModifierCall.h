@@ -21,9 +21,14 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		ConditionModifierCall(std::unique_ptr<SymbolReferenceCall> conditionModifierReference_);
 		virtual ~ConditionModifierCall() = default;
+
+		ConditionModifierCall(const ConditionModifierCall& rhs);
+
+	public:
 		void AddValue(std::unique_ptr<Expression> argument);
 
 	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

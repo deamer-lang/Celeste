@@ -17,14 +17,33 @@ namespace Celeste::ir::inputreconstruction
 		std::unique_ptr<NameReference> variableName;
 		std::unique_ptr<Expression> expression;
 
+		std::vector<std::unique_ptr<InputReconstructionObject>> block;
+
 	public:
 		ForEach(std::unique_ptr<TypeConstruct> type_, std::unique_ptr<NameReference> variableName_,
 				std::unique_ptr<Expression> expression_);
 		virtual ~ForEach() = default;
 		void Complete();
+
+		ForEach(const ForEach& rhs);
+
+	public:
 		NameReference* GetVariable();
 
 	public:
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator begin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator end() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rbegin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rend() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator
+		GetIterator(InputReconstructionObject* irComponent) override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator
+		GetReverseIterator(InputReconstructionObject* irComponent) override;
+
+		std::vector<InputReconstructionObject*> GetScope() override;
+		void Add(std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+					 innerObject) override;
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

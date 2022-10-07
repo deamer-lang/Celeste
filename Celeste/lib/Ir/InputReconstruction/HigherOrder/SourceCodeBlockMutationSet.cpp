@@ -54,3 +54,9 @@ void Celeste::ir::inputreconstruction::SourceCodeBlockMutationSet::ConstructCode
 		}
 	}
 }
+
+Celeste::ir::inputreconstruction::CodeBlock*
+Celeste::ir::inputreconstruction::SourceCodeBlockMutationSet::GetCodeBlock()
+{
+	return impl->codeBlock;
+}

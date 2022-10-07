@@ -18,8 +18,12 @@ namespace Celeste::ir::inputreconstruction
 		Integer(int integer_);
 		virtual ~Integer() = default;
 
+		Integer(const Integer& rhs);
+
 	public:
 		int GetEvaluation();
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

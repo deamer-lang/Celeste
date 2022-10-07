@@ -1251,6 +1251,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 		if (!nameNotFinalized.has_value())
 		{
 			// Error
+			throw std::logic_error("Critical Internal Error");
 		}
 
 		auto nameNotFinalizedType = nameNotFinalized.value()->GetType();
@@ -1495,7 +1496,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			{
 			case inputreconstruction::Type::Function: {
 				auto function = static_cast<inputreconstruction::Function*>(blockCreatingObject_);
-				statements = function->GetBlock();
+				statements = function->GetOwnedBlock();
 				break;
 			}
 			case inputreconstruction::Type::MutationGroup: {
@@ -1677,7 +1678,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 
 		InitializeStackTop();
 
-		auto block = std::get<inputreconstruction::Function*>(function)->GetBlock();
+		auto block = std::get<inputreconstruction::Function*>(function)->GetOwnedBlock();
 		if (block.empty())
 		{
 			// Return default value for return type
@@ -2663,6 +2664,8 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 			break;
 		}
 		}
+
+		return std::nullopt;
 	};
 	auto processSymbolAccesses = [&](std::vector<SymbolAccess*> symbolAccesses) {
 		for (auto symbolAccess : symbolAccesses)
@@ -3100,7 +3103,7 @@ void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddClass(Class* c
 	typeIdMap.insert({newTypeId, newType});
 	typeNameMap.insert({newTypeName, newType});
 
-	for (auto [accessibility, member] : class_->GetMembers())
+	for (auto& [accessibility, member] : class_->GetMembers())
 	{
 		if (member->GetType() == inputreconstruction::Type::Constructor ||
 			member->GetType() == inputreconstruction::Type::Function ||
@@ -3157,6 +3160,12 @@ Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetType(InputReconstru
 	}
 	}
 
+	auto retry = typePointerMap.find(parent);
+	if (retry != typePointerMap.end())
+	{
+		return retry->second.type;
+	}
+
 	throw std::runtime_error("Some error occured that failed the type recognition system.");
 }
 
@@ -3170,13 +3179,19 @@ Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetTypeFromConstructor
 		return iter->second.type;
 	}
 
-	switch (parent->GetType())
+	switch (parent->GetParent()->GetType())
 	{
 	case inputreconstruction::Type::Class: {
 		auto classObject = static_cast<inputreconstruction::Class*>(parent->GetParent());
 		AddClass(classObject);
 		break;
 	}
+	}
+
+	auto retry = typePointerMap.find(parent->GetParent());
+	if (retry != typePointerMap.end())
+	{
+		return retry->second.type;
 	}
 
 	throw std::runtime_error("Some error occured that failed the type recognition system.");

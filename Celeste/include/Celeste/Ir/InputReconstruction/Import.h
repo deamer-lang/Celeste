@@ -17,9 +17,14 @@ namespace Celeste::ir::inputreconstruction
 		Import(File* targetFile_, bool availableAtCodeTime_ = false);
 		virtual ~Import() = default;
 
+		Import(const Import& rhs);
+
 	public:
 		File* GetTarget();
 		bool AvailableAtCodeTime();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

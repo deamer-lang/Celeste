@@ -19,11 +19,30 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<std::unique_ptr<FunctionArgument>> functionArguments;
 		std::vector<std::unique_ptr<TemplateParameter>> templateParameters;
 
+		std::vector<std::unique_ptr<InputReconstructionObject>> block;
+
 	public:
 		Constructor(std::unique_ptr<NameReference> functionName_);
 		virtual ~Constructor() override = default;
 
+		Constructor(const Constructor& rhs);
+
 	public:
+	public:
+		void Add(std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+					 innerObject) override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator begin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator end() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rbegin() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rend() override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator
+		GetIterator(InputReconstructionObject* irComponent) override;
+		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator
+		GetReverseIterator(InputReconstructionObject* irComponent) override;
+
+		std::vector<InputReconstructionObject*> GetScope() override;
+
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

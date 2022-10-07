@@ -22,9 +22,14 @@ namespace Celeste::ir::inputreconstruction
 		virtual ~Enumeration() = default;
 		void Complete();
 
+		Enumeration(const Enumeration& rhs);
+
 	public:
 		InputReconstructionObject* GetMember(NameReferenceSecondary* nameReferenceSecondary);
 		NameReference* GetName();
+
+	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

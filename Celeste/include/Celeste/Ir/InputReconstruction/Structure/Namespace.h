@@ -17,7 +17,10 @@ namespace Celeste::ir::inputreconstruction
 		Namespace(std::unique_ptr<NameReference> namespaceName_);
 		virtual ~Namespace() = default;
 
+		Namespace(const Namespace& rhs);
+
 	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

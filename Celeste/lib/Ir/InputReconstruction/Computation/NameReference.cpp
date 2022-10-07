@@ -73,6 +73,46 @@ struct Celeste::ir::inputreconstruction::NameReference::Impl
 		linkedIr = std::nullopt;
 		staticallyResolvable = false;
 	}
+
+	std::unique_ptr<Impl> DeepCopy(NameReference* ownerOfThisImpl)
+	{
+		auto newImpl = std::make_unique<Impl>();
+		newImpl->symbolReference = symbolReference;
+		/*
+		for (auto& rhs : this->linkedIrViaAccess)
+		{
+			auto newRhsDownCast = std::unique_ptr<SymbolAccess>(
+				static_cast<SymbolAccess*>(rhs->DeepCopy().release()));
+			newRhsDownCast->SetParent(ownerOfThisImpl);
+			newImpl->linkedIrViaAccess.push_back(std::move(newRhsDownCast));
+		}
+
+		for (auto& rhs : this->hiddenAccess)
+		{
+			auto newRhsDownCast = std::unique_ptr<SymbolAccess>(
+				static_cast<SymbolAccess*>(rhs->DeepCopy().release()));
+			newRhsDownCast->SetParent(ownerOfThisImpl);
+			newImpl->hiddenAccess.push_back(std::move(newRhsDownCast));
+		}
+
+		if (nameReferenceSecondary.has_value())
+		{
+			auto newRhs = this->nameReferenceSecondary.value()->DeepCopy();
+			std::unique_ptr<NameReferenceSecondary> newRhsDownCast(
+				static_cast<NameReferenceSecondary*>(newRhs.release()));
+			newRhsDownCast->SetParent(ownerOfThisImpl);
+			newImpl->nameReferenceSecondary = std::move(newRhsDownCast);
+		}
+
+		newImpl->cacheReferencedObjects = this->cacheReferencedObjects;
+		newImpl->linkedAstNode = this->linkedAstNode;
+		newImpl->linkedIr = this->linkedIr;
+		*/
+		newImpl->staticallyResolvable = this->staticallyResolvable;
+		newImpl->symbolName = this->symbolName;
+
+		return std::move(newImpl);
+	}
 };
 
 struct Celeste::ir::inputreconstruction::NameReference::ResolveLogic
@@ -318,7 +358,7 @@ public:
 				 iter != next->GetParent()->rend(); ++iter)
 			{
 				Direction direction = argument.direction;
-				auto currentElement = *iter;
+				auto& currentElement = *iter;
 				if (currentElement->GetType() == Type::Namespace)
 				{
 					direction = Direction::Down;
@@ -329,7 +369,7 @@ public:
 				// Adding the parent will only result in infinite loops
 				uncheckedList.insert(
 					std::begin(uncheckedList) + addedCounter++,
-					{currentElement, ResolveArgument{irComponent, direction, false}});
+					{currentElement.get(), ResolveArgument{irComponent, direction, false}});
 			}
 			return;
 		}
@@ -342,7 +382,7 @@ public:
 				// We may enter the namespace
 				for (auto iter = irComponent->rbegin(); iter != irComponent->rend(); ++iter)
 				{
-					auto currentElement = *iter;
+					auto& currentElement = *iter;
 					Direction direction = argument.direction;
 					if (currentElement->GetType() == Type::Namespace)
 					{
@@ -351,7 +391,7 @@ public:
 
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{currentElement, ResolveArgument{irComponent, direction, false}});
+						{currentElement.get(), ResolveArgument{irComponent, direction, false}});
 				}
 			}
 
@@ -362,7 +402,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				// Both ways as namespaces can only occur in bi directional accessable blocks.
@@ -371,7 +411,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 			}
 			if (argument.addParent && argument.direction == Direction::Up)
@@ -420,7 +460,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -430,7 +470,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -482,7 +523,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -492,7 +533,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -531,7 +573,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -541,7 +583,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -629,7 +672,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -639,7 +682,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -713,7 +757,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -723,7 +767,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -766,7 +811,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -776,7 +821,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -819,7 +865,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -829,7 +875,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -866,7 +913,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -876,7 +923,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -905,7 +953,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -915,7 +963,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -957,7 +1006,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -967,7 +1016,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1009,7 +1059,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1019,7 +1069,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1070,7 +1121,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1080,7 +1131,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1122,7 +1174,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1132,7 +1184,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1189,7 +1242,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1199,7 +1252,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1259,7 +1313,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1269,7 +1323,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1311,7 +1366,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1321,7 +1376,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1363,7 +1419,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1373,7 +1429,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1415,7 +1472,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1425,7 +1482,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1467,7 +1525,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1477,7 +1535,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1520,7 +1579,7 @@ public:
 				{
 					uncheckedList.insert(
 						std::begin(uncheckedList) + addedCounter++,
-						{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 
 				if (IsBiDirectional(irComponent->GetParent()->GetType()))
@@ -1530,7 +1589,8 @@ public:
 					{
 						uncheckedList.insert(
 							std::begin(uncheckedList) + addedCounter++,
-							{*iter, ResolveArgument{irComponent, Direction::Up, true, true}});
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
 				}
 			}
@@ -1657,6 +1717,7 @@ Celeste::ir::inputreconstruction::NameReference::NameReference(const std::string
 
 Celeste::ir::inputreconstruction::NameReference::~NameReference()
 {
+	GetFile()->Unregister(this);
 }
 
 std::vector<Celeste::ir::inputreconstruction::SymbolAccess*>
@@ -1675,6 +1736,32 @@ void Celeste::ir::inputreconstruction::NameReference::Reset()
 {
 	resolveIsRan = false;
 	impl->Reset();
+}
+
+Celeste::ir::inputreconstruction::NameReference::NameReference(const NameReference& rhs)
+	: InputReconstructionObject(rhs),
+	  impl(rhs.impl->DeepCopy(this)),
+	  resolveIsRan(false),
+	  initialized(false)
+{
+	GetFile()->AddUnresolvedSymbolReference(this);
+}
+
+Celeste::ir::inputreconstruction::NameReference::NameReference(const NameReferenceSecondary& rhs)
+	: InputReconstructionObject(rhs),
+	  impl(rhs.impl->DeepCopy(this)),
+	  resolveIsRan(false),
+	  initialized(false)
+{
+}
+
+Celeste::ir::inputreconstruction::NameReference::NameReference(const SymbolReferenceCall& rhs)
+	: InputReconstructionObject(rhs),
+	  impl(rhs.impl->DeepCopy(this)),
+	  resolveIsRan(false),
+	  initialized(false)
+{
+	GetFile()->AddUnresolvedSymbolReference(this);
 }
 
 Celeste::ir::inputreconstruction::NameReference::NameReference(Type forward_)
@@ -1852,6 +1939,12 @@ Celeste::ir::inputreconstruction::NameReference::GetSymbolAccessesIncludingHidde
 	}
 
 	return result;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::NameReference::DeepCopy()
+{
+	return std::make_unique<NameReference>(*this);
 }
 
 void Celeste::ir::inputreconstruction::NameReference::ContinueResolve(
@@ -2089,7 +2182,7 @@ void Celeste::ir::inputreconstruction::NameReference::SetLinkedIr(
 	newLinkedIr_->SetReferencingObject(this);
 }
 
-std::string Celeste::ir::inputreconstruction::NameReference::GetSymbolName()
+std::string Celeste::ir::inputreconstruction::NameReference::GetSymbolName() const
 {
 	return impl->symbolName;
 }

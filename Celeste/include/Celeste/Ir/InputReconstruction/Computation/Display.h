@@ -17,9 +17,12 @@ namespace Celeste::ir::inputreconstruction
 		Display(std::unique_ptr<SymbolReferenceCall> symbolReference_);
 		virtual ~Display() = default;
 
+		Display(const Display& rhs);
+
 		void Resolve();
 
 	public:
+		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }
 

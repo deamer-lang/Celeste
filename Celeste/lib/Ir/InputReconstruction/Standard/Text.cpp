@@ -18,7 +18,20 @@ Celeste::ir::inputreconstruction::Text::Text(const std::string& text_)
 {
 }
 
+Celeste::ir::inputreconstruction::Text::Text(const Text& rhs)
+	: InputReconstructionObject(rhs),
+	  text(rhs.text),
+	  constexprEvaluation(rhs.constexprEvaluation)
+{
+}
+
 std::string Celeste::ir::inputreconstruction::Text::GetEvaluation()
 {
 	return constexprEvaluation;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
+Celeste::ir::inputreconstruction::Text::DeepCopy()
+{
+	return std::make_unique<Text>(*this);
 }
