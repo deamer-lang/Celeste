@@ -8,7 +8,7 @@ Overview of the terminal: **[PUBLIC](./PUBLIC.md)**.
 
 | Relative position | Name                                          |
 | ----------------- | --------------------------------------------- |
-| Above             | [IMPORT](./IMPORT.md) |
+| Above             | [EXPLICIT_ALIAS](./EXPLICIT_ALIAS.md) |
 | This              | **[PUBLIC](./PUBLIC.md)** |
 | Below             | [PROTECTED](./PROTECTED.md) |
 

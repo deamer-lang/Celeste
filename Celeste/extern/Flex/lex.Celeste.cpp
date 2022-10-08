@@ -632,8 +632,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 72
-#define YY_END_OF_BUFFER 73
+#define YY_NUM_RULES 73
+#define YY_END_OF_BUFFER 74
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -641,35 +641,36 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[250] =
+static const flex_int16_t yy_accept[254] =
     {   0,
-        0,    0,   73,   71,   70,   70,   59,   71,   42,   43,
-       65,   61,   46,   63,   47,    1,   67,   44,   45,   50,
-       57,   51,   66,   66,   66,   66,   66,   66,   66,   66,
-       66,   66,   66,   66,   66,   66,   40,   64,   41,   38,
-       39,   70,   58,    0,   69,    0,   54,   60,   52,   62,
-       67,   53,    1,    1,    1,    0,   48,   56,   49,   66,
-       66,   20,   66,   66,   66,   66,   66,   66,   66,   66,
-       66,   66,   25,   66,   21,   66,   66,   66,   66,   66,
-       66,   66,   66,   66,   66,   55,   69,    0,    1,    1,
-        1,   68,   66,   66,   66,   66,   66,   66,   66,   66,
+        0,    0,   74,   72,   71,   71,   60,   72,   43,   44,
+       66,   62,   47,   64,   48,    1,   68,   45,   46,   51,
+       58,   52,   67,   67,   67,   67,   67,   67,   67,   67,
+       67,   67,   67,   67,   67,   67,   41,   65,   42,   39,
+       40,   71,   59,    0,   70,    0,   55,   61,   53,   63,
+       68,   54,    1,    1,    1,    0,   49,   57,   50,   67,
+       67,   67,   20,   67,   67,   67,   67,   67,   67,   67,
+       67,   67,   67,   25,   67,   21,   67,   67,   67,   67,
+       67,   67,   67,   67,   67,   67,   56,   70,    0,    1,
+        1,    1,   69,   67,   67,   67,   67,   67,   67,   67,
 
-       66,   66,   66,   66,   24,   66,   66,   66,   66,   66,
-       66,   66,   66,   66,   66,   66,   66,   66,   66,   66,
-       66,    0,    2,    1,   66,   66,   12,   66,    8,   66,
-       66,   66,   66,   26,   27,    6,   30,   66,   66,   66,
-       66,   66,   66,   66,   66,   66,   66,   66,   19,   66,
-       66,   66,   66,   66,    2,   66,   66,   66,    5,   66,
-       66,    3,   66,    0,   66,   66,   66,   66,   66,   66,
-       66,   66,   66,   66,   66,   66,   66,   66,   66,   66,
-       66,   66,   66,   66,   66,   66,   66,   66,    0,   66,
-       32,   66,   28,   66,   66,   66,   66,   66,   66,   33,
+       67,   67,   67,   67,   67,   67,   24,   67,   67,   67,
+       67,   67,   67,   67,   67,   67,   67,   67,   67,   67,
+       67,   67,   67,    0,    2,    1,   67,   67,   67,   12,
+       67,    8,   67,   67,   67,   67,   26,   27,    6,   30,
+       67,   67,   67,   67,   67,   67,   67,   67,   67,   67,
+       67,   19,   67,   67,   67,   67,   67,    2,   67,   33,
+       67,   67,    5,   67,   67,    3,   67,    0,   67,   67,
+       67,   67,   67,   67,   67,   67,   67,   67,   67,   67,
+       67,   67,   67,   67,   67,   67,   67,   67,   67,   67,
+       67,   67,    0,   67,   32,   67,   28,   67,   67,   67,
 
-       23,   66,   11,   66,   66,   66,   66,   66,   66,   66,
-       66,   66,   22,   26,   66,   36,   66,   66,   66,   35,
-       31,   66,   10,   66,   18,   66,   13,   66,   66,    3,
-       66,    4,   66,   66,   17,   66,   14,    9,   37,   66,
-       66,   15,   16,   34,   66,   66,    7,   29,    0
+       67,   67,   67,   34,   23,   67,   11,   67,   67,   67,
+       67,   67,   67,   67,   67,   67,   22,   26,   67,   37,
+       67,   67,   67,   36,   31,   67,   10,   67,   18,   67,
+       13,   67,   67,    3,   67,    4,   67,   67,   17,   67,
+       14,    9,   38,   67,   67,   15,   16,   35,   67,   67,
+        7,   29,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -713,71 +714,71 @@ static const YY_CHAR yy_meta[49] =
         3,    3,    3,    2,    2,    2,    1,    1
     } ;
 
-static const flex_int16_t yy_base[256] =
+static const flex_int16_t yy_base[260] =
     {   0,
-        0,    0,  312,  313,   47,   51,  290,   50,  313,  313,
-      289,   46,  313,   45,  313,   57,   48,  313,  313,  288,
-      287,  286,   40,    0,   36,  275,   38,   46,   50,  282,
-       33,   45,   47,  264,  276,  271,  313,  280,  313,  313,
-      313,   87,  313,   69,  313,   86,  313,  313,  313,  313,
-       79,  313,   94,  313,   96,  283,  313,  313,  313,    0,
-      260,    0,  258,  257,  273,   75,  256,   72,  253,  260,
-      254,  256,    0,  253,   72,  255,  261,  260,   77,   80,
-      246,  250,  261,  249,  244,  313,   99,  105,  112,  270,
-      116,  263,  239,  240,  241,  237,  248,  237,   91,  236,
+        0,    0,  316,  317,   47,   51,  294,   50,  317,  317,
+      293,   46,  317,   45,  317,   57,   48,  317,  317,  292,
+      291,  290,   40,    0,   36,  279,   41,   46,   50,  286,
+       33,   45,   61,  268,  280,  275,  317,  284,  317,  317,
+      317,   87,  317,   64,  317,   86,  317,  317,  317,  317,
+       79,  317,   94,  317,   96,  287,  317,  317,  317,    0,
+      264,  271,    0,  261,  260,  276,   77,  259,   74,  256,
+      263,  257,  259,    0,  256,   71,  258,  264,  263,   79,
+       82,  249,  253,  264,  252,  247,  317,  101,  107,  113,
+      273,  118,  266,  242,  258,  242,  243,  239,  250,  239,
 
-      244,  244,  236,  242,    0,  243,  231,  239,  234,  237,
-      225,  224,  219,   93,  227,  232,  217,  217,  216,  218,
-      214,  242,  236,  121,  213,  219,  209,  209,    0,  211,
-      215,  205,  211,    0,  116,    0,    0,  203,  204,  203,
-      205,  200,  215,  199,  213,  197,  207,  202,    0,  194,
-      200,  199,  196,  187,  313,  204,  202,  182,    0,  185,
-      183,  103,  199,  122,  190,  180,  188,  191,  180,  176,
-      184,  174,  190,  187,  186,  175,  175,  183,  184,  168,
-      165,  148,  151,  156,  155,  150,  143,  140,  154,  145,
-        0,  140,    0,  156,  142,  151,  149,  141,  134,    0,
+       93,  238,  246,  246,  238,  244,    0,  245,  233,  241,
+      236,  239,  227,  226,  221,   89,  229,  234,  219,  219,
+      218,  220,  216,  244,  238,  122,  215,  213,  220,  210,
+      210,    0,  212,  216,  206,  212,    0,  118,    0,    0,
+      204,  205,  204,  206,  201,  216,  200,  214,  198,  208,
+      203,    0,  195,  201,  200,  197,  188,  317,  205,    0,
+      203,  183,    0,  186,  184,  104,  200,  123,  191,  181,
+      189,  192,  181,  177,  185,  175,  191,  188,  187,  176,
+      176,  184,  185,  169,  166,  149,  152,  157,  156,  151,
+      144,  141,  155,  146,    0,  141,    0,  157,  143,  152,
 
-        0,  146,    0,  132,  138,  127,  125,  137,  123,  125,
-      118,  132,    0,  313,  120,    0,  127,  113,  122,    0,
-        0,  121,    0,  119,    0,  118,    0,  116,  107,    0,
-      100,    0,  112,  148,    0,  112,    0,    0,    0,  114,
-      100,    0,    0,    0,  102,   96,    0,    0,  313,  194,
-      197,  126,  200,  203,  126
+      150,  142,  135,    0,    0,  147,    0,  133,  139,  128,
+      126,  138,  124,  126,  119,  133,    0,  317,  121,    0,
+      128,  113,  123,    0,    0,  121,    0,  120,    0,  118,
+        0,  117,  108,    0,  101,    0,  113,  149,    0,  113,
+        0,    0,    0,  115,  101,    0,    0,    0,  103,   97,
+        0,    0,  317,  195,  198,  130,  201,  204,  128
     } ;
 
-static const flex_int16_t yy_def[256] =
+static const flex_int16_t yy_def[260] =
     {   0,
-      249,    1,  249,  249,  249,  249,  249,  250,  249,  249,
-      249,  249,  249,  249,  249,  251,  249,  249,  249,  249,
-      249,  249,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  249,  249,  249,  249,
-      249,  249,  249,  250,  249,  250,  249,  249,  249,  249,
-      249,  249,  251,  249,  253,  249,  249,  249,  249,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  249,  250,  250,  253,  254,
-      251,  249,  252,  252,  252,  252,  252,  252,  252,  252,
+      253,    1,  253,  253,  253,  253,  253,  254,  253,  253,
+      253,  253,  253,  253,  253,  255,  253,  253,  253,  253,
+      253,  253,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  253,  253,  253,  253,
+      253,  253,  253,  254,  253,  254,  253,  253,  253,  253,
+      253,  253,  255,  253,  257,  253,  253,  253,  253,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  253,  254,  254,  257,
+      258,  255,  253,  256,  256,  256,  256,  256,  256,  256,
 
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  254,  249,  251,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  249,  252,  252,  252,  252,  252,
-      252,  252,  252,  249,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  249,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  258,  253,  255,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  253,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  253,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  253,  256,  256,  256,  256,  256,  256,  256,
 
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  249,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  252,  252,  252,  252,  252,  252,  252,  252,
-      252,  252,  255,  252,  252,  252,  252,  252,    0,  249,
-      249,  249,  249,  249,  249
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  253,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  256,  256,  256,  256,
+      256,  256,  256,  256,  256,  256,  259,  256,  256,  256,
+      256,  256,    0,  253,  253,  253,  253,  253,  253
     } ;
 
-static const flex_int16_t yy_nxt[362] =
+static const flex_int16_t yy_nxt[366] =
     {   0,
         4,    5,    6,    5,    5,    7,    8,    4,    9,   10,
        11,   12,   13,   14,   15,   16,   17,   18,   19,   20,
@@ -785,43 +786,43 @@ static const flex_int16_t yy_nxt[362] =
        29,   24,   24,   24,   30,   31,   32,   33,   34,   35,
        24,   36,   24,   37,   38,   39,   40,   41,   42,   42,
        42,   42,   42,   42,   42,   42,   45,   48,   50,   54,
-       54,   51,   56,   61,   51,   52,   49,   55,   65,   77,
-       68,   66,   69,   81,   78,   45,   70,   73,   62,   63,
-       64,   71,   79,   74,   75,   80,   72,   82,   42,   42,
-       42,   42,   87,   56,   46,   51,   54,   54,   90,   90,
+       54,   51,   56,   61,   51,   52,   49,   55,   66,   78,
+       45,   67,   62,   69,   79,   70,   71,   74,   63,   64,
+       65,   72,   80,   75,   76,   81,   73,   82,   42,   42,
+       42,   42,   88,   56,   46,   51,   54,   54,   91,   91,
 
-       97,  108,  101,  115,  109,   45,   91,  113,   98,   99,
-      102,   87,  114,   46,   90,   90,  131,  116,   54,   54,
-      164,  146,   91,   54,   54,  186,  164,  243,   60,  132,
-       88,  124,  147,  248,  247,  246,  245,  244,  242,  241,
-      187,  240,  239,   46,  238,  237,  101,  236,  235,   88,
-      234,  233,  189,  243,  232,  243,  231,  230,  243,  243,
-      229,  243,  228,  227,  226,  243,  149,  243,  243,  243,
-      225,  224,  223,  222,  221,  220,  219,  218,  217,  216,
-      215,  214,  213,  212,  211,  210,  209,  208,  207,  206,
-      205,  243,  243,  243,   44,   44,   44,   53,   53,   53,
+      110,   83,   99,  111,  103,  117,   92,   45,   46,  115,
+      100,  101,  104,   88,  116,   91,   91,  149,  134,  118,
+       54,   54,  168,   92,   54,   54,  190,  168,  150,  247,
+       89,  135,   60,  126,  252,  251,  250,  249,  248,  246,
+      245,  191,  244,  243,  242,   46,  241,  240,  103,  239,
+      238,   89,  237,  193,  247,  236,  247,  235,  234,  247,
+      247,  233,  247,  232,  231,  230,  247,  152,  247,  247,
+      247,  229,  228,  227,  226,  225,  224,  223,  222,  221,
+      220,  219,  218,  217,  216,  215,  214,  213,  212,  211,
+      210,  209,  247,  247,  247,   44,   44,   44,   53,   53,
 
-       89,   89,   89,  122,  122,  122,  204,  203,  202,  201,
-      200,  199,  198,  197,  196,  195,  194,  193,  192,  191,
-      190,  188,  185,  184,  183,  182,  181,  180,  179,  178,
-      177,  176,  175,  174,  173,  172,  171,  170,  169,  168,
-      167,  166,  165,  163,  162,  161,  160,  159,  158,  157,
-      156,  155,  123,  154,  153,  152,  151,  150,  149,  148,
-      145,  144,  143,  142,  141,  140,  139,  138,  137,  136,
-      135,  134,  133,  130,  129,  128,  127,  126,  125,   92,
-      123,  121,  120,  119,  118,  117,  112,  111,  110,  107,
-      106,  105,  104,  103,  100,   96,   95,   94,   93,   92,
+       53,   90,   90,   90,  124,  124,  124,  208,  207,  206,
+      205,  204,  203,  202,  201,  200,  199,  198,  197,  196,
+      195,  194,  192,  189,  188,  187,  186,  185,  184,  183,
+      182,  181,  180,  179,  178,  177,  176,  175,  174,  173,
+      172,  171,  170,  169,  167,  166,  165,  164,  163,  162,
+      161,  160,  159,  158,  125,  157,  156,  155,  154,  153,
+      152,  151,  148,  147,  146,  145,  144,  143,  142,  141,
+      140,  139,  138,  137,  136,  133,  132,  131,  130,  129,
+      128,  127,   93,  125,  123,  122,  121,  120,  119,  114,
+      113,  112,  109,  108,  107,  106,  105,  102,   98,   97,
 
-       86,   85,   84,   83,   76,   67,   59,   58,   57,   47,
-       43,  249,    3,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249
+       96,   95,   94,   93,   87,   86,   85,   84,   77,   68,
+       59,   58,   57,   47,   43,  253,    3,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253
     } ;
 
-static const flex_int16_t yy_chk[362] =
+static const flex_int16_t yy_chk[366] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -830,48 +831,48 @@ static const flex_int16_t yy_chk[362] =
         1,    1,    1,    1,    1,    1,    1,    1,    5,    5,
         5,    5,    6,    6,    6,    6,    8,   12,   14,   16,
        16,   14,   17,   23,   17,   14,   12,   16,   25,   31,
-       27,   25,   27,   33,   31,   44,   28,   29,   23,   23,
+       44,   25,   23,   27,   31,   27,   28,   29,   23,   23,
        23,   28,   32,   29,   29,   32,   28,   33,   42,   42,
        42,   42,   46,   51,    8,   51,   53,   53,   55,   55,
 
-       66,   75,   68,   80,   75,   87,   55,   79,   66,   66,
-       68,   88,   79,   44,   89,   89,   99,   80,   91,   91,
-      135,  114,   89,  124,  124,  162,  164,  255,  252,   99,
-       46,   91,  114,  246,  245,  241,  240,  236,  233,  231,
-      162,  229,  228,   87,  226,  224,  135,  222,  219,   88,
-      218,  217,  164,  234,  215,  234,  212,  211,  234,  234,
-      210,  234,  209,  208,  207,  234,  206,  234,  234,  234,
-      205,  204,  202,  199,  198,  197,  196,  195,  194,  192,
-      190,  189,  188,  187,  186,  185,  184,  183,  182,  181,
-      180,  234,  234,  234,  250,  250,  250,  251,  251,  251,
+       76,   33,   67,   76,   69,   81,   55,   88,   44,   80,
+       67,   67,   69,   89,   80,   90,   90,  116,  101,   81,
+       92,   92,  138,   90,  126,  126,  166,  168,  116,  259,
+       46,  101,  256,   92,  250,  249,  245,  244,  240,  237,
+      235,  166,  233,  232,  230,   88,  228,  226,  138,  223,
+      222,   89,  221,  168,  238,  219,  238,  216,  215,  238,
+      238,  214,  238,  213,  212,  211,  238,  210,  238,  238,
+      238,  209,  208,  206,  203,  202,  201,  200,  199,  198,
+      196,  194,  193,  192,  191,  190,  189,  188,  187,  186,
+      185,  184,  238,  238,  238,  254,  254,  254,  255,  255,
 
-      253,  253,  253,  254,  254,  254,  179,  178,  177,  176,
-      175,  174,  173,  172,  171,  170,  169,  168,  167,  166,
-      165,  163,  161,  160,  158,  157,  156,  154,  153,  152,
-      151,  150,  148,  147,  146,  145,  144,  143,  142,  141,
-      140,  139,  138,  133,  132,  131,  130,  128,  127,  126,
-      125,  123,  122,  121,  120,  119,  118,  117,  116,  115,
-      113,  112,  111,  110,  109,  108,  107,  106,  104,  103,
-      102,  101,  100,   98,   97,   96,   95,   94,   93,   92,
-       90,   85,   84,   83,   82,   81,   78,   77,   76,   74,
-       72,   71,   70,   69,   67,   65,   64,   63,   61,   56,
+      255,  257,  257,  257,  258,  258,  258,  183,  182,  181,
+      180,  179,  178,  177,  176,  175,  174,  173,  172,  171,
+      170,  169,  167,  165,  164,  162,  161,  159,  157,  156,
+      155,  154,  153,  151,  150,  149,  148,  147,  146,  145,
+      144,  143,  142,  141,  136,  135,  134,  133,  131,  130,
+      129,  128,  127,  125,  124,  123,  122,  121,  120,  119,
+      118,  117,  115,  114,  113,  112,  111,  110,  109,  108,
+      106,  105,  104,  103,  102,  100,   99,   98,   97,   96,
+       95,   94,   93,   91,   86,   85,   84,   83,   82,   79,
+       78,   77,   75,   73,   72,   71,   70,   68,   66,   65,
 
-       38,   36,   35,   34,   30,   26,   22,   21,   20,   11,
-        7,    3,  249,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249,  249,  249,  249,  249,  249,  249,  249,  249,  249,
-      249
+       64,   62,   61,   56,   38,   36,   35,   34,   30,   26,
+       22,   21,   20,   11,    7,    3,  253,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253,  253,  253,  253,  253,  253,
+      253,  253,  253,  253,  253
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[73] =
+static const flex_int32_t yy_rule_can_match_eol[74] =
     {   0,
 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,     };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -938,6 +939,7 @@ char *yytext;
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -1096,6 +1098,10 @@ char *yytext;
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -1149,8 +1155,8 @@ local_objects;
 #ifndef yyval
 #define yyval yytext
 #endif // yyval
-#line 1153 "lex.Celeste.c"
-#line 1154 "lex.Celeste.c"
+#line 1159 "lex.Celeste.c"
+#line 1160 "lex.Celeste.c"
 
 #define INITIAL 0
 
@@ -1367,10 +1373,10 @@ YY_DECL
 		}
 
 	{
-#line 341 "./Celeste_lexer.l"
+#line 347 "./Celeste_lexer.l"
 
 
-#line 1374 "lex.Celeste.c"
+#line 1380 "lex.Celeste.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1397,13 +1403,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 250 )
+				if ( yy_current_state >= 254 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 249 );
+		while ( yy_current_state != 253 );
 		yy_cp = (yy_last_accepting_cpos);
 		yy_current_state = (yy_last_accepting_state);
 
@@ -1436,368 +1442,373 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 343 "./Celeste_lexer.l"
+#line 349 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(1))); else if (local_store && false) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(1))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(1)); else if (false) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(1)); if ((!local_store && false) || (!local_store && include_deleted)) return (SINGLE_COMMENT); }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 344 "./Celeste_lexer.l"
+#line 350 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(2))); else if (local_store && false) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(2))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(2)); else if (false) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(2)); if ((!local_store && false) || (!local_store && include_deleted)) return (MULTI_COMMENT); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 345 "./Celeste_lexer.l"
+#line 351 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(3))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(3))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(3)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(3)); if ((!local_store && true) || (!local_store && include_deleted)) return (CONSTANT); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 346 "./Celeste_lexer.l"
+#line 352 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(4))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(4))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(4)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(4)); if ((!local_store && true) || (!local_store && include_deleted)) return (FUNCTION); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 347 "./Celeste_lexer.l"
+#line 353 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(5))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(5))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(5)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(5)); if ((!local_store && true) || (!local_store && include_deleted)) return (CLASS); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 348 "./Celeste_lexer.l"
+#line 354 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(6))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(6))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(6)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(6)); if ((!local_store && true) || (!local_store && include_deleted)) return (ENUM); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 349 "./Celeste_lexer.l"
+#line 355 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(7))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(7))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(7)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(7)); if ((!local_store && true) || (!local_store && include_deleted)) return (CONDITIONAL); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 350 "./Celeste_lexer.l"
+#line 356 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(8))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(8))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(8)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(8)); if ((!local_store && true) || (!local_store && include_deleted)) return (CODE); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 351 "./Celeste_lexer.l"
+#line 357 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(9))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(9))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(9)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(9)); if ((!local_store && true) || (!local_store && include_deleted)) return (ATTRIBUTETOK); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 352 "./Celeste_lexer.l"
+#line 358 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(10))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(10))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(10)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(10)); if ((!local_store && true) || (!local_store && include_deleted)) return (RUNTIME); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 353 "./Celeste_lexer.l"
+#line 359 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(11))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(11))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(11)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(11)); if ((!local_store && true) || (!local_store && include_deleted)) return (STATIC); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 354 "./Celeste_lexer.l"
+#line 360 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(12))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(12))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(12)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(12)); if ((!local_store && true) || (!local_store && include_deleted)) return (AUTO); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 355 "./Celeste_lexer.l"
+#line 361 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(13))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(13))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(13)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(13)); if ((!local_store && true) || (!local_store && include_deleted)) return (AUTOTYPE); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 356 "./Celeste_lexer.l"
+#line 362 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(14))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(14))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(14)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(14)); if ((!local_store && true) || (!local_store && include_deleted)) return (TEMPLATE); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 357 "./Celeste_lexer.l"
+#line 363 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(15))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(15))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(15)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(15)); if ((!local_store && true) || (!local_store && include_deleted)) return (NAMESPACE); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 358 "./Celeste_lexer.l"
+#line 364 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(16))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(16))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(16)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(16)); if ((!local_store && true) || (!local_store && include_deleted)) return (OPERATORNAME); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 359 "./Celeste_lexer.l"
+#line 365 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(17))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(17))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(17)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(17)); if ((!local_store && true) || (!local_store && include_deleted)) return (OVERRIDE); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 360 "./Celeste_lexer.l"
+#line 366 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(18))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(18))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(18)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(18)); if ((!local_store && true) || (!local_store && include_deleted)) return (VIRTUAL); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 361 "./Celeste_lexer.l"
+#line 367 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(19))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(19))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(19)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(19)); if ((!local_store && true) || (!local_store && include_deleted)) return (PURE); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 362 "./Celeste_lexer.l"
+#line 368 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(20))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(20))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(20)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(20)); if ((!local_store && true) || (!local_store && include_deleted)) return (AS); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 363 "./Celeste_lexer.l"
+#line 369 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(21))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(21))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(21)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(21)); if ((!local_store && true) || (!local_store && include_deleted)) return (IN); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 364 "./Celeste_lexer.l"
+#line 370 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(22))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(22))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(22)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(22)); if ((!local_store && true) || (!local_store && include_deleted)) return (DISPLAY); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 365 "./Celeste_lexer.l"
+#line 371 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(23))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(23))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(23)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(23)); if ((!local_store && true) || (!local_store && include_deleted)) return (RETURN); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 366 "./Celeste_lexer.l"
+#line 372 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(24))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(24))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(24)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(24)); if ((!local_store && true) || (!local_store && include_deleted)) return (FOR); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 367 "./Celeste_lexer.l"
+#line 373 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(25))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(25))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(25)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(25)); if ((!local_store && true) || (!local_store && include_deleted)) return (IF); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 368 "./Celeste_lexer.l"
+#line 374 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(26))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(26))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(26)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(26)); if ((!local_store && true) || (!local_store && include_deleted)) return (ELSEIF); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 369 "./Celeste_lexer.l"
+#line 375 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(27))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(27))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(27)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(27)); if ((!local_store && true) || (!local_store && include_deleted)) return (ELSE); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 370 "./Celeste_lexer.l"
+#line 376 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(28))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(28))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(28)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(28)); if ((!local_store && true) || (!local_store && include_deleted)) return (INLINE); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 371 "./Celeste_lexer.l"
+#line 377 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(29))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(29))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(29)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(29)); if ((!local_store && true) || (!local_store && include_deleted)) return (CONSTRUCTOR); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 372 "./Celeste_lexer.l"
+#line 378 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(30))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(30))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(30)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(30)); if ((!local_store && true) || (!local_store && include_deleted)) return (FILE_); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 373 "./Celeste_lexer.l"
+#line 379 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(31))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(31))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(31)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(31)); if ((!local_store && true) || (!local_store && include_deleted)) return (PROGRAM_); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 374 "./Celeste_lexer.l"
+#line 380 "./Celeste_lexer.l"
 { handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(32))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(32))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(32)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(32)); if ((!local_store && true) || (!local_store && include_deleted)) return (IMPORT); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 375 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(33))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(33))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(33)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(33)); if ((!local_store && true) || (!local_store && include_deleted)) return (PUBLIC); }
+#line 381 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(33))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(33))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(33)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(33)); if ((!local_store && true) || (!local_store && include_deleted)) return (EXPLICIT_ALIAS); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 376 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(34))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(34))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(34)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(34)); if ((!local_store && true) || (!local_store && include_deleted)) return (PROTECTED); }
+#line 382 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(34))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(34))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(34)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(34)); if ((!local_store && true) || (!local_store && include_deleted)) return (PUBLIC); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 377 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(35))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(35))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(35)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(35)); if ((!local_store && true) || (!local_store && include_deleted)) return (PRIVATE); }
+#line 383 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(35))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(35))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(35)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(35)); if ((!local_store && true) || (!local_store && include_deleted)) return (PROTECTED); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 378 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(36))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(36))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(36)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(36)); if ((!local_store && true) || (!local_store && include_deleted)) return (INHERIT); }
+#line 384 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(36))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(36))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(36)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(36)); if ((!local_store && true) || (!local_store && include_deleted)) return (PRIVATE); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 379 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(37))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(37))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(37)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(37)); if ((!local_store && true) || (!local_store && include_deleted)) return (COMPOSITE); }
+#line 385 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(37))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(37))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(37)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(37)); if ((!local_store && true) || (!local_store && include_deleted)) return (INHERIT); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 380 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(38))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(38))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(38)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(38)); if ((!local_store && true) || (!local_store && include_deleted)) return (LEFT_BRACKET); }
+#line 386 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(38))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(38))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(38)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(38)); if ((!local_store && true) || (!local_store && include_deleted)) return (COMPOSITE); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 381 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(39))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(39))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(39)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(39)); if ((!local_store && true) || (!local_store && include_deleted)) return (RIGHT_BRACKET); }
+#line 387 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(39))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(39))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(39)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(39)); if ((!local_store && true) || (!local_store && include_deleted)) return (LEFT_BRACKET); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 382 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(40))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(40))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(40)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(40)); if ((!local_store && true) || (!local_store && include_deleted)) return (LEFT_SQUARE_BRACKET); }
+#line 388 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(40))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(40))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(40)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(40)); if ((!local_store && true) || (!local_store && include_deleted)) return (RIGHT_BRACKET); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 383 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(41))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(41))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(41)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(41)); if ((!local_store && true) || (!local_store && include_deleted)) return (RIGHT_SQUARE_BRACKET); }
+#line 389 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(41))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(41))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(41)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(41)); if ((!local_store && true) || (!local_store && include_deleted)) return (LEFT_SQUARE_BRACKET); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 384 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(42))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(42))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(42)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(42)); if ((!local_store && true) || (!local_store && include_deleted)) return (LEFT_PARANTHESIS); }
+#line 390 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(42))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(42))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(42)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(42)); if ((!local_store && true) || (!local_store && include_deleted)) return (RIGHT_SQUARE_BRACKET); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 385 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(43))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(43))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(43)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(43)); if ((!local_store && true) || (!local_store && include_deleted)) return (RIGHT_PARANTHESIS); }
+#line 391 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(43))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(43))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(43)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(43)); if ((!local_store && true) || (!local_store && include_deleted)) return (LEFT_PARANTHESIS); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 386 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(44))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(44))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(44)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(44)); if ((!local_store && true) || (!local_store && include_deleted)) return (COLON); }
+#line 392 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(44))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(44))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(44)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(44)); if ((!local_store && true) || (!local_store && include_deleted)) return (RIGHT_PARANTHESIS); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 387 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(45))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(45))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(45)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(45)); if ((!local_store && true) || (!local_store && include_deleted)) return (SEMICOLON); }
+#line 393 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(45))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(45))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(45)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(45)); if ((!local_store && true) || (!local_store && include_deleted)) return (COLON); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 388 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(46))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(46))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(46)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(46)); if ((!local_store && true) || (!local_store && include_deleted)) return (COMMA); }
+#line 394 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(46))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(46))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(46)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(46)); if ((!local_store && true) || (!local_store && include_deleted)) return (SEMICOLON); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 389 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(47))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(47))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(47)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(47)); if ((!local_store && true) || (!local_store && include_deleted)) return (DOT); }
+#line 395 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(47))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(47))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(47)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(47)); if ((!local_store && true) || (!local_store && include_deleted)) return (COMMA); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 390 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(48))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(48))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(48)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(48)); if ((!local_store && true) || (!local_store && include_deleted)) return (LTEQ); }
+#line 396 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(48))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(48))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(48)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(48)); if ((!local_store && true) || (!local_store && include_deleted)) return (DOT); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 391 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(49))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(49))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(49)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(49)); if ((!local_store && true) || (!local_store && include_deleted)) return (GTEQ); }
+#line 397 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(49))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(49))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(49)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(49)); if ((!local_store && true) || (!local_store && include_deleted)) return (LTEQ); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 392 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(50))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(50))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(50)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(50)); if ((!local_store && true) || (!local_store && include_deleted)) return (LT); }
+#line 398 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(50))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(50))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(50)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(50)); if ((!local_store && true) || (!local_store && include_deleted)) return (GTEQ); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 393 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(51))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(51))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(51)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(51)); if ((!local_store && true) || (!local_store && include_deleted)) return (GT); }
+#line 399 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(51))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(51))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(51)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(51)); if ((!local_store && true) || (!local_store && include_deleted)) return (LT); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 394 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(52))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(52))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(52)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(52)); if ((!local_store && true) || (!local_store && include_deleted)) return (PLUSEQ); }
+#line 400 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(52))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(52))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(52)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(52)); if ((!local_store && true) || (!local_store && include_deleted)) return (GT); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 395 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(53))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(53))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(53)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(53)); if ((!local_store && true) || (!local_store && include_deleted)) return (MINUSEQ); }
+#line 401 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(53))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(53))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(53)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(53)); if ((!local_store && true) || (!local_store && include_deleted)) return (PLUSEQ); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 396 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(54))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(54))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(54)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(54)); if ((!local_store && true) || (!local_store && include_deleted)) return (MULTIPLYEQ); }
+#line 402 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(54))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(54))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(54)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(54)); if ((!local_store && true) || (!local_store && include_deleted)) return (MINUSEQ); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 397 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(55))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(55))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(55)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(55)); if ((!local_store && true) || (!local_store && include_deleted)) return (DIVIDEEQ); }
+#line 403 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(55))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(55))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(55)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(55)); if ((!local_store && true) || (!local_store && include_deleted)) return (MULTIPLYEQ); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 398 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(56))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(56))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(56)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(56)); if ((!local_store && true) || (!local_store && include_deleted)) return (EQEQ); }
+#line 404 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(56))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(56))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(56)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(56)); if ((!local_store && true) || (!local_store && include_deleted)) return (DIVIDEEQ); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 399 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(57))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(57))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(57)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(57)); if ((!local_store && true) || (!local_store && include_deleted)) return (EQ); }
+#line 405 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(57))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(57))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(57)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(57)); if ((!local_store && true) || (!local_store && include_deleted)) return (EQEQ); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 400 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(58))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(58))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(58)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(58)); if ((!local_store && true) || (!local_store && include_deleted)) return (NOTEQ); }
+#line 406 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(58))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(58))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(58)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(58)); if ((!local_store && true) || (!local_store && include_deleted)) return (EQ); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 401 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(59))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(59))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(59)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(59)); if ((!local_store && true) || (!local_store && include_deleted)) return (NOT); }
+#line 407 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(59))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(59))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(59)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(59)); if ((!local_store && true) || (!local_store && include_deleted)) return (NOTEQ); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 402 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(60))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(60))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(60)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(60)); if ((!local_store && true) || (!local_store && include_deleted)) return (PLUSPLUS); }
+#line 408 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(60))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(60))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(60)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(60)); if ((!local_store && true) || (!local_store && include_deleted)) return (NOT); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 403 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(61))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(61))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(61)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(61)); if ((!local_store && true) || (!local_store && include_deleted)) return (PLUS); }
+#line 409 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(61))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(61))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(61)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(61)); if ((!local_store && true) || (!local_store && include_deleted)) return (PLUSPLUS); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 404 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(62))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(62))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(62)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(62)); if ((!local_store && true) || (!local_store && include_deleted)) return (MINUSMINUS); }
+#line 410 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(62))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(62))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(62)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(62)); if ((!local_store && true) || (!local_store && include_deleted)) return (PLUS); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 405 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(63))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(63))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(63)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(63)); if ((!local_store && true) || (!local_store && include_deleted)) return (MINUS); }
+#line 411 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(63))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(63))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(63)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(63)); if ((!local_store && true) || (!local_store && include_deleted)) return (MINUSMINUS); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 406 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(64))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(64))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(64)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(64)); if ((!local_store && true) || (!local_store && include_deleted)) return (DIVIDE); }
+#line 412 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(64))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(64))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(64)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(64)); if ((!local_store && true) || (!local_store && include_deleted)) return (MINUS); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 407 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(65))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(65))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(65)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(65)); if ((!local_store && true) || (!local_store && include_deleted)) return (MULTIPLY); }
+#line 413 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(65))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(65))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(65)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(65)); if ((!local_store && true) || (!local_store && include_deleted)) return (DIVIDE); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 408 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(66))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(66))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(66)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(66)); if ((!local_store && true) || (!local_store && include_deleted)) return (VARNAME); }
+#line 414 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(66))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(66))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(66)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(66)); if ((!local_store && true) || (!local_store && include_deleted)) return (MULTIPLY); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 409 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(67))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(67))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(67)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(67)); if ((!local_store && true) || (!local_store && include_deleted)) return (NUMBER); }
+#line 415 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(67))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(67))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(67)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(67)); if ((!local_store && true) || (!local_store && include_deleted)) return (VARNAME); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 410 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(68))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(68))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(68)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(68)); if ((!local_store && true) || (!local_store && include_deleted)) return (DECIMAL); }
+#line 416 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(68))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(68))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(68)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(68)); if ((!local_store && true) || (!local_store && include_deleted)) return (NUMBER); }
 	YY_BREAK
 case 69:
-/* rule 69 can match eol */
 YY_RULE_SETUP
-#line 411 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(69))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(69))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(69)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(69)); if ((!local_store && true) || (!local_store && include_deleted)) return (TEXT); }
+#line 417 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(69))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(69))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(69)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(69)); if ((!local_store && true) || (!local_store && include_deleted)) return (DECIMAL); }
 	YY_BREAK
 case 70:
 /* rule 70 can match eol */
 YY_RULE_SETUP
-#line 412 "./Celeste_lexer.l"
-{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(70))); else if (local_store && false) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(70))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(70)); else if (false) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(70)); if ((!local_store && false) || (!local_store && include_deleted)) return (ESCAPE_CHARS); }
+#line 418 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !false || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(70))); else if (local_store && true) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(70))); else if (local_store && false); else if (!false || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(70)); else if (true) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(70)); if ((!local_store && true) || (!local_store && include_deleted)) return (TEXT); }
 	YY_BREAK
 case 71:
+/* rule 71 can match eol */
 YY_RULE_SETUP
-#line 414 "./Celeste_lexer.l"
-{ if (local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(0))); }
+#line 419 "./Celeste_lexer.l"
+{ handleColumn();  if (local_store && !true || local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(71))); else if (local_store && false) store(new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(71))); else if (local_store && true); else if (!true || include_deleted) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(71)); else if (false) Celestelval.Terminal = new deamer::external::cpp::lexer::TerminalObject("", yylineno, Celeste_column, std::size_t(71)); if ((!local_store && false) || (!local_store && include_deleted)) return (ESCAPE_CHARS); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 416 "./Celeste_lexer.l"
+#line 421 "./Celeste_lexer.l"
+{ if (local_store && include_deleted) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, Celeste_column, std::size_t(0))); }
+	YY_BREAK
+case 73:
+YY_RULE_SETUP
+#line 423 "./Celeste_lexer.l"
 ECHO;
 	YY_BREAK
-#line 1871 "lex.Celeste.c"
+#line 1883 "lex.Celeste.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2095,7 +2106,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 250 )
+			if ( yy_current_state >= 254 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -2123,11 +2134,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 250 )
+		if ( yy_current_state >= 254 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 249);
+	yy_is_jam = (yy_current_state == 253);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2815,7 +2826,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 416 "./Celeste_lexer.l"
+#line 423 "./Celeste_lexer.l"
 
 
 static void store(const deamer::external::cpp::lexer::TerminalObject* const newObject)

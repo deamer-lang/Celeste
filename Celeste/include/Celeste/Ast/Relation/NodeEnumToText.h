@@ -610,6 +610,26 @@ namespace Celeste { namespace ast { namespace relation {
 	}
 	
 
+	case ::Celeste::ast::Type::type_alias: {
+		return "type_alias";
+	}
+	
+
+	case ::Celeste::ast::Type::aliased_type: {
+		return "aliased_type";
+	}
+	
+
+	case ::Celeste::ast::Type::alias_name: {
+		return "alias_name";
+	}
+	
+
+	case ::Celeste::ast::Type::type_scope: {
+		return "type_scope";
+	}
+	
+
 	case ::Celeste::ast::Type::enum_declaration: {
 		return "enum_declaration";
 	}
@@ -917,6 +937,11 @@ namespace Celeste { namespace ast { namespace relation {
 
 	case ::Celeste::ast::Type::IMPORT: {
 		return "IMPORT";
+	}
+	
+
+	case ::Celeste::ast::Type::EXPLICIT_ALIAS: {
+		return "EXPLICIT_ALIAS";
 	}
 	
 

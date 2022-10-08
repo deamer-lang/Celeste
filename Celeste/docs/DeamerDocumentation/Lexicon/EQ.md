@@ -62,6 +62,13 @@ Overview of the terminal: **[EQ](./EQ.md)**.
 | [type](./../Grammar/type.md) [member_field_name](./../Grammar/member_field_name.md) [EQ](./EQ.md) [value_list](./../Grammar/value_list.md)  |
 
 
+#### [type_alias](./../Grammar/type_alias.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [EXPLICIT_ALIAS](./EXPLICIT_ALIAS.md) [alias_name](./../Grammar/alias_name.md) [EQ](./EQ.md) [aliased_type](./../Grammar/aliased_type.md)  |
+
+
 #### [enumeration](./../Grammar/enumeration.md)
 
 | Productionrule referencing this                      |

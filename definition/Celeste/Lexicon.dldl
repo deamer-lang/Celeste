@@ -43,6 +43,8 @@ Terminal: FILE_        [Ff][Ii][Ll][Ee]
 Terminal: PROGRAM_     [Pp][Rr][Oo][Gg][Rr][Aa][Mm]
 Terminal: IMPORT       [Ii][Mm][Pp][Oo][Rr][Tt]
 
+Terminal: EXPLICIT_ALIAS [Aa][Ll][Ii][Aa][Ss]
+
 / Accessibility Keywords
 Terminal: PUBLIC       [Pp][Uu][Bb][Ll][Ii][Cc]
 Terminal: PROTECTED    [Pp][Rr][Oo][Tt][Ee][Cc][Tt][Ee][Dd]

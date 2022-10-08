@@ -36,6 +36,7 @@
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -195,6 +196,10 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -398,6 +403,11 @@ namespace Celeste { namespace ast { namespace Visitor {
 			case Celeste::ast::Type::IMPORT:
 			{
 				Visit(static_cast<const Celeste::ast::node::IMPORT*>(node));
+				break;
+			}
+			case Celeste::ast::Type::EXPLICIT_ALIAS:
+			{
+				Visit(static_cast<const Celeste::ast::node::EXPLICIT_ALIAS*>(node));
 				break;
 			}
 			case Celeste::ast::Type::PUBLIC:
@@ -1191,6 +1201,26 @@ namespace Celeste { namespace ast { namespace Visitor {
 				Visit(static_cast<const Celeste::ast::node::attribute_name*>(node));
 				break;
 			}
+			case Celeste::ast::Type::type_alias:
+			{
+				Visit(static_cast<const Celeste::ast::node::type_alias*>(node));
+				break;
+			}
+			case Celeste::ast::Type::aliased_type:
+			{
+				Visit(static_cast<const Celeste::ast::node::aliased_type*>(node));
+				break;
+			}
+			case Celeste::ast::Type::alias_name:
+			{
+				Visit(static_cast<const Celeste::ast::node::alias_name*>(node));
+				break;
+			}
+			case Celeste::ast::Type::type_scope:
+			{
+				Visit(static_cast<const Celeste::ast::node::type_scope*>(node));
+				break;
+			}
 			case Celeste::ast::Type::enum_declaration:
 			{
 				Visit(static_cast<const Celeste::ast::node::enum_declaration*>(node));
@@ -1437,6 +1467,9 @@ namespace Celeste { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::IMPORT* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::EXPLICIT_ALIAS* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::PUBLIC* node)
@@ -1912,6 +1945,18 @@ namespace Celeste { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::attribute_name* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::type_alias* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::aliased_type* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::alias_name* node)
+		{
+		}
+		virtual void Visit(const Celeste::ast::node::type_scope* node)
 		{
 		}
 		virtual void Visit(const Celeste::ast::node::enum_declaration* node)

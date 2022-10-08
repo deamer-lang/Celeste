@@ -78,6 +78,10 @@ namespace Celeste::ir::inputreconstruction
 		Integer,
 		Text,
 		Boolean,
+
+		// Type Related
+		TypeExplicitAlias,
+		TypeScope,
 	};
 }
 

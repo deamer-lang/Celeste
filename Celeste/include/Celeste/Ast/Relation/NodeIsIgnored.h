@@ -168,6 +168,11 @@ namespace Celeste { namespace ast { namespace relation {
 			return false;
 		}
 
+		if (t == ::Celeste::ast::Type::EXPLICIT_ALIAS)
+		{
+			return false;
+		}
+
 		if (t == ::Celeste::ast::Type::PUBLIC)
 		{
 			return false;

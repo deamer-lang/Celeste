@@ -27,6 +27,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
+#include "Celeste/Ir/InputReconstruction/Structure/TypeExplicitAlias.h"
 #include <limits>
 #include <memory>
 
@@ -490,19 +491,32 @@ Celeste::ir::inputreconstruction::Interpreter::GetType(TypeConstruct* typeConstr
 	auto coreType = typeConstruct->GetCoreType();
 	if (!coreType.has_value())
 	{
+		// Issue
+		return {std::numeric_limits<std::size_t>::max()};
+	}
+
+	return GetType(coreType);
+}
+
+Celeste::ir::inputreconstruction::Interpreter::TypeId
+Celeste::ir::inputreconstruction::Interpreter::GetType(
+	std::optional<InputReconstructionObject*> object)
+{
+	if (!object.has_value())
+	{
 		// We got an issue
 		return {std::numeric_limits<std::size_t>::max()};
 	}
 
-	if (coreType.value() == nullptr)
+	if (object.value() == nullptr)
 	{
 		// Critical error
 		return {std::numeric_limits<std::size_t>::max()};
 	}
 
-	if (coreType.value()->GetType() == inputreconstruction::Type::Class)
+	if (object.value()->GetType() == inputreconstruction::Type::Class)
 	{
-		auto classObject = static_cast<Class*>(coreType.value());
+		auto classObject = static_cast<Class*>(object.value());
 
 		auto iter = typeTable.typePointerMap.find(classObject);
 		if (iter == typeTable.typePointerMap.end())
@@ -512,9 +526,16 @@ Celeste::ir::inputreconstruction::Interpreter::GetType(TypeConstruct* typeConstr
 
 		return typeTable.typePointerMap.find(classObject)->second.type;
 	}
-	else if (coreType.value()->GetType() == inputreconstruction::Type::Enumeration)
+	else if (object.value()->GetType() == inputreconstruction::Type::TypeExplicitAlias)
 	{
-		auto enumerationObject = static_cast<Enumeration*>(coreType.value());
+		auto typeExplicitAlias = static_cast<TypeExplicitAlias*>(object.value());
+		auto classObject = typeExplicitAlias->GetAliasedType()->GetResolvedLinkedIr();
+
+		return GetType(classObject.value());
+	}
+	else if (object.value()->GetType() == inputreconstruction::Type::Enumeration)
+	{
+		auto enumerationObject = static_cast<Enumeration*>(object.value());
 
 		auto iter = typeTable.typePointerMap.find(enumerationObject);
 		if (iter == typeTable.typePointerMap.end())
@@ -1707,212 +1728,227 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 	}
 
 	auto currentBlock = [&]() { return std::rbegin(blocks); };
+	auto addBlock = [&](Block::BlockType blockType, InputReconstructionObject* object,
+						Interpreter* interpreter) {
+		auto newBlock = Block(blockType, object, interpreter);
+		blocks.push_back(std::move(newBlock));
+	};
 	auto currentStatement = [&]() { return currentBlock()->GetCurrentStatement(); };
 	while (!blocks.empty())
 	{
-		auto current = currentStatement();
-		currentBlock()->CurrentStatementIsProcessed();
-		auto assignToSymbol =
-			[&](std::optional<
-					std::variant<Celeste::ir::inputreconstruction::Interpreter::Symbol*,
-								 Celeste::ir::inputreconstruction::Interpreter::SymbolMember*,
-								 Celeste::ir::inputreconstruction::Interpreter::SymbolMember,
-								 Celeste::ir::inputreconstruction::Interpreter::Value>>
-					symbol,
-				Value rhs) {
-				if (!symbol.has_value())
-				{
-					return;
-				}
-
-				auto symbolValue = symbol.value();
-				if (std::holds_alternative<Symbol*>(symbolValue))
-				{
-					auto symbolDeref = std::get<Symbol*>(symbolValue);
-					symbolDeref->value = rhs;
-				}
-				else if (std::holds_alternative<SymbolMember*>(symbolValue))
-				{
-					auto symbolDeref = std::get<SymbolMember*>(symbolValue);
-					symbolDeref->value = rhs;
-				}
-				else
-				{
-					// Assignment is useless, so skipping it is okay
-				}
-			};
-		switch (current->GetType())
+		if (!currentBlock()->statements.empty())
 		{
-		case inputreconstruction::Type::Return: {
-			auto returnObject = static_cast<inputreconstruction::Return*>(current);
-			return Evaluate(returnObject->GetExpression(), valueReference);
-		}
-		case inputreconstruction::Type::VariableDeclaration: {
-			auto variableDeclaration =
-				static_cast<inputreconstruction::VariableDeclaration*>(current);
-			stackLifetime.Stack()->currentScope->AddVariable(variableDeclaration);
-			break;
-		}
-		case inputreconstruction::Type::Assignment: {
-			auto assignment = static_cast<inputreconstruction::Assignment*>(current);
-			auto& lhs = assignment->GetLhs();
-			auto symbol = GetSymbolMember(lhs.get(), valueReference);
-			if (!symbol.has_value())
+			auto current = currentStatement();
+			currentBlock()->CurrentStatementIsProcessed();
+			auto assignToSymbol =
+				[&](std::optional<
+						std::variant<Celeste::ir::inputreconstruction::Interpreter::Symbol*,
+									 Celeste::ir::inputreconstruction::Interpreter::SymbolMember*,
+									 Celeste::ir::inputreconstruction::Interpreter::SymbolMember,
+									 Celeste::ir::inputreconstruction::Interpreter::Value>>
+						symbol,
+					Value rhs) {
+					if (!symbol.has_value())
+					{
+						return;
+					}
+
+					auto symbolValue = symbol.value();
+					if (std::holds_alternative<Symbol*>(symbolValue))
+					{
+						auto symbolDeref = std::get<Symbol*>(symbolValue);
+						symbolDeref->value = rhs;
+					}
+					else if (std::holds_alternative<SymbolMember*>(symbolValue))
+					{
+						auto symbolDeref = std::get<SymbolMember*>(symbolValue);
+						symbolDeref->value = rhs;
+					}
+					else
+					{
+						// Assignment is useless, so skipping it is okay
+					}
+				};
+			switch (current->GetType())
 			{
-				// Error
-				std::cout << "While interpreting, could not resolve variable\n";
+			case inputreconstruction::Type::Return: {
+				auto returnObject = static_cast<inputreconstruction::Return*>(current);
+				return Evaluate(returnObject->GetExpression(), valueReference);
+			}
+			case inputreconstruction::Type::VariableDeclaration: {
+				auto variableDeclaration =
+					static_cast<inputreconstruction::VariableDeclaration*>(current);
+				stackLifetime.Stack()->currentScope->AddVariable(variableDeclaration);
 				break;
 			}
-			auto symbolValue = symbol.value();
-			auto rhsValue = Evaluate(assignment->GetRhs(), valueReference);
-
-			// We assume that right hand side is assignable to the left hand side
-			if (rhsValue.has_value())
-			{
-				assignToSymbol(symbol, rhsValue.value());
-			}
-			break;
-		}
-		case inputreconstruction::Type::SymbolIncrease: {
-			auto symbolIncrease = static_cast<inputreconstruction::SymbolIncrease*>(current);
-			auto symbolReference = symbolIncrease->GetSymbolReference().get();
-			auto symbol = GetSymbolMember(symbolReference, valueReference);
-			if (symbol.has_value())
-			{
+			case inputreconstruction::Type::Assignment: {
+				auto assignment = static_cast<inputreconstruction::Assignment*>(current);
+				auto& lhs = assignment->GetLhs();
+				auto symbol = GetSymbolMember(lhs.get(), valueReference);
+				if (!symbol.has_value())
+				{
+					// Error
+					std::cout << "While interpreting, could not resolve variable\n";
+					break;
+				}
 				auto symbolValue = symbol.value();
-				if (std::holds_alternative<Symbol*>(symbolValue))
-				{
-					auto symbolMember = std::get<Symbol*>(symbolValue);
-					if (symbolMember->value.has_value() &&
-						std::holds_alternative<int>(symbolMember->value.value().value))
-					{
-						symbolMember->value.value().value =
-							std::get<int>(symbolMember->value.value().value) + 1;
-					}
-				}
-				else if (std::holds_alternative<SymbolMember*>(symbolValue))
-				{
-					auto symbolMember = std::get<SymbolMember*>(symbolValue);
-					if (std::holds_alternative<int>(symbolMember->value.value))
-					{
-						symbolMember->value.value = std::get<int>(symbolMember->value.value) + 1;
-					}
-				}
-			}
-			break;
-		}
-		case inputreconstruction::Type::SymbolDecrease: {
-			auto symbolDecrease = static_cast<inputreconstruction::SymbolDecrease*>(current);
-			auto symbolReference = symbolDecrease->GetSymbolReference().get();
-			auto symbol = GetSymbolMember(symbolReference, valueReference);
-			if (symbol.has_value())
-			{
-				auto symbolValue = symbol.value();
-				if (std::holds_alternative<Symbol*>(symbolValue))
-				{
-					auto symbolMember = std::get<Symbol*>(symbolValue);
-					if (symbolMember->value.has_value() &&
-						std::holds_alternative<int>(symbolMember->value.value().value))
-					{
-						symbolMember->value.value().value =
-							std::get<int>(symbolMember->value.value().value) - 1;
-					}
-				}
-				else if (std::holds_alternative<SymbolMember*>(symbolValue))
-				{
-					auto symbolMember = std::get<SymbolMember*>(symbolValue);
-					if (std::holds_alternative<int>(symbolMember->value.value))
-					{
-						symbolMember->value.value = std::get<int>(symbolMember->value.value) - 1;
-					}
-				}
-			}
-			break;
-		}
-		case inputreconstruction::Type::ForEach: {
-			auto forEach = static_cast<inputreconstruction::ForEach*>(current);
-			blocks.emplace_back(Block::BlockType::ForEachBlock, forEach, this);
-			currentBlock()->StartAction(this, stackLifetime);
-			break;
-		}
-		case inputreconstruction::Type::ForIteration: {
-			auto forIteration = static_cast<inputreconstruction::ForIteration*>(current);
-			blocks.emplace_back(Block::BlockType::ForBlock, forIteration, this);
-			currentBlock()->StartAction(this, stackLifetime);
-			break;
-		}
-		case inputreconstruction::Type::WhileIteration: {
-			break;
-		}
-		case inputreconstruction::Type::If: {
-			auto ifObject = static_cast<inputreconstruction::If*>(current);
-			auto value = Evaluate(ifObject->GetCondition(), valueReference);
-			if (value.has_value() && value.value() == true)
-			{
-				// As we need to skip all other branches
-				while (currentStatement() != nullptr &&
-					   (currentStatement()->GetType() == inputreconstruction::Type::If ||
-						currentStatement()->GetType() == inputreconstruction::Type::ElseIf ||
-						currentStatement()->GetType() == inputreconstruction::Type::Else))
-				{
-					currentBlock()->CurrentStatementIsProcessed();
-				}
-				blocks.emplace_back(Block::BlockType::ConditionalBlock, ifObject, this);
-				currentBlock()->StartAction(this, stackLifetime);
-			}
-			break;
-		}
-		case inputreconstruction::Type::ElseIf: {
-			auto elseIfObject = static_cast<inputreconstruction::ElseIf*>(current);
-			auto value = Evaluate(elseIfObject->GetCondition(), valueReference);
-			if (value.has_value() && value.value() == true)
-			{
-				// As we need to skip all other branches
-				while (currentStatement() != nullptr &&
-					   (currentStatement()->GetType() == inputreconstruction::Type::If ||
-						currentStatement()->GetType() == inputreconstruction::Type::ElseIf ||
-						currentStatement()->GetType() == inputreconstruction::Type::Else))
-				{
-					currentBlock()->CurrentStatementIsProcessed();
-				}
-				blocks.emplace_back(Block::BlockType::ConditionalBlock, elseIfObject, this);
-				currentBlock()->StartAction(this, stackLifetime);
-			}
-			break;
-		}
-		case inputreconstruction::Type::Else: {
-			auto elseObject = static_cast<inputreconstruction::Else*>(current);
-			blocks.emplace_back(Block::BlockType::ConditionalBlock, elseObject, this);
-			currentBlock()->StartAction(this, stackLifetime);
-			break;
-		}
-		case inputreconstruction::Type::Expression: {
-			auto expression = static_cast<Expression*>(current);
-			Evaluate(expression);
-			break;
-		}
-		case inputreconstruction::Type::SymbolReferenceCall: {
-			auto symbolReference = static_cast<SymbolReferenceCall*>(current);
-			EvaluateSymbolReferenceCall(symbolReference, valueReference);
-			break;
-		}
-		default: {
-			std::cout << "Not implemented or unknown statement, skipping for now\n";
-			break;
-		}
-		}
+				auto rhsValue = Evaluate(assignment->GetRhs(), valueReference);
 
-		if (!currentBlock()->AllStatementsProcessed())
-		{
-			// If not all statements are processed, continue
-			continue;
+				// We assume that right hand side is assignable to the left hand side
+				if (rhsValue.has_value())
+				{
+					assignToSymbol(symbol, rhsValue.value());
+				}
+				break;
+			}
+			case inputreconstruction::Type::SymbolIncrease: {
+				auto symbolIncrease = static_cast<inputreconstruction::SymbolIncrease*>(current);
+				auto symbolReference = symbolIncrease->GetSymbolReference().get();
+				auto symbol = GetSymbolMember(symbolReference, valueReference);
+				if (symbol.has_value())
+				{
+					auto symbolValue = symbol.value();
+					if (std::holds_alternative<Symbol*>(symbolValue))
+					{
+						auto symbolMember = std::get<Symbol*>(symbolValue);
+						if (symbolMember->value.has_value() &&
+							std::holds_alternative<int>(symbolMember->value.value().value))
+						{
+							symbolMember->value.value().value =
+								std::get<int>(symbolMember->value.value().value) + 1;
+						}
+					}
+					else if (std::holds_alternative<SymbolMember*>(symbolValue))
+					{
+						auto symbolMember = std::get<SymbolMember*>(symbolValue);
+						if (std::holds_alternative<int>(symbolMember->value.value))
+						{
+							symbolMember->value.value =
+								std::get<int>(symbolMember->value.value) + 1;
+						}
+					}
+				}
+				break;
+			}
+			case inputreconstruction::Type::SymbolDecrease: {
+				auto symbolDecrease = static_cast<inputreconstruction::SymbolDecrease*>(current);
+				auto symbolReference = symbolDecrease->GetSymbolReference().get();
+				auto symbol = GetSymbolMember(symbolReference, valueReference);
+				if (symbol.has_value())
+				{
+					auto symbolValue = symbol.value();
+					if (std::holds_alternative<Symbol*>(symbolValue))
+					{
+						auto symbolMember = std::get<Symbol*>(symbolValue);
+						if (symbolMember->value.has_value() &&
+							std::holds_alternative<int>(symbolMember->value.value().value))
+						{
+							symbolMember->value.value().value =
+								std::get<int>(symbolMember->value.value().value) - 1;
+						}
+					}
+					else if (std::holds_alternative<SymbolMember*>(symbolValue))
+					{
+						auto symbolMember = std::get<SymbolMember*>(symbolValue);
+						if (std::holds_alternative<int>(symbolMember->value.value))
+						{
+							symbolMember->value.value =
+								std::get<int>(symbolMember->value.value) - 1;
+						}
+					}
+				}
+				break;
+			}
+			case inputreconstruction::Type::ForEach: {
+				auto forEach = static_cast<inputreconstruction::ForEach*>(current);
+				addBlock(Block::BlockType::ForEachBlock, forEach, this);
+				currentBlock()->StartAction(this, stackLifetime);
+				break;
+			}
+			case inputreconstruction::Type::ForIteration: {
+				auto forIteration = static_cast<inputreconstruction::ForIteration*>(current);
+				addBlock(Block::BlockType::ForBlock, forIteration, this);
+				currentBlock()->StartAction(this, stackLifetime);
+				break;
+			}
+			case inputreconstruction::Type::WhileIteration: {
+				break;
+			}
+			case inputreconstruction::Type::If: {
+				auto ifObject = static_cast<inputreconstruction::If*>(current);
+				auto value = Evaluate(ifObject->GetCondition(), valueReference);
+				if (value.has_value() && value.value() == true)
+				{
+					// As we need to skip all other branches
+					while (currentStatement() != nullptr &&
+						   (currentStatement()->GetType() == inputreconstruction::Type::If ||
+							currentStatement()->GetType() == inputreconstruction::Type::ElseIf ||
+							currentStatement()->GetType() == inputreconstruction::Type::Else))
+					{
+						currentBlock()->CurrentStatementIsProcessed();
+					}
+					addBlock(Block::BlockType::ConditionalBlock, ifObject, this);
+					currentBlock()->StartAction(this, stackLifetime);
+				}
+				break;
+			}
+			case inputreconstruction::Type::ElseIf: {
+				auto elseIfObject = static_cast<inputreconstruction::ElseIf*>(current);
+				auto value = Evaluate(elseIfObject->GetCondition(), valueReference);
+				if (value.has_value() && value.value() == true)
+				{
+					// As we need to skip all other branches
+					while (currentStatement() != nullptr &&
+						   (currentStatement()->GetType() == inputreconstruction::Type::If ||
+							currentStatement()->GetType() == inputreconstruction::Type::ElseIf ||
+							currentStatement()->GetType() == inputreconstruction::Type::Else))
+					{
+						currentBlock()->CurrentStatementIsProcessed();
+					}
+					addBlock(Block::BlockType::ConditionalBlock, elseIfObject, this);
+					currentBlock()->StartAction(this, stackLifetime);
+				}
+				break;
+			}
+			case inputreconstruction::Type::Else: {
+				auto elseObject = static_cast<inputreconstruction::Else*>(current);
+				addBlock(Block::BlockType::ConditionalBlock, elseObject, this);
+				currentBlock()->StartAction(this, stackLifetime);
+				break;
+			}
+			case inputreconstruction::Type::Expression: {
+				auto expression = static_cast<Expression*>(current);
+				Evaluate(expression);
+				break;
+			}
+			case inputreconstruction::Type::SymbolReferenceCall: {
+				auto symbolReference = static_cast<SymbolReferenceCall*>(current);
+				EvaluateSymbolReferenceCall(symbolReference, valueReference);
+				break;
+			}
+			default: {
+				std::cout << "Not implemented or unknown statement, skipping for now\n";
+				break;
+			}
+			}
+
+			if (!currentBlock()->AllStatementsProcessed())
+			{
+				// If not all statements are processed, continue
+				continue;
+			}
 		}
 
 		// When this block exits, and the blocks above it were dependent on the fact this block
 		// exits, then exit all dependent blocks
 		while (!blocks.empty())
 		{
-			if (currentBlock()->IsDone())
+			if (currentBlock()->statements.empty())
+			{
+				currentBlock()->EndAction(this, stackLifetime);
+				blocks.pop_back();
+			}
+			else if (currentBlock()->IsDone())
 			{
 				bool exit = currentBlock()->EndConditionSatisfied(this);
 
@@ -2191,6 +2227,20 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(
 			if (CopyByValue(lhsType.value()))
 			{
 				return Evaluate(rhs);
+			}
+		}
+
+		if (lhsType.value()->GetType() == inputreconstruction::Type::TypeExplicitAlias)
+		{
+			auto forwardedType =
+				static_cast<TypeExplicitAlias*>(lhsType.value())->GetAliasedForwardedType();
+			if (forwardedType.has_value() &&
+				static_cast<TypeConstruct*>(rhsType)->Equal(forwardedType.value()))
+			{
+				if (CopyByValue(forwardedType.value()))
+				{
+					return Evaluate(rhs);
+				}
 			}
 		}
 
@@ -2784,7 +2834,8 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 				{
 					// Error
 					throw std::logic_error(
-						"Variable was not initialized while this was a requirement at the given "
+						"Variable was not initialized while this was a requirement at the "
+						"given "
 						"context.");
 				}
 				auto& valDerefValue = valDeref->value.value();

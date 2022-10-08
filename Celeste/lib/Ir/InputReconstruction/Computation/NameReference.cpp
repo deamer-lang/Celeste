@@ -27,6 +27,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Namespace.h"
+#include "Celeste/Ir/InputReconstruction/Structure/TypeExplicitAlias.h"
 #include <set>
 
 struct Celeste::ir::inputreconstruction::NameReference::Impl
@@ -536,6 +537,141 @@ public:
 							{(*iter).get(),
 							 ResolveArgument{irComponent, Direction::Up, true, true}});
 					}
+				}
+			}
+
+			if (argument.direction == Direction::Up && argument.addParent)
+			{
+				uncheckedList.insert(
+					std::begin(uncheckedList) + addedCounter++,
+					{irComponent->GetParent(), ResolveArgument{irComponent, Direction::Up, true}});
+			}
+			break;
+		}
+		case Type::TypeExplicitAlias: {
+			auto irComponent = static_cast<TypeExplicitAlias*>(uncheckedMember);
+			if (irComponent->GetAliasName()->GetResolvedName() == GetSymbolName())
+			{
+				// Check if a constructor is called. Then validate the constructor call
+				// Otherwise we simply link with the aliased type.
+				// Where the type alias behaves like its aliased type.
+				if (HasFunctionAccess())
+				{
+					auto referencedType = irComponent->GetAliasedForwardedType();
+					if (referencedType.has_value())
+					{
+						auto type_ = referencedType.value()->GetType();
+						if (type_ == Type::Class)
+						{
+							auto classObject = static_cast<Class*>(referencedType.value());
+							auto constructor =
+								classObject->GetConstructor(this->reference, Accessibility::Public);
+							if (constructor.has_value())
+							{
+								// This is what we need
+								SetEntryPoint(constructor.value());
+								ContinueAccess(1);
+
+								Finalize();
+								return;
+							}
+						}
+						else if (type_ == Type::InlineClass)
+						{
+							throw std::logic_error("Unimplemented Logic");
+						}
+						else
+						{
+							throw std::logic_error("Unimplemented Logic");
+						}
+					}
+				}
+				else if (!HasFunctionAccess())
+				{
+					// This is what we need
+					SetEntryPoint(irComponent);
+					ContinueAccess();
+
+					Finalize();
+					return;
+				}
+				else
+				{
+					// Continue
+				}
+			}
+
+			if (argument.addByNeighbour)
+			{
+				return;
+			}
+
+			std::size_t addedCounter = 0;
+			if (argument.direction == Direction::Up &&
+				irComponent->GetParent()->GetType() != Type::Class)
+			{
+				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
+					 iter != irComponent->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{(*iter).get(), ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetParent()->GetIterator(irComponent);
+						 iter != irComponent->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{(*iter).get(),
+							 ResolveArgument{irComponent, Direction::Up, true, true}});
+					}
+				}
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetParent()->GetType() == Type::Class)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<Class*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<Class*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up &&
+				(irComponent->GetParent()->GetType() == Type::Function ||
+				 irComponent->GetParent()->GetType() == Type::Constructor))
+			{
+				for (auto& functionArgument :
+					 static_cast<Function*>(irComponent->GetParent())->GetFunctionArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {functionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
 				}
 			}
 

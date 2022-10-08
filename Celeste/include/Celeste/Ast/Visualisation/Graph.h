@@ -1226,6 +1226,46 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"attribute_name\"];\n";
 		}
 
+		void ListenEntry(const ::Celeste::ast::node::type_alias* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"type_alias\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::aliased_type* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"aliased_type\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::alias_name* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"alias_name\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::type_scope* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"type_scope\"];\n";
+		}
+
 		void ListenEntry(const ::Celeste::ast::node::enum_declaration* node) override
 		{
 			for (const auto* child : node->GetNodes())
@@ -1844,6 +1884,16 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 			}
 
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"IMPORT\"];\n";
+		}
+
+		void ListenEntry(const ::Celeste::ast::node::EXPLICIT_ALIAS* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"EXPLICIT_ALIAS\"];\n";
 		}
 
 		void ListenEntry(const ::Celeste::ast::node::PUBLIC* node) override
@@ -2704,6 +2754,22 @@ namespace Celeste { namespace ast { namespace listener { namespace deamer { name
 		}
 
 		void ListenExit(const ::Celeste::ast::node::attribute_name* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::type_alias* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::aliased_type* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::alias_name* node) override
+		{
+		}
+
+		void ListenExit(const ::Celeste::ast::node::type_scope* node) override
 		{
 		}
 

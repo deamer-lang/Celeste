@@ -506,6 +506,7 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		TypeId GetType(TypeConstruct* typeConstruct);
+		TypeId GetType(std::optional<InputReconstructionObject*> object);
 
 		std::variant<int, double, std::string,
 					 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue,

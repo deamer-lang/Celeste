@@ -36,6 +36,7 @@
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -196,6 +197,10 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -542,6 +547,15 @@ namespace Celeste { namespace ast { namespace listener {
 				EnterAnything(node);
 				EnterTerminal(node);
 				ListenEntry(static_cast<const Celeste::ast::node::IMPORT*>(node));
+				break;
+			}
+
+			case Celeste::ast::Type::EXPLICIT_ALIAS:
+			{
+				// Entry terminal
+				EnterAnything(node);
+				EnterTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::EXPLICIT_ALIAS*>(node));
 				break;
 			}
 
@@ -1970,6 +1984,42 @@ namespace Celeste { namespace ast { namespace listener {
 				break;
 			}
 
+			case Celeste::ast::Type::type_alias:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::type_alias*>(node));
+				break;
+			}
+
+			case Celeste::ast::Type::aliased_type:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::aliased_type*>(node));
+				break;
+			}
+
+			case Celeste::ast::Type::alias_name:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::alias_name*>(node));
+				break;
+			}
+
+			case Celeste::ast::Type::type_scope:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const Celeste::ast::node::type_scope*>(node));
+				break;
+			}
+
 			case Celeste::ast::Type::enum_declaration:
 			{
 				// Enter nonterminal
@@ -2533,6 +2583,15 @@ namespace Celeste { namespace ast { namespace listener {
 			{
 				// Exit terminal
 				ListenExit(static_cast<const Celeste::ast::node::IMPORT*>(node));
+				ExitTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
+			case Celeste::ast::Type::EXPLICIT_ALIAS:
+			{
+				// Exit terminal
+				ListenExit(static_cast<const Celeste::ast::node::EXPLICIT_ALIAS*>(node));
 				ExitTerminal(node);
 				ExitAnything(node);
 				break;
@@ -3963,6 +4022,42 @@ namespace Celeste { namespace ast { namespace listener {
 				break;
 			}
 
+			case Celeste::ast::Type::type_alias:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const Celeste::ast::node::type_alias*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
+			case Celeste::ast::Type::aliased_type:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const Celeste::ast::node::aliased_type*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
+			case Celeste::ast::Type::alias_name:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const Celeste::ast::node::alias_name*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
+			case Celeste::ast::Type::type_scope:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const Celeste::ast::node::type_scope*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
 			case Celeste::ast::Type::enum_declaration:
 			{
 				// Exit nonterminal
@@ -4365,6 +4460,10 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
+		virtual void ListenEntry(const Celeste::ast::node::EXPLICIT_ALIAS* node) 
+		{
+		}
+
 		virtual void ListenEntry(const Celeste::ast::node::PUBLIC* node) 
 		{
 		}
@@ -4643,6 +4742,10 @@ namespace Celeste { namespace ast { namespace listener {
 		}
 
 		virtual void ListenExit(const Celeste::ast::node::IMPORT* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::EXPLICIT_ALIAS* node) 
 		{
 		}
 
@@ -5280,6 +5383,22 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 
+		virtual void ListenEntry(const Celeste::ast::node::type_alias* node) 
+		{
+		}
+
+		virtual void ListenEntry(const Celeste::ast::node::aliased_type* node) 
+		{
+		}
+
+		virtual void ListenEntry(const Celeste::ast::node::alias_name* node) 
+		{
+		}
+
+		virtual void ListenEntry(const Celeste::ast::node::type_scope* node) 
+		{
+		}
+
 		virtual void ListenEntry(const Celeste::ast::node::enum_declaration* node) 
 		{
 		}
@@ -5878,6 +5997,22 @@ namespace Celeste { namespace ast { namespace listener {
 		}
 
 		virtual void ListenExit(const Celeste::ast::node::attribute_name* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::type_alias* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::aliased_type* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::alias_name* node) 
+		{
+		}
+
+		virtual void ListenExit(const Celeste::ast::node::type_scope* node) 
 		{
 		}
 

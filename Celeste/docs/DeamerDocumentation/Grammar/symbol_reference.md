@@ -138,6 +138,27 @@ Overview of the nonterminal: **[symbol_reference](./symbol_reference.md)**
 | [symbol_reference](./symbol_reference.md)  |
 
 
+#### [aliased_type](./../Grammar/aliased_type.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [symbol_reference](./symbol_reference.md)  |
+
+
+#### [alias_name](./../Grammar/alias_name.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [symbol_reference](./symbol_reference.md)  |
+
+
+#### [type_scope](./../Grammar/type_scope.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_PARANTHESIS](./../Lexicon/LEFT_PARANTHESIS.md) [symbol_reference](./symbol_reference.md) [RIGHT_PARANTHESIS](./../Lexicon/RIGHT_PARANTHESIS.md) [LT](./../Lexicon/LT.md) [LEFT_SQUARE_BRACKET](./../Lexicon/LEFT_SQUARE_BRACKET.md) [standard_block](./standard_block.md) [RIGHT_SQUARE_BRACKET](./../Lexicon/RIGHT_SQUARE_BRACKET.md) [GT](./../Lexicon/GT.md)  |
+
+
 #### [enum_name](./../Grammar/enum_name.md)
 
 | Productionrule referencing this                      |

@@ -442,6 +442,13 @@ Overview of the terminal: **[RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)**.
 | [execution_keyword_permutation](./../Grammar/execution_keyword_permutation.md) [ATTRIBUTETOK](./ATTRIBUTETOK.md) [attribute_name](./../Grammar/attribute_name.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LEFT_BRACKET](./LEFT_BRACKET.md) [function_body](./../Grammar/function_body.md) [RIGHT_BRACKET](./RIGHT_BRACKET.md)  |
 
 
+#### [type_scope](./../Grammar/type_scope.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [symbol_reference](./../Grammar/symbol_reference.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LT](./LT.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [standard_block](./../Grammar/standard_block.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [GT](./GT.md)  |
+
+
 #### [function_access](./../Grammar/function_access.md)
 
 | Productionrule referencing this                      |

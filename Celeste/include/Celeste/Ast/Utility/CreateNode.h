@@ -34,6 +34,7 @@
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -192,6 +193,10 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -400,6 +405,9 @@ namespace Celeste { namespace ast { namespace utility {
 			}
 			case ::Celeste::ast::Type::IMPORT: {
 				return new ::Celeste::ast::node::IMPORT({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
+			}
+			case ::Celeste::ast::Type::EXPLICIT_ALIAS: {
+				return new ::Celeste::ast::node::EXPLICIT_ALIAS({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
 			}
 			case ::Celeste::ast::Type::PUBLIC: {
 				return new ::Celeste::ast::node::PUBLIC({nodeType, ::deamer::external::cpp::ast::NodeValue::terminal, nodeValue, lineNumber, columnNumber});
@@ -874,6 +882,18 @@ namespace Celeste { namespace ast { namespace utility {
 			}
 			case ::Celeste::ast::Type::attribute_name: {
 				return new ::Celeste::ast::node::attribute_name({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::type_alias: {
+				return new ::Celeste::ast::node::type_alias({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::aliased_type: {
+				return new ::Celeste::ast::node::aliased_type({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::alias_name: {
+				return new ::Celeste::ast::node::alias_name({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
+			}
+			case ::Celeste::ast::Type::type_scope: {
+				return new ::Celeste::ast::node::type_scope({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);
 			}
 			case ::Celeste::ast::Type::enum_declaration: {
 				return new ::Celeste::ast::node::enum_declaration({nodeType, ::deamer::external::cpp::ast::NodeValue::nonterminal, {productionRuleId, productionRuleType}}, nodes);

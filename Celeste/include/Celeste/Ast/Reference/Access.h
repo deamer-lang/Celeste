@@ -126,6 +126,10 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -188,6 +192,7 @@
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -558,6 +563,14 @@ namespace Celeste { namespace ast { namespace reference {
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::attribute_name>;
 	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::type_alias>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::aliased_type>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::alias_name>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::type_scope>;
+	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::enum_declaration>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::deamerreserved_star__enumeration__>;
@@ -681,6 +694,8 @@ namespace Celeste { namespace ast { namespace reference {
 	struct AccessTemplateBase<::Celeste::ast::node::PROGRAM_>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::IMPORT>;
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS>;
 	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::PUBLIC>;
 	template<>
@@ -1285,6 +1300,8 @@ AccessTemplateBase<::Celeste::ast::node::function_declaration> function_declarat
 AccessTemplateBase<::Celeste::ast::node::template_class_declaration> template_class_declaration();
 AccessTemplateBase<::Celeste::ast::node::class_declaration> class_declaration();
 AccessTemplateBase<::Celeste::ast::node::attribute_declaration> attribute_declaration();
+AccessTemplateBase<::Celeste::ast::node::type_alias> type_alias();
+AccessTemplateBase<::Celeste::ast::node::type_scope> type_scope();
 AccessTemplateBase<::Celeste::ast::node::enum_declaration> enum_declaration();
 AccessTemplateBase<::Celeste::ast::node::symbol_reference> symbol_reference();
 AccessTemplateBase<::Celeste::ast::node::SEMICOLON> SEMICOLON();
@@ -14014,6 +14031,444 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 	};
 
 	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::type_alias> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::type_alias*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::type_alias*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::type_alias& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::type_alias* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::type_alias>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::type_alias>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::type_alias*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::type_alias*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::aliased_type> aliased_type();
+AccessTemplateBase<::Celeste::ast::node::alias_name> alias_name();
+AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS> EXPLICIT_ALIAS();
+AccessTemplateBase<::Celeste::ast::node::EQ> EQ();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::type_alias>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::aliased_type> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::aliased_type*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::aliased_type*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::aliased_type& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::aliased_type* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::aliased_type>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::aliased_type>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::aliased_type*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::aliased_type*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::symbol_reference> symbol_reference();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::aliased_type>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::alias_name> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::alias_name*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::alias_name*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::alias_name& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::alias_name* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::alias_name>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::alias_name>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::alias_name*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::alias_name*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::symbol_reference> symbol_reference();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::alias_name>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::type_scope> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::type_scope*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::type_scope*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::type_scope& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::type_scope* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::type_scope>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::type_scope>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::type_scope*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::type_scope*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::standard_block> standard_block();
+AccessTemplateBase<::Celeste::ast::node::symbol_reference> symbol_reference();
+AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET> LEFT_SQUARE_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRACKET();
+AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS> LEFT_PARANTHESIS();
+AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS> RIGHT_PARANTHESIS();
+AccessTemplateBase<::Celeste::ast::node::LT> LT();
+AccessTemplateBase<::Celeste::ast::node::GT> GT();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::type_scope>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::enum_declaration> : public AccessBase
 	{
 	protected:
@@ -20692,6 +21147,112 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 	};
 
 	template<>
+	struct AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS> : public AccessBase
+	{
+	protected:
+		std::vector<const ::Celeste::ast::node::EXPLICIT_ALIAS*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::Celeste::ast::node::EXPLICIT_ALIAS*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::EXPLICIT_ALIAS& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::Celeste::ast::node::EXPLICIT_ALIAS* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::Celeste::ast::node::EXPLICIT_ALIAS*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::Celeste::ast::node::EXPLICIT_ALIAS*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		
+
+		template<typename FunctionType>
+		AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
 	struct AccessTemplateBase<::Celeste::ast::node::PUBLIC> : public AccessBase
 	{
 	protected:
@@ -24953,6 +25514,22 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 			return AccessTemplateBase<::Celeste::ast::node::attribute_declaration>(Get<::Celeste::ast::Type::attribute_declaration>(ts));
 		}
 
+		inline AccessTemplateBase<::Celeste::ast::node::type_alias> AccessTemplateBase<::Celeste::ast::node::stmt>::type_alias()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::type_alias>(Get<::Celeste::ast::Type::type_alias>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::type_scope> AccessTemplateBase<::Celeste::ast::node::stmt>::type_scope()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::type_scope>(Get<::Celeste::ast::Type::type_scope>(ts));
+		}
+
 		inline AccessTemplateBase<::Celeste::ast::node::enum_declaration> AccessTemplateBase<::Celeste::ast::node::stmt>::enum_declaration()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -28983,6 +29560,118 @@ AccessTemplateBase<::Celeste::ast::node::COMMA> COMMA();
 
 			// Unoptimized search
 			return AccessTemplateBase<::Celeste::ast::node::symbol_name>(Get<::Celeste::ast::Type::symbol_name>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::aliased_type> AccessTemplateBase<::Celeste::ast::node::type_alias>::aliased_type()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::aliased_type>(Get<::Celeste::ast::Type::aliased_type>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::alias_name> AccessTemplateBase<::Celeste::ast::node::type_alias>::alias_name()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::alias_name>(Get<::Celeste::ast::Type::alias_name>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS> AccessTemplateBase<::Celeste::ast::node::type_alias>::EXPLICIT_ALIAS()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::EXPLICIT_ALIAS>(Get<::Celeste::ast::Type::EXPLICIT_ALIAS>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::EQ> AccessTemplateBase<::Celeste::ast::node::type_alias>::EQ()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::EQ>(Get<::Celeste::ast::Type::EQ>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::symbol_reference> AccessTemplateBase<::Celeste::ast::node::aliased_type>::symbol_reference()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::symbol_reference>(Get<::Celeste::ast::Type::symbol_reference>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::symbol_reference> AccessTemplateBase<::Celeste::ast::node::alias_name>::symbol_reference()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::symbol_reference>(Get<::Celeste::ast::Type::symbol_reference>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::standard_block> AccessTemplateBase<::Celeste::ast::node::type_scope>::standard_block()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::standard_block>(Get<::Celeste::ast::Type::standard_block>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::symbol_reference> AccessTemplateBase<::Celeste::ast::node::type_scope>::symbol_reference()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::symbol_reference>(Get<::Celeste::ast::Type::symbol_reference>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET> AccessTemplateBase<::Celeste::ast::node::type_scope>::LEFT_SQUARE_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LEFT_SQUARE_BRACKET>(Get<::Celeste::ast::Type::LEFT_SQUARE_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET> AccessTemplateBase<::Celeste::ast::node::type_scope>::RIGHT_SQUARE_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::RIGHT_SQUARE_BRACKET>(Get<::Celeste::ast::Type::RIGHT_SQUARE_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS> AccessTemplateBase<::Celeste::ast::node::type_scope>::LEFT_PARANTHESIS()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LEFT_PARANTHESIS>(Get<::Celeste::ast::Type::LEFT_PARANTHESIS>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS> AccessTemplateBase<::Celeste::ast::node::type_scope>::RIGHT_PARANTHESIS()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::RIGHT_PARANTHESIS>(Get<::Celeste::ast::Type::RIGHT_PARANTHESIS>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::LT> AccessTemplateBase<::Celeste::ast::node::type_scope>::LT()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::LT>(Get<::Celeste::ast::Type::LT>(ts));
+		}
+
+		inline AccessTemplateBase<::Celeste::ast::node::GT> AccessTemplateBase<::Celeste::ast::node::type_scope>::GT()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::Celeste::ast::node::GT>(Get<::Celeste::ast::Type::GT>(ts));
 		}
 
 		inline AccessTemplateBase<::Celeste::ast::node::attribute_section> AccessTemplateBase<::Celeste::ast::node::enum_declaration>::attribute_section()

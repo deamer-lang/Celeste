@@ -360,6 +360,14 @@ Overview of the terminal: **[LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md)**.
 | [symbol_name](./../Grammar/symbol_name.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md)  |
 
 
+#### [type_scope](./../Grammar/type_scope.md)
+
+| Productionrule referencing this                      |
+| ---------------------------------------------------- |
+| [LEFT_PARANTHESIS](./LEFT_PARANTHESIS.md) [symbol_reference](./../Grammar/symbol_reference.md) [RIGHT_PARANTHESIS](./RIGHT_PARANTHESIS.md) [LT](./LT.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [standard_block](./../Grammar/standard_block.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [GT](./GT.md)  |
+| [LT](./LT.md) [LEFT_SQUARE_BRACKET](./LEFT_SQUARE_BRACKET.md) [standard_block](./../Grammar/standard_block.md) [RIGHT_SQUARE_BRACKET](./RIGHT_SQUARE_BRACKET.md) [GT](./GT.md)  |
+
+
 #### [auto_deduce_array](./../Grammar/auto_deduce_array.md)
 
 | Productionrule referencing this                      |

@@ -47,6 +47,7 @@
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -207,6 +208,10 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -291,6 +296,7 @@ static const std::string* Celeste_input_text = nullptr;
 %token<Terminal> FILE_
 %token<Terminal> PROGRAM_
 %token<Terminal> IMPORT
+%token<Terminal> EXPLICIT_ALIAS
 %token<Terminal> PUBLIC
 %token<Terminal> PROTECTED
 %token<Terminal> PRIVATE
@@ -451,6 +457,10 @@ static const std::string* Celeste_input_text = nullptr;
 %nterm<Celeste_deamerreserved_star__COMMA__attribute_function_argument__> deamerreserved_star__COMMA__attribute_function_argument__
 %nterm<Celeste_attribute_function_argument> attribute_function_argument
 %nterm<Celeste_attribute_name> attribute_name
+%nterm<Celeste_type_alias> type_alias
+%nterm<Celeste_aliased_type> aliased_type
+%nterm<Celeste_alias_name> alias_name
+%nterm<Celeste_type_scope> type_scope
 %nterm<Celeste_enum_declaration> enum_declaration
 %nterm<Celeste_deamerreserved_star__enumeration__> deamerreserved_star__enumeration__
 %nterm<Celeste_enum_name> enum_name
@@ -517,6 +527,7 @@ static const std::string* Celeste_input_text = nullptr;
 	::Celeste::ast::node::FILE_* Celeste_FILE_;
 	::Celeste::ast::node::PROGRAM_* Celeste_PROGRAM_;
 	::Celeste::ast::node::IMPORT* Celeste_IMPORT;
+	::Celeste::ast::node::EXPLICIT_ALIAS* Celeste_EXPLICIT_ALIAS;
 	::Celeste::ast::node::PUBLIC* Celeste_PUBLIC;
 	::Celeste::ast::node::PROTECTED* Celeste_PROTECTED;
 	::Celeste::ast::node::PRIVATE* Celeste_PRIVATE;
@@ -675,6 +686,10 @@ static const std::string* Celeste_input_text = nullptr;
 	::Celeste::ast::node::deamerreserved_star__COMMA__attribute_function_argument__* Celeste_deamerreserved_star__COMMA__attribute_function_argument__;
 	::Celeste::ast::node::attribute_function_argument* Celeste_attribute_function_argument;
 	::Celeste::ast::node::attribute_name* Celeste_attribute_name;
+	::Celeste::ast::node::type_alias* Celeste_type_alias;
+	::Celeste::ast::node::aliased_type* Celeste_aliased_type;
+	::Celeste::ast::node::alias_name* Celeste_alias_name;
+	::Celeste::ast::node::type_scope* Celeste_type_scope;
 	::Celeste::ast::node::enum_declaration* Celeste_enum_declaration;
 	::Celeste::ast::node::deamerreserved_star__enumeration__* Celeste_deamerreserved_star__enumeration__;
 	::Celeste::ast::node::enum_name* Celeste_enum_name;
@@ -910,8 +925,20 @@ stmt:
 
 		// Ignored, Deleted, tokens are deleted
 	}
+	| type_scope  {
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 25, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| type_alias  {
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 26, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
 	| SEMICOLON  {
-		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 25, ::deamer::external::cpp::ast::ProductionRuleType::user }}, {  });
+		auto* const newNode = new Celeste::ast::node::stmt({::Celeste::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 27, ::deamer::external::cpp::ast::ProductionRuleType::user }}, {  });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
@@ -6601,6 +6628,58 @@ attribute_name:
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
+	}
+;
+
+
+type_alias:
+	EXPLICIT_ALIAS alias_name EQ aliased_type  {
+		auto* const newNode = new Celeste::ast::node::type_alias({::Celeste::ast::Type::type_alias, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::EXPLICIT_ALIAS({::Celeste::ast::Type::EXPLICIT_ALIAS, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $2, new Celeste::ast::node::EQ({::Celeste::ast::Type::EQ, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4 });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+;
+
+
+aliased_type:
+	symbol_reference  {
+		auto* const newNode = new Celeste::ast::node::aliased_type({::Celeste::ast::Type::aliased_type, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+;
+
+
+alias_name:
+	symbol_reference  {
+		auto* const newNode = new Celeste::ast::node::alias_name({::Celeste::ast::Type::alias_name, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+;
+
+
+type_scope:
+	LEFT_PARANTHESIS symbol_reference RIGHT_PARANTHESIS LT LEFT_SQUARE_BRACKET standard_block RIGHT_SQUARE_BRACKET GT  {
+		auto* const newNode = new Celeste::ast::node::type_scope({::Celeste::ast::Type::type_scope, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $2, new Celeste::ast::node::LT({::Celeste::ast::Type::LT, ::deamer::external::cpp::ast::NodeValue::terminal, $4 }), $6, new Celeste::ast::node::GT({::Celeste::ast::Type::GT, ::deamer::external::cpp::ast::NodeValue::terminal, $8 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete $1;
+		delete $3;
+		delete $5;
+		delete $7;
+	}
+	| LT LEFT_SQUARE_BRACKET standard_block RIGHT_SQUARE_BRACKET GT  {
+		auto* const newNode = new Celeste::ast::node::type_scope({::Celeste::ast::Type::type_scope, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new Celeste::ast::node::LT({::Celeste::ast::Type::LT, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }), $3, new Celeste::ast::node::GT({::Celeste::ast::Type::GT, ::deamer::external::cpp::ast::NodeValue::terminal, $5 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		delete $2;
+		delete $4;
 	}
 ;
 

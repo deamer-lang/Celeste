@@ -123,6 +123,10 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -185,6 +189,7 @@
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -1076,6 +1081,34 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::type_alias>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::type_alias;
+		using type = ::Celeste::ast::node::type_alias;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::aliased_type>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::aliased_type;
+		using type = ::Celeste::ast::node::aliased_type;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::alias_name>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::alias_name;
+		using type = ::Celeste::ast::node::alias_name;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::type_scope>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::type_scope;
+		using type = ::Celeste::ast::node::type_scope;
+	};
+
+	template<>
 	struct NodeEnumToType<::Celeste::ast::Type::enum_declaration>
 	{
 		constexpr static auto value = ::Celeste::ast::Type::enum_declaration;
@@ -1507,6 +1540,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::IMPORT;
 		using type = ::Celeste::ast::node::IMPORT;
+	};
+
+	template<>
+	struct NodeEnumToType<::Celeste::ast::Type::EXPLICIT_ALIAS>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::EXPLICIT_ALIAS;
+		using type = ::Celeste::ast::node::EXPLICIT_ALIAS;
 	};
 
 	template<>

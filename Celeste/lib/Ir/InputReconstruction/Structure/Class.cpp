@@ -462,25 +462,11 @@ Celeste::ir::inputreconstruction::Class::GetConstructor(NameReference* nameRefer
 		// Verify if the resolved name is the symbol name we require for propagation
 		switch (member->GetType())
 		{
-		case Type::Function: {
-			auto function = static_cast<Function*>(member);
-			// Check if the function is accepting
-			if (function->GetFunctionName()->GetResolvedName() == nameReference->GetSymbolName() &&
-				function->Accepts(nameReference))
-			{
-				return function;
-			}
-
-			// It is not the reference, thus continue
-			break;
-		}
 		case Type::Constructor: {
 			auto constructor = static_cast<Constructor*>(member);
 
 			// Check if the function is accepting
-			if (constructor->GetFunctionName()->GetResolvedName() ==
-					nameReference->GetSymbolName() &&
-				constructor->Accepts(nameReference))
+			if (constructor->Accepts(nameReference))
 			{
 				return constructor;
 			}

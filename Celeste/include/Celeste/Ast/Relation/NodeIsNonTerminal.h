@@ -608,6 +608,26 @@ namespace Celeste { namespace ast { namespace relation {
 			return true;
 		}
 
+		if (t == ::Celeste::ast::Type::type_alias)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::aliased_type)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::alias_name)
+		{
+			return true;
+		}
+
+		if (t == ::Celeste::ast::Type::type_scope)
+		{
+			return true;
+		}
+
 		if (t == ::Celeste::ast::Type::enum_declaration)
 		{
 			return true;

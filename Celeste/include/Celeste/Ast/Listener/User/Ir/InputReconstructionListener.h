@@ -41,6 +41,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Protected.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Public.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Root.h"
+#include "Celeste/Ir/InputReconstruction/Structure/TypeExplicitAlias.h"
 
 namespace Celeste::ast::listener::user::ir
 {
@@ -507,14 +508,7 @@ namespace Celeste::ast::listener::user::ir
 									compoundAccess) {
 								auto alias = GetName(compoundAccess.VARNAME().GetContent()[0]);
 								compoundBase->Add(alias.get());
-								if (codeBlockEvaluation)
-								{
-									codeBlock->AddInputReconstructionObject(std::move(alias));
-								}
-								else
-								{
-									file->AddInputReconstructionObject(std::move(alias));
-								}
+								Class->Add(std::move(alias));
 							});
 						Class->AddCompoundBase(std::move(compoundBase));
 					}
@@ -921,6 +915,34 @@ namespace Celeste::ast::listener::user::ir
 			}
 
 			CloseScope();
+		}
+
+		void ListenEntry(const Celeste::ast::node::type_alias* node) override
+		{
+			if (skip)
+			{
+				return;
+			}
+
+			auto Access = reference::Access(node);
+			auto typeExplicitAlias =
+				std::make_unique<Celeste::ir::inputreconstruction::TypeExplicitAlias>(
+					GetName(Access.alias_name().symbol_reference().GetContent()[0]),
+					GetSymbolReference(Access.aliased_type().symbol_reference().GetContent()[0]));
+
+			typeExplicitAlias->SetFile(file);
+			typeExplicitAlias->SetParent(GetParent());
+			typeExplicitAlias->Complete();
+
+			AddCurrentScope(std::move(typeExplicitAlias));
+		}
+
+		void ListenExit(const Celeste::ast::node::type_alias* node) override
+		{
+			if (skip)
+			{
+				return;
+			}
 		}
 
 		void ListenEntry(const Celeste::ast::node::variable_declaration* node) override

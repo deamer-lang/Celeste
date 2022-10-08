@@ -125,6 +125,10 @@ class deamerreserved_arrow__attribute_function_argument__;
 class deamerreserved_star__COMMA__attribute_function_argument__;
 class attribute_function_argument;
 class attribute_name;
+class type_alias;
+class aliased_type;
+class alias_name;
+class type_scope;
 class enum_declaration;
 class deamerreserved_star__enumeration__;
 class enum_name;
@@ -187,6 +191,7 @@ class CONSTRUCTOR;
 class FILE_;
 class PROGRAM_;
 class IMPORT;
+class EXPLICIT_ALIAS;
 class PUBLIC;
 class PROTECTED;
 class PRIVATE;
@@ -1079,6 +1084,34 @@ namespace Celeste { namespace ast { namespace relation {
 	};
 
 	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::type_alias>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::type_alias;
+		using type = ::Celeste::ast::node::type_alias;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::aliased_type>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::aliased_type;
+		using type = ::Celeste::ast::node::aliased_type;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::alias_name>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::alias_name;
+		using type = ::Celeste::ast::node::alias_name;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::type_scope>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::type_scope;
+		using type = ::Celeste::ast::node::type_scope;
+	};
+
+	template<>
 	struct NodeTypeToEnum<::Celeste::ast::node::enum_declaration>
 	{
 		constexpr static auto value = ::Celeste::ast::Type::enum_declaration;
@@ -1510,6 +1543,13 @@ namespace Celeste { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::Celeste::ast::Type::IMPORT;
 		using type = ::Celeste::ast::node::IMPORT;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::Celeste::ast::node::EXPLICIT_ALIAS>
+	{
+		constexpr static auto value = ::Celeste::ast::Type::EXPLICIT_ALIAS;
+		using type = ::Celeste::ast::node::EXPLICIT_ALIAS;
 	};
 
 	template<>

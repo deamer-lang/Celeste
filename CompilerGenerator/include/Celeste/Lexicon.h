@@ -52,6 +52,7 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> FILE_;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> PROGRAM_;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> IMPORT;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> EXPLICIT_ALIAS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> PUBLIC;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> PROTECTED;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> PRIVATE;
@@ -134,6 +135,7 @@ CONSTRUCTOR.Set(deamer::language::type::definition::object::main::Terminal("CONS
 FILE_.Set(deamer::language::type::definition::object::main::Terminal("FILE_", "[Ff][Ii][Ll][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 PROGRAM_.Set(deamer::language::type::definition::object::main::Terminal("PROGRAM_", "[Pp][Rr][Oo][Gg][Rr][Aa][Mm]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 IMPORT.Set(deamer::language::type::definition::object::main::Terminal("IMPORT", "[Ii][Mm][Pp][Oo][Rr][Tt]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+EXPLICIT_ALIAS.Set(deamer::language::type::definition::object::main::Terminal("EXPLICIT_ALIAS", "[Aa][Ll][Ii][Aa][Ss]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 PUBLIC.Set(deamer::language::type::definition::object::main::Terminal("PUBLIC", "[Pp][Uu][Bb][Ll][Ii][Cc]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 PROTECTED.Set(deamer::language::type::definition::object::main::Terminal("PROTECTED", "[Pp][Rr][Oo][Tt][Ee][Cc][Tt][Ee][Dd]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 PRIVATE.Set(deamer::language::type::definition::object::main::Terminal("PRIVATE", "[Pp][Rr][Ii][Vv][Aa][Tt][Ee]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
@@ -208,6 +210,7 @@ AddObject(CONSTRUCTOR);
 AddObject(FILE_);
 AddObject(PROGRAM_);
 AddObject(IMPORT);
+AddObject(EXPLICIT_ALIAS);
 AddObject(PUBLIC);
 AddObject(PROTECTED);
 AddObject(PRIVATE);

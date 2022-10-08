@@ -10,7 +10,7 @@ Overview of the terminal: **[IMPORT](./IMPORT.md)**.
 | ----------------- | --------------------------------------------- |
 | Above             | [PROGRAM_](./PROGRAM_.md) |
 | This              | **[IMPORT](./IMPORT.md)** |
-| Below             | [PUBLIC](./PUBLIC.md) |
+| Below             | [EXPLICIT_ALIAS](./EXPLICIT_ALIAS.md) |
 
 
 

@@ -147,6 +147,10 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__COMMA__attribute_function_argument__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> attribute_function_argument;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> attribute_name;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> type_alias;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> aliased_type;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> alias_name;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> type_scope;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> enum_declaration;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__enumeration__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> enum_name;
@@ -210,6 +214,8 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_assignment;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_mutation_group;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_import_statement;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_type_scope;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_type_alias;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_SEMICOLON;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> import_statement_file_import;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> file_import_execution_keyword_permutation_IMPORT_FILE__TEXT;
@@ -732,6 +738,11 @@ namespace Celeste
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> attribute_declaration_execution_keyword_permutation_ATTRIBUTETOK_attribute_name_LEFT_PARANTHESIS_RIGHT_PARANTHESIS_LEFT_BRACKET_function_body_RIGHT_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> attribute_function_argument_function_argument;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> attribute_name_symbol_name;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> type_alias_EXPLICIT_ALIAS_alias_name_EQ_aliased_type;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> aliased_type_symbol_reference;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> alias_name_symbol_reference;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> type_scope_LEFT_PARANTHESIS_symbol_reference_RIGHT_PARANTHESIS_LT_LEFT_SQUARE_BRACKET_standard_block_RIGHT_SQUARE_BRACKET_GT;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> type_scope_LT_LEFT_SQUARE_BRACKET_standard_block_RIGHT_SQUARE_BRACKET_GT;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__enumeration___enumeration_deamerreserved_star__enumeration__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__enumeration___EMPTY;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> enum_declaration_attribute_section_ENUM_enum_name_LEFT_BRACKET_deamerreserved_star__enumeration___RIGHT_BRACKET;

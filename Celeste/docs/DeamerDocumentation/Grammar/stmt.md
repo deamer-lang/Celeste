@@ -41,6 +41,8 @@ Overview of the nonterminal: **[stmt](./stmt.md)**
 | [assignment](./assignment.md)  |
 | [mutation_group](./mutation_group.md)  |
 | [import_statement](./import_statement.md)  |
+| [type_scope](./type_scope.md)  |
+| [type_alias](./type_alias.md)  |
 | [SEMICOLON](./../Lexicon/SEMICOLON.md)  |
 
 

@@ -36,6 +36,7 @@
 #include "Celeste/Ast/Node/FILE_.h"
 #include "Celeste/Ast/Node/PROGRAM_.h"
 #include "Celeste/Ast/Node/IMPORT.h"
+#include "Celeste/Ast/Node/EXPLICIT_ALIAS.h"
 #include "Celeste/Ast/Node/PUBLIC.h"
 #include "Celeste/Ast/Node/PROTECTED.h"
 #include "Celeste/Ast/Node/PRIVATE.h"
@@ -195,6 +196,10 @@
 #include "Celeste/Ast/Node/deamerreserved_star__COMMA__attribute_function_argument__.h"
 #include "Celeste/Ast/Node/attribute_function_argument.h"
 #include "Celeste/Ast/Node/attribute_name.h"
+#include "Celeste/Ast/Node/type_alias.h"
+#include "Celeste/Ast/Node/aliased_type.h"
+#include "Celeste/Ast/Node/alias_name.h"
+#include "Celeste/Ast/Node/type_scope.h"
 #include "Celeste/Ast/Node/enum_declaration.h"
 #include "Celeste/Ast/Node/deamerreserved_star__enumeration__.h"
 #include "Celeste/Ast/Node/enum_name.h"
@@ -398,6 +403,11 @@ namespace Celeste { namespace ast { namespace listener {
 			case Celeste::ast::Type::IMPORT:
 			{
 				Listen(static_cast<const Celeste::ast::node::IMPORT*>(node));
+				break;
+			}
+			case Celeste::ast::Type::EXPLICIT_ALIAS:
+			{
+				Listen(static_cast<const Celeste::ast::node::EXPLICIT_ALIAS*>(node));
 				break;
 			}
 			case Celeste::ast::Type::PUBLIC:
@@ -1311,6 +1321,30 @@ namespace Celeste { namespace ast { namespace listener {
 				DefaultAction(node);
 				break;
 			}
+			case Celeste::ast::Type::type_alias:
+			{
+				Listen(static_cast<const Celeste::ast::node::type_alias*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::aliased_type:
+			{
+				Listen(static_cast<const Celeste::ast::node::aliased_type*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::alias_name:
+			{
+				Listen(static_cast<const Celeste::ast::node::alias_name*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case Celeste::ast::Type::type_scope:
+			{
+				Listen(static_cast<const Celeste::ast::node::type_scope*>(node));
+				DefaultAction(node);
+				break;
+			}
 			case Celeste::ast::Type::enum_declaration:
 			{
 				Listen(static_cast<const Celeste::ast::node::enum_declaration*>(node));
@@ -1587,6 +1621,9 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::IMPORT* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::EXPLICIT_ALIAS* node)
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::PUBLIC* node)
@@ -2062,6 +2099,18 @@ namespace Celeste { namespace ast { namespace listener {
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::attribute_name* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::type_alias* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::aliased_type* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::alias_name* node)
+		{
+		}
+		virtual void Listen(const Celeste::ast::node::type_scope* node)
 		{
 		}
 		virtual void Listen(const Celeste::ast::node::enum_declaration* node)

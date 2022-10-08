@@ -372,6 +372,18 @@ namespace Celeste { namespace ast { namespace relation {
 		{ "attribute_name", ::Celeste::ast::Type::attribute_name },
 	
 
+		{ "type_alias", ::Celeste::ast::Type::type_alias },
+	
+
+		{ "aliased_type", ::Celeste::ast::Type::aliased_type },
+	
+
+		{ "alias_name", ::Celeste::ast::Type::alias_name },
+	
+
+		{ "type_scope", ::Celeste::ast::Type::type_scope },
+	
+
 		{ "enum_declaration", ::Celeste::ast::Type::enum_declaration },
 	
 
@@ -556,6 +568,9 @@ namespace Celeste { namespace ast { namespace relation {
 	
 
 		{ "IMPORT", ::Celeste::ast::Type::IMPORT },
+	
+
+		{ "EXPLICIT_ALIAS", ::Celeste::ast::Type::EXPLICIT_ALIAS },
 	
 
 		{ "PUBLIC", ::Celeste::ast::Type::PUBLIC },

@@ -59,6 +59,8 @@ stmt
 	assignment
 	mutation_group
 	import_statement
+	type_scope
+	type_alias
 	SEMICOLON
 	
 import_statement
@@ -356,6 +358,18 @@ attribute_function_argument
 	
 attribute_name
 	symbol_name
+
+type_alias
+	EXPLICIT_ALIAS alias_name EQ aliased_type
+	
+aliased_type
+	symbol_reference
+	
+alias_name
+	symbol_reference
+
+type_scope
+	[LEFT_PARANTHESIS symbol_reference RIGHT_PARANTHESIS] LT LEFT_SQUARE_BRACKET standard_block RIGHT_SQUARE_BRACKET GT
 
 enum_declaration
 	attribute_section ENUM enum_name LEFT_BRACKET enumeration* RIGHT_BRACKET
