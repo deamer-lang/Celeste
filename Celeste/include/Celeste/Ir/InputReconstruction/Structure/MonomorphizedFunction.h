@@ -1,5 +1,5 @@
-#ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_FUNCTION
-#define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_FUNCTION
+#ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_MONOMORPHIZEDFUNCTION_H
+#define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_MONOMORPHIZEDFUNCTION_H
 
 #include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
@@ -7,43 +7,44 @@
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
-#include "Celeste/Ir/InputReconstruction/Structure/MonomorphizedFunction.h"
-#include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
-#include <map>
+#include "Celeste/Ir/InputReconstruction/Structure/TemplateArgument.h"
 #include <memory>
 #include <string>
 
 namespace Celeste::ir::inputreconstruction
 {
 	class Constructor;
+	class Function;
 
-	class Function : public InputReconstructionObject
+	class MonomorphizedFunction : public InputReconstructionObject
 	{
 	private:
 		std::unique_ptr<TypeConstruct> returnType;
 		std::unique_ptr<NameReference> functionName;
 		std::vector<std::unique_ptr<FunctionArgument>> functionArguments;
-		std::vector<std::unique_ptr<TemplateParameter>> templateParameters;
-		std::vector<std::unique_ptr<MonomorphizedFunction>> monomorphizedFunctions;
-		std::map<std::vector<InputReconstructionObject*>, MonomorphizedFunction*>
-			mapTypeListWithMonomorphizedFunction;
+		std::vector<std::unique_ptr<TemplateArgument>> templateArguments;
 
 		std::vector<std::unique_ptr<InputReconstructionObject>> block;
 
+		Function* templateParent = nullptr;
+
 	public:
-		Function(std::unique_ptr<NameReference> functionName_,
-				 std::unique_ptr<TypeConstruct> returnType_);
-		Function(Type type, std::unique_ptr<NameReference> functionName_);
-		virtual ~Function() override = default;
+		MonomorphizedFunction(std::unique_ptr<NameReference> functionName_,
+							  std::unique_ptr<TypeConstruct> returnType_);
+		MonomorphizedFunction(Type type, std::unique_ptr<NameReference> functionName_);
+		virtual ~MonomorphizedFunction() override = default;
 		void Complete();
 
-		Function(const Function& rhs);
-		Function(const Function& rhs, const std::string& name);
+		MonomorphizedFunction(const MonomorphizedFunction& rhs);
+		MonomorphizedFunction(const MonomorphizedFunction& rhs, const std::string& name);
+
+		void SetTemplateParent(Function* templateParent_);
+		Function* GetTemplateParent();
 
 	public:
 		void Add(std::unique_ptr<InputReconstructionObject> newObject) override;
 		void AddFunctionArgument(std::unique_ptr<FunctionArgument> functionArgument);
-		void AddTemplateParameter(std::unique_ptr<TemplateParameter> templateParameter);
+		void AddTemplateArgument(std::unique_ptr<TemplateArgument> templateArgument);
 
 	public:
 		Function* GetVirtualFunctionParent();
@@ -56,16 +57,9 @@ namespace Celeste::ir::inputreconstruction
 		Accepts(const std::string& functionName,
 				const std::optional<std::vector<InputReconstructionObject*>>& functionArguments);
 		std::vector<std::unique_ptr<FunctionArgument>>& GetFunctionArguments();
-		std::vector<std::unique_ptr<TemplateParameter>>& GetTemplateFunctionParameters();
+		std::vector<std::unique_ptr<TemplateArgument>>& GetTemplateFunctionArguments();
 		std::vector<InputReconstructionObject*> GetOwnedBlock();
 		std::vector<std::unique_ptr<InputReconstructionObject>>& GetBlock();
-		bool HasTemplateParameters();
-
-	public:
-		std::vector<std::unique_ptr<MonomorphizedFunction>>& GetMonomorphizedFunctions();
-		MonomorphizedFunction*
-		ConstructMonomorphizedFunction(const std::vector<Expression>& expressionList);
-		bool TemplateParametersAcceptsExpressionList(const std::vector<Expression>& vector);
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock);
@@ -85,4 +79,4 @@ namespace Celeste::ir::inputreconstruction
 	};
 }
 
-#endif // CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_FUNCTION
+#endif // CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_MONOMORPHIZEDFUNCTION_H

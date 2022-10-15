@@ -1257,6 +1257,26 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateFunction(
 }
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateMonomorphizedMemberFunctionOnValue(
+	Value& value, inputreconstruction::MonomorphizedFunction* function,
+	std::vector<Value*> functionArguments)
+{
+	auto stackLifetime = StackLifetime{this};
+
+	auto resultingValue = EvaluateSomeFunction(function, functionArguments, stackLifetime, &value);
+	return resultingValue;
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateMonomorphizedFunction(
+	inputreconstruction::MonomorphizedFunction* function, std::vector<Value*> functionArguments)
+{
+	auto stackLifetime = StackLifetime{this};
+
+	return EvaluateSomeFunction(function, functionArguments, stackLifetime);
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 	SymbolReferenceCall* symbolReferenceCall, std::optional<Value*> valueReference)
 {
@@ -1325,6 +1345,48 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 			{
 				auto symbol = std::get<Value>(variableValue);
 				return symbol;
+			}
+		}
+		else if (nameNotFinalizedType == inputreconstruction::Type::MonomorphizedFunction)
+
+		{
+			auto& lhsDeref = symbolReferenceCall;
+			auto hiddenAccess = lhsDeref->GetSymbolAccessesIncludingHidden();
+			auto templateValueAndTypeList =
+				GetValueListFromExpressionList(hiddenAccess[0]->GetExpressions(), valueReference);
+			auto functionValueList =
+				GetValueListFromExpressionList(hiddenAccess[1]->GetExpressions(), valueReference);
+			std::vector<Value*> valueListPtr;
+			for (auto& value : templateValueAndTypeList)
+			{
+				valueListPtr.emplace_back(&value);
+			}
+
+			for (auto& value : functionValueList)
+			{
+				valueListPtr.emplace_back(&value);
+			}
+
+			std::optional<Celeste::ir::inputreconstruction::Interpreter::Value> newValue;
+
+			if (valueReference.has_value())
+			{
+				newValue = EvaluateMonomorphizedMemberFunctionOnValue(
+					*valueReference.value(),
+					static_cast<inputreconstruction::MonomorphizedFunction*>(
+						nameNotFinalized.value()),
+					valueListPtr);
+			}
+			else
+			{
+				newValue = EvaluateMonomorphizedFunction(
+					static_cast<inputreconstruction::MonomorphizedFunction*>(
+						nameNotFinalized.value()),
+					valueListPtr);
+			}
+			if (newValue.has_value())
+			{
+				return newValue.value();
 			}
 		}
 		else if (nameNotFinalizedType == inputreconstruction::Type::Function)
@@ -1484,7 +1546,9 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMutationGroup(MutationGro
 
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
-	std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*> function,
+	std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*,
+				 inputreconstruction::MonomorphizedFunction*>
+		function,
 	std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
 	std::optional<Value*> valueReference)
 {
@@ -1515,6 +1579,12 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 		{
 			switch (blockCreatingObject_->GetType())
 			{
+			case inputreconstruction::Type::MonomorphizedFunction: {
+				auto monomorphizedFunction =
+					static_cast<inputreconstruction::MonomorphizedFunction*>(blockCreatingObject_);
+				statements = monomorphizedFunction->GetOwnedBlock();
+				break;
+			}
 			case inputreconstruction::Type::Function: {
 				auto function = static_cast<inputreconstruction::Function*>(blockCreatingObject_);
 				statements = function->GetOwnedBlock();
@@ -1708,6 +1778,62 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 
 		blocks.emplace_back(Block::BlockType::FunctionBlock,
 							std::get<inputreconstruction::Function*>(function), this);
+	}
+	else if (std::holds_alternative<inputreconstruction::MonomorphizedFunction*>(function))
+	{
+		auto InitializeStackTop = [&]() {
+			auto& functionTemplateArgumentsBase =
+				std::get<inputreconstruction::MonomorphizedFunction*>(function)
+					->GetTemplateFunctionArguments();
+
+			auto& functionArgumentsBase =
+				std::get<inputreconstruction::MonomorphizedFunction*>(function)
+					->GetFunctionArguments();
+			std::size_t globalCounter = 0;
+			for (auto i = 0; i < functionTemplateArgumentsBase.size(); i++)
+			{
+				auto& currentFunctionTemplateArgumentBase = functionTemplateArgumentsBase[i];
+				if (currentFunctionTemplateArgumentBase->GetValues().empty())
+				{
+					continue;
+				}
+
+				globalCounter++;
+				auto currentFunctionTemplateArgumentValue = functionArguments[i];
+
+				auto newSymbol = std::make_unique<Symbol>(
+					currentFunctionTemplateArgumentBase->GetName(),
+					GetType(currentFunctionTemplateArgumentBase->GetArgumentType()));
+				newSymbol->value = *currentFunctionTemplateArgumentValue;
+				stackLifetime.Stack()->AddVariable(std::move(newSymbol));
+			}
+
+			for (auto i = 0; i < functionArgumentsBase.size(); i++)
+			{
+				auto& currentFunctionArgumentBase = functionArgumentsBase[globalCounter];
+				auto currentFunctionArgumentValue = functionArguments[globalCounter + i];
+
+				globalCounter++;
+				auto newSymbol = std::make_unique<Symbol>(
+					currentFunctionArgumentBase->GetName(),
+					GetType(currentFunctionArgumentBase->GetArgumentType()));
+				newSymbol->value = *currentFunctionArgumentValue;
+				stackLifetime.Stack()->AddVariable(std::move(newSymbol));
+			}
+		};
+
+		InitializeStackTop();
+
+		auto block =
+			std::get<inputreconstruction::MonomorphizedFunction*>(function)->GetOwnedBlock();
+		if (block.empty())
+		{
+			// Return default value for return type
+			return std::nullopt;
+		}
+
+		blocks.emplace_back(Block::BlockType::FunctionBlock,
+							std::get<inputreconstruction::MonomorphizedFunction*>(function), this);
 	}
 	else if (std::holds_alternative<inputreconstruction::MutationGroup*>(function))
 	{
@@ -1991,6 +2117,12 @@ Celeste::ir::inputreconstruction::Interpreter::GetValueListFromExpressionList(
 	std::vector<Value> functionArguments;
 	for (auto& symbolAccessArg : expressionList)
 	{
+		if (symbolAccessArg->IsTypeReference())
+		{
+			// As it is not a value
+			continue;
+		}
+
 		auto newValue = Evaluate(symbolAccessArg, valueReference);
 		if (newValue.has_value())
 		{
@@ -2905,10 +3037,14 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 			{
 				auto valDeref = std::get<Value>(val);
 
+				auto currentNextNameValue = currentNextNameResolve.value();
+				auto currentNextNameAccess =
+					currentNextNameValue->GetSymbolAccessesIncludingHidden();
+				auto currentNextNameAccessFront = currentNextNameAccess[0];
+				auto& currentNextNameFunctionArguments =
+					currentNextNameAccessFront->GetFunctionArguments();
 				auto [functionArguments, functionArgumentsPtr] =
-					getFunctionArguments(currentNextNameResolve.value()
-											 ->GetSymbolAccessesIncludingHidden()[0]
-											 ->GetFunctionArguments());
+					getFunctionArguments(currentNextNameFunctionArguments);
 
 				auto newValue = EvaluateMemberFunctionOnValue(
 					valDeref,

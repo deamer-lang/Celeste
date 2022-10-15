@@ -46,6 +46,7 @@ namespace Celeste::ir::inputreconstruction
 		void Resolve();
 		std::optional<InputReconstructionObject*> GetLinkedIr();
 		bool IsFunctionAccess();
+		bool IsTemplateAccess();
 		ast::reference::Access<ast::node::symbol_access> GetAst();
 		std::vector<std::unique_ptr<Expression>>& GetExpressions();
 

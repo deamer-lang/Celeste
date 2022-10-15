@@ -1,5 +1,5 @@
-#ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CLASS
-#define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CLASS
+#ifndef CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_MONOMORPHIZEDCLASS_H
+#define CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_MONOMORPHIZEDCLASS_H
 
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
@@ -9,14 +9,14 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/InheritBase.h"
 #include "Celeste/Ir/InputReconstruction/Structure/MonomorphizedClass.h"
-#include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
+#include "Celeste/Ir/InputReconstruction/Structure/TemplateArgument.h"
 #include <memory>
 
 namespace Celeste::ir::inputreconstruction
 {
 	class NameReference;
 
-	class Class : public InputReconstructionObject
+	class MonomorphizedClass : public InputReconstructionObject
 	{
 	private:
 		Accessibility lastAccessibility = Accessibility::Public;
@@ -25,17 +25,15 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<std::unique_ptr<InputReconstructionObject>> ownedBlock;
 		std::vector<std::unique_ptr<CompoundBase>> compoundBases;
 		std::vector<std::unique_ptr<InheritBase>> inheritedBases;
-		std::vector<std::unique_ptr<TemplateParameter>> templateParameters;
-
-		std::vector<std::unique_ptr<MonomorphizedClass>> monomorphizedClasses;
+		std::vector<std::unique_ptr<TemplateArgument>> templateArguments;
 
 	public:
-		Class(std::unique_ptr<NameReference> className_);
-		virtual ~Class() override = default;
+		MonomorphizedClass(std::unique_ptr<NameReference> className_);
+		virtual ~MonomorphizedClass() override = default;
 
 		void Complete();
 
-		Class(const Class& rhs);
+		MonomorphizedClass(const MonomorphizedClass& rhs);
 
 	public:
 		void Add(std::unique_ptr<InputReconstructionObject> object) override;
@@ -43,7 +41,7 @@ namespace Celeste::ir::inputreconstruction
 
 		void AddCompoundBase(std::unique_ptr<CompoundBase> compoundBase);
 		void AddInheritedBase(std::unique_ptr<InheritBase> inheritBase);
-		void AddTemplateParameter(std::unique_ptr<TemplateParameter> templateParameter);
+		void AddTemplateArgument(std::unique_ptr<TemplateArgument> templateArgument);
 
 		std::vector<std::unique_ptr<CompoundBase>>& GetCompoundBases();
 		std::vector<std::unique_ptr<InheritBase>>& GetInheritedBases();
@@ -74,11 +72,6 @@ namespace Celeste::ir::inputreconstruction
 		GetConstructors(Accessibility accessibility = Accessibility::Public);
 
 	public:
-		std::vector<std::unique_ptr<MonomorphizedClass>>& GetMonomorphizedClasses();
-		MonomorphizedClass* GetMonomorphizedClass(std::vector<Expression> expressions);
-		bool HasTemplateParameters();
-
-	public:
 		Function* CreateMemberFunction(const std::string& functionName,
 									   const std::string& returnType = "");
 		void CreateDefaultConstructor();
@@ -98,4 +91,4 @@ namespace Celeste::ir::inputreconstruction
 	};
 }
 
-#endif // CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_CLASS
+#endif // CELESTE_IR_INPUTRECONSTRUCTION_STRUCTURE_MONOMORPHIZEDCLASS_H

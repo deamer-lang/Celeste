@@ -36,6 +36,8 @@ namespace Celeste::ir::inputreconstruction
 					 std::unique_ptr<Integer>, std::unique_ptr<Decimal>, std::unique_ptr<Text>>&
 		GetValue();
 
+		bool IsTypeReference() const;
+
 		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};
 }

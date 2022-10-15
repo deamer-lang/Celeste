@@ -26,6 +26,9 @@ namespace Celeste::ir::inputreconstruction
 
 		TemplateParameter(const TemplateParameter& rhs);
 
+	public:
+		std::unique_ptr<NameReference>& GetName();
+		std::unique_ptr<TypeConstruct>& GetTypeConstruct();
 		void AddValue(std::unique_ptr<Expression> value);
 
 	public:

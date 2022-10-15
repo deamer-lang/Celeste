@@ -14,6 +14,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/EnumerationMember.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
+#include "Celeste/Ir/InputReconstruction/Structure/TypeExplicitAlias.h"
 #include <iostream>
 #include <variant>
 
@@ -98,6 +99,29 @@ Celeste::ir::inputreconstruction::Expression::Expression(
 
 Celeste::ir::inputreconstruction::Expression::~Expression()
 {
+}
+
+bool Celeste::ir::inputreconstruction::Expression::IsTypeReference() const
+{
+	if (!std::holds_alternative<std::monostate>(GetRhs()))
+	{
+		return false;
+	}
+
+	if (std::holds_alternative<std::monostate>(GetLhs()))
+	{
+		return false;
+	}
+	else if (std::holds_alternative<std::unique_ptr<Expression>>(GetLhs()))
+	{
+		return std::get<std::unique_ptr<Expression>>(GetLhs())->IsTypeReference();
+	}
+	else if (std::holds_alternative<std::unique_ptr<Value>>(GetLhs()))
+	{
+		return std::get<std::unique_ptr<Value>>(GetLhs())->IsTypeReference();
+	}
+
+	return false;
 }
 
 Celeste::ir::inputreconstruction::Expression::Expression(const Expression& rhs)
@@ -327,7 +351,7 @@ void Celeste::ir::inputreconstruction::Expression::Resolve()
 }
 
 Celeste::ir::inputreconstruction::InputReconstructionObject*
-Celeste::ir::inputreconstruction::Expression::DeduceType()
+Celeste::ir::inputreconstruction::Expression::DeduceType() const
 {
 	if (impl->cachedDeducedType.has_value())
 	{
@@ -379,6 +403,28 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 		{
 			switch (deducedTypeLhs.value()->GetType())
 			{
+			case Type::TemplateParameter: {
+				auto templateParameter = static_cast<TemplateParameter*>(deducedTypeLhs.value());
+				auto& typeConstruct = templateParameter->GetTypeConstruct();
+				if (typeConstruct->IsAuto() || typeConstruct->IsAutoType())
+				{
+					return templateParameter;
+				}
+				else
+				{
+					return typeConstruct.get();
+				}
+			}
+			case Type::TypeExplicitAlias: {
+				auto typeExplicitAlias = static_cast<TypeExplicitAlias*>(deducedTypeLhs.value());
+				auto forwardedType = typeExplicitAlias->GetAliasedForwardedType();
+				if (forwardedType.has_value())
+				{
+					return forwardedType.value();
+				}
+
+				return nullptr;
+			}
 			case Type::Constructor: {
 				// The parent of the constructor is always the Class it belongs to
 				auto constructor = static_cast<Constructor*>(deducedTypeLhs.value());
@@ -401,7 +447,12 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 				auto typeConstruct = static_cast<TypeConstruct*>(deducedTypeLhs.value());
 				if (typeConstruct->Trivial())
 				{
-					return typeConstruct->GetCoreType().value();
+					auto coreType = typeConstruct->GetCoreType();
+					if (!coreType.has_value())
+					{
+						return nullptr;
+					}
+					return coreType.value();
 				}
 
 				return typeConstruct;
@@ -491,6 +542,23 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 		case Type::Constructor: {
 			return nullptr;
 		}
+		case Type::TypeExplicitAlias: {
+			auto typeExplicitAlias = static_cast<TypeExplicitAlias*>(deducedTypeLhs.value());
+			auto forwardedType = typeExplicitAlias->GetAliasedForwardedType();
+			if (forwardedType.has_value())
+			{
+				if (forwardedType.value()->GetType() == Type::Class)
+				{
+					return evaluateClass(static_cast<Class*>(forwardedType.value()));
+				}
+				else
+				{
+					throw std::logic_error("Unimplemented Functionality");
+				}
+			}
+
+			return nullptr;
+		}
 		case Type::Integer: {
 		}
 		case Type::Decimal: {
@@ -505,12 +573,15 @@ Celeste::ir::inputreconstruction::Expression::DeduceType()
 	return nullptr;
 }
 
-std::optional<std::string> Celeste::ir::inputreconstruction::Expression::GetOperatorFunctionName()
+std::optional<std::string>
+Celeste::ir::inputreconstruction::Expression::GetOperatorFunctionName() const
 {
 	switch (impl->OperatorType)
 	{
 	case Operator::Add:
 		return "operator+";
+	case Operator::ArrayAccess:
+		return "operator[]";
 	case Operator::Minus:
 		return "operator-";
 	case Operator::Multiply:
@@ -546,14 +617,14 @@ std::optional<std::string> Celeste::ir::inputreconstruction::Expression::GetOper
 
 std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::Expression>,
 			 std::unique_ptr<Celeste::ir ::inputreconstruction::Value>>&
-Celeste::ir::inputreconstruction::Expression::GetLhs()
+Celeste::ir::inputreconstruction::Expression::GetLhs() const
 {
 	return impl->lhs;
 }
 
 std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::Expression>,
 			 std::unique_ptr<Celeste::ir ::inputreconstruction::Value>>&
-Celeste::ir::inputreconstruction::Expression::GetRhs()
+Celeste::ir::inputreconstruction::Expression::GetRhs() const
 {
 	return impl->rhs;
 }

@@ -74,6 +74,12 @@ bool Celeste::ir::inputreconstruction::SymbolAccess::IsFunctionAccess()
 	return AccessType == SymbolAccessType::FunctionAccess;
 }
 
+bool Celeste::ir::inputreconstruction::SymbolAccess::IsTemplateAccess()
+{
+	return AccessType == SymbolAccessType::IndexAccess ||
+		   AccessType == SymbolAccessType::AutoDeduceArray;
+}
+
 Celeste::ast::reference::Access<Celeste::ast::node::symbol_access>
 Celeste::ir::inputreconstruction::SymbolAccess::GetAst()
 {

@@ -513,6 +513,11 @@ Celeste::ir::inputreconstruction::Class::GetConstructors(Accessibility accessibi
 	return constructors;
 }
 
+bool Celeste::ir::inputreconstruction::Class::HasTemplateParameters()
+{
+	return !templateParameters.empty();
+}
+
 Celeste::ir::inputreconstruction::Function*
 Celeste::ir::inputreconstruction::Class::CreateMemberFunction(const std::string& functionName,
 															  const std::string& returnType)

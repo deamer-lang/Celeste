@@ -3,6 +3,7 @@
 #include "Celeste/Ir/InputReconstruction/Meta/File.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include "Celeste/Ir/InputReconstruction/Structure/CodeBlockRoot.h"
+#include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include <string>
 
 Celeste::ir::inputreconstruction::Function::Function(std::unique_ptr<NameReference> functionName_,
@@ -262,6 +263,12 @@ Celeste::ir::inputreconstruction::Function::GetFunctionArguments()
 	return functionArguments;
 }
 
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::TemplateParameter>>&
+Celeste::ir::inputreconstruction::Function::GetTemplateFunctionParameters()
+{
+	return templateParameters;
+}
+
 std::vector<Celeste::ir::inputreconstruction::InputReconstructionObject*>
 Celeste::ir::inputreconstruction::Function::GetOwnedBlock()
 {
@@ -277,6 +284,100 @@ std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructio
 Celeste::ir::inputreconstruction::Function::GetBlock()
 {
 	return block;
+}
+
+bool Celeste::ir::inputreconstruction::Function::HasTemplateParameters()
+{
+	return !templateParameters.empty();
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::MonomorphizedFunction>>&
+Celeste::ir::inputreconstruction ::Function::GetMonomorphizedFunctions()
+{
+	return monomorphizedFunctions;
+}
+
+Celeste::ir::inputreconstruction::MonomorphizedFunction*
+Celeste::ir::inputreconstruction::Function::ConstructMonomorphizedFunction(
+	const std::vector<Expression>& expressionList)
+{
+	if (!TemplateParametersAcceptsExpressionList(expressionList))
+	{
+		return nullptr;
+	}
+
+	std::vector<InputReconstructionObject*> typeList;
+	for (auto& expression : expressionList)
+	{
+		typeList.push_back(expression.DeduceType());
+	}
+
+	auto iter = mapTypeListWithMonomorphizedFunction.find(typeList);
+	if (iter == mapTypeListWithMonomorphizedFunction.end())
+	{
+		// New monomorphized function
+		auto copiedName = std::unique_ptr<NameReference>(
+			static_cast<NameReference*>(functionName->DeepCopy().release()));
+		auto copiedType = std::unique_ptr<TypeConstruct>(
+			static_cast<TypeConstruct*>(returnType->DeepCopy().release()));
+		auto newMonomorphizedFunction =
+			std::make_unique<MonomorphizedFunction>(std::move(copiedName), std::move(copiedType));
+		newMonomorphizedFunction->SetParent(GetParent());
+		newMonomorphizedFunction->SetTemplateParent(this);
+		newMonomorphizedFunction->SetFile(GetFile());
+
+		for (auto i = 0; i < expressionList.size(); i++)
+		{
+			auto& currentExpression = expressionList[i];
+			auto& currentType = typeList[i];
+			auto typeName = std::unique_ptr<NameReference>(static_cast<NameReference*>(
+				templateParameters[i]->GetName()->DeepCopy().release()));
+			typeName->SetParent(templateParameters[i]->GetParent());
+			typeName->Resolve();
+
+			auto type = std::make_unique<TypeConstruct>(currentType);
+			type->SetParent(currentType->GetParent());
+			type->Destructure();
+			auto templateArgument =
+				std::make_unique<TemplateArgument>(std::move(typeName), std::move(type));
+			if (!currentExpression.IsTypeReference())
+			{
+				templateArgument->AddValue(std::unique_ptr<Expression>(
+					static_cast<Expression*>(currentType->DeepCopy().release())));
+			}
+
+			newMonomorphizedFunction->AddTemplateArgument(std::move(templateArgument));
+		}
+
+		for (auto& functionArgument : functionArguments)
+		{
+			newMonomorphizedFunction->AddFunctionArgument(std::unique_ptr<FunctionArgument>(
+				static_cast<FunctionArgument*>(functionArgument->DeepCopy().release())));
+		}
+
+		for (auto& statement : GetBlock())
+		{
+			auto newStatement = statement->DeepCopy();
+			newMonomorphizedFunction->Add(std::move(newStatement));
+		}
+
+		auto tmp = newMonomorphizedFunction.get();
+
+		mapTypeListWithMonomorphizedFunction.insert({typeList, newMonomorphizedFunction.get()});
+		monomorphizedFunctions.push_back(std::move(newMonomorphizedFunction));
+		return tmp;
+	}
+
+	return iter->second;
+}
+
+bool Celeste::ir::inputreconstruction::Function::TemplateParametersAcceptsExpressionList(
+	const std::vector<Expression>& vector)
+{
+	// First we simply check if the expressions are enough to fill in the template parameters;
+	// Later we limit this to also semantically limit the expression list.
+	// If you ask for autotype, only types are allowed.
+	return templateParameters.size() == vector.size();
 }
 
 void Celeste::ir::inputreconstruction::Function::AddCodeBlock(CodeBlock* codeBlock)

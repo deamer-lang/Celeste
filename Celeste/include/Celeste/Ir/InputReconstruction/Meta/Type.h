@@ -68,6 +68,7 @@ namespace Celeste::ir::inputreconstruction
 		// Arguments
 		ConditionModifierCall,
 		ConditionModifierArgument,
+		TemplateArgument,
 		TemplateParameter,
 
 		SymbolAccess,
@@ -82,6 +83,8 @@ namespace Celeste::ir::inputreconstruction
 		// Type Related
 		TypeExplicitAlias,
 		TypeScope,
+		MonomorphizedClass,
+		MonomorphizedFunction,
 	};
 }
 

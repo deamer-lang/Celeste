@@ -5,6 +5,13 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 
 Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(
+	InputReconstructionObject* resolvedObject)
+	: InputReconstructionObject(Type::TypeConstruct),
+	  cacheInputReconstructionObject(resolvedObject)
+{
+}
+
+Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(
 	std::unique_ptr<SymbolReferenceCall> type)
 	: InputReconstructionObject(Type::TypeConstruct),
 	  typeTarget(std::move(type))
@@ -27,7 +34,8 @@ Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(const TypeConstru
 	: InputReconstructionObject(rhs),
 	  type(rhs.type),
 	  isAuto(rhs.isAuto),
-	  isAutoType(rhs.isAutoType)
+	  isAutoType(rhs.isAutoType),
+	  cacheInputReconstructionObject(rhs.cacheInputReconstructionObject)
 {
 	if (rhs.arrayDeclarationExpression.has_value())
 	{
@@ -48,6 +56,11 @@ Celeste::ir::inputreconstruction::TypeConstruct::TypeConstruct(const TypeConstru
 
 void Celeste::ir::inputreconstruction::TypeConstruct::Destructure()
 {
+	if (cacheInputReconstructionObject.has_value())
+	{
+		return;
+	}
+
 	if (typeTarget.has_value())
 	{
 		GetFile()->AddUnresolvedSymbolReference(GetSymbolReference().value().get());
@@ -110,6 +123,11 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::IsArrayDeclaration()
 bool Celeste::ir::inputreconstruction::TypeConstruct::CoreEqual(
 	InputReconstructionObject* deduceType)
 {
+	if (cacheInputReconstructionObject.has_value())
+	{
+		return cacheInputReconstructionObject.value() == deduceType;
+	}
+
 	if (!typeTarget.has_value())
 	{
 		// Internal Compiler Error
@@ -117,6 +135,11 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::CoreEqual(
 	}
 
 	std::optional<InputReconstructionObject*> ourType = GetCoreType();
+	if (!ourType.has_value())
+	{
+		// Some semantic error occured which prevented proper reference resolving.
+		return false;
+	}
 
 	switch (deduceType->GetType())
 	{
@@ -125,7 +148,16 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::CoreEqual(
 		return ourType == rhsCoreType;
 	}
 	default: {
-		return ourType == deduceType;
+		if (ourType.value()->GetType() == Type::TemplateArgument)
+		{
+			auto templateArgument = static_cast<TemplateArgument*>(ourType.value());
+			return templateArgument->GetValues().empty() &&
+				   templateArgument->GetArgumentType()->GetCoreType() == deduceType;
+		}
+		else
+		{
+			return ourType == deduceType;
+		}
 	}
 	}
 }
@@ -148,6 +180,12 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::Equal(InputReconstructionO
 		// Auto is always equal to whatever we assign it to.
 		return true;
 	}
+	else if (GetParent()->GetType() == Type::TemplateParameter)
+	{
+		// Template Parameters that represent types are always true in comparison equality.
+		// As they can represent any type
+		return true;
+	}
 
 	return CoreEqual(deduceType);
 }
@@ -155,6 +193,11 @@ bool Celeste::ir::inputreconstruction::TypeConstruct::Equal(InputReconstructionO
 std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
 Celeste::ir::inputreconstruction::TypeConstruct::GetCoreType()
 {
+	if (cacheInputReconstructionObject.has_value())
+	{
+		return cacheInputReconstructionObject.value();
+	}
+
 	if (IsAuto())
 	{
 		auto parent = GetParent();

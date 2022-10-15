@@ -184,8 +184,9 @@ Celeste::ir::inputreconstruction::Value::DeduceType()
 	else if (std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(
 				 impl->underlyingSpecialization))
 	{
-		auto result = std::get<std::unique_ptr<SymbolReferenceCall>>(impl->underlyingSpecialization)
-						  ->GetResolvedLinkedIr();
+		auto& symbolReference =
+			std::get<std::unique_ptr<SymbolReferenceCall>>(impl->underlyingSpecialization);
+		auto result = symbolReference->GetResolvedLinkedIr();
 		if (!result.has_value())
 		{
 			// Invalid
@@ -255,6 +256,36 @@ std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::C
 Celeste::ir::inputreconstruction::Value::GetValue()
 {
 	return impl->underlyingSpecialization;
+}
+
+bool Celeste::ir::inputreconstruction::Value::IsTypeReference() const
+{
+	if (!std::holds_alternative<std::unique_ptr<SymbolReferenceCall>>(
+			impl->underlyingSpecialization))
+	{
+		// These types can not be types.
+		// As there are strictly used for types.
+		return false;
+	}
+
+	auto& reference =
+		std::get<std::unique_ptr<SymbolReferenceCall>>(impl->underlyingSpecialization);
+	auto result = reference->GetResolvedLinkedIr();
+	if (!result.has_value())
+	{
+		return false;
+	}
+
+	if (result.value()->GetType() == Type::Class ||
+		result.value()->GetType() == Type::InlineClass ||
+		result.value()->GetType() == Type::MonomorphizedClass ||
+		result.value()->GetType() == Type::Enumeration)
+	{
+		return true;
+	}
+
+	// It linked with something that is not a type.
+	return false;
 }
 
 std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>

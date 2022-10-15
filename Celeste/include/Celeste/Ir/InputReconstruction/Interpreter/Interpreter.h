@@ -570,6 +570,14 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 		EvaluateFunction(inputreconstruction::Function* function,
 						 std::vector<Value*> functionArguments);
+
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		EvaluateMonomorphizedMemberFunctionOnValue(
+			Value& value, inputreconstruction::MonomorphizedFunction* function,
+			std::vector<Value*> functionArguments);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		EvaluateMonomorphizedFunction(inputreconstruction::MonomorphizedFunction* function,
+									  std::vector<Value*> functionArguments);
 		std::optional<Value>
 		EvaluateSymbolReferenceCall(SymbolReferenceCall* symbolReferenceCall,
 									std::optional<Value*> valueReference = std::nullopt);
@@ -578,7 +586,8 @@ namespace Celeste::ir::inputreconstruction
 
 	private:
 		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value> EvaluateSomeFunction(
-			std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*>
+			std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*,
+						 inputreconstruction::MonomorphizedFunction*>
 				function,
 			std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
 			std::optional<Value*> valueReference = std::nullopt);

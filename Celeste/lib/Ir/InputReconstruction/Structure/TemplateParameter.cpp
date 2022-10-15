@@ -34,6 +34,18 @@ Celeste::ir::inputreconstruction::TemplateParameter::TemplateParameter(const Tem
 	}
 }
 
+std::unique_ptr<Celeste::ir::inputreconstruction::NameReference>&
+Celeste::ir::inputreconstruction::TemplateParameter::GetName()
+{
+	return argumentName;
+}
+
+std::unique_ptr<Celeste::ir::inputreconstruction::TypeConstruct>&
+Celeste::ir::inputreconstruction::TemplateParameter::GetTypeConstruct()
+{
+	return argumentType;
+}
+
 void Celeste::ir::inputreconstruction::TemplateParameter::AddValue(
 	std::unique_ptr<Expression> value)
 {

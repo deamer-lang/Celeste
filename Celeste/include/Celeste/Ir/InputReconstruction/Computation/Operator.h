@@ -7,6 +7,7 @@ namespace Celeste::ir::inputreconstruction
 	{
 		Unknown,
 		Add,
+		ArrayAccess,
 		Minus,
 		Multiply,
 		Divide,

@@ -19,6 +19,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		Expression(::deamer::external::cpp::ast::Node* expression_);
 		virtual ~Expression();
+		bool IsTypeReference() const;
 
 		Expression(const Expression& rhs);
 
@@ -29,12 +30,14 @@ namespace Celeste::ir::inputreconstruction
 		 *
 		 *	\brief Deduces the Type of this Expression
 		 */
-		InputReconstructionObject* DeduceType();
+		InputReconstructionObject* DeduceType() const;
 
-		std::optional<std::string> GetOperatorFunctionName();
+		std::optional<std::string> GetOperatorFunctionName() const;
 
-		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>& GetLhs();
-		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>& GetRhs();
+		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>&
+		GetLhs() const;
+		std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>&
+		GetRhs() const;
 
 		std::unique_ptr<InputReconstructionObject> DeepCopy() override;
 	};

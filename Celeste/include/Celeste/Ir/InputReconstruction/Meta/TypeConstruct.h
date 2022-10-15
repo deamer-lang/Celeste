@@ -20,8 +20,10 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<std::unique_ptr<Expression>> arrayDeclarationExpression;
 		bool isAuto = false;
 		bool isAutoType = false;
+		std::optional<InputReconstructionObject*> cacheInputReconstructionObject;
 
 	public:
+		TypeConstruct(InputReconstructionObject* resolvedObject);
 		TypeConstruct(std::unique_ptr<SymbolReferenceCall> type);
 		TypeConstruct(ast::node::type* type_);
 		TypeConstruct();
