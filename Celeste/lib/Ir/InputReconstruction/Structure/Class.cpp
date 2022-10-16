@@ -19,6 +19,12 @@ void Celeste::ir::inputreconstruction::Class::Complete()
 	className->SetFile(GetFile());
 }
 
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::TemplateParameter>>&
+Celeste::ir::inputreconstruction::Class::GetTemplateParameters()
+{
+	return templateParameters;
+}
+
 Celeste::ir::inputreconstruction::Class::Class(const Class& rhs)
 	: InputReconstructionObject(rhs),
 	  lastAccessibility(rhs.lastAccessibility),
@@ -217,6 +223,17 @@ Celeste::ir::inputreconstruction::Class::GetMember(NameReference* nameReference,
 
 			return result;
 		}
+		if (resolvedIr.value()->GetType() == Type::MonomorphizedClass)
+		{
+			auto result = static_cast<MonomorphizedClass*>(resolvedIr.value())
+							  ->GetMember(nameReference, accessibility);
+			if (result == nullptr)
+			{
+				continue;
+			}
+
+			return result;
+		}
 		else
 		{
 			// invalid resolve
@@ -312,7 +329,8 @@ Celeste::ir::inputreconstruction::Class::GetMember(
 			continue;
 		}
 
-		if (resolvedIr.value()->GetType() != Type::Class)
+		if (resolvedIr.value()->GetType() != Type::Class &&
+			resolvedIr.value()->GetType() != Type::MonomorphizedClass)
 		{
 			// invalid resolve
 			continue;
@@ -422,7 +440,8 @@ Celeste::ir::inputreconstruction::Class::GetMember(
 			continue;
 		}
 
-		if (resolvedIr.value()->GetType() != Type::Class)
+		if (resolvedIr.value()->GetType() != Type::Class &&
+			resolvedIr.value()->GetType() != Type::MonomorphizedClass)
 		{
 			// invalid resolve
 			continue;
@@ -513,9 +532,88 @@ Celeste::ir::inputreconstruction::Class::GetConstructors(Accessibility accessibi
 	return constructors;
 }
 
-bool Celeste::ir::inputreconstruction::Class::HasTemplateParameters()
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::MonomorphizedClass>>&
+Celeste::ir::inputreconstruction::Class::GetMonomorphizedClasses()
+{
+	return monomorphizedClasses;
+}
+
+Celeste::ir::inputreconstruction::MonomorphizedClass*
+Celeste::ir::inputreconstruction::Class::ConstructMonomorphizedClass(
+	const std::vector<Expression>& expressions)
+{
+	if (!TemplateParametersAcceptsExpressionList(expressions))
+	{
+		return nullptr;
+	}
+
+	std::vector<InputReconstructionObject*> typeList;
+	for (auto& expression : expressions)
+	{
+		typeList.push_back(expression.DeduceType());
+	}
+
+	auto iter = mapTypeListWithMonomorphizedClass.find(typeList);
+	if (iter == mapTypeListWithMonomorphizedClass.end())
+	{
+		// New monomorphized function
+		auto copiedName = std::unique_ptr<NameReference>(
+			static_cast<NameReference*>(className->DeepCopy().release()));
+		auto newMonomorphizedClass = std::make_unique<MonomorphizedClass>(std::move(copiedName));
+		newMonomorphizedClass->SetParent(GetParent());
+		newMonomorphizedClass->SetTemplateParent(this);
+		newMonomorphizedClass->SetFile(GetFile());
+
+		for (auto i = 0; i < expressions.size(); i++)
+		{
+			auto& currentExpression = expressions[i];
+			auto& currentType = typeList[i];
+			auto typeName = std::unique_ptr<NameReference>(static_cast<NameReference*>(
+				templateParameters[i]->GetName()->DeepCopy().release()));
+			typeName->SetParent(templateParameters[i]->GetParent());
+			typeName->Resolve();
+
+			auto type = std::make_unique<TypeConstruct>(currentType);
+			type->SetParent(currentType->GetParent());
+			type->Destructure();
+			auto templateArgument =
+				std::make_unique<TemplateArgument>(std::move(typeName), std::move(type));
+			if (!currentExpression.IsTypeReference())
+			{
+				templateArgument->AddValue(std::unique_ptr<Expression>(
+					static_cast<Expression*>(currentType->DeepCopy().release())));
+			}
+
+			newMonomorphizedClass->AddTemplateArgument(std::move(templateArgument));
+		}
+
+		for (auto& statement : GetScope())
+		{
+			auto newStatement = statement->DeepCopy();
+			newMonomorphizedClass->Add(std::move(newStatement));
+		}
+
+		auto tmp = newMonomorphizedClass.get();
+		mapTypeListWithMonomorphizedClass.insert({typeList, newMonomorphizedClass.get()});
+		monomorphizedClasses.push_back(std::move(newMonomorphizedClass));
+		return tmp;
+	}
+
+	return iter->second;
+}
+
+bool Celeste::ir::inputreconstruction::Class::HasTemplateParameters() const
 {
 	return !templateParameters.empty();
+}
+
+bool Celeste::ir::inputreconstruction::Class::TemplateParametersAcceptsExpressionList(
+	const std::vector<Expression>& expressions) const
+{
+	// First we simply check if the expressions are enough to fill in the template parameters;
+	// Later we limit this to also semantically limit the expression list.
+	// If you ask for autotype, only types are allowed.
+	return templateParameters.size() == expressions.size();
 }
 
 Celeste::ir::inputreconstruction::Function*

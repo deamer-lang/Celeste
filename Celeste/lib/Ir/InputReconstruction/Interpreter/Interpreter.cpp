@@ -526,6 +526,18 @@ Celeste::ir::inputreconstruction::Interpreter::GetType(
 
 		return typeTable.typePointerMap.find(classObject)->second.type;
 	}
+	else if (object.value()->GetType() == inputreconstruction::Type::MonomorphizedClass)
+	{
+		auto classObject = static_cast<MonomorphizedClass*>(object.value());
+
+		auto iter = typeTable.typePointerMap.find(classObject);
+		if (iter == typeTable.typePointerMap.end())
+		{
+			typeTable.AddMonomorphizedClass(classObject);
+		}
+
+		return typeTable.typePointerMap.find(classObject)->second.type;
+	}
 	else if (object.value()->GetType() == inputreconstruction::Type::TypeExplicitAlias)
 	{
 		auto typeExplicitAlias = static_cast<TypeExplicitAlias*>(object.value());
@@ -666,6 +678,72 @@ Celeste::ir::inputreconstruction::Interpreter::ZeroValue(InputReconstructionObje
 
 		return {result};
 	}
+	else if (type->GetType() == inputreconstruction::Type::MonomorphizedClass)
+	{
+		auto classObject = static_cast<MonomorphizedClass*>(type);
+
+		auto typeId = iter->second.type;
+		AlgebraicValue result(typeId);
+
+		for (auto& inheritBase : classObject->GetInheritedBases())
+		{
+		}
+
+		for (auto& compoundBase : classObject->GetCompoundBases())
+		{
+			Name compoundName;
+			for (auto& alias : compoundBase->GetScope())
+			{
+				if (alias->GetType() != inputreconstruction::Type::NameReference)
+				{
+					continue;
+				}
+
+				auto aliasDecasted = static_cast<NameReference*>(alias);
+				compoundName.AddName(aliasDecasted);
+			}
+
+			auto compoundTypeId =
+				typeTable.typePointerMap.find(compoundBase->GetCompoundedBase())->second.type;
+
+			auto newSymbolMember = SymbolMember(
+				compoundName, compoundTypeId, Value(ZeroValue(compoundBase->GetCompoundedBase())));
+
+			result.AddSymbolMember(newSymbolMember);
+		}
+
+		for (auto& [accessibility, member] : classObject->GetMembers())
+		{
+			if (member->GetType() == inputreconstruction::Type::VariableDeclaration)
+			{
+				auto memberDecasted = static_cast<VariableDeclaration*>(member);
+				auto variableTypeConstruct = memberDecasted->GetVariableType();
+				auto variableType = variableTypeConstruct->GetCoreType();
+				if (!variableType.has_value())
+				{
+					throw std::logic_error("Could not lookup type in interpreter phase.");
+				}
+
+				auto memberName = Name(memberDecasted->GetName());
+				auto typeIdLookup = typeTable.typePointerMap.find(variableType.value());
+				if (typeIdLookup == typeTable.typePointerMap.end())
+				{
+					throw std::logic_error("Could not lookup type in interpreter phase.");
+				}
+
+				auto memberTypeId = typeIdLookup->second.type;
+				auto newSymbolMember =
+					SymbolMember(memberName, memberTypeId, Value(ZeroValue(variableType.value())));
+				result.AddSymbolMember(newSymbolMember);
+			}
+			else if (member->GetType() == inputreconstruction::Type::Function)
+			{
+				auto memberDecasted = static_cast<inputreconstruction::Function*>(member);
+			}
+		}
+
+		return {result};
+	}
 
 	// Critical Error
 	throw std::logic_error("Critical Error");
@@ -690,6 +768,17 @@ bool Celeste::ir::inputreconstruction::Interpreter::MatchingConstructor(
 	if (lhs->GetType() == inputreconstruction::Type::Class)
 	{
 		auto classObject = static_cast<inputreconstruction::Class*>(lhs);
+		for (auto constructor : classObject->GetConstructors())
+		{
+			if (constructor->Accepts(expressions))
+			{
+				return true;
+			}
+		}
+	}
+	else if (lhs->GetType() == inputreconstruction::Type::MonomorphizedClass)
+	{
+		auto classObject = static_cast<inputreconstruction::MonomorphizedClass*>(lhs);
 		for (auto constructor : classObject->GetConstructors())
 		{
 			if (constructor->Accepts(expressions))
@@ -1394,10 +1483,28 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 		{
 			auto& lhsDeref = symbolReferenceCall;
 			auto hiddenAccess = lhsDeref->GetSymbolAccessesIncludingHidden();
-			auto valueList =
-				GetValueListFromExpressionList(hiddenAccess[0]->GetExpressions(), valueReference);
 			std::vector<Value*> valueListPtr;
-			for (auto& value : valueList)
+			std::vector<Value> templateValueAndTypeList;
+			std::vector<Value> functionValueList;
+			if (hiddenAccess.size() == 2)
+			{
+				templateValueAndTypeList = GetValueListFromExpressionList(
+					hiddenAccess[0]->GetExpressions(), valueReference);
+				functionValueList = GetValueListFromExpressionList(
+					hiddenAccess[1]->GetExpressions(), valueReference);
+			}
+			else
+			{
+				functionValueList = GetValueListFromExpressionList(
+					hiddenAccess[0]->GetExpressions(), valueReference);
+			}
+
+			for (auto& value : templateValueAndTypeList)
+			{
+				valueListPtr.emplace_back(&value);
+			}
+
+			for (auto& value : functionValueList)
 			{
 				valueListPtr.emplace_back(&value);
 			}
@@ -1430,7 +1537,27 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 			auto valueList =
 				GetValueListFromExpressionList(hiddenAccess[0]->GetExpressions(), valueReference);
 			std::vector<Value*> valueListPtr;
-			for (auto& value : valueList)
+			std::vector<Value> templateValueAndTypeList;
+			std::vector<Value> functionValueList;
+			if (hiddenAccess.size() == 2)
+			{
+				templateValueAndTypeList = GetValueListFromExpressionList(
+					hiddenAccess[0]->GetExpressions(), valueReference);
+				functionValueList = GetValueListFromExpressionList(
+					hiddenAccess[1]->GetExpressions(), valueReference);
+			}
+			else
+			{
+				functionValueList = GetValueListFromExpressionList(
+					hiddenAccess[0]->GetExpressions(), valueReference);
+			}
+
+			for (auto& value : templateValueAndTypeList)
+			{
+				valueListPtr.emplace_back(&value);
+			}
+
+			for (auto& value : functionValueList)
 			{
 				valueListPtr.emplace_back(&value);
 			}
@@ -1466,6 +1593,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 			}
 		}
 		else if (nameNotFinalizedType == inputreconstruction::Type::Class)
+		{
+			throw std::logic_error("Reference logic is flawed");
+		}
+		else if (nameNotFinalizedType == inputreconstruction::Type::MonomorphizedClass)
 		{
 			throw std::logic_error("Reference logic is flawed");
 		}
@@ -1769,7 +1900,16 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 
 		InitializeStackTop();
 
-		auto block = std::get<inputreconstruction::Function*>(function)->GetOwnedBlock();
+		auto functionObjectTmp = std::get<inputreconstruction::Function*>(function);
+		std::vector<InputReconstructionObject*> block;
+		if (functionObjectTmp->GetType() == inputreconstruction::Type::Constructor)
+		{
+			block = static_cast<inputreconstruction::Constructor*>(functionObjectTmp)->GetScope();
+		}
+		else
+		{
+			block = functionObjectTmp->GetOwnedBlock();
+		}
 		if (block.empty())
 		{
 			// Return default value for return type
@@ -2576,7 +2716,7 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(NameReference* lh
 	std::optional<std::variant<Symbol*, SymbolMember*, SymbolMember, Value>> valInitial;
 	std::variant<Symbol*, SymbolMember*, SymbolMember, Value> val;
 	InputReconstructionObject* resolvedIrValue;
-	if (!resolvedIr.has_value())
+	if (!resolvedIr.has_value() || resolvedIr.has_value() && resolvedIr.value() == nullptr)
 	{
 		auto tmp = getVariableIfPartOfThis();
 		if (!tmp.has_value())
@@ -3194,17 +3334,29 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(Expression* rhs,
 		std::optional<Value> rhsValue = getValue(rhs->GetRhs());
 
 		auto type = rhs->DeduceType();
-		Class* classObject = nullptr;
+		std::variant<std::monostate, Class*, MonomorphizedClass*> classObject;
 		if (type->GetType() == inputreconstruction::Type::Class)
 		{
 			classObject = static_cast<Class*>(type);
+		}
+		else if (type->GetType() == inputreconstruction::Type::MonomorphizedClass)
+		{
+			classObject = static_cast<MonomorphizedClass*>(type);
 		}
 		else if (type->GetType() == inputreconstruction::Type::TypeConstruct)
 		{
 			auto typeConstruct = static_cast<TypeConstruct*>(type);
 			if (typeConstruct->Trivial())
 			{
-				classObject = static_cast<Class*>(typeConstruct->GetCoreType().value());
+				auto res = typeConstruct->GetCoreType().value();
+				if (res->GetType() == inputreconstruction::Type::Class)
+				{
+					classObject = static_cast<Class*>(res);
+				}
+				else if (res->GetType() == inputreconstruction::Type::MonomorphizedClass)
+				{
+					classObject = static_cast<MonomorphizedClass*>(res);
+				}
 			}
 			else
 			{
@@ -3218,10 +3370,19 @@ Celeste::ir::inputreconstruction::Interpreter::Evaluate(Expression* rhs,
 			throw std::logic_error("Invalid operation");
 		}
 
-		if (classObject != nullptr)
+		if (!std::holds_alternative<std::monostate>(classObject))
 		{
-			auto function =
-				classObject->GetMember(rhs->GetOperatorFunctionName().value(), rhs->GetRhs());
+			InputReconstructionObject* function;
+			if (std::holds_alternative<Class*>(classObject))
+			{
+				function = std::get<Class*>(classObject)
+							   ->GetMember(rhs->GetOperatorFunctionName().value(), rhs->GetRhs());
+			}
+			else
+			{
+				function = std::get<MonomorphizedClass*>(classObject)
+							   ->GetMember(rhs->GetOperatorFunctionName().value(), rhs->GetRhs());
+			}
 			if (function->GetType() == inputreconstruction::Type::Function)
 			{
 				if (rhsValue.has_value())
@@ -3302,6 +3463,57 @@ void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddClass(Class* c
 	}
 }
 
+void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddMonomorphizedClass(
+	MonomorphizedClass* class_)
+{
+	auto iter = typePointerMap.find(class_);
+	if (iter != typePointerMap.end())
+	{
+		// It is already known, thus skip it.
+		return;
+	}
+
+	for (auto& inheritBase : class_->GetInheritedBases())
+	{
+		auto base = inheritBase->GetLinkedType()->GetResolvedLinkedIr().value();
+		if (base->GetType() == inputreconstruction::Type::Class)
+		{
+			AddClass(static_cast<inputreconstruction::Class*>(base));
+		}
+		else if (base->GetType() == inputreconstruction::Type::MonomorphizedClass)
+		{
+			AddMonomorphizedClass(static_cast<inputreconstruction::MonomorphizedClass*>(base));
+		}
+	}
+
+	auto newTypeId = TypeId(typePointerMap.size());
+	auto newTypeName = Name(class_->GetFullyQualifiedName());
+	auto newType = Type(newTypeId, newTypeName, class_);
+
+	auto idIter = typeIdMap.find(newTypeId);
+	auto nameIter = typeNameMap.find(newTypeName);
+	if (idIter != typeIdMap.end() || nameIter != typeNameMap.end())
+	{
+		// We got an issue.
+		return;
+	}
+
+	typePointerMap.insert({class_, newType});
+	typeIdMap.insert({newTypeId, newType});
+	typeNameMap.insert({newTypeName, newType});
+
+	for (auto& [accessibility, member] : class_->GetMembers())
+	{
+		if (member->GetType() == inputreconstruction::Type::Constructor ||
+			member->GetType() == inputreconstruction::Type::Function ||
+			member->GetType() == inputreconstruction::Type::CodeFunction ||
+			member->GetType() == inputreconstruction::Type::NameFunction)
+		{
+			interpreter->functionTable.AddFunction(member);
+		}
+	}
+}
+
 void Celeste::ir::inputreconstruction::Interpreter::TypeTable::AddEnumeration(
 	Enumeration* enumeration)
 {
@@ -3345,6 +3557,11 @@ Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetType(InputReconstru
 		AddClass(classObject);
 		break;
 	}
+	case inputreconstruction::Type::MonomorphizedClass: {
+		auto classObject = static_cast<inputreconstruction::MonomorphizedClass*>(parent);
+		AddMonomorphizedClass(classObject);
+		break;
+	}
 	}
 
 	auto retry = typePointerMap.find(parent);
@@ -3371,6 +3588,12 @@ Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetTypeFromConstructor
 	case inputreconstruction::Type::Class: {
 		auto classObject = static_cast<inputreconstruction::Class*>(parent->GetParent());
 		AddClass(classObject);
+		break;
+	}
+	case inputreconstruction::Type::MonomorphizedClass: {
+		auto classObject =
+			static_cast<inputreconstruction::MonomorphizedClass*>(parent->GetParent());
+		AddMonomorphizedClass(classObject);
 		break;
 	}
 	}
@@ -3405,12 +3628,48 @@ void Celeste::ir::inputreconstruction::Interpreter::FunctionTable::AddFunction(
 		auto classObject = static_cast<inputreconstruction::Class*>(parent);
 		RegisterType(classObject);
 	}
+	else if (parent->GetType() == inputreconstruction::Type::MonomorphizedClass)
+	{
+		auto classObject = static_cast<inputreconstruction::MonomorphizedClass*>(parent);
+		RegisterType(classObject);
+	}
 
 	switch (functionObject->GetType())
 	{
 	case inputreconstruction::Type::Function: {
 		auto function = static_cast<inputreconstruction::Function*>(functionObject);
 		if (parent->GetType() == inputreconstruction::Type::Class)
+		{
+			auto newMemberFunctionObject =
+				std::make_unique<MemberFunction>(function, FunctionType::MemberFunction);
+			auto newMemberFunctionObjectPtr = newMemberFunctionObject.get();
+			memberFunctionTable.insert({function, std::move(newMemberFunctionObject)});
+			auto typeId = interpreter->typeTable.GetType(parent);
+			memberFunctionMapping.insert({{function, typeId}, function});
+			auto iter = mappingTypeWithMemberFunctions.find(typeId);
+			iter->second.insert(functionObject);
+
+			// Virtual logic
+			auto parentVirtualMemberFunction = function->GetVirtualFunctionParent();
+			while (parentVirtualMemberFunction != nullptr)
+			{
+				// Update Member Function Access
+				auto iter = memberFunctionMapping.find({parentVirtualMemberFunction, typeId});
+				if (iter != memberFunctionMapping.end())
+				{
+					iter->second = newMemberFunctionObjectPtr->irObject;
+				}
+				else
+				{
+					memberFunctionMapping.insert({{parentVirtualMemberFunction, typeId},
+												  newMemberFunctionObjectPtr->irObject});
+				}
+
+				parentVirtualMemberFunction =
+					parentVirtualMemberFunction->GetVirtualFunctionParent();
+			}
+		}
+		else if (parent->GetType() == inputreconstruction::Type::MonomorphizedClass)
 		{
 			auto newMemberFunctionObject =
 				std::make_unique<MemberFunction>(function, FunctionType::MemberFunction);
@@ -3496,6 +3755,83 @@ void Celeste::ir::inputreconstruction::Interpreter::FunctionTable::RegisterType(
 	// This takes the virtual override logic
 	// And properly orders all calls.
 	auto UnionizeMemberFunctionsFromBasesVirtualSetup = [&](inputreconstruction::Class* type_) {
+		std::map<std::pair<InputReconstructionObject*, TypeId>, InputReconstructionObject*> result;
+		auto typeId = interpreter->typeTable.GetType(type_);
+
+		for (auto& inheritBase : type_->GetInheritedBases())
+		{
+			auto base = static_cast<inputreconstruction::Class*>(
+				inheritBase->GetLinkedType()->GetResolvedLinkedIr().value());
+			auto iter = mappingTypeWithMemberFunctions.find(interpreter->typeTable.GetType(base));
+
+			for (auto _ : iter->second)
+			{
+				if (_->GetType() == inputreconstruction::Type::Constructor)
+				{
+					continue;
+				}
+				result.insert({{_, typeId}, _});
+			}
+		}
+
+		return result;
+	};
+
+	for (auto& inheritBase : classObject->GetInheritedBases())
+	{
+		auto typeOpt = inheritBase->GetLinkedType()->GetResolvedLinkedIr();
+		if (!typeOpt.has_value())
+		{
+			// Critical issue, referenced base is not type resolvable.
+			continue;
+		}
+
+		auto baseDowncasted = static_cast<inputreconstruction::Class*>(typeOpt.value());
+		RegisterType(baseDowncasted);
+	}
+
+	auto functionList = UnionizeMemberFunctionsFromBases(classObject);
+	mappingTypeWithMemberFunctions[typeId] = functionList;
+
+	UnionizeMemberFunctionsFromBasesVirtualSetup(classObject);
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::FunctionTable::RegisterType(
+	MonomorphizedClass* classObject)
+{
+	auto typeId = interpreter->typeTable.GetType(classObject);
+	auto iterTestAlreadyRegister = mappingTypeWithMemberFunctions.find(typeId);
+	if (iterTestAlreadyRegister != mappingTypeWithMemberFunctions.end())
+	{
+		return;
+	}
+
+	auto UnionizeMemberFunctionsFromBases = [&](inputreconstruction::MonomorphizedClass* type_) {
+		std::set<InputReconstructionObject*> result;
+
+		for (auto& inheritBase : type_->GetInheritedBases())
+		{
+			auto base = static_cast<inputreconstruction::Class*>(
+				inheritBase->GetLinkedType()->GetResolvedLinkedIr().value());
+			auto iter = mappingTypeWithMemberFunctions.find(interpreter->typeTable.GetType(base));
+
+			for (auto _ : iter->second)
+			{
+				if (_->GetType() == inputreconstruction::Type::Constructor)
+				{
+					continue;
+				}
+				result.insert(_);
+			}
+		}
+
+		return result;
+	};
+
+	// This takes the virtual override logic
+	// And properly orders all calls.
+	auto UnionizeMemberFunctionsFromBasesVirtualSetup = [&](inputreconstruction::MonomorphizedClass*
+																type_) {
 		std::map<std::pair<InputReconstructionObject*, TypeId>, InputReconstructionObject*> result;
 		auto typeId = interpreter->typeTable.GetType(type_);
 
@@ -3649,6 +3985,11 @@ void Celeste::ir::inputreconstruction::Interpreter::SetUpGlobalInformation(
 		case inputreconstruction::Type::Class: {
 			auto classObject = static_cast<Class*>(object);
 			typeTable.AddClass(classObject);
+			break;
+		}
+		case inputreconstruction::Type::MonomorphizedClass: {
+			auto classObject = static_cast<MonomorphizedClass*>(object);
+			typeTable.AddMonomorphizedClass(classObject);
 			break;
 		}
 		case inputreconstruction::Type::Enumeration: {

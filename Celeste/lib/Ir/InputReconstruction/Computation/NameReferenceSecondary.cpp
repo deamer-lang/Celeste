@@ -222,6 +222,33 @@ void Celeste::ir::inputreconstruction::NameReferenceSecondary::StartResolve(
 		continueThisResolve();
 		break;
 	}
+	case Type::MonomorphizedClass: {
+		auto classIr = static_cast<MonomorphizedClass*>(finalIr.value());
+		// Delegate referencing to the member to the Class object
+		// Currently Accessibility levels are not forwarded, thus they may not be referenced,
+		// This will likely result in a bug, i.e. this needs to resolved later
+		auto linkedIr = classIr->GetMember(this);
+		if (linkedIr == nullptr)
+		{
+			// Invalid
+			return;
+		}
+
+		SetLinkedIr(linkedIr);
+
+		// If it was a Function, then the function access is already finished for us.
+		if (linkedIr->GetType() == Type::Function || linkedIr->GetType() == Type::Constructor)
+		{
+			continueAccessResolve(1);
+		}
+		else
+		{
+			continueAccessResolve(0);
+		}
+
+		continueThisResolve();
+		break;
+	}
 	case Type::Enumeration: {
 		auto enumeration = static_cast<Enumeration*>(finalIr.value());
 		// Delegate referencing to the member to the Enumeration object

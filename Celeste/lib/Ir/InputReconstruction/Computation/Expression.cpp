@@ -403,6 +403,9 @@ Celeste::ir::inputreconstruction::Expression::DeduceType() const
 		{
 			switch (deducedTypeLhs.value()->GetType())
 			{
+			case Type::MonomorphizedClass: {
+				return deducedTypeLhs.value();
+			}
 			case Type::TemplateParameter: {
 				auto templateParameter = static_cast<TemplateParameter*>(deducedTypeLhs.value());
 				auto& typeConstruct = templateParameter->GetTypeConstruct();
@@ -479,6 +482,10 @@ Celeste::ir::inputreconstruction::Expression::DeduceType() const
 			auto classIr = static_cast<Class*>(deducedTypeLhs.value());
 			return classIr->GetMember(operatorFunctionName.value(), {});
 		}
+		case Type::MonomorphizedClass: {
+			auto classIr = static_cast<MonomorphizedClass*>(deducedTypeLhs.value());
+			return classIr->GetMember(operatorFunctionName.value(), {});
+		}
 		case Type::Integer: {
 		}
 		case Type::Decimal: {
@@ -513,6 +520,27 @@ Celeste::ir::inputreconstruction::Expression::DeduceType() const
 
 			return static_cast<InputReconstructionObject*>(nullptr);
 		};
+
+		auto evaluateMonomorphizedClass = [&](MonomorphizedClass* classIr) {
+			if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
+			{
+				auto member =
+					classIr->GetMember(operatorFunctionName.value(),
+									   std::vector<InputReconstructionObject*>{
+										   std::get<std::unique_ptr<Expression>>(impl->rhs).get()});
+				// It must be function otherwise it is ill-formed.
+				return static_cast<Function*>(member)->GetReturnType();
+			}
+			else if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
+			{
+				return classIr->GetMember(operatorFunctionName.value(),
+										  std::vector<InputReconstructionObject*>{
+											  std::get<std::unique_ptr<Value>>(impl->rhs).get()});
+			}
+
+			return static_cast<InputReconstructionObject*>(nullptr);
+		};
+
 		switch (deducedTypeLhs.value()->GetType())
 		{
 		case Type::TypeConstruct: {
@@ -523,6 +551,11 @@ Celeste::ir::inputreconstruction::Expression::DeduceType() const
 				if (coreType.value()->GetType() == Type::Class)
 				{
 					return evaluateClass(static_cast<Class*>(coreType.value()));
+				}
+				if (coreType.value()->GetType() == Type::MonomorphizedClass)
+				{
+					return evaluateMonomorphizedClass(
+						static_cast<MonomorphizedClass*>(coreType.value()));
 				}
 			}
 			else
@@ -535,6 +568,10 @@ Celeste::ir::inputreconstruction::Expression::DeduceType() const
 		case Type::Class: {
 			auto classIr = static_cast<Class*>(deducedTypeLhs.value());
 			return evaluateClass(classIr);
+		}
+		case Type::MonomorphizedClass: {
+			auto classIr = static_cast<MonomorphizedClass*>(deducedTypeLhs.value());
+			return evaluateMonomorphizedClass(classIr);
 		}
 		case Type::Function: {
 			return nullptr;
@@ -550,6 +587,11 @@ Celeste::ir::inputreconstruction::Expression::DeduceType() const
 				if (forwardedType.value()->GetType() == Type::Class)
 				{
 					return evaluateClass(static_cast<Class*>(forwardedType.value()));
+				}
+				if (forwardedType.value()->GetType() == Type::MonomorphizedClass)
+				{
+					return evaluateMonomorphizedClass(
+						static_cast<MonomorphizedClass*>(forwardedType.value()));
 				}
 				else
 				{

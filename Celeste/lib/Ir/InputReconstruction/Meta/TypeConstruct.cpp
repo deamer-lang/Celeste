@@ -282,6 +282,10 @@ Celeste::ir::inputreconstruction::TypeConstruct::GetIrLinkage(
 				auto classIr = static_cast<Class*>(deducedType);
 				return classIr->GetMember(nameReferenceSecondary);
 			}
+			case Type::MonomorphizedClass: {
+				auto classIr = static_cast<MonomorphizedClass*>(deducedType);
+				return classIr->GetMember(nameReferenceSecondary);
+			}
 			}
 
 			return nullptr;
@@ -343,6 +347,10 @@ Celeste::ir::inputreconstruction::TypeConstruct::GetIrLinkage(
 	{
 	case Type::Class: {
 		auto classIr = static_cast<Class*>(linkedIr);
+		return classIr->GetMember(nameReferenceSecondary);
+	}
+	case Type::MonomorphizedClass: {
+		auto classIr = static_cast<MonomorphizedClass*>(linkedIr);
 		return classIr->GetMember(nameReferenceSecondary);
 	}
 	}

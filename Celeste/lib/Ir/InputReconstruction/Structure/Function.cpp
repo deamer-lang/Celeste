@@ -139,7 +139,7 @@ void Celeste::ir::inputreconstruction::Function::AddTemplateParameter(
 Celeste::ir::inputreconstruction::Function*
 Celeste::ir::inputreconstruction::Function::GetVirtualFunctionParent()
 {
-	if (GetParent()->GetType() != Type::Class)
+	if (GetParent()->GetType() != Type::Class && GetParent()->GetType() != Type::MonomorphizedClass)
 	{
 		return nullptr;
 	}
@@ -170,12 +170,21 @@ bool Celeste::ir::inputreconstruction::Function::Accepts(NameReference* symbol)
 	auto accesses = symbol->GetSymbolAccesses();
 	// This checks if the symmbol has a function access, if not then it cannot be used to reference
 	// functions.
-	if (accesses.empty() || !accesses[0]->IsFunctionAccess())
+	if (accesses.empty() || !(accesses[0]->IsFunctionAccess() ||
+							  (accesses.size() == 2 && accesses[1]->IsFunctionAccess())))
 	{
 		return false;
 	}
 
-	auto& functionAccess = accesses[0];
+	SymbolAccess* functionAccess;
+	if (accesses[0]->IsFunctionAccess())
+	{
+		functionAccess = accesses[0];
+	}
+	else
+	{
+		functionAccess = accesses[1];
+	}
 	auto& expressions = functionAccess->GetExpressions();
 
 	if (expressions.size() != functionArguments.size())

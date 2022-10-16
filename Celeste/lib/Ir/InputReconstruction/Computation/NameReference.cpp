@@ -259,6 +259,7 @@ public:
 		case Type::Root:
 		case Type::Namespace:
 		case Type::Enumeration:
+		case Type::MonomorphizedClass:
 		case Type::Class: {
 			return true;
 		}
@@ -272,6 +273,12 @@ public:
 	{
 		return !reference->GetSymbolAccesses().empty() &&
 			   reference->GetSymbolAccesses()[0]->IsFunctionAccess();
+	}
+
+	bool HasTemplateClassAccess()
+	{
+		return reference->GetSymbolAccesses().size() == 1 &&
+			   reference->GetSymbolAccesses()[0]->IsTemplateAccess();
 	}
 
 	bool HasTemplateFunctionAccess()
@@ -310,6 +317,34 @@ public:
 				uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
 									 {templateFunctionArgument.get(),
 									  ResolveArgument{irComponent, Direction::Up, true, true}});
+			}
+		};
+
+		auto SearchClassTemplateParameters = [&](InputReconstructionObject* irComponent,
+												 std::size_t& addedCounter) {
+			if (irComponent->GetParent()->GetType() == Type::Class)
+			{
+				for (auto& templateFunctionParameter :
+					 static_cast<Class*>(irComponent->GetParent())->GetTemplateParameters())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {templateFunctionParameter.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+			}
+			else if (irComponent->GetParent()->GetType() == Type::MonomorphizedClass)
+			{
+				for (auto& templateFunctionArgument :
+					 static_cast<MonomorphizedClass*>(irComponent->GetParent())
+						 ->GetTemplateArguments())
+				{
+					uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+										 {templateFunctionArgument.get(),
+										  ResolveArgument{irComponent, Direction::Up, true, true}});
+				}
+			}
+			else
+			{
 			}
 		};
 
@@ -473,6 +508,49 @@ public:
 			break;
 		}
 		case Type::MonomorphizedClass: {
+			auto irComponent = static_cast<MonomorphizedClass*>(uncheckedMember);
+			const auto symbolName = GetSymbolName();
+			const auto className = irComponent->GetClassName()->GetResolvedName();
+
+			if (argument.addByNeighbour)
+			{
+				return;
+			}
+
+			std::size_t addedCounter = 0;
+			if (argument.direction == Direction::Up)
+			{
+				for (auto iter = irComponent->GetTemplateParent()->GetParent()->GetReverseIterator(
+						 irComponent->GetTemplateParent());
+					 iter != irComponent->GetTemplateParent()->GetParent()->rend(); ++iter)
+				{
+					uncheckedList.insert(
+						std::begin(uncheckedList) + addedCounter++,
+						{(*iter).get(), ResolveArgument{irComponent->GetTemplateParent(),
+														Direction::Up, true, true}});
+				}
+
+				if (IsBiDirectional(irComponent->GetTemplateParent()->GetParent()->GetType()))
+				{
+					for (auto iter = irComponent->GetTemplateParent()->GetParent()->GetIterator(
+							 irComponent->GetTemplateParent());
+						 iter != irComponent->GetTemplateParent()->GetParent()->end(); ++iter)
+					{
+						uncheckedList.insert(
+							std::begin(uncheckedList) + addedCounter++,
+							{(*iter).get(), ResolveArgument{irComponent->GetTemplateParent(),
+															Direction::Up, true, true}});
+					}
+				}
+			}
+
+			if (argument.direction == Direction::Up && argument.addParent)
+			{
+				uncheckedList.insert(std::begin(uncheckedList) + addedCounter++,
+									 {irComponent->GetTemplateParent()->GetParent(),
+									  ResolveArgument{irComponent, Direction::Up, true}});
+			}
+			addParent(irComponent->GetTemplateParent(), addedCounter);
 			break;
 		}
 		case Type::MonomorphizedFunction: {
@@ -484,7 +562,9 @@ public:
 
 			std::size_t addedCounter = 0;
 			if (argument.direction == Direction::Up &&
-				irComponent->GetTemplateParent()->GetParent()->GetType() != Type::Class)
+				irComponent->GetTemplateParent()->GetParent()->GetType() != Type::Class &&
+				irComponent->GetTemplateParent()->GetParent()->GetType() !=
+					Type::MonomorphizedClass)
 			{
 				for (auto iter = irComponent->GetTemplateParent()->GetParent()->GetReverseIterator(
 						 irComponent->GetTemplateParent());
@@ -508,6 +588,41 @@ public:
 															Direction::Up, true, true}});
 					}
 				}
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetTemplateParent()->GetParent()->GetType() ==
+						 Type::MonomorphizedClass)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<MonomorphizedClass*>(
+										   irComponent->GetTemplateParent()->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<MonomorphizedClass*>(
+							irComponent->GetTemplateParent()->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+				SearchClassTemplateParameters(irComponent->GetTemplateParent(), addedCounter);
 			}
 			else if (argument.direction == Direction::Up &&
 					 irComponent->GetTemplateParent()->GetParent()->GetType() == Type::Class)
@@ -540,6 +655,7 @@ public:
 						return;
 					}
 				}
+				SearchClassTemplateParameters(irComponent->GetTemplateParent(), addedCounter);
 			}
 
 			addParent(irComponent->GetTemplateParent(), addedCounter);
@@ -601,6 +717,71 @@ public:
 			{
 				if (irComponent->HasTemplateParameters())
 				{
+					// Get monomorphized function
+					// Check if the monomorphized function accepts the argument list
+					if (HasTemplateClassAccess())
+					{
+						std::vector<Expression> expressionList;
+						auto templateAccess = reference->GetSymbolAccesses()[0];
+						if (templateAccess->GetSymbolAccessType() ==
+							SymbolAccessType::AutoDeduceArray)
+						{
+							// Nothing to do
+						}
+						else if (templateAccess->GetSymbolAccessType() ==
+								 SymbolAccessType::IndexAccess)
+						{
+							for (auto& expression : templateAccess->GetExpressions())
+							{
+								expressionList.push_back(Expression(*expression));
+								std::rbegin(expressionList)->SetParent(expression->GetParent());
+								std::rbegin(expressionList)->Resolve();
+							}
+						}
+
+						auto monomorphizedClass =
+							irComponent->ConstructMonomorphizedClass(expressionList);
+
+						SetEntryPoint(monomorphizedClass);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+					else if (HasTemplateFunctionAccess()) // This implies that we call an
+														  // constructor
+					{
+						std::vector<Expression> expressionList;
+						auto templateAccess = reference->GetSymbolAccesses()[0];
+						if (templateAccess->GetSymbolAccessType() ==
+							SymbolAccessType::AutoDeduceArray)
+						{
+							// Nothing to do
+						}
+						else if (templateAccess->GetSymbolAccessType() ==
+								 SymbolAccessType::IndexAccess)
+						{
+							for (auto& expression : templateAccess->GetExpressions())
+							{
+								expressionList.emplace_back(*expression);
+								std::rbegin(expressionList)->SetParent(expression->GetParent());
+								std::rbegin(expressionList)->Resolve();
+							}
+						}
+
+						auto monomorphizedClass =
+							irComponent->ConstructMonomorphizedClass(expressionList);
+
+						auto constructor = monomorphizedClass->GetConstructor(reference);
+						if (constructor.has_value())
+						{
+							SetEntryPoint(constructor.value());
+							ContinueAccess(2);
+
+							Finalize();
+							return;
+						}
+					}
 				}
 				else
 				{
@@ -691,6 +872,22 @@ public:
 								return;
 							}
 						}
+						else if (type_ == Type::MonomorphizedClass)
+						{
+							auto classObject =
+								static_cast<MonomorphizedClass*>(referencedType.value());
+							auto constructor =
+								classObject->GetConstructor(this->reference, Accessibility::Public);
+							if (constructor.has_value())
+							{
+								// This is what we need
+								SetEntryPoint(constructor.value());
+								ContinueAccess(1);
+
+								Finalize();
+								return;
+							}
+						}
 						else if (type_ == Type::InlineClass)
 						{
 							throw std::logic_error("Unimplemented Logic");
@@ -723,7 +920,8 @@ public:
 
 			std::size_t addedCounter = 0;
 			if (argument.direction == Direction::Up &&
-				irComponent->GetParent()->GetType() != Type::Class)
+				irComponent->GetParent()->GetType() != Type::Class &&
+				irComponent->GetParent()->GetType() != Type::MonomorphizedClass)
 			{
 				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
 					 iter != irComponent->GetParent()->rend(); ++iter)
@@ -775,6 +973,39 @@ public:
 						return;
 					}
 				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetParent()->GetType() == Type::MonomorphizedClass)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<MonomorphizedClass*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<MonomorphizedClass*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
 			}
 
 			CheckUpFunctionOrConstructor(irComponent, addedCounter);
@@ -800,7 +1031,8 @@ public:
 
 			std::size_t addedCounter = 0;
 			if (argument.direction == Direction::Up &&
-				irComponent->GetParent()->GetType() != Type::Class)
+				irComponent->GetParent()->GetType() != Type::Class &&
+				irComponent->GetParent()->GetType() != Type::MonomorphizedClass)
 			{
 				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
 					 iter != irComponent->GetParent()->rend(); ++iter)
@@ -852,6 +1084,39 @@ public:
 						return;
 					}
 				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetParent()->GetType() == Type::MonomorphizedClass)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<MonomorphizedClass*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<MonomorphizedClass*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
 			}
 
 			CheckUpFunctionOrConstructor(irComponent, addedCounter);
@@ -928,7 +1193,8 @@ public:
 
 			std::size_t addedCounter = 0;
 			if (argument.direction == Direction::Up &&
-				irComponent->GetParent()->GetType() != Type::Class)
+				irComponent->GetParent()->GetType() != Type::Class &&
+				irComponent->GetParent()->GetType() != Type::MonomorphizedClass)
 			{
 				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
 					 iter != irComponent->GetParent()->rend(); ++iter)
@@ -980,6 +1246,39 @@ public:
 						return;
 					}
 				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetParent()->GetType() == Type::MonomorphizedClass)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<MonomorphizedClass*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<MonomorphizedClass*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
 			}
 
 			if (argument.direction == Direction::Up && argument.addParent)
@@ -1243,6 +1542,21 @@ public:
 				else if (irComponent->GetParent()->GetType() == Type::MonomorphizedFunction)
 				{
 					SearchTemplateArguments(irComponent, addedCounter);
+				}
+
+				if (irComponent->GetParent()->GetParent()->GetType() == Type::Class &&
+					!static_cast<Class*>(irComponent->GetParent()->GetParent())
+						 ->GetTemplateParameters()
+						 .empty())
+				{
+					SearchClassTemplateParameters(irComponent->GetParent(), addedCounter);
+				}
+				if (irComponent->GetParent()->GetParent()->GetType() == Type::MonomorphizedClass &&
+					!static_cast<MonomorphizedClass*>(irComponent->GetParent()->GetParent())
+						 ->GetTemplateArguments()
+						 .empty())
+				{
+					SearchClassTemplateParameters(irComponent->GetParent(), addedCounter);
 				}
 
 				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
@@ -1525,7 +1839,8 @@ public:
 
 			std::size_t addedCounter = 0;
 			if (argument.direction == Direction::Up &&
-				irComponent->GetParent()->GetType() != Type::Class)
+				irComponent->GetParent()->GetType() != Type::Class &&
+				irComponent->GetParent()->GetType() != Type::MonomorphizedClass)
 			{
 				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
 					 iter != irComponent->GetParent()->rend(); ++iter)
@@ -1577,6 +1892,39 @@ public:
 						return;
 					}
 				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetParent()->GetType() == Type::MonomorphizedClass)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<MonomorphizedClass*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<MonomorphizedClass*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
 			}
 
 			addParent(irComponent, addedCounter);
@@ -1771,7 +2119,8 @@ public:
 
 			std::size_t addedCounter = 0;
 			if (argument.direction == Direction::Up &&
-				irComponent->GetParent()->GetType() != Type::Class)
+				irComponent->GetParent()->GetType() != Type::Class &&
+				irComponent->GetParent()->GetType() != Type::MonomorphizedClass)
 			{
 				for (auto iter = irComponent->GetParent()->GetReverseIterator(irComponent);
 					 iter != irComponent->GetParent()->rend(); ++iter)
@@ -1823,6 +2172,39 @@ public:
 						return;
 					}
 				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
+			}
+			else if (argument.direction == Direction::Up &&
+					 irComponent->GetParent()->GetType() == Type::MonomorphizedClass)
+			{
+				if (HasFunctionAccess())
+				{
+					auto foundMember = static_cast<MonomorphizedClass*>(irComponent->GetParent())
+										   ->GetMember(reference, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess(1);
+
+						Finalize();
+						return;
+					}
+				}
+				else
+				{
+					auto foundMember =
+						static_cast<MonomorphizedClass*>(irComponent->GetParent())
+							->GetMember(GetSymbolName(), std::nullopt, Accessibility::Private);
+					if (foundMember != nullptr)
+					{
+						SetEntryPoint(foundMember);
+						ContinueAccess();
+
+						Finalize();
+						return;
+					}
+				}
+				SearchClassTemplateParameters(irComponent, addedCounter);
 			}
 
 			CheckUpFunctionOrConstructor(irComponent, addedCounter);

@@ -28,8 +28,8 @@ namespace Celeste::ir::inputreconstruction
 	class SymbolAccess : public InputReconstructionObject
 	{
 	private:
-		InputReconstructionObject* symbolParent;
-		InputReconstructionObject* linkedIr;
+		InputReconstructionObject* symbolParent = nullptr;
+		InputReconstructionObject* linkedIr = nullptr;
 		std::vector<std::unique_ptr<Expression>> expressions;
 		ast::reference::Access<ast::node::symbol_access> symbolAccessAst;
 		SymbolAccessType AccessType = SymbolAccessType::Unknown;

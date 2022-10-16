@@ -400,6 +400,7 @@ namespace Celeste::ir::inputreconstruction
 			std::map<InputReconstructionObject*, Type> typePointerMap;
 
 			void AddClass(Class* class_);
+			void AddMonomorphizedClass(MonomorphizedClass* class_);
 			void AddEnumeration(Enumeration* enumeration);
 			TypeId GetType(InputReconstructionObject* parent);
 			TypeId GetTypeFromConstructor(inputreconstruction::Constructor* parent);
@@ -467,6 +468,7 @@ namespace Celeste::ir::inputreconstruction
 			void AddFunction(InputReconstructionObject* functionObject);
 
 			void RegisterType(Class* classObject);
+			void RegisterType(MonomorphizedClass* classObject);
 
 			std::optional<Function*> GetFunction(InputReconstructionObject* functionObject,
 												 std::optional<TypeId> typeId = std::nullopt);

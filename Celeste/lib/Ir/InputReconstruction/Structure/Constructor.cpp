@@ -8,10 +8,14 @@ Celeste::ir::inputreconstruction::Constructor::Constructor(
 
 Celeste::ir::inputreconstruction::Constructor::Constructor(const Constructor& rhs) : Function(rhs)
 {
-	auto newFunctionNameRhs = std::unique_ptr<NameReference>(
-		static_cast<NameReference*>(rhs.functionName->DeepCopy().release()));
-	newFunctionNameRhs->SetParent(this);
-	this->functionName = std::move(newFunctionNameRhs);
+	if (rhs.functionName != nullptr)
+	{
+		auto& functionNameRhs = rhs.functionName;
+		auto newFunctionNameRhs = std::unique_ptr<NameReference>(
+			static_cast<NameReference*>(functionNameRhs->DeepCopy().release()));
+		newFunctionNameRhs->SetParent(this);
+		this->Constructor::functionName = std::move(newFunctionNameRhs);
+	}
 
 	for (auto& rhsValue : rhs.functionArguments)
 	{

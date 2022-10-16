@@ -10,7 +10,9 @@
 #include "Celeste/Ir/InputReconstruction/Structure/InheritBase.h"
 #include "Celeste/Ir/InputReconstruction/Structure/MonomorphizedClass.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
+#include <map>
 #include <memory>
+#include <vector>
 
 namespace Celeste::ir::inputreconstruction
 {
@@ -28,12 +30,15 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<std::unique_ptr<TemplateParameter>> templateParameters;
 
 		std::vector<std::unique_ptr<MonomorphizedClass>> monomorphizedClasses;
+		std::map<std::vector<InputReconstructionObject*>, MonomorphizedClass*>
+			mapTypeListWithMonomorphizedClass;
 
 	public:
 		Class(std::unique_ptr<NameReference> className_);
 		virtual ~Class() override = default;
 
 		void Complete();
+		std::vector<std::unique_ptr<TemplateParameter>>& GetTemplateParameters();
 
 		Class(const Class& rhs);
 
@@ -75,8 +80,10 @@ namespace Celeste::ir::inputreconstruction
 
 	public:
 		std::vector<std::unique_ptr<MonomorphizedClass>>& GetMonomorphizedClasses();
-		MonomorphizedClass* GetMonomorphizedClass(std::vector<Expression> expressions);
-		bool HasTemplateParameters();
+		MonomorphizedClass* ConstructMonomorphizedClass(const std::vector<Expression>& expressions);
+		bool HasTemplateParameters() const;
+		bool
+		TemplateParametersAcceptsExpressionList(const std::vector<Expression>& expressions) const;
 
 	public:
 		Function* CreateMemberFunction(const std::string& functionName,
