@@ -2700,6 +2700,11 @@ bool Celeste::ir::inputreconstruction::NameReference::CanStaticallyBeResolved()
 std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
 Celeste::ir::inputreconstruction::NameReference::GetFinalLinkedIr()
 {
+	if (!resolveIsRan)
+	{
+		Resolve();
+	}
+
 	// Initial function accesses must be hidden
 	// When they aren't then we know it failed resolution.
 	if (impl->linkedIrViaAccess.empty() ||

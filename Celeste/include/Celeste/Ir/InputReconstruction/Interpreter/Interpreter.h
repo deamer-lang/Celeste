@@ -115,6 +115,10 @@ namespace Celeste::ir::inputreconstruction
 			{
 			}
 
+			Value(std::size_t value_) : value(static_cast<int>(value_))
+			{
+			}
+
 			Value(int value_) : value(value_)
 			{
 			}

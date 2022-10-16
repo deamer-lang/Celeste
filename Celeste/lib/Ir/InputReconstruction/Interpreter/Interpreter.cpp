@@ -2611,6 +2611,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerPro
 	{
 		valueVector.pop_back();
 	}
+	else if (functionName == "size" || functionName == "Size")
+	{
+		return Value(valueVector.size());
+	}
 
 	return std::nullopt;
 }
