@@ -14,33 +14,25 @@ Celeste::ir::inputreconstruction::ForEach::ForEach(std::unique_ptr<TypeConstruct
 												   std::unique_ptr<NameReference> variableName_,
 												   std::unique_ptr<Expression> expression_)
 	: InputReconstructionObject(Type::ForEach),
-	  variableType(std::move(type_)),
-	  variableName(std::move(variableName_)),
-	  expression(std::move(expression_))
+	  variable(std::make_unique<VariableDeclaration>(std::move(variableName_), std::move(type_)))
 {
+	expression = expression_.get();
+	variable->AddValue(std::move(expression_));
 }
 
 void Celeste::ir::inputreconstruction::ForEach::Complete()
 {
-	expression->SetFile(GetFile());
-	expression->SetParent(this);
-
-	variableType->SetParent(this);
-	variableType->SetFile(GetFile());
-	variableType->Destructure();
-
-	variableName->SetParent(this);
-	variableName->SetFile(GetFile());
+	variable->SetParent(this);
+	variable->SetFile(GetFile());
+	variable->Complete();
 }
 
 Celeste::ir::inputreconstruction::ForEach::ForEach(const ForEach& rhs)
 	: InputReconstructionObject(rhs),
-	  variableType(static_cast<TypeConstruct*>(rhs.variableType->DeepCopy().release())),
-	  variableName(static_cast<NameReference*>(rhs.variableName->DeepCopy().release())),
+	  variable(static_cast<VariableDeclaration*>(rhs.variable->DeepCopy().release())),
 	  expression(static_cast<Expression*>(rhs.expression->DeepCopy().release()))
 {
-	this->variableType->SetParent(this);
-	this->variableName->SetParent(this);
+	this->variable->SetParent(this);
 	this->expression->SetParent(this);
 
 	for (auto& rhsValue : rhs.block)
@@ -52,10 +44,28 @@ Celeste::ir::inputreconstruction::ForEach::ForEach(const ForEach& rhs)
 	}
 }
 
+Celeste::ir::inputreconstruction::VariableDeclaration*
+Celeste::ir::inputreconstruction::ForEach::GetVariableCore()
+{
+	return variable.get();
+}
+
 Celeste::ir::inputreconstruction::NameReference*
 Celeste::ir::inputreconstruction::ForEach::GetVariable()
 {
-	return variableName.get();
+	return variable->GetName();
+}
+
+Celeste::ir::inputreconstruction::TypeConstruct*
+Celeste::ir::inputreconstruction::ForEach::GetVariableType()
+{
+	return variable->GetVariableType();
+}
+
+Celeste::ir::inputreconstruction::Expression*
+Celeste::ir::inputreconstruction::ForEach::GetExpression()
+{
+	return expression;
 }
 
 std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator

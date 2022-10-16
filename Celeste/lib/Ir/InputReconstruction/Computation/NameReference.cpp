@@ -1739,7 +1739,7 @@ public:
 
 			if (irComponent->GetVariable()->GetResolvedName() == GetSymbolName())
 			{
-				SetEntryPoint(irComponent);
+				SetEntryPoint(irComponent->GetVariableCore());
 				ContinueAccess();
 
 				Finalize();

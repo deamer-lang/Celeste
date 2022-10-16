@@ -114,6 +114,31 @@ void Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue::Print(std::s
 		{
 			std::cout << std::get<Value*>(symbolMember.value.value) << "\n";
 		}
+		else if (std::holds_alternative<std::vector<Value>>(symbolMember.value.value))
+		{
+			std::cout << "\n";
+			for (auto& val : std::get<std::vector<Value>>(symbolMember.value.value))
+			{
+				if (std::holds_alternative<AlgebraicValue>(val.value))
+				{
+					std::get<AlgebraicValue>(val.value).Print(depth + 1);
+				}
+				else
+				{
+					for (auto i = 0; i <= depth + 1; i++)
+					{
+						std::cout << "\t";
+					}
+
+					if (std::holds_alternative<int>(val.value))
+					{
+						std::cout << std::get<int>(val.value);
+					}
+				}
+
+				std::cout << "\n";
+			}
+		}
 		else
 		{
 			// Error
@@ -564,6 +589,27 @@ Celeste::ir::inputreconstruction::Interpreter::GetType(
 	}
 }
 
+std::variant<int, double, std::string,
+			 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue,
+			 Celeste::ir::inputreconstruction::Interpreter::Value*,
+			 Celeste::ir::inputreconstruction::InputReconstructionObject*,
+			 std::vector<Celeste::ir::inputreconstruction::Interpreter::Value>,
+			 Celeste::ir::inputreconstruction::File*>
+Celeste::ir::inputreconstruction::Interpreter::ZeroValueArray(
+	MonomorphizedClass* monomorphizedArray)
+{
+	auto& templateArgument = monomorphizedArray->GetTemplateArguments()[0];
+	auto aliasedType = templateArgument->GetAliasedType();
+	auto monomorphizedType = GetType(monomorphizedArray);
+	auto aliasedTypeId = GetType(aliasedType);
+
+	AlgebraicValue newAlgebraicType(monomorphizedType);
+	newAlgebraicType.AddSymbolMember(
+		SymbolMember(Name{"list"}, aliasedTypeId, Value{std::vector<Value>{}}));
+
+	return newAlgebraicType;
+}
+
 bool Celeste::ir::inputreconstruction::Interpreter::PolymorphismEquality(
 	InputReconstructionObject* lhsType, InputReconstructionObject* rhsType)
 {
@@ -681,6 +727,10 @@ Celeste::ir::inputreconstruction::Interpreter::ZeroValue(InputReconstructionObje
 	else if (type->GetType() == inputreconstruction::Type::MonomorphizedClass)
 	{
 		auto classObject = static_cast<MonomorphizedClass*>(type);
+		if (classObject->GetTemplateParent()->GetClassName()->GetResolvedName() == "Array")
+		{
+			return ZeroValueArray(classObject);
+		}
 
 		auto typeId = iter->second.type;
 		AlgebraicValue result(typeId);
@@ -1172,146 +1222,171 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 	}
 	else if (std::holds_alternative<AlgebraicValue>(value.value))
 	{
-		if (typeTable.typeIdMap.find(value.GetType().value())->second.name == Name("io"))
+		auto res = typeTable.typeIdMap.find(value.GetType().value())->second;
+		if (res.name == Name("io"))
 		{
 			if (function->GetFunctionName()->GetResolvedName() == "Print")
 			{
 				for (auto functionArgument : functionArguments)
 				{
-					auto funVal = functionArgument->value;
-					if (std::holds_alternative<int>(funVal))
-					{
-						auto res = std::get<int>(funVal);
-						std::cout << res;
-					}
-					if (std::holds_alternative<double>(funVal))
-					{
-						auto res = std::get<double>(funVal);
-						std::cout << res;
-					}
-					if (std::holds_alternative<std::string>(funVal))
-					{
-						auto res = std::get<std::string>(funVal);
-						std::size_t slash = 0;
-						for (auto character : res)
+					auto funVal_ = functionArgument->value;
+					auto evaluateSimplePrintObject = [&](ValueType funVal) {
+						if (std::holds_alternative<int>(funVal))
 						{
-							switch (character)
+							auto res = std::get<int>(funVal);
+							std::cout << res;
+						}
+						if (std::holds_alternative<double>(funVal))
+						{
+							auto res = std::get<double>(funVal);
+							std::cout << res;
+						}
+						if (std::holds_alternative<Value*>(funVal))
+						{
+							auto res = std::get<Value*>(funVal);
+							std::cout << "Ptr: " << (std::size_t)res;
+						}
+						if (std::holds_alternative<std::string>(funVal))
+						{
+							auto res = std::get<std::string>(funVal);
+							std::size_t slash = 0;
+							for (auto character : res)
 							{
-							case '\'': {
-								if (slash == 1)
+								switch (character)
 								{
-									std::cout << '\'';
-									slash = 0;
+								case '\'': {
+									if (slash == 1)
+									{
+										std::cout << '\'';
+										slash = 0;
+									}
+									else
+									{
+										std::cout << '\'';
+									}
+									break;
 								}
-								else
-								{
-									std::cout << '\'';
+								case '"': {
+									if (slash == 1)
+									{
+										std::cout << '"';
+										slash = 0;
+									}
+									else
+									{
+										std::cout << '"';
+									}
+									break;
 								}
-								break;
-							}
-							case '"': {
-								if (slash == 1)
-								{
-									std::cout << '"';
-									slash = 0;
+								case 't': {
+									if (slash == 1)
+									{
+										std::cout << '\t';
+										slash = 0;
+									}
+									else
+									{
+										std::cout << 't';
+									}
+									break;
 								}
-								else
-								{
-									std::cout << '"';
+								case 'r': {
+									if (slash == 1)
+									{
+										std::cout << '\r';
+										slash = 0;
+									}
+									else
+									{
+										std::cout << 'r';
+									}
+									break;
 								}
-								break;
-							}
-							case 't': {
-								if (slash == 1)
-								{
-									std::cout << '\t';
-									slash = 0;
+								case 'n': {
+									if (slash == 1)
+									{
+										std::cout << '\n';
+										slash = 0;
+									}
+									else
+									{
+										std::cout << 'n';
+									}
+									break;
 								}
-								else
-								{
-									std::cout << 't';
+								case '\\': {
+									if (slash == 1)
+									{
+										std::cout << '\\';
+										slash = 0;
+									}
+									else
+									{
+										slash++;
+									}
+									break;
 								}
-								break;
-							}
-							case 'r': {
-								if (slash == 1)
-								{
-									std::cout << '\r';
-									slash = 0;
+								default: {
+									if (slash == 1)
+									{
+										slash = 0;
+									}
+									std::cout << character;
+									break;
 								}
-								else
-								{
-									std::cout << 'r';
 								}
-								break;
-							}
-							case 'n': {
-								if (slash == 1)
-								{
-									std::cout << '\n';
-									slash = 0;
-								}
-								else
-								{
-									std::cout << 'n';
-								}
-								break;
-							}
-							case '\\': {
-								if (slash == 1)
-								{
-									std::cout << '\\';
-									slash = 0;
-								}
-								else
-								{
-									slash++;
-								}
-								break;
-							}
-							default: {
-								if (slash == 1)
-								{
-									slash = 0;
-								}
-								std::cout << character;
-								break;
-							}
 							}
 						}
-					}
-					if (std::holds_alternative<AlgebraicValue>(funVal))
+						if (std::holds_alternative<AlgebraicValue>(funVal))
+						{
+							auto res = std::get<AlgebraicValue>(funVal);
+							res.Print();
+						}
+					};
+
+					if (std::holds_alternative<std::vector<Value>>(funVal_))
 					{
-						auto res = std::get<AlgebraicValue>(funVal);
-						res.Print();
+						for (auto& mem : std::get<std::vector<Value>>(funVal_))
+						{
+							evaluateSimplePrintObject(mem.value);
+						}
+					}
+					else
+					{
+						evaluateSimplePrintObject(funVal_);
 					}
 				}
 
 				return value;
 			}
 		}
-		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name == Name("Mutate"))
+		else if (res.name == Name("Mutate"))
 		{
 			return EvaluateMemberFunctionCompilerProvided_Mutate(value, function,
 																 functionArguments);
 		}
-		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name ==
-				 Name("ClassObject"))
+		else if (res.name == Name("ClassObject"))
 		{
 			return EvaluateMemberFunctionCompilerProvided_ClassObject(value, function,
 																	  functionArguments);
 		}
-		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name ==
-				 Name("MemberFunctionObject"))
+		else if (res.name == Name("MemberFunctionObject"))
 		{
 			return EvaluateMemberFunctionCompilerProvided_MemberFunctionObject(value, function,
 																			   functionArguments);
 		}
-		else if (typeTable.typeIdMap.find(value.GetType().value())->second.name ==
-				 Name("FunctionObject"))
+		else if (res.name == Name("FunctionObject"))
 		{
 			return EvaluateMemberFunctionCompilerProvided_FunctionObject(value, function,
 																		 functionArguments);
+		}
+		else if (res.irType->GetType() == inputreconstruction::Type::MonomorphizedClass &&
+				 Name("Array") == static_cast<MonomorphizedClass*>(res.irType)
+									  ->GetTemplateParent()
+									  ->GetClassName()
+									  ->GetResolvedName())
+		{
+			return EvaluateMemberFunctionCompilerProvided_Array(value, function, functionArguments);
 		}
 		else
 		{
@@ -1703,6 +1778,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 
 		std::size_t iterationCounter = 0;
 
+		std::optional<Name> iteratingName;
+		std::optional<TypeId> iteratingType;
+		std::optional<Value> iteratableContainerRhs;
+
 		Block(BlockType type_, InputReconstructionObject* blockCreatingObject_,
 			  Interpreter* interpreter)
 			: type(type_),
@@ -1752,8 +1831,30 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 				break;
 			}
 			case inputreconstruction::Type::ForEach: {
+				// This logic requires more care as this is highly dangerous
 				auto forEach = static_cast<inputreconstruction::ForEach*>(blockCreatingObject_);
 				statements = forEach->GetScope();
+				iteratingName = Name(forEach->GetVariable()->GetResolvedName());
+				auto originType = interpreter->GetType(forEach->GetVariableType());
+				auto linkedIr = interpreter->typeTable.typeIdMap.find(originType)->second.irType;
+				if (linkedIr->GetType() == inputreconstruction::Type::MonomorphizedClass)
+				{
+					auto monomorphizedClass = static_cast<MonomorphizedClass*>(linkedIr);
+					iteratingType = interpreter->GetType(
+						monomorphizedClass->GetTemplateArguments()[0]->GetAliasedType());
+				}
+				else
+				{
+					iteratingType = originType;
+				}
+				auto tmp = interpreter->Evaluate(forEach->GetExpression());
+				if (std::holds_alternative<AlgebraicValue>(tmp.value().value))
+				{
+					auto symbolMember =
+						std::get<AlgebraicValue>(tmp.value().value).symbolMembers[0];
+					auto res = symbolMember.value.value;
+					iteratableContainerRhs = res;
+				}
 				break;
 			}
 			case inputreconstruction::Type::ForIteration: {
@@ -1800,6 +1901,21 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 				return false;
 			}
 			case BlockType::ForEachBlock: {
+				auto forEach =
+					static_cast<inputreconstruction::ForEach*>(objectThatIntroducedThisBlock);
+				if (!std::holds_alternative<std::vector<Value>>(
+						iteratableContainerRhs.value().value))
+				{
+					return false;
+				}
+
+				if (iterationCounter <
+					std::get<std::vector<Value>>(iteratableContainerRhs.value().value).size())
+				{
+					return true;
+				}
+
+				return false;
 				break;
 			}
 			case BlockType::WhileBlock: {
@@ -1824,6 +1940,9 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			case BlockType::ForBlock: {
 				return !StartConditionSatisfied(interpreter);
 			}
+			case BlockType::ForEachBlock: {
+				return !StartConditionSatisfied(interpreter);
+			}
 			default: {
 				return true;
 			}
@@ -1840,6 +1959,15 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			{
 			case BlockType::ForEachBlock: {
 				// assign nth object
+				if (std::holds_alternative<std::vector<Value>>(
+						iteratableContainerRhs.value().value))
+				{
+					auto& valueVector =
+						std::get<std::vector<Value>>(iteratableContainerRhs.value().value);
+					stackLifetime.Stack()->currentScope->AddVariable(
+						std::make_unique<Symbol>(iteratingName.value(), iteratingType.value(),
+												 valueVector[iterationCounter].value));
+				}
 				break;
 			}
 			}
@@ -2438,6 +2566,50 @@ std::optional<Celeste::ir::inputreconstruction::Interpreter::Value> Celeste::ir:
 			std::get<AlgebraicValue>(functionArguments[0]->value).symbolMembers[0].value.value));
 		functionObject->AddCodeBlock(codeBlockObject);
 		return value;
+	}
+
+	return std::nullopt;
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerProvided_Array(
+	Value& value, inputreconstruction::Function* function,
+	const std::vector<Value*>& functionArguments)
+{
+	auto& valueVector = std::get<std::vector<Value>>(
+		std::get<AlgebraicValue>(value.value).symbolMembers[0].value.value);
+	auto functionName = function->GetFunctionName()->GetResolvedName();
+	if (functionName == "push_back")
+	{
+		valueVector.emplace_back(functionArguments[0]->value);
+	}
+	else if (functionName == "emplace_back")
+	{
+		valueVector.emplace_back(ZeroValue(static_cast<MonomorphizedClass*>(function->GetParent())
+											   ->GetTemplateArguments()[0]
+											   ->GetAliasedType()));
+	}
+	else if (functionName == "GetIndex" || functionName == "operator[]")
+	{
+		if (std::get<int>(functionArguments[0]->value) >= valueVector.size())
+		{
+			return {};
+		}
+
+		return valueVector[std::get<int>(functionArguments[0]->value)];
+	}
+	else if (functionName == "AssignIndex")
+	{
+		if (std::get<int>(functionArguments[0]->value) >= valueVector.size())
+		{
+			return {};
+		}
+
+		valueVector[std::get<int>(functionArguments[0]->value)] = functionArguments[1]->value;
+	}
+	else if (functionName == "pop_back")
+	{
+		valueVector.pop_back();
 	}
 
 	return std::nullopt;

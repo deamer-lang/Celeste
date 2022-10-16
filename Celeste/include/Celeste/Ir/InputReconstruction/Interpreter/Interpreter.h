@@ -29,6 +29,10 @@ namespace Celeste::ir::inputreconstruction
 		struct SymbolMember;
 		struct Name;
 		struct Value;
+		struct AlgebraicValue;
+
+		using ValueType = std::variant<int, double, std::string, AlgebraicValue, Value*,
+									   InputReconstructionObject*, std::vector<Value>, File*>;
 
 		struct TypeId
 		{
@@ -101,13 +105,13 @@ namespace Celeste::ir::inputreconstruction
 
 		struct Value
 		{
-			std::variant<int, double, std::string, AlgebraicValue, Value*,
-						 InputReconstructionObject*, std::vector<Value>, File*>
-				value;
+			ValueType value;
 
-			Value(const std::variant<int, double, std::string, AlgebraicValue, Value*,
-									 InputReconstructionObject*, std::vector<Value>, File*>& value_)
-				: value(value_)
+			Value(const Value& rhs) : value(rhs.value)
+			{
+			}
+
+			Value(const ValueType& value_) : value(value_)
 			{
 			}
 
@@ -510,6 +514,9 @@ namespace Celeste::ir::inputreconstruction
 		TypeId GetType(TypeConstruct* typeConstruct);
 		TypeId GetType(std::optional<InputReconstructionObject*> object);
 
+		std::variant<int, double, std::string, AlgebraicValue, Value*, InputReconstructionObject*,
+					 std::vector<Value>, File*>
+		ZeroValueArray(MonomorphizedClass* monomorphizedArray);
 		std::variant<int, double, std::string,
 					 Celeste::ir::inputreconstruction::Interpreter::AlgebraicValue,
 					 Celeste::ir::inputreconstruction::Interpreter::Value*,
@@ -612,6 +619,10 @@ namespace Celeste::ir::inputreconstruction
 		std::optional<Value> EvaluateMemberFunctionCompilerProvided_FunctionObject(
 			const Value& value, inputreconstruction::Function* function,
 			const std::vector<Value*>& functionArguments);
+		std::optional<Value>
+		EvaluateMemberFunctionCompilerProvided_Array(Value& value,
+													 inputreconstruction::Function* function,
+													 const std::vector<Value*>& functionArguments);
 	};
 }
 

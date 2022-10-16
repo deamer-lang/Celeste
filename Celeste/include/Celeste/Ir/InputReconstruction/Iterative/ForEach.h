@@ -1,6 +1,7 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_ITERATIVE_FOREACH_H
 #define CELESTE_IR_INPUTRECONSTRUCTION_ITERATIVE_FOREACH_H
 
+#include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include <memory>
 
@@ -13,9 +14,8 @@ namespace Celeste::ir::inputreconstruction
 	class ForEach : public InputReconstructionObject
 	{
 	private:
-		std::unique_ptr<TypeConstruct> variableType;
-		std::unique_ptr<NameReference> variableName;
-		std::unique_ptr<Expression> expression;
+		std::unique_ptr<VariableDeclaration> variable;
+		Expression* expression;
 
 		std::vector<std::unique_ptr<InputReconstructionObject>> block;
 
@@ -28,7 +28,10 @@ namespace Celeste::ir::inputreconstruction
 		ForEach(const ForEach& rhs);
 
 	public:
+		VariableDeclaration* GetVariableCore();
 		NameReference* GetVariable();
+		TypeConstruct* GetVariableType();
+		Expression* GetExpression();
 
 	public:
 		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator begin() override;
