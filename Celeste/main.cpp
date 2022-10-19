@@ -40,6 +40,7 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 				{
 					auto unresolved_ =
 						static_cast<Celeste::ir::inputreconstruction::SymbolReferenceCall*>(object);
+
 					std::cout << "Unresolved Reference: " << unresolved_->GetNode()->GetText()
 							  << "(" << (std::size_t)unresolved_ << ") Parent["
 							  << (std::size_t)unresolved_->GetParent() << "]"
@@ -95,10 +96,61 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 	}
 }
 
+void EvaluateMain(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
+{
+	auto files = project->GetFiles();
+	for (auto file : files)
+	{
+		if (file->GetFileName().find("main.ce") == std::string::npos)
+		{
+			continue;
+		}
+
+		file->ResolveReferences();
+		file->IdentifyUpperCodeBlockScopes();
+
+		auto functionObject = file->GetFunction("main");
+		if (!functionObject.has_value())
+		{
+			return;
+		}
+
+		auto interpreter = Celeste::ir::inputreconstruction::Interpreter(
+			Celeste::ir::inputreconstruction::GroupType::Standard);
+		interpreter.Interpret(functionObject.value());
+		return;
+	}
+}
+
+void EvaluateCodeTime(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
+{
+	auto files = project->GetFiles();
+	for (auto file : files)
+	{
+		auto interpreter = Celeste::ir::inputreconstruction::Interpreter(
+			Celeste::ir::inputreconstruction::GroupType::CodeBlock);
+		interpreter.Interpret(file->GetRoot());
+
+		for (auto fileReset : files)
+		{
+			fileReset->ResetReferences();
+		}
+	}
+}
+
 int main(int argc, const char* argv[])
 {
-	std::vector<std::string> filenames = {"./Celeste/standard_types.ce", "./Celeste/CodeBlock.ce",
-										  "./Celeste/Boolean.ce", "./main.ce", "./Point.ce"};
+	std::vector<std::string> filenames = {"./Celeste/standard_types.ce",
+										  "./Celeste/CodeBlock.ce",
+										  "./Celeste/Boolean.ce",
+										  "./Celeste/Array.ce",
+										  "./Celeste/Object.ce",
+										  "./Celeste/Range.ce",
+										  "./Celeste/any_type.ce",
+										  "./Celeste/io.ce",
+										  "./Celeste/mutate.ce",
+										  "./main.ce",
+										  "./Point.ce"};
 
 	for (auto i = 1; i < argc; i++)
 	{
@@ -137,7 +189,11 @@ int main(int argc, const char* argv[])
 		file->SetAst(std::move(tree));
 	}
 
-	VisualizeProject(project);
+	// VisualizeProject(project);
+
+	EvaluateCodeTime(project);
+
+	EvaluateMain(project);
 
 	std::cout << "Compilation succeeded!\n";
 	return 0;
