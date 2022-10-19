@@ -31,25 +31,6 @@
 #include <limits>
 #include <memory>
 
-struct Celeste::ir::inputreconstruction::Interpreter::StackLifetime
-{
-	Interpreter* interpreter;
-	StackLifetime(Interpreter* interpreter_) : interpreter(interpreter_)
-	{
-		interpreter->stackOfOperationStacks.push_back(std::move(
-			std::make_unique<Celeste::ir::inputreconstruction::Interpreter::Stack>(interpreter)));
-	}
-
-	~StackLifetime()
-	{
-		interpreter->stackOfOperationStacks.pop_back();
-	}
-
-	Stack* Stack() const
-	{
-		return std::rbegin(interpreter->stackOfOperationStacks)->get();
-	}
-};
 Celeste::ir::inputreconstruction::Interpreter::TypeId::TypeId(std::size_t id_) : id(id_)
 {
 }
@@ -433,83 +414,6 @@ Celeste::ir::inputreconstruction::Interpreter::GlobalVariableTable::GlobalVariab
 {
 }
 
-Celeste::ir::inputreconstruction::Interpreter::Stack::Stack(Interpreter* interpreter_)
-	: interpreter(interpreter_)
-{
-}
-
-Celeste::ir::inputreconstruction::Interpreter::Stack::~Stack()
-{
-}
-
-Celeste::ir::inputreconstruction::Interpreter::Stack::Stack(Stack&& rhs) noexcept
-	: interpreter(rhs.interpreter),
-	  symbols(std::move(rhs.symbols)),
-	  parent(rhs.parent),
-	  nextDepthScope(std::move(rhs.nextDepthScope)),
-	  currentScope(rhs.currentScope)
-{
-}
-
-Celeste::ir::inputreconstruction::Interpreter::Stack*
-Celeste::ir::inputreconstruction::Interpreter::Stack::OpenScope()
-{
-	nextDepthScope = std::make_unique<Stack>(interpreter);
-	currentScope = nextDepthScope.value().get();
-	currentScope->parent = this;
-	(*std::rbegin(interpreter->stackOfOperationStacks))->currentScope = currentScope;
-
-	return currentScope;
-}
-
-void Celeste::ir::inputreconstruction::Interpreter::Stack::CloseScope()
-{
-	// If we are the bottom scope that closes
-	if (nextDepthScope == std::nullopt)
-	{
-		if (parent.has_value())
-		{
-			parent.value()->currentScope = parent.value()->currentScope;
-			(*std::rbegin(interpreter->stackOfOperationStacks))->currentScope = parent.value();
-			parent.value()->nextDepthScope = std::nullopt;
-		}
-	}
-	else
-	{
-		nextDepthScope = std::nullopt;
-		currentScope = this;
-		(*std::rbegin(interpreter->stackOfOperationStacks))->currentScope = this;
-	}
-}
-
-void Celeste::ir::inputreconstruction::Interpreter::Stack::AddVariable(VariableDeclaration* object)
-{
-	auto name = Name(object->GetName());
-	auto type = interpreter->GetType(object->GetVariableType());
-	auto value = interpreter->Evaluate(object, object->GetExpressions());
-	std::unique_ptr<Symbol> newSymbol;
-	if (value.has_value())
-	{
-		newSymbol = std::make_unique<Symbol>(name, type, value.value());
-	}
-	else
-	{
-		newSymbol = std::make_unique<Symbol>(name, type);
-	}
-	symbols.push_back(std::move(newSymbol));
-}
-
-void Celeste::ir::inputreconstruction::Interpreter::Stack::AddVariable(
-	std::unique_ptr<Symbol> symbol)
-{
-	symbols.push_back(std::move(symbol));
-}
-
-void Celeste::ir::inputreconstruction::Interpreter::Stack::AddVariable(const SymbolMember& value)
-{
-	symbols.push_back(std::make_unique<Symbol>(value.name, value.type, value.value));
-}
-
 Celeste::ir::inputreconstruction::Interpreter::TypeId
 Celeste::ir::inputreconstruction::Interpreter::GetType(TypeConstruct* typeConstruct)
 {
@@ -874,7 +778,7 @@ std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionOnValue(
 	Value& value, inputreconstruction::Function* function, std::vector<Value*> functionArguments)
 {
-	auto stackLifetime = StackLifetime{this};
+	auto stackLifetime = StackLifetime<StackType>{this};
 
 	// This implementation depends on Value list as function arguments
 	// This assumption holds that the function arguments are fully resolved
@@ -1402,7 +1306,7 @@ std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 Celeste::ir::inputreconstruction::Interpreter::EvaluateConstructor(
 	inputreconstruction::Constructor* function, std::vector<Value*> functionArguments)
 {
-	auto stackLifetime = StackLifetime{this};
+	auto stackLifetime = StackLifetime<StackType>{this};
 
 	auto value = Value(ZeroValue(
 		typeTable.typeIdMap.find(typeTable.GetTypeFromConstructor(function))->second.irType));
@@ -1415,7 +1319,7 @@ std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 Celeste::ir::inputreconstruction::Interpreter::EvaluateFunction(
 	inputreconstruction::Function* function, std::vector<Value*> functionArguments)
 {
-	auto stackLifetime = StackLifetime{this};
+	auto stackLifetime = StackLifetime<StackType>{this};
 
 	return EvaluateSomeFunction(function, functionArguments, stackLifetime);
 }
@@ -1425,7 +1329,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMonomorphizedMemberFuncti
 	Value& value, inputreconstruction::MonomorphizedFunction* function,
 	std::vector<Value*> functionArguments)
 {
-	auto stackLifetime = StackLifetime{this};
+	auto stackLifetime = StackLifetime<StackType>{this};
 
 	auto resultingValue = EvaluateSomeFunction(function, functionArguments, stackLifetime, &value);
 	return resultingValue;
@@ -1435,7 +1339,7 @@ std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 Celeste::ir::inputreconstruction::Interpreter::EvaluateMonomorphizedFunction(
 	inputreconstruction::MonomorphizedFunction* function, std::vector<Value*> functionArguments)
 {
-	auto stackLifetime = StackLifetime{this};
+	auto stackLifetime = StackLifetime<StackType>{this};
 
 	return EvaluateSomeFunction(function, functionArguments, stackLifetime);
 }
@@ -1745,7 +1649,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
 Celeste::ir::inputreconstruction::Interpreter::EvaluateMutationGroup(MutationGroup* mutationGroup)
 {
-	auto stackLifetime = StackLifetime{this};
+	auto stackLifetime = StackLifetime<StackType>{this};
 
 	return EvaluateSomeFunction(mutationGroup, {}, stackLifetime, {});
 }
@@ -1755,7 +1659,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 	std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*,
 				 inputreconstruction::MonomorphizedFunction*>
 		function,
-	std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
+	std::vector<Value*> functionArguments, StackLifetime<StackType>& stackLifetime,
 	std::optional<Value*> valueReference)
 {
 	struct Block
@@ -1951,10 +1855,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			return true;
 		}
 
-		void StartAction(Interpreter* interpreter, StackLifetime& stackLifetime)
+		void StartAction(Interpreter* interpreter, StackLifetime<StackType>& stackLifetime)
 		{
 			index = 0;
-			stackLifetime.Stack()->currentScope->OpenScope();
+			stackLifetime.Stack()->GetCurrentScope()->OpenScope();
 			switch (type)
 			{
 			case BlockType::ForEachBlock: {
@@ -1964,7 +1868,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 				{
 					auto& valueVector =
 						std::get<std::vector<Value>>(iteratableContainerRhs.value().value);
-					stackLifetime.Stack()->currentScope->AddVariable(
+					stackLifetime.Stack()->GetCurrentScope()->AddVariable(
 						std::make_unique<Symbol>(iteratingName.value(), iteratingType.value(),
 												 valueVector[iterationCounter].value));
 				}
@@ -1973,10 +1877,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			}
 		}
 
-		void EndAction(Interpreter* interpreter, StackLifetime& stackLifetime)
+		void EndAction(Interpreter* interpreter, StackLifetime<StackType>& stackLifetime)
 		{
 			iterationCounter++;
-			stackLifetime.Stack()->currentScope->CloseScope();
+			stackLifetime.Stack()->GetCurrentScope()->CloseScope();
 		}
 
 		InputReconstructionObject* GetCurrentStatement()
@@ -2172,7 +2076,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 			case inputreconstruction::Type::VariableDeclaration: {
 				auto variableDeclaration =
 					static_cast<inputreconstruction::VariableDeclaration*>(current);
-				stackLifetime.Stack()->currentScope->AddVariable(variableDeclaration);
+				stackLifetime.Stack()->GetCurrentScope()->AddVariable(variableDeclaration);
 				break;
 			}
 			case inputreconstruction::Type::Assignment: {
@@ -2619,8 +2523,74 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerPro
 	return std::nullopt;
 }
 
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack::MinimalStack(Interpreter* interpreter_)
+	: interpreter(interpreter_)
+{
+	symbolStack.push_back(0);
+}
+
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack::~MinimalStack()
+{
+}
+
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack::MinimalStack(
+	MinimalStack&& rhs) noexcept
+	: interpreter(rhs.interpreter),
+	  symbols(std::move(rhs.symbols)),
+	  symbolStack(std::move(rhs.symbolStack))
+{
+}
+
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack*
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack::OpenScope()
+{
+	symbolStack.push_back(0);
+	return this;
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::MinimalStack::CloseScope()
+{
+	auto iter = std::end(symbols) - GetCurrentStackSize();
+	symbols.erase(iter, std::end(symbols));
+	symbolStack.pop_back();
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::MinimalStack::AddVariable(
+	VariableDeclaration* object)
+{
+	auto name = Name(object->GetName());
+	auto type = interpreter->GetType(object->GetVariableType());
+	auto value = interpreter->Evaluate(object, object->GetExpressions());
+	std::unique_ptr<Symbol> newSymbol;
+	if (value.has_value())
+	{
+		newSymbol = std::make_unique<Symbol>(name, type, value.value());
+	}
+	else
+	{
+		newSymbol = std::make_unique<Symbol>(name, type);
+	}
+	symbols.push_back(std::move(newSymbol));
+
+	GetCurrentStackSize() += 1;
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::MinimalStack::AddVariable(
+	std::unique_ptr<Symbol> symbol)
+{
+	symbols.push_back(std::move(symbol));
+	GetCurrentStackSize() += 1;
+}
+
+void Celeste::ir::inputreconstruction::Interpreter::MinimalStack::AddVariable(
+	const SymbolMember& value)
+{
+	symbols.push_back(std::make_unique<Symbol>(value.name, value.type, value.value));
+	GetCurrentStackSize() += 1;
+}
+
 std::optional<Celeste::ir::inputreconstruction::Interpreter::Symbol*>
-Celeste::ir::inputreconstruction::Interpreter::Stack::GetSymbolMember(Name name)
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack::GetSymbolMember(Name name)
 {
 	for (auto& symbol : symbols)
 	{
@@ -2630,12 +2600,18 @@ Celeste::ir::inputreconstruction::Interpreter::Stack::GetSymbolMember(Name name)
 		}
 	}
 
-	if (parent.has_value())
-	{
-		return parent.value()->GetSymbolMember(name);
-	}
-
 	return std::nullopt;
+}
+
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack*
+Celeste::ir::inputreconstruction::Interpreter::MinimalStack::GetCurrentScope()
+{
+	return this;
+}
+
+std::size_t& Celeste::ir::inputreconstruction::Interpreter::MinimalStack::GetCurrentStackSize()
+{
+	return *std::rbegin(symbolStack);
 }
 
 Celeste::ir::inputreconstruction::Interpreter::Type::Type(TypeId type_, Name name_,
@@ -2773,7 +2749,8 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
 	if (!stackOfOperationStacks.empty())
 	{
 		auto& currentStack = *std::rbegin(stackOfOperationStacks);
-		auto result = currentStack->currentScope->GetSymbolMember(variableDeclaration->GetName());
+		auto result =
+			currentStack->GetCurrentScope()->GetSymbolMember(variableDeclaration->GetName());
 
 		if (result.has_value())
 		{
@@ -2816,7 +2793,7 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(
 	if (!stackOfOperationStacks.empty())
 	{
 		auto& currentStack = *std::rbegin(stackOfOperationStacks);
-		auto result = currentStack->currentScope->GetSymbolMember(functionArgument->GetName());
+		auto result = currentStack->GetCurrentScope()->GetSymbolMember(functionArgument->GetName());
 
 		if (result.has_value())
 		{
@@ -2834,7 +2811,7 @@ Celeste::ir::inputreconstruction::Interpreter::GetSymbolMember(const std::string
 	if (!stackOfOperationStacks.empty())
 	{
 		auto& currentStack = *std::rbegin(stackOfOperationStacks);
-		auto result = currentStack->currentScope->GetSymbolMember(symbolName);
+		auto result = currentStack->GetCurrentScope()->GetSymbolMember(symbolName);
 
 		if (result.has_value())
 		{
