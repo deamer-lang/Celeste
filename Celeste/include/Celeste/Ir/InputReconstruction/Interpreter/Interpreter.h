@@ -1,7 +1,9 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_INTERPRETER_INTERPRETER_H
 #define CELESTE_IR_INPUTRECONSTRUCTION_INTERPRETER_INTERPRETER_H
 
+#include "Bytecode/BytecodeRepresentation.h"
 #include "Celeste/Ir/InputReconstruction/Computation/VariableDeclaration.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Instruction.h"
 #include "Celeste/Ir/InputReconstruction/Meta/GroupType.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
@@ -21,15 +23,14 @@ namespace Celeste::ir::inputreconstruction
 	class Interpreter
 	{
 	private:
-		// Used to manage lifetimes of stacks by bounding them to the evaluation context.
-		struct StackLifetime;
-
-	private:
 		struct Symbol;
 		struct SymbolMember;
 		struct Name;
 		struct Value;
 		struct AlgebraicValue;
+
+		template<typename T>
+		struct StackLifetime;
 
 		using ValueType = std::variant<int, double, std::string, AlgebraicValue, Value*,
 									   InputReconstructionObject*, std::vector<Value>, File*>;
@@ -149,6 +150,24 @@ namespace Celeste::ir::inputreconstruction
 
 			Value(File* file_) : value(file_)
 			{
+			}
+
+			template<typename T>
+			Value& Assign(const T& rhs)
+			{
+				if constexpr (std::is_same_v<Value, T>)
+				{
+					if (&rhs == this)
+					{
+						return *this;
+					}
+					value = rhs.value;
+				}
+				else
+				{
+					value = rhs;
+				}
+				return *this;
 			}
 
 			bool operator==(bool rhs)
@@ -364,23 +383,26 @@ namespace Celeste::ir::inputreconstruction
 			void OptimizeFilePoolsUsingStrongConnectedSets();
 		};
 
-		struct Stack
+		/*	\struct MinimalStack
+		 *
+		 *	\brief This is an optimized stack that implements scoping as top accessible elements.
+		 *
+		 */
+		struct MinimalStack
 		{
+		private:
 			Interpreter* interpreter = nullptr;
-
 			std::vector<std::unique_ptr<Symbol>> symbols;
+			std::vector<std::size_t> symbolStack;
 
-			std::optional<Interpreter::Stack*> parent;
-			std::optional<std::unique_ptr<Interpreter::Stack>> nextDepthScope;
-			Interpreter::Stack* currentScope = this;
+		public:
+			MinimalStack(Interpreter* interpreter_);
+			~MinimalStack();
 
-			Stack(Interpreter* interpreter_);
-			~Stack();
+			MinimalStack(MinimalStack&& rhs) noexcept;
+			MinimalStack(const MinimalStack&) = delete;
 
-			Stack(Stack&& rhs) noexcept;
-			Stack(const Stack&) = delete;
-
-			Stack* OpenScope();
+			MinimalStack* OpenScope();
 
 			void CloseScope();
 
@@ -389,6 +411,11 @@ namespace Celeste::ir::inputreconstruction
 			void AddVariable(const SymbolMember& value);
 
 			std::optional<Symbol*> GetSymbolMember(Name name);
+
+			MinimalStack* GetCurrentScope();
+
+		private:
+			std::size_t& GetCurrentStackSize();
 		};
 
 		struct Type
@@ -499,7 +526,8 @@ namespace Celeste::ir::inputreconstruction
 		// Contains a stack of Operation Stacks
 		// The latest stack represents the current Operation Stack
 		// All other stacks should be seen as not reachable in the current context
-		std::vector<std::unique_ptr<Stack>> stackOfOperationStacks;
+		using StackType = MinimalStack;
+		std::vector<std::unique_ptr<StackType>> stackOfOperationStacks;
 
 		// Contains A List of Reachable Types.
 		TypeTable typeTable;
@@ -602,7 +630,7 @@ namespace Celeste::ir::inputreconstruction
 			std::variant<inputreconstruction::Function*, inputreconstruction::MutationGroup*,
 						 inputreconstruction::MonomorphizedFunction*>
 				function,
-			std::vector<Value*> functionArguments, StackLifetime& stackLifetime,
+			std::vector<Value*> functionArguments, StackLifetime<StackType>& stackLifetime,
 			std::optional<Value*> valueReference = std::nullopt);
 
 		std::vector<Value>
@@ -627,6 +655,103 @@ namespace Celeste::ir::inputreconstruction
 		EvaluateMemberFunctionCompilerProvided_Array(Value& value,
 													 inputreconstruction::Function* function,
 													 const std::vector<Value*>& functionArguments);
+
+	private:
+		// Used to manage lifetimes of stacks by bounding them to the evaluation context.
+		template<typename T>
+		struct StackLifetime
+		{
+			Interpreter* interpreter;
+			StackLifetime(Interpreter* interpreter_) : interpreter(interpreter_)
+			{
+				interpreter->stackOfOperationStacks.push_back(std::make_unique<T>(interpreter));
+			}
+
+			~StackLifetime()
+			{
+				interpreter->stackOfOperationStacks.pop_back();
+			}
+
+			T* Stack() const
+			{
+				return std::rbegin(interpreter->stackOfOperationStacks)->get();
+			}
+		};
+
+	private:
+		struct BytecodeValue
+		{
+			std::variant<Value, Value*> value;
+			bool isReference = false;
+			InputReconstructionObject* type = nullptr;
+
+			BytecodeValue(Value* rhs, bool isReference_ = false)
+				: value(rhs),
+				  isReference(isReference_)
+			{
+			}
+
+			BytecodeValue(Value rhs = {std::numeric_limits<int>::max()}, bool isReference_ = false)
+				: value(rhs),
+				  isReference(isReference_)
+			{
+			}
+
+			bool IsReference() const
+			{
+				return isReference;
+			}
+
+			bool IsValue() const
+			{
+				return std::holds_alternative<Value>(value);
+			}
+
+			bool IsPointer() const
+			{
+				return std::holds_alternative<Value*>(value);
+			}
+
+			Value* GetReferenceToValue()
+			{
+				if (std::holds_alternative<Value*>(value))
+				{
+					return std::get<Value*>(value);
+				}
+				else
+				{
+					return &std::get<Value>(value);
+				}
+			}
+
+			template<typename T>
+			void Assign(const T& assignment_value)
+			{
+				if (IsReference())
+				{
+					(*(std::get<Value*>(value))).Assign(assignment_value);
+				}
+				else if (IsValue())
+				{
+					std::get<Value>(value).Assign(assignment_value);
+				}
+				else
+				{
+					// Is a Pointer, currently no logic to properly handle pointers
+				}
+			}
+		};
+
+		// Bytecode Functions
+		bool HasOptimizedBytecode(const std::variant<inputreconstruction::Function*, MutationGroup*,
+													 MonomorphizedFunction*>& function);
+		Celeste::ir::inputreconstruction::BytecodeRepresentation&
+		GetBytecode(const std::variant<inputreconstruction::Function*, MutationGroup*,
+									   MonomorphizedFunction*>& variant);
+		std::optional<Value> EvaluateBytecode(BytecodeRepresentation& bytecodeRepresentation,
+											  const std::vector<Value*>& arguments,
+											  const StackLifetime<MinimalStack>& stackLifetime,
+											  const std::optional<Value*>& value);
 	};
 }
 

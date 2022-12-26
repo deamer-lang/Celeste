@@ -3,6 +3,8 @@
 
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/BytecodeRepresentation.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Instruction.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
@@ -17,6 +19,9 @@ namespace Celeste::ir::inputreconstruction
 
 		std::vector<std::unique_ptr<InputReconstructionObject>> block;
 
+		std::optional<Celeste::ir::inputreconstruction::BytecodeRepresentation>
+			bytecodeRepresentation;
+
 	public:
 		MutationGroup();
 		virtual ~MutationGroup() override;
@@ -30,6 +35,12 @@ namespace Celeste::ir::inputreconstruction
 		void Add(std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
 					 innerObject) override;
 
+	public:
+		bool HasOptimizedBytecode() const;
+		Celeste::ir::inputreconstruction::BytecodeRepresentation& GetBytecode();
+		void ConstructBytecode(std::size_t level = 0);
+
+	public:
 		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator begin() override;
 		std::vector<std::unique_ptr<InputReconstructionObject>>::iterator end() override;
 		std::vector<std::unique_ptr<InputReconstructionObject>>::reverse_iterator rbegin() override;

@@ -1,5 +1,6 @@
 #include "Celeste/Ir/InputReconstruction/Structure/MonomorphizedFunction.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolAccess.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/CodeBlockRoot.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 
@@ -206,6 +207,29 @@ std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructio
 Celeste::ir::inputreconstruction::MonomorphizedFunction::GetBlock()
 {
 	return block;
+}
+
+bool Celeste::ir::inputreconstruction::MonomorphizedFunction::HasOptimizedBytecode() const
+{
+	return bytecodeRepresentation.has_value();
+}
+
+Celeste::ir::inputreconstruction::BytecodeRepresentation&
+Celeste::ir::inputreconstruction::MonomorphizedFunction::GetBytecode()
+{
+	if (!bytecodeRepresentation.has_value())
+	{
+		ConstructBytecode();
+	}
+
+	return bytecodeRepresentation.value();
+}
+
+void Celeste::ir::inputreconstruction::MonomorphizedFunction::ConstructBytecode(std::size_t level)
+{
+	bytecode::Constructor construction(level);
+	construction.AddObject(this);
+	bytecodeRepresentation.emplace(construction.GetRepresentation());
 }
 
 void Celeste::ir::inputreconstruction::MonomorphizedFunction::AddCodeBlock(CodeBlock* codeBlock)

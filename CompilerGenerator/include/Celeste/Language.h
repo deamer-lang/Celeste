@@ -12,6 +12,7 @@
 #include "Deamer/Language/Generator/Definition/Language.h"
 #include "Celeste/Threat.h"
 #include "Celeste/Identity.h"
+#include "Celeste/Comment.h"
 #include "Celeste/Generation.h"
 #include "Celeste/Grammar.h"
 #include "Celeste/Lexicon.h"
@@ -31,12 +32,14 @@ namespace Celeste
 	class Language : public ::deamer::language::generator::definition::Language<
 						 ::Celeste::Language , ::Celeste::Threat
 , ::Celeste::Identity
+, ::Celeste::Comment
 , ::Celeste::Generation
 , ::Celeste::Grammar
 , ::Celeste::Lexicon
 >
 						 , public ::Celeste::Threat
 , public ::Celeste::Identity
+, public ::Celeste::Comment
 , public ::Celeste::Generation
 , public ::Celeste::Grammar
 , public ::Celeste::Lexicon
@@ -46,12 +49,14 @@ namespace Celeste
 		Language() : ::deamer::language::generator::definition::Language<
 						 ::Celeste::Language , ::Celeste::Threat
 , ::Celeste::Identity
+, ::Celeste::Comment
 , ::Celeste::Generation
 , ::Celeste::Grammar
 , ::Celeste::Lexicon
 >()
 		, ::Celeste::Threat::Threat(this)
 , ::Celeste::Identity::Identity(this)
+, ::Celeste::Comment::Comment(this)
 , ::Celeste::Generation::Generation(this)
 , ::Celeste::Grammar::Grammar(this)
 , ::Celeste::Lexicon::Lexicon(this)

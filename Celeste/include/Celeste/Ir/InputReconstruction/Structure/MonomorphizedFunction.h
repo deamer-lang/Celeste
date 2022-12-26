@@ -4,6 +4,8 @@
 #include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/BytecodeRepresentation.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Instruction.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
@@ -27,6 +29,9 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<std::unique_ptr<InputReconstructionObject>> block;
 
 		Function* templateParent = nullptr;
+
+		std::optional<Celeste::ir::inputreconstruction::BytecodeRepresentation>
+			bytecodeRepresentation;
 
 	public:
 		MonomorphizedFunction(std::unique_ptr<NameReference> functionName_,
@@ -60,6 +65,11 @@ namespace Celeste::ir::inputreconstruction
 		std::vector<std::unique_ptr<TemplateArgument>>& GetTemplateFunctionArguments();
 		std::vector<InputReconstructionObject*> GetOwnedBlock();
 		std::vector<std::unique_ptr<InputReconstructionObject>>& GetBlock();
+
+	public:
+		bool HasOptimizedBytecode() const;
+		Celeste::ir::inputreconstruction::BytecodeRepresentation& GetBytecode();
+		void ConstructBytecode(std::size_t level = 0);
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock);

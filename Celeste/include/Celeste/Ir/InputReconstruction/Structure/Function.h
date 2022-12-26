@@ -4,6 +4,8 @@
 #include "Celeste/Ir/InputReconstruction/Computation/CodeBlock.h"
 #include "Celeste/Ir/InputReconstruction/Computation/NameReference.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolReferenceCall.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/BytecodeRepresentation.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Instruction.h"
 #include "Celeste/Ir/InputReconstruction/Meta/InputReconstructionObject.h"
 #include "Celeste/Ir/InputReconstruction/Meta/TypeConstruct.h"
 #include "Celeste/Ir/InputReconstruction/Structure/FunctionArgument.h"
@@ -11,6 +13,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/TemplateParameter.h"
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace Celeste::ir::inputreconstruction
@@ -29,6 +32,9 @@ namespace Celeste::ir::inputreconstruction
 			mapTypeListWithMonomorphizedFunction;
 
 		std::vector<std::unique_ptr<InputReconstructionObject>> block;
+
+		std::optional<Celeste::ir::inputreconstruction::BytecodeRepresentation>
+			bytecodeRepresentation;
 
 	public:
 		Function(std::unique_ptr<NameReference> functionName_,
@@ -66,6 +72,11 @@ namespace Celeste::ir::inputreconstruction
 		MonomorphizedFunction*
 		ConstructMonomorphizedFunction(const std::vector<Expression>& expressionList);
 		bool TemplateParametersAcceptsExpressionList(const std::vector<Expression>& vector);
+
+	public:
+		bool HasOptimizedBytecode() const;
+		Celeste::ir::inputreconstruction::BytecodeRepresentation& GetBytecode();
+		void ConstructBytecode(std::size_t level = 0);
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock);

@@ -671,8 +671,139 @@ Celeste::ir::inputreconstruction::Expression::GetRhs() const
 	return impl->rhs;
 }
 
+Celeste::ir::inputreconstruction::Operator
+Celeste::ir::inputreconstruction::Expression::GetOperatorType() const
+{
+	return impl->OperatorType;
+}
+
 std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>
 Celeste::ir::inputreconstruction::Expression::DeepCopy()
 {
 	return std::make_unique<Expression>(*this);
+}
+
+Celeste::ir::inputreconstruction::InputReconstructionObject*
+Celeste::ir::inputreconstruction::Expression::GetMemberFunction(
+	InputReconstructionObject* object) const
+{
+	std::optional<InputReconstructionObject*> deducedTypeLhs;
+	if (object == nullptr)
+	{
+		deducedTypeLhs = GetDeducedType(impl->lhs);
+	}
+	else
+	{
+		deducedTypeLhs = object;
+	}
+	auto typeT = deducedTypeLhs.value()->GetType();
+	auto operatorFunctionName = GetOperatorFunctionName();
+	if (typeT == Type::Class)
+	{
+		auto classIr = static_cast<Class*>(deducedTypeLhs.value());
+		if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
+		{
+			return classIr->GetMember(operatorFunctionName.value(),
+									  std::vector<InputReconstructionObject*>{
+										  std::get<std::unique_ptr<Expression>>(impl->rhs).get()});
+		}
+		else if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
+		{
+			return classIr->GetMember(operatorFunctionName.value(),
+									  std::vector<InputReconstructionObject*>{
+										  std::get<std::unique_ptr<Value>>(impl->rhs).get()});
+		}
+
+		return static_cast<InputReconstructionObject*>(nullptr);
+	}
+	else if (typeT == Type::MonomorphizedClass)
+	{
+		auto classIr = static_cast<MonomorphizedClass*>(deducedTypeLhs.value());
+		if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
+		{
+			return classIr->GetMember(operatorFunctionName.value(),
+									  std::vector<InputReconstructionObject*>{
+										  std::get<std::unique_ptr<Expression>>(impl->rhs).get()});
+		}
+		else if (std::holds_alternative<std::unique_ptr<Expression>>(impl->rhs))
+		{
+			return classIr->GetMember(operatorFunctionName.value(),
+									  std::vector<InputReconstructionObject*>{
+										  std::get<std::unique_ptr<Value>>(impl->rhs).get()});
+		}
+
+		return static_cast<InputReconstructionObject*>(nullptr);
+	}
+	else if (typeT == Type::TypeConstruct)
+	{
+		auto typeConstruct = static_cast<TypeConstruct*>(deducedTypeLhs.value());
+		if (typeConstruct->Trivial())
+		{
+			auto coreType = typeConstruct->GetCoreType();
+			if (coreType.value()->GetType() == Type::Class)
+			{
+				return GetMemberFunction(static_cast<Class*>(coreType.value()));
+			}
+			if (coreType.value()->GetType() == Type::MonomorphizedClass)
+			{
+				return GetMemberFunction(static_cast<MonomorphizedClass*>(coreType.value()));
+			}
+		}
+		else
+		{
+			// We may only utilize non-trivial operators.
+			// Which is not yet implemented.
+			throw std::logic_error("Non-Trivial operators are not yet implemented");
+		}
+	}
+	else if (typeT == Type::TypeExplicitAlias)
+	{
+		auto typeExplicitAlias = static_cast<TypeExplicitAlias*>(deducedTypeLhs.value());
+		auto forwardedType = typeExplicitAlias->GetAliasedForwardedType();
+		if (forwardedType.has_value())
+		{
+			if (forwardedType.value()->GetType() == Type::Class)
+			{
+				return GetMemberFunction(static_cast<Class*>(forwardedType.value()));
+			}
+			if (forwardedType.value()->GetType() == Type::MonomorphizedClass)
+			{
+				return GetMemberFunction(static_cast<MonomorphizedClass*>(forwardedType.value()));
+			}
+			else
+			{
+				throw std::logic_error("Unimplemented Functionality");
+			}
+		}
+
+		return nullptr;
+	}
+
+	return nullptr;
+}
+
+std::optional<Celeste::ir::inputreconstruction::InputReconstructionObject*>
+Celeste::ir::inputreconstruction::Expression::GetDeducedType(
+	std::variant<std::monostate, std::unique_ptr<Expression>, std::unique_ptr<Value>>& variant)
+	const
+{
+	if (std::holds_alternative<std::monostate>(variant))
+	{
+		return std::optional<InputReconstructionObject*>(std::nullopt);
+	}
+	else if (std::holds_alternative<std::unique_ptr<Expression>>(variant))
+	{
+		return std::optional<InputReconstructionObject*>(
+			std::get<std::unique_ptr<Expression>>(variant)->DeduceType());
+	}
+	else if (std::holds_alternative<std::unique_ptr<Value>>(variant))
+	{
+		return std::optional<InputReconstructionObject*>(
+			std::get<std::unique_ptr<Value>>(variant)->DeduceType());
+	}
+	else
+	{
+		// Invalid
+		return std::optional<InputReconstructionObject*>(nullptr);
+	}
 }

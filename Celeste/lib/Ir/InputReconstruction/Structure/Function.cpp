@@ -1,5 +1,6 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
 #include "Celeste/Ir/InputReconstruction/Computation/SymbolAccess.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Meta/File.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Class.h"
 #include "Celeste/Ir/InputReconstruction/Structure/CodeBlockRoot.h"
@@ -387,6 +388,29 @@ bool Celeste::ir::inputreconstruction::Function::TemplateParametersAcceptsExpres
 	// Later we limit this to also semantically limit the expression list.
 	// If you ask for autotype, only types are allowed.
 	return templateParameters.size() == vector.size();
+}
+
+bool Celeste::ir::inputreconstruction::Function::HasOptimizedBytecode() const
+{
+	return bytecodeRepresentation.has_value();
+}
+
+Celeste::ir::inputreconstruction::BytecodeRepresentation&
+Celeste::ir::inputreconstruction::Function::GetBytecode()
+{
+	if (!bytecodeRepresentation.has_value())
+	{
+		ConstructBytecode();
+	}
+
+	return bytecodeRepresentation.value();
+}
+
+void Celeste::ir::inputreconstruction::Function::ConstructBytecode(std::size_t level)
+{
+	bytecode::Constructor construction(level);
+	construction.AddObject(this);
+	bytecodeRepresentation.emplace(construction.GetRepresentation());
 }
 
 void Celeste::ir::inputreconstruction::Function::AddCodeBlock(CodeBlock* codeBlock)

@@ -1,4 +1,5 @@
 #include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Constructor.h"
 
 Celeste::ir::inputreconstruction::MutationGroup::MutationGroup()
 	: InputReconstructionObject(Type::MutationGroup)
@@ -42,6 +43,29 @@ void Celeste::ir::inputreconstruction::MutationGroup::Add(
 	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject> innerObject)
 {
 	block.push_back(std::move(innerObject));
+}
+
+bool Celeste::ir::inputreconstruction::MutationGroup::HasOptimizedBytecode() const
+{
+	return bytecodeRepresentation.has_value();
+}
+
+Celeste::ir::inputreconstruction::BytecodeRepresentation&
+Celeste::ir::inputreconstruction::MutationGroup::GetBytecode()
+{
+	if (!bytecodeRepresentation.has_value())
+	{
+		ConstructBytecode();
+	}
+
+	return bytecodeRepresentation.value();
+}
+
+void Celeste::ir::inputreconstruction::MutationGroup::ConstructBytecode(std::size_t level)
+{
+	bytecode::Constructor construction(level);
+	construction.AddObject(this);
+	bytecodeRepresentation.emplace(construction.GetRepresentation());
 }
 
 std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator

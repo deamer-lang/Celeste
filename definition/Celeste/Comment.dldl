@@ -1,0 +1,8 @@
+Comment SINGLE_COMMENT [
+	Start "/"
+]
+
+Comment MULTI_COMMENT [
+	Start "/*"
+	End   "*/"
+]

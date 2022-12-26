@@ -15,6 +15,8 @@
 #include "Celeste/Ir/InputReconstruction/Conditional/ElseIf.h"
 #include "Celeste/Ir/InputReconstruction/Conditional/If.h"
 #include "Celeste/Ir/InputReconstruction/Import.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/BytecodePrinter.h"
+#include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/BytecodeRepresentation.h"
 #include "Celeste/Ir/InputReconstruction/Iterative/ForEach.h"
 #include "Celeste/Ir/InputReconstruction/Iterative/ForIteration.h"
 #include "Celeste/Ir/InputReconstruction/Meta/File.h"
@@ -1458,7 +1460,6 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSymbolReferenceCall(
 			}
 		}
 		else if (nameNotFinalizedType == inputreconstruction::Type::Function)
-
 		{
 			auto& lhsDeref = symbolReferenceCall;
 			auto hiddenAccess = lhsDeref->GetSymbolAccessesIncludingHidden();
@@ -1662,6 +1663,14 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateSomeFunction(
 	std::vector<Value*> functionArguments, StackLifetime<StackType>& stackLifetime,
 	std::optional<Value*> valueReference)
 {
+	if (std::holds_alternative<inputreconstruction::Function*>(function) &&
+		std::get<inputreconstruction::Function*>(function)->GetType() !=
+			inputreconstruction::Type::Constructor)
+	{
+		return EvaluateBytecode(GetBytecode(function), functionArguments, stackLifetime,
+								valueReference);
+	}
+
 	struct Block
 	{
 		enum class BlockType
@@ -2523,9 +2532,256 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateMemberFunctionCompilerPro
 	return std::nullopt;
 }
 
+bool Celeste::ir::inputreconstruction::Interpreter::HasOptimizedBytecode(
+	const std::variant<inputreconstruction::Function*, MutationGroup*, MonomorphizedFunction*>&
+		function)
+{
+	if (std::holds_alternative<inputreconstruction::Function*>(function))
+	{
+		return std::get<inputreconstruction::Function*>(function)->HasOptimizedBytecode();
+	}
+	else if (std::holds_alternative<inputreconstruction::MutationGroup*>(function))
+	{
+		return std::get<inputreconstruction::MutationGroup*>(function)->HasOptimizedBytecode();
+	}
+	else if (std::holds_alternative<inputreconstruction::MonomorphizedFunction*>(function))
+	{
+		return std::get<inputreconstruction::MonomorphizedFunction*>(function)
+			->HasOptimizedBytecode();
+	}
+
+	return false;
+}
+
+Celeste::ir::inputreconstruction::BytecodeRepresentation&
+Celeste::ir::inputreconstruction::Interpreter::GetBytecode(
+	const std::variant<inputreconstruction::Function*, MutationGroup*, MonomorphizedFunction*>&
+		function)
+{
+	if (std::holds_alternative<inputreconstruction::Function*>(function))
+	{
+		return std::get<inputreconstruction::Function*>(function)->GetBytecode();
+	}
+	else if (std::holds_alternative<inputreconstruction::MutationGroup*>(function))
+	{
+		return std::get<inputreconstruction::MutationGroup*>(function)->GetBytecode();
+	}
+	else if (std::holds_alternative<inputreconstruction::MonomorphizedFunction*>(function))
+	{
+		return std::get<inputreconstruction::MonomorphizedFunction*>(function)->GetBytecode();
+	}
+
+	throw std::logic_error("Unsupported option");
+}
+
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
+	BytecodeRepresentation& bytecodeRepresentation, const std::vector<Value*>& arguments,
+	const StackLifetime<MinimalStack>& stackLifetime, const std::optional<Value*>& value)
+{
+	// Bytecode evaluation is currently limited:
+	// - No Pointers
+	// - No Monomorphized Functions
+	// - No Globals
+
+	std::vector<BytecodeValue> memory;
+	std::vector<std::size_t> memory_map;
+	for (std::size_t i = 0; i <= bytecodeRepresentation.maximalVariableSize; i++)
+	{
+		memory.emplace_back();
+		memory_map.emplace_back(i);
+	}
+	bytecode::BytecodePrinter::Print(bytecodeRepresentation);
+	std::cout << "\n";
+
+	std::size_t top_index = 0;
+
+	auto getVariable = [&](std::size_t index) { return &memory[memory_map[index]]; };
+
+	for (std::size_t i = 0; i < arguments.size(); i++)
+	{
+		// Arguments are referenced
+		memory[i] = {arguments[i], true};
+		top_index++;
+	}
+
+	for (auto& instruction : bytecodeRepresentation.instructions)
+	{
+		switch (instruction.GetBytecodeType())
+		{
+		case BytecodeType::Noop: {
+			// Do nothing
+			break;
+		}
+		case BytecodeType::Variable: {
+			auto variable_index = instruction.GetId();
+			memory[variable_index] = BytecodeValue();
+			memory_map[variable_index] = variable_index;
+			top_index++;
+			break;
+		}
+		case BytecodeType::UnloadVariable: {
+			memory[top_index - 1] = {};
+			memory_map[top_index - 1] = std::numeric_limits<std::size_t>::max();
+			top_index--;
+			break;
+		}
+		case BytecodeType::Alias: {
+			auto aliased_variable_index = instruction.GetArgument<std::size_t>(0);
+			auto target_index = instruction.GetArgument<std::size_t>(1);
+			memory_map[aliased_variable_index] = target_index;
+			break;
+		}
+		case BytecodeType::ReferenceReuseAssign: {
+			// Initially used as alias function, however, its usage is vastly more utile.
+			auto aliased_variable_index = instruction.GetArgument<std::size_t>(0);
+			auto target_index = instruction.GetArgument<std::size_t>(1);
+			memory_map[aliased_variable_index] = target_index;
+			break;
+		}
+		case BytecodeType::Return: {
+			auto return_value = memory[instruction.GetArgument<std::size_t>(0)];
+			if (return_value.IsReference())
+			{
+				return *(std::get<Value*>(return_value.value));
+			}
+			else if (return_value.IsValue())
+			{
+				return std::get<Value>(return_value.value);
+			}
+			else if (return_value.IsPointer())
+			{
+				return std::get<Value*>(return_value.value);
+			}
+			break;
+		}
+		case BytecodeType::ConstructorCall: {
+			auto assigned_variable = instruction.GetArgument<std::size_t>(0);
+			std::vector<Value*> function_arguments;
+			for (std::size_t i = 1; i < instruction.GetArguments().size(); i++)
+			{
+				function_arguments.push_back(
+					(*getVariable(instruction.GetArgument<std::size_t>(i))).GetReferenceToValue());
+			}
+
+			auto result = EvaluateConstructor(
+				static_cast<inputreconstruction::Constructor*>(instruction.GetType()),
+				function_arguments);
+
+			if (result.has_value())
+			{
+				(*getVariable(assigned_variable)).Assign(result.value());
+			}
+			break;
+		}
+		case BytecodeType::MemberFunctionCall: {
+			auto assigned_variable = instruction.GetArgument<std::size_t>(0);
+			auto self = instruction.GetArgument<std::size_t>(1);
+			std::vector<Value*> function_arguments;
+			for (std::size_t i = 2; i < instruction.GetArguments().size(); i++)
+			{
+				function_arguments.push_back(
+					(*getVariable(instruction.GetArgument<std::size_t>(i))).GetReferenceToValue());
+			}
+
+			auto result = EvaluateMemberFunctionOnValue(
+				*getVariable(self)->GetReferenceToValue(),
+				static_cast<inputreconstruction::Function*>(instruction.GetType()),
+				function_arguments);
+
+			if (result.has_value())
+			{
+				(*getVariable(assigned_variable)).Assign(result.value());
+			}
+			break;
+		}
+		case BytecodeType::FunctionCall: {
+			auto assigned_variable = instruction.GetArgument<std::size_t>(0);
+			std::vector<Value*> function_arguments;
+			for (std::size_t i = 1; i < instruction.GetArguments().size(); i++)
+			{
+				function_arguments.push_back(
+					(*getVariable(instruction.GetArgument<std::size_t>(i))).GetReferenceToValue());
+			}
+
+			auto result =
+				EvaluateFunction(static_cast<inputreconstruction::Function*>(instruction.GetType()),
+								 function_arguments);
+
+			if (result.has_value())
+			{
+				(*getVariable(assigned_variable)).Assign(result.value());
+			}
+			break;
+		}
+		case BytecodeType::Assign: {
+			auto lhs = instruction.GetArgument<std::size_t>(0);
+			auto rhs = instruction.GetArgument<std::size_t>(1);
+			(*getVariable(lhs)).Assign(*(*getVariable(rhs)).GetReferenceToValue());
+			break;
+		}
+		case BytecodeType::Add:
+		case BytecodeType::Minus:
+		case BytecodeType::Multiply:
+		case BytecodeType::Divide:
+		case BytecodeType::And:
+		case BytecodeType::Or:
+		case BytecodeType::Greater:
+		case BytecodeType::GreaterOrEqual:
+		case BytecodeType::Less:
+		case BytecodeType::LessOrEqual:
+		case BytecodeType::Equal:
+		case BytecodeType::NotEqual:
+		case BytecodeType::Power: {
+			auto assign = instruction.GetArgument<std::size_t>(0);
+			auto lhs = instruction.GetArgument<std::size_t>(1);
+			auto rhs = instruction.GetArgument<std::size_t>(2);
+			auto function = instruction.GetArgument<inputreconstruction::Function*>(3);
+			auto result =
+				EvaluateMemberFunctionOnValue(*(*getVariable(lhs)).GetReferenceToValue(), function,
+											  {getVariable(rhs)->GetReferenceToValue()});
+			if (result.has_value())
+			{
+				(*getVariable(assign)).Assign(result.value());
+			}
+			else
+			{
+				// Insert logic to reset variable
+			}
+			break;
+		}
+		case BytecodeType::Not: {
+			break;
+		}
+		case BytecodeType::Integer: {
+			auto assign_variable = instruction.GetArgument<std::size_t>(0);
+			auto integer_value = instruction.GetArgument<Integer*>(1);
+			(*getVariable(assign_variable)).Assign(integer_value->GetEvaluation());
+			break;
+		}
+		case BytecodeType::Decimal: {
+			auto assign_variable = instruction.GetArgument<std::size_t>(0);
+			auto integer_value = instruction.GetArgument<Decimal*>(1);
+			(*getVariable(assign_variable)).Assign(integer_value->GetEvaluation());
+			break;
+		}
+		case BytecodeType::Text: {
+			auto assign_variable = instruction.GetArgument<std::size_t>(0);
+			auto integer_value = instruction.GetArgument<Text*>(1);
+			(*getVariable(assign_variable)).Assign(integer_value->GetEvaluation());
+			break;
+		}
+		}
+	}
+
+	return std::nullopt;
+}
+
 Celeste::ir::inputreconstruction::Interpreter::MinimalStack::MinimalStack(Interpreter* interpreter_)
 	: interpreter(interpreter_)
 {
+	symbols.reserve(32);	// Should be enough for most situations.
+	symbolStack.reserve(6); // More is not often used.
 	symbolStack.push_back(0);
 }
 
