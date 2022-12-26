@@ -93,6 +93,7 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(Function
 {
 	for (auto i = 0; i < irObject->GetFunctionArguments().size(); i++)
 	{
+		mapVariableWithSize.emplace(irObject->GetFunctionArguments()[i].get(), idCounter);
 		IncrementIdCounter();
 	}
 
@@ -222,6 +223,15 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(
 						}
 						functionArgument = iter->second;
 					}
+					else if (elem->GetType() == Type::FunctionArgument)
+					{
+						auto iter = mapVariableWithSize.find(static_cast<FunctionArgument*>(elem));
+						if (iter == mapVariableWithSize.end())
+						{
+							continue;
+						}
+						functionArgument = iter->second;
+					}
 				}
 			}
 		};
@@ -231,6 +241,14 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(
 			// Identify type of reference
 			switch (resolvedIr.value()->GetType())
 			{
+			case Type::FunctionArgument: {
+				functionArgumentVariableIds.emplace_back(resolvedIr.value());
+				replace_by_local();
+				functionRepresentation.emplace_back(std::numeric_limits<std::size_t>::max(),
+													nullptr, BytecodeType::ReferenceReuseAssign,
+													functionArgumentVariableIds);
+				break;
+			}
 			case Type::VariableDeclaration: {
 				functionArgumentVariableIds.emplace_back(resolvedIr.value());
 				replace_by_local();
@@ -681,6 +699,7 @@ Celeste::ir::inputreconstruction::bytecode::Constructor::GetRepresentation()
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::InlineLabels()
 {
+	std::size_t instructionCounter = 0;
 	for (auto& instruction : functionRepresentation)
 	{
 		if (instruction.GetBytecodeType() == BytecodeType::Goto)
@@ -691,6 +710,34 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::InlineLabels()
 										 instruction.GetArguments()[0])]});
 			instruction.Replace(x);
 		}
+		else if (instruction.GetBytecodeType() == BytecodeType::ConditionalJump)
+		{
+			std::size_t trueJump;
+			if (instruction.GetArgument<std::size_t>(1) == std::numeric_limits<std::size_t>::max())
+			{
+				trueJump = instructionCounter + 1;
+			}
+			else
+			{
+				trueJump = labelInstructionJumpLocations[instruction.GetArgument<std::size_t>(1)];
+			}
+
+			std::size_t falseJump;
+			if (instruction.GetArgument<std::size_t>(2) == std::numeric_limits<std::size_t>::max())
+			{
+				falseJump = instructionCounter + 1;
+			}
+			else
+			{
+				falseJump = labelInstructionJumpLocations[instruction.GetArgument<std::size_t>(2)];
+			}
+
+			auto x = Instruction(BytecodeType::InstructionConditionalJump,
+								 std::vector<std::variant<std::size_t, InputReconstructionObject*>>{
+									 instruction.GetArgument<std::size_t>(0), trueJump, falseJump});
+			instruction.Replace(x);
+		}
+		instructionCounter++;
 	}
 }
 
@@ -831,13 +878,13 @@ std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::ReserveLabe
 std::size_t
 Celeste::ir::inputreconstruction::bytecode::Constructor::AddLabel(std::size_t specificLabel)
 {
-	labelInstructionJumpLocations[specificLabel] = functionRepresentation.size() - 1;
+	labelInstructionJumpLocations[specificLabel] = functionRepresentation.size();
 	return specificLabel;
 }
 
 std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddLabel()
 {
-	labelInstructionJumpLocations.emplace_back(functionRepresentation.size() - 1);
+	labelInstructionJumpLocations.emplace_back(functionRepresentation.size());
 	return labelInstructionJumpLocations.size() - 1;
 }
 

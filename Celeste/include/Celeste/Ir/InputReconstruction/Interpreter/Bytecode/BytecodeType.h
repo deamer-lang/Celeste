@@ -23,6 +23,7 @@ namespace Celeste::ir::inputreconstruction
 		Jump = Goto,
 		InstructionJump,
 		ConditionalJump,
+		InstructionConditionalJump,
 		UnloadVariable, // Unloads the last loaded variable.
 
 		// Operations, standard operations

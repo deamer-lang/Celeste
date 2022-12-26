@@ -37,9 +37,11 @@ namespace Celeste::ir::inputreconstruction::bytecode
 		// Output data
 	private:
 		std::size_t level;
-		std::vector<Instruction> functionRepresentation;
+		std::vector<Instruction> functionRepresentation = {
+			Instruction{BytecodeType::Noop}}; // First instruction is noop, to allow jumping to
+											  // start of bytecode
 		std::size_t idCounter = 0;
-		std::map<VariableDeclaration*, std::size_t> mapVariableWithSize;
+		std::map<InputReconstructionObject*, std::size_t> mapVariableWithSize;
 		std::vector<std::size_t> labelInstructionJumpLocations;
 
 		// Output Construction Cache

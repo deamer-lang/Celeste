@@ -9,9 +9,12 @@
 void Celeste::ir::inputreconstruction::bytecode::BytecodePrinter::Print(
 	const Celeste::ir::inputreconstruction::BytecodeRepresentation& representation)
 {
+	std::size_t line_number = 0;
 	for (const auto& instruction : representation.instructions)
 	{
+		std::cout << std::to_string(line_number) << ": ";
 		Print(instruction);
+		line_number++;
 	}
 }
 
@@ -81,16 +84,25 @@ void Celeste::ir::inputreconstruction::bytecode::BytecodePrinter::Print(const In
 		break;
 	}
 	case BytecodeType::InstructionJump:
-		std::cout << "INSTR_JUMP" << std::get<std::size_t>(value.GetArguments()[0]);
+		std::cout << "INSTR_JUMP " << std::get<std::size_t>(value.GetArguments()[0]);
 		break;
 	case BytecodeType::ConditionalJump:
-		std::cout << "COND_JUMP";
+		std::cout << "COND_JUMP ";
+		reference_variable(value.GetArguments()[0]);
+		reference_variable(value.GetArguments()[1]);
+		reference_variable(value.GetArguments()[2]);
+		break;
+	case BytecodeType::InstructionConditionalJump:
+		std::cout << "INSTR_COND_JUMP ";
+		reference_variable(value.GetArguments()[0]);
+		reference_variable(value.GetArguments()[1]);
+		reference_variable(value.GetArguments()[2]);
 		break;
 	case BytecodeType::UnloadVariable:
-		std::cout << "UNLOAD_VAR";
+		std::cout << "UNLOAD_VAR ";
 		break;
 	case BytecodeType::Compare:
-		std::cout << "COMPARE";
+		std::cout << "COMPARE ";
 		break;
 	case BytecodeType::Add: {
 		std::cout << "ADD " << std::get<std::size_t>(value.GetArguments()[0]);

@@ -2605,8 +2605,11 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 		top_index++;
 	}
 
-	for (auto& instruction : bytecodeRepresentation.instructions)
+	const auto instruction_size = bytecodeRepresentation.instructions.size();
+	for (std::size_t instruction_counter = 1; instruction_counter < instruction_size;
+		 instruction_counter++)
 	{
+		auto& instruction = bytecodeRepresentation.instructions[instruction_counter];
 		switch (instruction.GetBytecodeType())
 		{
 		case BytecodeType::Noop: {
@@ -2769,6 +2772,29 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 			auto assign_variable = instruction.GetArgument<std::size_t>(0);
 			auto integer_value = instruction.GetArgument<Text*>(1);
 			(*getVariable(assign_variable)).Assign(integer_value->GetEvaluation());
+			break;
+		}
+		case BytecodeType::InstructionJump: {
+			instruction_counter = instruction.GetArgument<std::size_t>(0) - 1;
+			break;
+		}
+		case BytecodeType::InstructionConditionalJump: {
+			auto localVariableCheck = instruction.GetArgument<std::size_t>(0);
+			auto trueJump = instruction.GetArgument<std::size_t>(1) - 1;
+			auto falseJump = instruction.GetArgument<std::size_t>(2) - 1;
+			auto var = std::get<Value>(getVariable(localVariableCheck)->value);
+			if (var == true)
+			{
+				instruction_counter = trueJump;
+			}
+			else
+			{
+				instruction_counter = falseJump;
+			}
+			break;
+		}
+		case BytecodeType::ConditionalJump: {
+			std::cout << "Not yet suported\n";
 			break;
 		}
 		}
