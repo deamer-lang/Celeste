@@ -940,13 +940,13 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::ReserveConditional
 std::size_t
 Celeste::ir::inputreconstruction::bytecode::Constructor::GetReservedConditionalContinuationLabel()
 {
-	return exitLabels[exitLabels.size() - 1];
+	return continuationLabels[continuationLabels.size() - 1];
 }
 
 std::size_t
 Celeste::ir::inputreconstruction::bytecode::Constructor::GetReservedConditionalExitLabel()
 {
-	return continuationLabels[continuationLabels.size() - 1];
+	return exitLabels[exitLabels.size() - 1];
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::ConditionalLabelPush()
