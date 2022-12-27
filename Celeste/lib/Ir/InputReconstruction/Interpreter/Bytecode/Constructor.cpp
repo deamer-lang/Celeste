@@ -456,11 +456,13 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(
 	else
 	{
 		auto binary_operation = [&](Operator type, auto lhsResultId, auto rhsResultId) {
+			auto deducedType = irObject->DeduceType();
+			auto memberFunction = irObject->GetMemberFunction();
 			functionRepresentation.emplace_back(
-				std::numeric_limits<std::size_t>::max(), irObject->DeduceType(),
+				std::numeric_limits<std::size_t>::max(), deducedType,
 				operator_to_bytecode_instruction(type),
 				std::vector<std::variant<std::size_t, InputReconstructionObject*>>{
-					variableId, lhsResultId, rhsResultId, irObject->GetMemberFunction()});
+					variableId, lhsResultId, rhsResultId, memberFunction});
 		};
 
 		// Binary Operations
@@ -588,48 +590,56 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(Assignme
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(ForEach* irObject)
 {
-	// var rhs
-	// var rhs_size
-	// assign rhs_size rhs.size
-	// var iteration
-	// assign iteration 0
-	// var cond
-	// label start
-	// assign cond comparison
-	// cfalse_jmp cond exit
-	//  var element
-	//  assign element element_in_rhs
-	//	looped_statements
-	//	assign iteration iteration + 1
-	//	goto start
-	// label exit
+	/*
+	auto expression_id = idCounter;
+	AddObject(irObject->GetExpression());
+	// Get the size of the expression result.
+	auto expression_size_id =
+		 MemberFunctionCall(expression_id, irObject->GetExpression()->DeduceType(), "size");
+	auto i_id = CreateInteger(0);
+	auto var_id = AddVariable(irObject->GetVariable());
 
-	auto start = AddLabel();
-	auto rhsVariableId = idCounter;
-	AddVariable(irObject->GetExpression());
+	auto check_label = AddLabel();
+	auto conditional_id = AddLessThan(i_id, expression_size_id);
+	auto exit_label = ReserveLabel();
+
+	ConditionalFalseJumpOnStateOfVariable(conditional_id, exit_label);
+
+	// Assign, Index, Array Like Expression
+	ArrayAccess(var_id, i_id, expression_id);
+
+	AddObject(irObject->GetScope());
+	AddIntegerToVariable(i_id, 1);
+	Goto(check_label);
+	AddLabel(exit_label);
+	*/
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(ForIteration* irObject)
 {
-	// label start
-	// var a
-	// assign a expression_value
-	// cfalse_jmp a exit
+	// label initialize
+	// var a expression_value
+	// label check
+	// var i
+	// var cond
+	// cfalse_jmp cond exit
 	//	looped_statements
-	//	goto
+	//	i++
+	//	goto check
 	// label exit
 
-	auto labelId = AddLabel();
-	std::size_t expressionResultId = idCounter;
-	// This will set up the logic for evaluating the expression.
+	auto expression_id = idCounter;
 	AddObject(irObject->GetExpression().get());
-	Noop();
-	auto reservedExitLable = ReserveLabel();
-	ConditionalFalseJumpOnStateOfVariable(expressionResultId, reservedExitLable);
-	Noop();
+	auto i_id = CreateInteger(0);
+	auto check_label = AddLabel();
+	auto conditional_id = AddLessThan(i_id, expression_id);
+	auto exit_label = ReserveLabel();
+
+	ConditionalFalseJumpOnStateOfVariable(conditional_id, exit_label);
 	AddObject(irObject->GetScope());
-	Goto(labelId);
-	AddLabel(reservedExitLable);
+	AddIntegerToVariable(i_id, 1);
+	Goto(check_label);
+	AddLabel(exit_label);
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(If* irObject)
@@ -693,8 +703,58 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(
 Celeste::ir::inputreconstruction::BytecodeRepresentation
 Celeste::ir::inputreconstruction::bytecode::Constructor::GetRepresentation()
 {
+	if (level == 1)
+	{
+		RemoveRedundantZeroInitialization();
+		InlineAliasVariables();
+	}
+
 	InlineLabels(); // Required Optimization as Labels are no instructions
-	return BytecodeRepresentation(std::move(functionRepresentation), idCounter);
+	return BytecodeRepresentation(std::move(functionRepresentation), idCounter, std::move(integers),
+								  std::move(decimals), std::move(texts));
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::RemoveRedundantZeroInitialization()
+{
+	for (std::size_t index = 0; index < functionRepresentation.size(); index++)
+	{
+		auto& instruction = functionRepresentation[index];
+		if (instruction.GetBytecodeType() != BytecodeType::Variable)
+		{
+			continue;
+		}
+
+		// In case it is a variable analysis whether it is overriden by direct
+		// initialization.
+		std::size_t variable = instruction.GetId();
+		bool removable = false;
+		bool initialized = false;
+		for (auto i = index; i < functionRepresentation.size(); i++)
+		{
+			if (DoesInstructionReference(i, variable) && !initialized)
+			{
+				removable = false;
+				break;
+			}
+			if (DoesInstructionInitialize(i, variable))
+			{
+				initialized = true;
+				removable = true;
+				break;
+			}
+		}
+
+		if (!removable)
+		{
+			continue;
+		}
+
+		RemoveInstruction(index);
+	}
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::InlineAliasVariables()
+{
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::InlineLabels()
@@ -739,6 +799,125 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::InlineLabels()
 		}
 		instructionCounter++;
 	}
+}
+
+bool Celeste::ir::inputreconstruction::bytecode::Constructor::DoesInstructionReference(
+	std::size_t instruction, std::size_t variable)
+{
+	auto& instr = functionRepresentation[instruction];
+	switch (instr.GetBytecodeType())
+	{
+	// Binary Operations
+	case BytecodeType::Add:
+	case BytecodeType::Minus:
+	case BytecodeType::Multiply:
+	case BytecodeType::Divide:
+	case BytecodeType::ArrayAccess:
+	case BytecodeType::Power:
+	case BytecodeType::Less:
+	case BytecodeType::LessOrEqual:
+	case BytecodeType::Greater:
+	case BytecodeType::GreaterOrEqual:
+	case BytecodeType::Equal:
+	case BytecodeType::NotEqual: {
+		auto firstArg = instr.GetArgument<std::size_t>(1);
+		auto secondArg = instr.GetArgument<std::size_t>(2);
+		return firstArg == variable || secondArg == variable;
+	}
+
+	// Unary Operation
+	case BytecodeType::Not: {
+		auto firstArg = instr.GetArgument<std::size_t>(0);
+		return firstArg == variable;
+	}
+
+	case BytecodeType::Assign: {
+		auto firstArg = instr.GetArgument<std::size_t>(0);
+		auto secondArg = instr.GetArgument<std::size_t>(1);
+		return firstArg == variable || secondArg == variable;
+	}
+	}
+
+	return false;
+}
+
+bool Celeste::ir::inputreconstruction::bytecode::Constructor::DoesInstructionInitialize(
+	std::size_t instruction, std::size_t variable)
+{
+	auto& instr = functionRepresentation[instruction];
+	switch (instr.GetBytecodeType())
+	{
+	// Binary Operations
+	case BytecodeType::Add:
+	case BytecodeType::Minus:
+	case BytecodeType::Multiply:
+	case BytecodeType::Divide:
+	case BytecodeType::ArrayAccess:
+	case BytecodeType::Power:
+	case BytecodeType::Less:
+	case BytecodeType::LessOrEqual:
+	case BytecodeType::Greater:
+	case BytecodeType::GreaterOrEqual:
+	case BytecodeType::Equal:
+	case BytecodeType::NotEqual: {
+		auto firstArg = instr.GetArgument<std::size_t>(0);
+		return firstArg == variable;
+	}
+	case BytecodeType::Integer:
+	case BytecodeType::Text:
+	case BytecodeType::Decimal: {
+		auto firstArg = instr.GetArgument<std::size_t>(0);
+		return firstArg == variable;
+	}
+	case BytecodeType::Assign: {
+		auto firstArg = instr.GetArgument<std::size_t>(0);
+		return firstArg == variable;
+	}
+	}
+	return false;
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::RemoveInstruction(std::size_t index)
+{
+	for (std::size_t i = 0; i < functionRepresentation.size(); i++)
+	{
+		auto& current_instruction = functionRepresentation[i];
+		switch (current_instruction.GetBytecodeType())
+		{
+		case BytecodeType::InstructionJump: {
+			auto firstArgument = current_instruction.GetArgument<std::size_t>(0);
+			if (firstArgument > index)
+			{
+				current_instruction.SetArgument(0, firstArgument - 1);
+			}
+			break;
+		}
+		case BytecodeType::InstructionConditionalJump: {
+			auto firstArgument = current_instruction.GetArgument<std::size_t>(0);
+			if (firstArgument > index)
+			{
+				current_instruction.SetArgument(0, firstArgument - 1);
+			}
+
+			auto secondArgument = current_instruction.GetArgument<std::size_t>(1);
+			if (secondArgument > index)
+			{
+				current_instruction.SetArgument(0, secondArgument - 1);
+			}
+			break;
+		}
+		}
+	}
+
+	for (auto& label : labelInstructionJumpLocations)
+	{
+		if (label > index)
+		{
+			label--;
+		}
+	}
+
+	functionRepresentation.erase(std::begin(functionRepresentation) + index);
 }
 
 std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddVariable(
@@ -925,6 +1104,129 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::Goto(std::size_t l
 	functionRepresentation.emplace_back(
 		BytecodeType::Goto,
 		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{labelId});
+}
+
+std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddLocalVariable()
+{
+	auto varId = idCounter;
+	functionRepresentation.emplace_back(
+		idCounter, nullptr, BytecodeType::Variable,
+		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{});
+	IncrementIdCounter();
+	return varId;
+}
+
+std::size_t
+Celeste::ir::inputreconstruction::bytecode::Constructor::CreateInteger(int default_value)
+{
+	auto iter = mapIntegerWithVariable.find(default_value);
+	if (iter != mapIntegerWithVariable.end())
+	{
+		return iter->second;
+	}
+
+	auto new_value = std::make_unique<Integer>(default_value);
+
+	auto var_id = AddLocalVariable();
+	functionRepresentation.emplace_back(
+		std::numeric_limits<std::size_t>::max(), nullptr, BytecodeType::Integer,
+		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{var_id,
+																		   new_value.get()});
+	integers.push_back(std::move(new_value));
+	mapIntegerWithVariable.insert({default_value, var_id});
+	return var_id;
+}
+
+std::size_t
+Celeste::ir::inputreconstruction::bytecode::Constructor::CreateText(std::string default_value)
+{
+	auto new_value = std::make_unique<Text>(default_value);
+	auto new_value_ptr = new_value.get();
+	texts.push_back(std::move(new_value));
+
+	auto var_id = idCounter;
+	functionRepresentation.emplace_back(
+		std::numeric_limits<std::size_t>::max(), nullptr, BytecodeType::Text,
+		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{idCounter,
+																		   new_value_ptr});
+	IncrementIdCounter();
+	return var_id;
+}
+
+std::size_t
+Celeste::ir::inputreconstruction::bytecode::Constructor::CreateDecimal(double default_value)
+{
+	auto new_value = std::make_unique<Decimal>(default_value);
+	auto new_value_ptr = new_value.get();
+	decimals.push_back(std::move(new_value));
+
+	auto var_id = idCounter;
+	functionRepresentation.emplace_back(
+		std::numeric_limits<std::size_t>::max(), nullptr, BytecodeType::Decimal,
+		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{idCounter,
+																		   new_value_ptr});
+	IncrementIdCounter();
+	return var_id;
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::AddIntegerToVariable(
+	std::size_t assigned_value_id, int i)
+{
+	auto increasingValue = CreateInteger(i);
+	functionRepresentation.emplace_back(
+		std::numeric_limits<std::size_t>::max(), nullptr, BytecodeType::Add,
+		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{
+			assigned_value_id, assigned_value_id, increasingValue, nullptr});
+}
+
+std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddLessThan(std::size_t lhs,
+																				 std::size_t rhs)
+{
+	return AddBinaryOperation(BytecodeType::Less, lhs, rhs);
+}
+
+std::size_t
+Celeste::ir::inputreconstruction::bytecode::Constructor::AddLessThanOrEqual(std::size_t lhs,
+																			std::size_t rhs)
+{
+	return AddBinaryOperation(BytecodeType::LessOrEqual, lhs, rhs);
+}
+
+std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddGreaterThan(std::size_t lhs,
+																					std::size_t rhs)
+{
+	return AddBinaryOperation(BytecodeType::Greater, lhs, rhs);
+}
+
+std::size_t
+Celeste::ir::inputreconstruction::bytecode::Constructor::AddGreaterThanOrEqual(std::size_t lhs,
+																			   std::size_t rhs)
+{
+	return AddBinaryOperation(BytecodeType::GreaterOrEqual, lhs, rhs);
+}
+
+std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddEqual(std::size_t lhs,
+																			  std::size_t rhs)
+{
+	return AddBinaryOperation(BytecodeType::Equal, lhs, rhs);
+}
+
+std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddNotEqual(std::size_t lhs,
+																				 std::size_t rhs)
+{
+	return AddBinaryOperation(BytecodeType::NotEqual, lhs, rhs);
+}
+
+std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddBinaryOperation(
+	BytecodeType bytecode, std::size_t lhs, std::size_t rhs, inputreconstruction::Function* op)
+{
+	auto assigned_value_id = AddLocalVariable();
+
+	functionRepresentation.emplace_back(
+		std::numeric_limits<std::size_t>::max(), nullptr, bytecode,
+		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{assigned_value_id, lhs,
+																		   rhs, op});
+	return assigned_value_id;
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::ReserveConditionalContinuationLabel()

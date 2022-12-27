@@ -3,7 +3,12 @@
 
 #include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/BytecodeRepresentation.h"
 #include "Celeste/Ir/InputReconstruction/Interpreter/Bytecode/Instruction.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Integer.h"
+#include "Celeste/Ir/InputReconstruction/Standard/Text.h"
 #include <map>
+#include <memory>
+#include <vector>
 
 namespace Celeste::ir::inputreconstruction
 {
@@ -44,6 +49,10 @@ namespace Celeste::ir::inputreconstruction::bytecode
 		std::map<InputReconstructionObject*, std::size_t> mapVariableWithSize;
 		std::vector<std::size_t> labelInstructionJumpLocations;
 
+		std::vector<std::unique_ptr<Integer>> integers;
+		std::vector<std::unique_ptr<Decimal>> decimals;
+		std::vector<std::unique_ptr<Text>> texts;
+
 		// Output Construction Cache
 	private:
 		// When there is an embedded ir object, i.e. it has a scope.
@@ -52,8 +61,10 @@ namespace Celeste::ir::inputreconstruction::bytecode
 		std::vector<std::size_t> continuationLabels;
 		std::vector<std::size_t> exitLabels;
 
+		std::map<int, std::size_t> mapIntegerWithVariable;
+
 	public:
-		Constructor(std::size_t level_ = 0);
+		Constructor(std::size_t level_ = 1);
 		~Constructor() = default;
 
 	public:
@@ -84,7 +95,14 @@ namespace Celeste::ir::inputreconstruction::bytecode
 		BytecodeRepresentation GetRepresentation();
 
 	public:
+		void RemoveRedundantZeroInitialization();
+		void InlineAliasVariables();
 		void InlineLabels();
+
+	private:
+		bool DoesInstructionReference(std::size_t instruction, std::size_t variable);
+		bool DoesInstructionInitialize(std::size_t instruction, std::size_t variable);
+		void RemoveInstruction(std::size_t index);
 
 	private:
 		std::size_t AddVariable(InputReconstructionObject* value, bool initialize = true);
@@ -110,6 +128,26 @@ namespace Celeste::ir::inputreconstruction::bytecode
 		void ConditionalTrueJumpOnStateOfVariable(std::size_t variableId, std::size_t label);
 		void ConditionalFalseJumpOnStateOfVariable(std::size_t variableId, std::size_t label);
 		void Goto(std::size_t labelId);
+
+	private:
+		std::size_t AddLocalVariable();
+
+		std::size_t CreateInteger(int default_value = 0);
+		std::size_t CreateText(std::string default_value = 0);
+		std::size_t CreateDecimal(double default_value = 0);
+
+		void AddIntegerToVariable(std::size_t assigned_value_id, int i);
+
+		std::size_t AddLessThan(std::size_t lhs, std::size_t rhs);
+		std::size_t AddLessThanOrEqual(std::size_t lhs, std::size_t rhs);
+		std::size_t AddGreaterThan(std::size_t lhs, std::size_t rhs);
+		std::size_t AddGreaterThanOrEqual(std::size_t lhs, std::size_t rhs);
+
+		std::size_t AddEqual(std::size_t lhs, std::size_t rhs);
+		std::size_t AddNotEqual(std::size_t lhs, std::size_t rhs);
+
+		std::size_t AddBinaryOperation(BytecodeType bytecode, std::size_t lhs, std::size_t rhs,
+									   inputreconstruction::Function* op = nullptr);
 
 	private:
 		void ReserveConditionalContinuationLabel();

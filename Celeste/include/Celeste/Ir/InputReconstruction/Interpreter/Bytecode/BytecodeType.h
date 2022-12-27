@@ -1,5 +1,6 @@
 #ifndef CELESTE_IR_INPUTRECONSTRUCTION_INTERPRETER_BYTECODE_BYTECODETYPE_H
 #define CELESTE_IR_INPUTRECONSTRUCTION_INTERPRETER_BYTECODE_BYTECODETYPE_H
+#include "Celeste/Ir/InputReconstruction/Computation/Operator.h"
 
 namespace Celeste::ir::inputreconstruction
 {
@@ -52,10 +53,71 @@ namespace Celeste::ir::inputreconstruction
 		Decimal,
 		Codeblock,
 
+		// Direct Initialize
+		CreateIntegerVariable,
+		CreateDecimalVariable,
+		CreateTextVariable,
+		CreateCodeBlockVariable,
+
 		// Variable Logic
 		ReferenceReuseAssign, // Reuses last variable by referencing some RHS given LHS,
 							  // LHS = LHS.RHS
 	};
+
+	static constexpr Operator ConvertBytecodeInstructionIntoOperator(BytecodeType rhs)
+	{
+		switch (rhs)
+		{
+		case BytecodeType::Add: {
+			return Operator::Add;
+		}
+		case BytecodeType::ArrayAccess: {
+			return Operator::ArrayAccess;
+		}
+		case BytecodeType::Minus: {
+			return Operator::Minus;
+		}
+		case BytecodeType::Multiply: {
+			return Operator::Multiply;
+		}
+		case BytecodeType::Divide: {
+			return Operator::Divide;
+		}
+		case BytecodeType::Power: {
+			return Operator::Power;
+		}
+		case BytecodeType::And: {
+			return Operator::And;
+		}
+		case BytecodeType::Or: {
+			return Operator::Or;
+		}
+		case BytecodeType::Equal: {
+			return Operator::Equal;
+		}
+		case BytecodeType::NotEqual: {
+			return Operator::NotEqual;
+		}
+		case BytecodeType::Not: {
+			return Operator::Not;
+		}
+		case BytecodeType::Less: {
+			return Operator::Less;
+		}
+		case BytecodeType::LessOrEqual: {
+			return Operator::LessOrEqual;
+		}
+		case BytecodeType::Greater: {
+			return Operator::Greater;
+		}
+		case BytecodeType::GreaterOrEqual: {
+			return Operator::GreaterOrEqual;
+		}
+		default: {
+			return Operator::Unknown;
+		}
+		}
+	}
 }
 
 #endif // CELESTE_IR_INPUTRECONSTRUCTION_INTERPRETER_BYTECODE_BYTECODETYPE_H

@@ -1,5 +1,12 @@
 #include "Celeste/Ir/InputReconstruction/Standard/Decimal.h"
 
+Celeste::ir::inputreconstruction::Decimal::Decimal(double decimal_)
+	: InputReconstructionObject(Type::Decimal),
+	  decimal(nullptr),
+	  constexprEvaluation(decimal_)
+{
+}
+
 Celeste::ir::inputreconstruction::Decimal::Decimal(ast::node::DECIMAL* decimal_)
 	: InputReconstructionObject(Type::Decimal),
 	  decimal(decimal_)

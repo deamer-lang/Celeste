@@ -76,7 +76,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		bool HasOptimizedBytecode() const;
 		Celeste::ir::inputreconstruction::BytecodeRepresentation& GetBytecode();
-		void ConstructBytecode(std::size_t level = 0);
+		void ConstructBytecode(std::size_t level = 1);
 
 	public:
 		void AddCodeBlock(CodeBlock* codeBlock);

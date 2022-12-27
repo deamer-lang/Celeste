@@ -28,6 +28,7 @@
 #include "Celeste/Ir/InputReconstruction/Structure/Constructor.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Enumeration.h"
 #include "Celeste/Ir/InputReconstruction/Structure/Function.h"
+#include "Celeste/Ir/InputReconstruction/Structure/InlineClass.h"
 #include "Celeste/Ir/InputReconstruction/Structure/MutationGroup.h"
 #include "Celeste/Ir/InputReconstruction/Structure/TypeExplicitAlias.h"
 #include <limits>
@@ -493,6 +494,33 @@ Celeste::ir::inputreconstruction::Interpreter::GetType(
 		// Not yet supported
 		return {std::numeric_limits<std::size_t>::max()};
 	}
+}
+
+Celeste::ir::inputreconstruction::Interpreter::TypeId
+Celeste::ir::inputreconstruction::Interpreter::GetType(Value& val)
+{
+	auto result = val.GetType();
+	if (result.has_value())
+	{
+		return result.value();
+	}
+
+	if (std::holds_alternative<int>(val.value))
+	{
+		return typeTable.GetIntegerType();
+	}
+	else if (std::holds_alternative<std::string>(val.value))
+	{
+		return typeTable.GetTextType();
+	}
+	else if (std::holds_alternative<double>(val.value))
+	{
+		return typeTable.GetDecimalType();
+	}
+
+	// Default return type, will result in errors, however, this is okay as the program was
+	// ill-formed (only way to get this result)
+	return TypeId(0);
 }
 
 std::variant<int, double, std::string,
@@ -2620,7 +2648,6 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 			auto variable_index = instruction.GetId();
 			memory[variable_index] = BytecodeValue();
 			memory_map[variable_index] = variable_index;
-			top_index++;
 			break;
 		}
 		case BytecodeType::UnloadVariable: {
@@ -2740,9 +2767,52 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 			auto lhs = instruction.GetArgument<std::size_t>(1);
 			auto rhs = instruction.GetArgument<std::size_t>(2);
 			auto function = instruction.GetArgument<inputreconstruction::Function*>(3);
-			auto result =
-				EvaluateMemberFunctionOnValue(*(*getVariable(lhs)).GetReferenceToValue(), function,
-											  {getVariable(rhs)->GetReferenceToValue()});
+			auto lhsVar = getVariable(lhs);
+			auto rhsVar = getVariable(rhs);
+			auto lhsVal = lhsVar->GetReferenceToValue();
+			auto rhsVal = rhsVar->GetReferenceToValue();
+
+			if (function == nullptr) // Auto deduce operator overload
+			{
+				auto getOperatorOverload = [&](Value* input, Value* argument,
+											   BytecodeType bytecode) {
+					inputreconstruction::Function* result = nullptr;
+					auto lhsTypeId = GetType(*input);
+					auto rhsTypeId = GetType(*argument);
+					auto iterLhs = typeTable.typeIdMap.find(lhsTypeId);
+					auto iterRhs = typeTable.typeIdMap.find(rhsTypeId);
+					// assume it is valid type, otherwise it is ill-formed
+					auto typeLhs = iterLhs->second.irType;
+					auto typeRhs = iterRhs->second.irType;
+					if (typeLhs->GetType() == inputreconstruction::Type::Class)
+					{
+						auto def = static_cast<Class*>(typeLhs);
+						const auto strRepr = ConvertOperatorIntoString(
+							ConvertBytecodeInstructionIntoOperator(bytecode));
+						const auto args = std::vector<InputReconstructionObject*>{typeRhs};
+						result = static_cast<inputreconstruction::Function*>(
+							def->GetMember(strRepr, args));
+					}
+					else if (typeLhs->GetType() == inputreconstruction::Type::MonomorphizedClass)
+					{
+						auto def = static_cast<MonomorphizedClass*>(typeLhs);
+						result = static_cast<inputreconstruction::Function*>(
+							def->GetMember(ConvertOperatorIntoString(
+											   ConvertBytecodeInstructionIntoOperator(bytecode)),
+										   std::vector<InputReconstructionObject*>{typeRhs}));
+					}
+					else if (typeLhs->GetType() == inputreconstruction::Type::InlineClass)
+					{
+					}
+
+					return result;
+				};
+				function = getOperatorOverload(lhsVal, rhsVal, instruction.GetBytecodeType());
+				// To avoid re-calculating the function, the instruction is optimized
+				instruction.SetArgument(3, function);
+			}
+
+			auto result = EvaluateMemberFunctionOnValue(*lhsVal, function, {rhsVal});
 			if (result.has_value())
 			{
 				(*getVariable(assign)).Assign(result.value());
@@ -4045,6 +4115,45 @@ Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetTypeFromConstructor
 Celeste::ir::inputreconstruction::Interpreter::TypeTable::TypeTable(Interpreter* interpreter_)
 	: interpreter(interpreter_)
 {
+}
+
+Celeste::ir::inputreconstruction::Interpreter::TypeId
+Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetIntegerType()
+{
+	if (cacheIntegerType.has_value())
+	{
+		return cacheIntegerType.value();
+	}
+
+	// Integer is always available
+	cacheIntegerType = typeNameMap.find(Name{"int"})->second.type;
+	return cacheIntegerType.value();
+}
+
+Celeste::ir::inputreconstruction::Interpreter::TypeId
+Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetTextType()
+{
+	if (cacheTextType.has_value())
+	{
+		return cacheTextType.value();
+	}
+
+	// Text is always available
+	cacheTextType = typeNameMap.find(Name{"text"})->second.type;
+	return cacheTextType.value();
+}
+
+Celeste::ir::inputreconstruction::Interpreter::TypeId
+Celeste::ir::inputreconstruction::Interpreter::TypeTable::GetDecimalType()
+{
+	if (cacheDecimalType.has_value())
+	{
+		return cacheDecimalType.value();
+	}
+
+	// Decimal is always available
+	cacheDecimalType = typeNameMap.find(Name{"decimal"})->second.type;
+	return cacheDecimalType.value();
 }
 
 Celeste::ir::inputreconstruction::Interpreter::Function::Function(

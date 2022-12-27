@@ -434,6 +434,10 @@ namespace Celeste::ir::inputreconstruction
 			std::map<Name, Type> typeNameMap;
 			std::map<InputReconstructionObject*, Type> typePointerMap;
 
+			std::optional<TypeId> cacheIntegerType;
+			std::optional<TypeId> cacheTextType;
+			std::optional<TypeId> cacheDecimalType;
+
 			void AddClass(Class* class_);
 			void AddMonomorphizedClass(MonomorphizedClass* class_);
 			void AddEnumeration(Enumeration* enumeration);
@@ -443,6 +447,10 @@ namespace Celeste::ir::inputreconstruction
 			Interpreter* interpreter;
 
 			TypeTable(Interpreter* interpreter_);
+
+			TypeId GetIntegerType();
+			TypeId GetTextType();
+			TypeId GetDecimalType();
 		};
 
 		enum struct FunctionType
@@ -545,6 +553,7 @@ namespace Celeste::ir::inputreconstruction
 	public:
 		TypeId GetType(TypeConstruct* typeConstruct);
 		TypeId GetType(std::optional<InputReconstructionObject*> object);
+		TypeId GetType(Value& val);
 
 		std::variant<int, double, std::string, AlgebraicValue, Value*, InputReconstructionObject*,
 					 std::vector<Value>, File*>

@@ -56,6 +56,38 @@ Celeste::ir::inputreconstruction::Instruction::Instruction(const Instruction& rh
 {
 }
 
+Celeste::ir::inputreconstruction::Instruction&
+Celeste::ir::inputreconstruction::Instruction::operator=(Instruction&& rhs) noexcept
+{
+	if (&rhs == this)
+	{
+		return *this;
+	}
+
+	bytecodeType = rhs.bytecodeType;
+	id = rhs.id;
+	type = rhs.type;
+	arguments = rhs.arguments;
+
+	return *this;
+}
+
+Celeste::ir::inputreconstruction::Instruction&
+Celeste::ir::inputreconstruction::Instruction::operator=(const Instruction& rhs)
+{
+	if (&rhs == this)
+	{
+		return *this;
+	}
+
+	bytecodeType = rhs.bytecodeType;
+	id = rhs.id;
+	type = rhs.type;
+	arguments = rhs.arguments;
+
+	return *this;
+}
+
 Celeste::ir::inputreconstruction::BytecodeType
 Celeste::ir::inputreconstruction::Instruction::GetBytecodeType() const
 {
@@ -78,4 +110,15 @@ const std::vector<
 Celeste::ir ::inputreconstruction::Instruction::GetArguments() const
 {
 	return arguments;
+}
+
+void Celeste::ir::inputreconstruction::Instruction::SetArgument(int index, std::size_t newValue)
+{
+	arguments[index] = newValue;
+}
+
+void Celeste::ir::inputreconstruction::Instruction::SetArgument(int index,
+																InputReconstructionObject* newValue)
+{
+	arguments[index] = newValue;
 }

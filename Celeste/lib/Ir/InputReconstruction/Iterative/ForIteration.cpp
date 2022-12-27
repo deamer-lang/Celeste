@@ -42,6 +42,58 @@ Celeste::ir::inputreconstruction::ForIteration::GetExpression()
 	return expression;
 }
 
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator Celeste::ir::
+inputreconstruction::ForIteration::begin()
+{
+	return std::begin(block);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator Celeste::ir::
+inputreconstruction::ForIteration::end()
+{
+	return std::end(block);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator Celeste::ir
+::inputreconstruction::ForIteration::rbegin()
+{
+	return std::rbegin(block);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator Celeste::ir
+::inputreconstruction::ForIteration::rend()
+{
+	return std::rend(block);
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::iterator Celeste::ir::
+inputreconstruction::ForIteration::GetIterator(InputReconstructionObject* irComponent)
+{
+	for (auto iter = begin(); iter != end(); ++iter)
+	{
+		if ((*iter).get() == irComponent)
+		{
+			return iter;
+		}
+	}
+
+	return end();
+}
+
+std::vector<std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject>>::reverse_iterator Celeste::ir
+::inputreconstruction::ForIteration::GetReverseIterator(InputReconstructionObject* irComponent)
+{
+	for (auto iter = rbegin(); iter != rend(); ++iter)
+	{
+		if ((*iter).get() == irComponent)
+		{
+			return iter;
+		}
+	}
+
+	return rend();
+}
+
 void Celeste::ir::inputreconstruction::ForIteration::Add(
 	std::unique_ptr<Celeste::ir::inputreconstruction::InputReconstructionObject> innerObject)
 {

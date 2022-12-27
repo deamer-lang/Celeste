@@ -70,6 +70,13 @@ bool Celeste::ir::inputreconstruction::FunctionArgument::Accepts(
 		auto value = static_cast<Value*>(functionAccess);
 		return argumentType->Equal(value->DeduceType());
 	}
+	case Type::MonomorphizedClass:
+	case Type::InlineClass:
+	case Type::Class: {
+		// The caller should understand that this is a what if simulation
+		// The type must still be realized
+		return argumentType->Equal(functionAccess);
+	}
 	}
 
 	return false;
@@ -78,7 +85,8 @@ bool Celeste::ir::inputreconstruction::FunctionArgument::Accepts(
 bool Celeste::ir::inputreconstruction::FunctionArgument::Accepts(
 	const std::unique_ptr<Expression>& expression)
 {
-	return argumentType->Equal(expression->DeduceType());
+	auto deducedType = expression->DeduceType();
+	return argumentType->Equal(deducedType);
 }
 
 std::string Celeste::ir::inputreconstruction::FunctionArgument::GetName()

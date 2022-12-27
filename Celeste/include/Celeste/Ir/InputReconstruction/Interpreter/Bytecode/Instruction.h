@@ -42,12 +42,18 @@ namespace Celeste::ir::inputreconstruction
 		Instruction(Instruction&& rhs) noexcept;
 		Instruction(const Instruction& rhs);
 
+		Instruction& operator=(Instruction&& rhs) noexcept;
+		Instruction& operator=(const Instruction& rhs);
+
 	public:
 		BytecodeType GetBytecodeType() const;
 		std::size_t GetId() const;
 		InputReconstructionObject* GetType() const;
 		const std::vector<std::variant<std::size_t, InputReconstructionObject*>>&
 		GetArguments() const;
+
+		void SetArgument(int index, std::size_t newValue);
+		void SetArgument(int index, InputReconstructionObject* newValue);
 
 		template<typename T, typename Q>
 		T GetArgument(const Q& index)

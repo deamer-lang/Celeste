@@ -618,43 +618,12 @@ Celeste::ir::inputreconstruction::Expression::DeduceType() const
 std::optional<std::string>
 Celeste::ir::inputreconstruction::Expression::GetOperatorFunctionName() const
 {
-	switch (impl->OperatorType)
+	if (impl->OperatorType == Operator::Unknown)
 	{
-	case Operator::Add:
-		return "operator+";
-	case Operator::ArrayAccess:
-		return "operator[]";
-	case Operator::Minus:
-		return "operator-";
-	case Operator::Multiply:
-		return "operator*";
-	case Operator::Divide:
-		return "operator/";
-	case Operator::Power:
-		return "operator^";
-	case Operator::And:
-		return "operator&&";
-	case Operator::Or:
-		return "operator||";
-	case Operator::Equal:
-		return "operator==";
-	case Operator::NotEqual:
-		return "operator!=";
-	case Operator::Not:
-		return "operator!";
-	case Operator::Less:
-		return "operator<";
-	case Operator::LessOrEqual:
-		return "operator<=";
-	case Operator::Greater:
-		return "operator>";
-	case Operator::GreaterOrEqual:
-		return "operator>=";
-	case Operator::Unknown:
 		return std::nullopt;
 	}
 
-	return "operatorUnimplemented";
+	return ConvertOperatorIntoString(impl->OperatorType);
 }
 
 std::variant<std::monostate, std::unique_ptr<Celeste::ir::inputreconstruction::Expression>,

@@ -14,6 +14,7 @@ namespace Celeste::ir::inputreconstruction
 		double constexprEvaluation = 0;
 
 	public:
+		Decimal(double decimal_);
 		Decimal(ast::node::DECIMAL* decimal_);
 		virtual ~Decimal() = default;
 
