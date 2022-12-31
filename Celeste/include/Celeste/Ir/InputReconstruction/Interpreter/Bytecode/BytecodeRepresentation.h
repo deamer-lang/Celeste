@@ -28,7 +28,8 @@ namespace Celeste::ir::inputreconstruction
 							   std::size_t maximalVariableSize_,
 							   std::vector<std::unique_ptr<Integer>> integers_,
 							   std::vector<std::unique_ptr<Decimal>> decimals_,
-							   std::vector<std::unique_ptr<Text>> texts_);
+							   std::vector<std::unique_ptr<Text>> texts_,
+							   std::vector<std::size_t> memory_map_);
 
 		BytecodeRepresentation(BytecodeRepresentation&& rhs) noexcept;
 	};

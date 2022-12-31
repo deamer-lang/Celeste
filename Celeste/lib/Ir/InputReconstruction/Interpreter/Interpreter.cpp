@@ -2613,11 +2613,10 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 	// - No Globals
 
 	std::vector<BytecodeValue> memory;
-	std::vector<std::size_t> memory_map;
+	std::vector<std::size_t>& memory_map = bytecodeRepresentation.memory_map;
 	for (std::size_t i = 0; i <= bytecodeRepresentation.maximalVariableSize; i++)
 	{
 		memory.emplace_back();
-		memory_map.emplace_back(i);
 	}
 	bytecode::BytecodePrinter::Print(bytecodeRepresentation);
 	std::cout << "\n";
@@ -2632,11 +2631,12 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 		memory[i] = {arguments[i], true};
 		top_index++;
 	}
-
+	std::size_t total_operations = 0;
 	const auto instruction_size = bytecodeRepresentation.instructions.size();
 	for (std::size_t instruction_counter = 1; instruction_counter < instruction_size;
 		 instruction_counter++)
 	{
+		total_operations++;
 		auto& instruction = bytecodeRepresentation.instructions[instruction_counter];
 		switch (instruction.GetBytecodeType())
 		{
@@ -2644,44 +2644,32 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 			// Do nothing
 			break;
 		}
-		case BytecodeType::Variable: {
-			auto variable_index = instruction.GetId();
-			memory[variable_index] = BytecodeValue();
-			memory_map[variable_index] = variable_index;
-			break;
-		}
-		case BytecodeType::UnloadVariable: {
-			memory[top_index - 1] = {};
-			memory_map[top_index - 1] = std::numeric_limits<std::size_t>::max();
-			top_index--;
-			break;
-		}
 		case BytecodeType::Alias: {
 			auto aliased_variable_index = instruction.GetArgument<std::size_t>(0);
 			auto target_index = instruction.GetArgument<std::size_t>(1);
-			memory_map[aliased_variable_index] = target_index;
+			memory_map[aliased_variable_index] = memory_map[target_index];
 			break;
 		}
 		case BytecodeType::ReferenceReuseAssign: {
 			// Initially used as alias function, however, its usage is vastly more utile.
 			auto aliased_variable_index = instruction.GetArgument<std::size_t>(0);
 			auto target_index = instruction.GetArgument<std::size_t>(1);
-			memory_map[aliased_variable_index] = target_index;
+			memory_map[aliased_variable_index] = memory_map[target_index];
 			break;
 		}
 		case BytecodeType::Return: {
-			auto return_value = memory[instruction.GetArgument<std::size_t>(0)];
-			if (return_value.IsReference())
+			auto return_value = getVariable(instruction.GetArgument<std::size_t>(0));
+			if (return_value->IsReference())
 			{
-				return *(std::get<Value*>(return_value.value));
+				return *(std::get<Value*>(return_value->value));
 			}
-			else if (return_value.IsValue())
+			else if (return_value->IsValue())
 			{
-				return std::get<Value>(return_value.value);
+				return std::get<Value>(return_value->value);
 			}
-			else if (return_value.IsPointer())
+			else if (return_value->IsPointer())
 			{
-				return std::get<Value*>(return_value.value);
+				return std::get<Value*>(return_value->value);
 			}
 			break;
 		}
@@ -2870,6 +2858,7 @@ Celeste::ir::inputreconstruction::Interpreter::EvaluateBytecode(
 		}
 	}
 
+	std::cout << "Total operations: " << total_operations << "\n";
 	return std::nullopt;
 }
 
@@ -4455,7 +4444,8 @@ Celeste::ir::inputreconstruction::Interpreter::~Interpreter()
 {
 }
 
-void Celeste::ir::inputreconstruction::Interpreter::Interpret(InputReconstructionObject* entryPoint)
+std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+Celeste::ir::inputreconstruction::Interpreter::Interpret(InputReconstructionObject* entryPoint)
 {
 	evaluatedFile = entryPoint->GetFile();
 
@@ -4487,8 +4477,10 @@ void Celeste::ir::inputreconstruction::Interpreter::Interpret(InputReconstructio
 	else if (entryPoint->GetType() == inputreconstruction::Type::Function)
 	{
 		auto functionObject = static_cast<inputreconstruction::Function*>(entryPoint);
-		EvaluateFunction(functionObject, {});
+		return EvaluateFunction(functionObject, {});
 	}
+
+	return std::nullopt;
 }
 
 void Celeste::ir::inputreconstruction::Interpreter::SetUpGlobalInformation(

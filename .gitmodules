@@ -1,0 +1,3 @@
+[submodule "Celeste/extern/googletest"]
+	path = Celeste/extern/googletest
+	url = https://github.com/google/googletest

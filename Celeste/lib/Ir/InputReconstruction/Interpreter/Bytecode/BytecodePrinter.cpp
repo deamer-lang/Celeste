@@ -9,6 +9,14 @@
 void Celeste::ir::inputreconstruction::bytecode::BytecodePrinter::Print(
 	const Celeste::ir::inputreconstruction::BytecodeRepresentation& representation)
 {
+	std::cout << "[ ";
+	for (std::size_t i = 0; i < representation.memory_map.size(); i++)
+	{
+		std::cout << std::to_string(i) << ";" << std::to_string(representation.memory_map[i])
+				  << ", ";
+	}
+	std::cout << " ]\n";
+
 	std::size_t line_number = 0;
 	for (const auto& instruction : representation.instructions)
 	{

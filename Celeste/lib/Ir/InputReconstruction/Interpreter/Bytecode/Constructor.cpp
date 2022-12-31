@@ -703,15 +703,175 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::AddObject(
 Celeste::ir::inputreconstruction::BytecodeRepresentation
 Celeste::ir::inputreconstruction::bytecode::Constructor::GetRepresentation()
 {
-	if (level == 1)
+	for (std::size_t i = 0; i < idCounter; i++)
 	{
-		RemoveRedundantZeroInitialization();
-		InlineAliasVariables();
+		memory_map.push_back(i);
 	}
 
-	InlineLabels(); // Required Optimization as Labels are no instructions
+	InlineLabels();			// Required Optimization as Labels are no instructions
+	InlineAliasVariables(); // Required Optimization as n deep aliases are not easily translated
+
+	if (level == 1)
+	{
+		RemoveUnusedVariables();
+		RemoveRedundantZeroInitialization();
+	}
+
 	return BytecodeRepresentation(std::move(functionRepresentation), idCounter, std::move(integers),
-								  std::move(decimals), std::move(texts));
+								  std::move(decimals), std::move(texts), std::move(memory_map));
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::LinearizeAliases()
+{
+	// Now aliases are defined, however, the memory map must map to core variables which are not
+	// aliases. Thus aliases of aliases must reduce to original variables.
+	// To do this, the memory_map will repeatably reduce to the next state in case we replace
+	// aliases with its targets. Eventually this operation converges to a stable manner. Which is by
+	// definition aliases with core variables
+	std::vector<std::size_t> new_memory_map;
+	new_memory_map.resize(memory_map.size());
+	std::vector<std::size_t> next_memory_map = memory_map;
+	while (new_memory_map != memory_map)
+	{
+		memory_map = next_memory_map;
+		for (std::size_t i = 0; i < memory_map.size(); i++)
+		{
+			new_memory_map[i] = memory_map[memory_map[i]];
+		}
+		next_memory_map = new_memory_map;
+	}
+
+	memory_map = new_memory_map;
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::DirectVariableAliases()
+{
+	for (std::size_t index = 0; index < functionRepresentation.size(); index++)
+	{
+		auto& instr = functionRepresentation[index];
+		switch (instr.GetBytecodeType())
+		{
+		// Binary Operations
+		case BytecodeType::Add:
+		case BytecodeType::Minus:
+		case BytecodeType::Multiply:
+		case BytecodeType::Divide:
+		case BytecodeType::ArrayAccess:
+		case BytecodeType::Power:
+		case BytecodeType::Less:
+		case BytecodeType::LessOrEqual:
+		case BytecodeType::Greater:
+		case BytecodeType::GreaterOrEqual:
+		case BytecodeType::Equal:
+		case BytecodeType::NotEqual: {
+			auto arg1 = instr.GetArguments()[0];
+			auto arg2 = instr.GetArguments()[1];
+			auto arg3 = instr.GetArguments()[2];
+			if (std::holds_alternative<std::size_t>(arg1))
+			{
+				instr.SetArgument(0, memory_map[std::get<std::size_t>(arg1)]);
+			}
+			if (std::holds_alternative<std::size_t>(arg2))
+			{
+				instr.SetArgument(1, memory_map[std::get<std::size_t>(arg2)]);
+			}
+			if (std::holds_alternative<std::size_t>(arg3))
+			{
+				instr.SetArgument(2, memory_map[std::get<std::size_t>(arg3)]);
+			}
+			break;
+		}
+
+		// Unary Operation
+		case BytecodeType::Not: {
+			auto arg1 = instr.GetArguments()[0];
+			if (std::holds_alternative<std::size_t>(arg1))
+			{
+				instr.SetArgument(0, memory_map[std::get<std::size_t>(arg1)]);
+			}
+			break;
+		}
+		case BytecodeType::Assign: {
+			auto arg1 = instr.GetArguments()[0];
+			auto arg2 = instr.GetArguments()[1];
+			if (std::holds_alternative<std::size_t>(arg1))
+			{
+				instr.SetArgument(0, memory_map[std::get<std::size_t>(arg1)]);
+			}
+			if (std::holds_alternative<std::size_t>(arg2))
+			{
+				instr.SetArgument(1, memory_map[std::get<std::size_t>(arg2)]);
+			}
+			break;
+		}
+		case BytecodeType::MemberFunctionCall:
+		case BytecodeType::FunctionCall:
+		case BytecodeType::ConstructorCall: {
+			std::size_t counter = 0;
+			for (auto i : instr.GetArguments())
+			{
+				if (std::holds_alternative<std::size_t>(i))
+				{
+					instr.SetArgument(counter, memory_map[counter]);
+				}
+				counter++;
+			}
+			break;
+		}
+		}
+	}
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::SquashMemoryMap()
+{
+	std::vector<std::size_t> new_memory_map;
+	new_memory_map.resize(memory_map.size());
+	std::size_t core_variable = 0;
+	for (std::size_t index = 0; index < memory_map.size(); index++)
+	{
+		// It is a core variable, and thus must map to alias of core variable
+		if (memory_map[index] == index)
+		{
+			new_memory_map[core_variable] = core_variable;
+			new_memory_map[index] = core_variable;
+			core_variable++;
+		}
+		else
+		{
+			new_memory_map[index] = new_memory_map[memory_map[index]];
+		}
+	}
+}
+
+void Celeste::ir::inputreconstruction::bytecode::Constructor::RemoveUnusedVariables()
+{
+	std::vector<std::size_t> memory_map_remap;
+	memory_map_remap.resize(memory_map.size());
+	for (std::size_t i : memory_map)
+	{
+		// This checks for every element where they map to
+		// The spots with 0 are unused variables
+		memory_map_remap[i] += 1;
+	}
+
+	for (std::size_t index = 0; index < memory_map_remap.size(); index++)
+	{
+		if (memory_map_remap[index] != 0)
+		{
+			continue;
+		}
+
+		for (std::size_t index_instr = 0; index_instr < functionRepresentation.size();
+			 index_instr++)
+		{
+			auto& instr = functionRepresentation[index_instr];
+			if (instr.GetBytecodeType() == BytecodeType::Variable && instr.GetId() == index)
+			{
+				RemoveInstruction(index_instr);
+				index_instr--;
+			}
+		}
+	}
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::RemoveRedundantZeroInitialization()
@@ -750,11 +910,38 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::RemoveRedundantZer
 		}
 
 		RemoveInstruction(index);
+		index--;
 	}
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::InlineAliasVariables()
 {
+	for (std::size_t index = 0; index < functionRepresentation.size(); index++)
+	{
+		auto& instr = functionRepresentation[index];
+		if (instr.GetBytecodeType() == BytecodeType::ReferenceReuseAssign)
+		{
+			auto firstArgument = instr.GetArguments()[0];
+			auto secondArgument = instr.GetArguments()[1];
+			auto thirdArgument = instr.GetArguments()[2];
+
+			if (std::holds_alternative<std::size_t>(firstArgument) &&
+				std::holds_alternative<std::size_t>(secondArgument) &&
+				std::holds_alternative<std::size_t>(thirdArgument) &&
+				secondArgument == thirdArgument)
+			{
+				// It is an alias call, thus inline it by modifying the memory map
+				memory_map[std::get<std::size_t>(firstArgument)] =
+					std::get<std::size_t>(secondArgument);
+				RemoveInstruction(index);
+				index--;
+			}
+		}
+	}
+
+	LinearizeAliases();
+	// SquashMemoryMap();
+	// DirectVariableAliases();
 }
 
 void Celeste::ir::inputreconstruction::bytecode::Constructor::InlineLabels()
@@ -893,16 +1080,16 @@ void Celeste::ir::inputreconstruction::bytecode::Constructor::RemoveInstruction(
 			break;
 		}
 		case BytecodeType::InstructionConditionalJump: {
-			auto firstArgument = current_instruction.GetArgument<std::size_t>(0);
+			auto firstArgument = current_instruction.GetArgument<std::size_t>(1);
 			if (firstArgument > index)
 			{
-				current_instruction.SetArgument(0, firstArgument - 1);
+				current_instruction.SetArgument(1, firstArgument - 1);
 			}
 
-			auto secondArgument = current_instruction.GetArgument<std::size_t>(1);
+			auto secondArgument = current_instruction.GetArgument<std::size_t>(2);
 			if (secondArgument > index)
 			{
-				current_instruction.SetArgument(0, secondArgument - 1);
+				current_instruction.SetArgument(2, secondArgument - 1);
 			}
 			break;
 		}
@@ -967,12 +1154,19 @@ Celeste::ir::inputreconstruction::bytecode::Constructor::AddVariable(VariableDec
 	else if (variable->GetExpressions().size() == 1)
 	{
 		auto var_id = idCounter;
+		auto vart = variable->GetVariableType();
+		auto varct = vart->GetCoreType();
 		functionRepresentation.emplace_back(
-			idCounter, variable->GetVariableType()->GetCoreType().value(), BytecodeType::Variable,
+			idCounter, varct.value(), BytecodeType::Variable,
 			std::vector<std::variant<std::size_t, InputReconstructionObject*>>{});
 		mapVariableWithSize.insert({variable, idCounter});
 		IncrementIdCounter();
-		AddObject(variable->GetExpressions()[0].get(), var_id);
+		auto expression_result_id = idCounter;
+		AddObject(variable->GetExpressions()[0].get());
+		functionRepresentation.emplace_back(
+			std::numeric_limits<std::size_t>::max(), nullptr, BytecodeType::Assign,
+			std::vector<std::variant<std::size_t, InputReconstructionObject*>>{
+				var_id, expression_result_id});
 		return var_id;
 	}
 	else
@@ -1119,12 +1313,6 @@ std::size_t Celeste::ir::inputreconstruction::bytecode::Constructor::AddLocalVar
 std::size_t
 Celeste::ir::inputreconstruction::bytecode::Constructor::CreateInteger(int default_value)
 {
-	auto iter = mapIntegerWithVariable.find(default_value);
-	if (iter != mapIntegerWithVariable.end())
-	{
-		return iter->second;
-	}
-
 	auto new_value = std::make_unique<Integer>(default_value);
 
 	auto var_id = AddLocalVariable();
@@ -1133,7 +1321,6 @@ Celeste::ir::inputreconstruction::bytecode::Constructor::CreateInteger(int defau
 		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{var_id,
 																		   new_value.get()});
 	integers.push_back(std::move(new_value));
-	mapIntegerWithVariable.insert({default_value, var_id});
 	return var_id;
 }
 
@@ -1141,15 +1328,13 @@ std::size_t
 Celeste::ir::inputreconstruction::bytecode::Constructor::CreateText(std::string default_value)
 {
 	auto new_value = std::make_unique<Text>(default_value);
-	auto new_value_ptr = new_value.get();
-	texts.push_back(std::move(new_value));
 
-	auto var_id = idCounter;
+	auto var_id = AddLocalVariable();
 	functionRepresentation.emplace_back(
 		std::numeric_limits<std::size_t>::max(), nullptr, BytecodeType::Text,
-		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{idCounter,
-																		   new_value_ptr});
-	IncrementIdCounter();
+		std::vector<std::variant<std::size_t, InputReconstructionObject*>>{var_id,
+																		   new_value.get()});
+	texts.push_back(std::move(new_value));
 	return var_id;
 }
 

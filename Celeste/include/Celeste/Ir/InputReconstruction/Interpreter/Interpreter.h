@@ -104,6 +104,7 @@ namespace Celeste::ir::inputreconstruction
 			void Print(std::size_t depth = 0);
 		};
 
+	public:
 		struct Value
 		{
 			ValueType value;
@@ -547,7 +548,8 @@ namespace Celeste::ir::inputreconstruction
 		~Interpreter();
 
 	public:
-		void Interpret(InputReconstructionObject* entryPoint);
+		std::optional<Celeste::ir::inputreconstruction::Interpreter::Value>
+		Interpret(InputReconstructionObject* entryPoint);
 		void SetUpGlobalInformation(InputReconstructionObject* entryPoint);
 
 	public:

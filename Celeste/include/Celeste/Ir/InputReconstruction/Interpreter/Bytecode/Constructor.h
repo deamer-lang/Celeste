@@ -53,6 +53,8 @@ namespace Celeste::ir::inputreconstruction::bytecode
 		std::vector<std::unique_ptr<Decimal>> decimals;
 		std::vector<std::unique_ptr<Text>> texts;
 
+		std::vector<std::size_t> memory_map;
+
 		// Output Construction Cache
 	private:
 		// When there is an embedded ir object, i.e. it has a scope.
@@ -95,6 +97,10 @@ namespace Celeste::ir::inputreconstruction::bytecode
 		BytecodeRepresentation GetRepresentation();
 
 	public:
+		void RemoveUnusedVariables();
+		void LinearizeAliases();
+		void DirectVariableAliases();
+		void SquashMemoryMap();
 		void RemoveRedundantZeroInitialization();
 		void InlineAliasVariables();
 		void InlineLabels();

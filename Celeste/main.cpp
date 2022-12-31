@@ -9,7 +9,7 @@
 #include <sstream>
 #include <vector>
 
-std::string ReadInFile(const std::string& file)
+static std::string ReadInFile(const std::string& file)
 {
 	const std::ifstream inputFile(file);
 
@@ -21,7 +21,8 @@ std::string ReadInFile(const std::string& file)
 	return input;
 }
 
-void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
+static void
+VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
 {
 	for (auto file : project->GetFiles())
 	{
@@ -96,7 +97,7 @@ void VisualizeProject(const std::unique_ptr<Celeste::ir::inputreconstruction::Pr
 	}
 }
 
-void EvaluateMain(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
+static void EvaluateMain(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
 {
 	auto files = project->GetFiles();
 	for (auto file : files)
@@ -122,7 +123,8 @@ void EvaluateMain(const std::unique_ptr<Celeste::ir::inputreconstruction::Projec
 	}
 }
 
-void EvaluateCodeTime(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
+static void
+EvaluateCodeTime(const std::unique_ptr<Celeste::ir::inputreconstruction::Project>& project)
 {
 	auto files = project->GetFiles();
 	for (auto file : files)
